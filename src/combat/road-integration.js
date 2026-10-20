@@ -1,10 +1,12 @@
-import { assetUrl } from '../assets/urls.js';
+import { drawBattleGround } from '../rendering/battle-ground.js';
 export function initializeCombatRoadIntegration(runtime) {
   runtime.ROAD = {
     city: 440,
     width: runtime.PATH_LENGTH,
     half: 228,
     camera: 0,
+    zoom: 1,
+    testCount: 500,
     w: 1200,
     h: 650,
     clock: 0,
@@ -46,7 +48,6 @@ export function initializeCombatRoadIntegration(runtime) {
     u.roadAim = t;
     if (t) {
       u.roadTarget = t.id;
-      t.roadEngaged = (t.roadEngaged || 0) + 1;
     }
     return t;
   };
@@ -83,6 +84,7 @@ export function initializeCombatRoadIntegration(runtime) {
     const before = t.hp,
       out = runtime.roadOldDamage(t, amount, type);
     runtime.ROAD.metrics.damage += Math.max(0, before - t.hp);
+    if (t.hp < before) t.roadHurtAt = runtime.ROAD.clock;
     return out;
   };
   runtime.roadOldKill = runtime.killUnit;
@@ -96,6 +98,7 @@ export function initializeCombatRoadIntegration(runtime) {
         lane: u.lane,
         offset: u.offset || 0,
         veteran: u.veteran,
+        roadFace: u.roadFace,
         death: runtime.ROAD.clock
       });
       if (runtime.ROAD.dead.length > 220) runtime.ROAD.dead.shift();
@@ -108,6 +111,8 @@ export function initializeCombatRoadIntegration(runtime) {
     if (u) {
       u.offset = ((u.id - 1) % 20 - 9.5) * 24;
       u.roadPrev = u.lane;
+      u.roadHomeOffset = u.offset;
+      u.roadWalk = 0;
       u.roadTarget = null;
     }
     return u;
@@ -118,14 +123,26 @@ export function initializeCombatRoadIntegration(runtime) {
     runtime.ROAD.clock += dt;
     for (const u of runtime.state.units) {
       u.roadPrev = u.lane;
+      u.roadPrevOffset = u.offset || 0;
       u.roadEngaged = 0;
     }
+    for (const u of runtime.state.units) if (u.alive && u.roadSeek?.alive) u.roadSeek.roadEngaged++;
     runtime.roadReindex();
     runtime.roadImpacts();
     runtime.roadOldBattle(dt);
     runtime.roadSeparate();
     runtime.roadReindex();
-    for (const u of runtime.state.units) u.roadMoving = Math.abs(u.lane - u.roadPrev) > .03;
+    let idleMelee = 0;
+    for (const u of runtime.state.units) {
+      const distance = Math.hypot(u.lane - u.roadPrev, (u.offset || 0) - u.roadPrevOffset);
+      u.roadMoving = distance > .08;
+      u.roadWalk = (u.roadWalk || 0) + distance * .17;
+      u.roadTravel = (u.roadTravel || 0) + distance;
+      const engaged = u.roadAim?.alive && runtime.roadDistance(u, u.roadAim) <= u.range + 1;
+      u.roadIdleFor = u.roadMoving || engaged || u.roadPending || u.stunTime > 0 ? 0 : (u.roadIdleFor || 0) + dt;
+      if (u.tags.includes('melee') && u.roadIdleFor > 2) idleMelee++;
+    }
+    runtime.ROAD.metrics.idleMelee = idleMelee;
     runtime.ROAD.metrics.steps++;
     runtime.ROAD.metrics.tickMs = performance.now() - begin;
   };
@@ -171,7 +188,7 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.roadBattle.style.setProperty('width', runtime.PATH_LENGTH + 'px', 'important');
   runtime.roadHud = document.createElement('div');
   runtime.roadHud.id = 'roadHud';
-  runtime.roadHud.innerHTML = '<span id="roadCounts"></span><span id="roadFps"></span><span id="roadStatus"></span><button data-camera="0">Saját város</button><button data-camera="1">Csata</button><button data-camera="2">Ellenfél</button><button data-test id="roadPause">Szünet</button><button data-test id="roadRestart">Újraindítás</button><button data-test id="roadMenu">Főmenü</button>';
+  runtime.roadHud.innerHTML = '<span id="roadCounts"></span><span id="roadFps"></span><span id="roadStatus"></span><button data-camera="0">Saját város</button><button data-camera="1">Csata</button><button data-camera="2">Ellenfél</button><button id="roadZoomOut" aria-label="Kicsinyítés">−</button><span id="roadZoom">100%</span><button id="roadZoomIn" aria-label="Nagyítás">+</button><button data-test id="roadPause">Szünet</button><button data-test id="roadRestart">Újraindítás</button><button data-test id="roadMenu">Főmenü</button>';
   document.body.appendChild(runtime.roadHud);
   runtime.roadHud.querySelectorAll('[data-camera]').forEach(b => b.onclick = () => {
     const v = +b.dataset.camera;
@@ -189,8 +206,8 @@ export function initializeCombatRoadIntegration(runtime) {
   });
   runtime.pointAt = function (distance, lateral = 0) {
     return {
-      x: runtime.clamp(distance, 0, runtime.PATH_LENGTH) - runtime.ROAD.camera,
-      y: runtime.ROAD.h / 2 + lateral * runtime.ROAD.h / 600
+      x: (runtime.clamp(distance, 0, runtime.PATH_LENGTH) - runtime.ROAD.camera) * runtime.ROAD.zoom,
+      y: runtime.ROAD.h / 2 + lateral * runtime.ROAD.h / 600 * runtime.ROAD.zoom
     };
   };
   runtime.ROAD.art = new Map();
@@ -221,44 +238,24 @@ export function initializeCombatRoadIntegration(runtime) {
       runtime.ROAD.guestPrevious = next;
       if (runtime.ROAD.dead.length > 220) runtime.ROAD.dead.splice(0, runtime.ROAD.dead.length - 220);
     }
-    runtime.ROAD.camera = runtime.clamp(runtime.roadWar.scrollLeft - runtime.ROAD.city, 0, runtime.PATH_LENGTH - runtime.ROAD.w);
-    runtime.canvas.style.transform = 'translateX(' + runtime.ROAD.camera + 'px)';
-    runtime.ctx.fillStyle = '#24392b';
-    runtime.ctx.fillRect(0, 0, runtime.ROAD.w, runtime.ROAD.h);
-    const top = runtime.ROAD.h / 2 - runtime.ROAD.h * .405,
-      bottom = runtime.ROAD.h / 2 + runtime.ROAD.h * .405;
-    runtime.ctx.fillStyle = '#141f17';
-    runtime.ctx.fillRect(0, top - 7, runtime.ROAD.w, bottom - top + 14);
-    runtime.ctx.fillStyle = '#88775b';
-    runtime.ctx.fillRect(0, top, runtime.ROAD.w, bottom - top);
-    runtime.ctx.fillStyle = '#a99876';
-    runtime.ctx.fillRect(0, top + 5, runtime.ROAD.w, bottom - top - 10);
-    runtime.ctx.fillStyle = '#76674755';
-    for (let x = -(runtime.ROAD.camera % 64); x < runtime.ROAD.w; x += 64) {
-      runtime.ctx.fillRect(x, top, 1, bottom - top);
-      runtime.ctx.fillRect(x + 20, top + 13, 7, 2);
-      runtime.ctx.fillRect(x + 43, bottom - 35, 5, 2);
-    }
-    runtime.ctx.strokeStyle = '#e2d1a044';
-    runtime.ctx.setLineDash([12, 20]);
-    runtime.ctx.beginPath();
-    runtime.ctx.moveTo(0, runtime.ROAD.h / 2);
-    runtime.ctx.lineTo(runtime.ROAD.w, runtime.ROAD.h / 2);
-    runtime.ctx.stroke();
-    runtime.ctx.setLineDash([]);
+    const viewportX = runtime.clamp(runtime.roadWar.scrollLeft - runtime.ROAD.city, 0, runtime.PATH_LENGTH - runtime.ROAD.w);
+    runtime.ROAD.camera = viewportX + (runtime.ROAD.w - runtime.ROAD.w / runtime.ROAD.zoom) / 2;
+    runtime.canvas.style.transform = 'translateX(' + viewportX + 'px)';
+    drawBattleGround(runtime);
     for (const t of runtime.towers) {
-      const x = t.lane - runtime.ROAD.camera;
+      const x = runtime.pointAt(t.lane).x;
       if (x > -70 && x < runtime.ROAD.w + 70) runtime.drawTower(t);
     }
     let n = 0;
     for (const d of runtime.ROAD.dead) {
-      if (runtime.ROAD.clock - d.death < .8) {
+      if (runtime.ROAD.clock - d.death < 2.5) {
         runtime.ROAD.dead[n++] = d;
         runtime.roadDrawUnit(d, true);
       }
     }
     runtime.ROAD.dead.length = n;
-    const visible = runtime.state.units.filter(u => u.alive && u.lane >= runtime.ROAD.camera - 40 && u.lane <= runtime.ROAD.camera + runtime.ROAD.w + 40);
+    const visible = runtime.state.units.filter(u => u.alive && u.lane >= runtime.ROAD.camera - 40 && u.lane <= runtime.ROAD.camera + runtime.ROAD.w / runtime.ROAD.zoom + 60);
+    runtime.ROAD.lowDetail = visible.length > 240 && runtime.ROAD.zoom <= 1.25;
     visible.sort((a, b) => (a.offset || 0) - (b.offset || 0) || a.id - b.id);
     for (const u of visible) runtime.roadDrawUnit(u);
     runtime.roadDrawShots();
@@ -296,15 +293,23 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.roadTestBtn = document.createElement('button');
   runtime.roadTestBtn.id = 'roadTestMenu';
   runtime.roadTestBtn.className = 'menuButton';
-  runtime.roadTestBtn.textContent = 'TESZT';
+  runtime.roadTestBtn.textContent = 'TESZT · 50 vs 50';
   runtime.roadTestBtn.type = 'button';
-  runtime.roadTestBtn.onclick = runtime.roadStartTest;
+  runtime.roadTestBtn.onclick = () => runtime.roadStartTest(undefined, {count: 50});
+  const stressButton = document.createElement('button');
+  stressButton.id = 'roadStressMenu'; stressButton.className = 'menuButton'; stressButton.type = 'button';
+  stressButton.textContent = 'TERHELÉS · 500 vs 500';
+  stressButton.onclick = () => runtime.roadStartTest(undefined, {count: 500});
   runtime.MP.lobby.querySelector('.menuMain').appendChild(runtime.roadTestBtn);
+  runtime.MP.lobby.querySelector('.menuMain').appendChild(stressButton);
   runtime.roadTestSummary = document.createElement('p');
   runtime.roadTestSummary.id = 'roadTestSummary';
   runtime.$('.command').appendChild(runtime.roadTestSummary);
   runtime.$('#roadPause').onclick = runtime.roadPause;
-  runtime.$('#roadRestart').onclick = () => runtime.roadStartTest(runtime.ROAD.seed);
+  runtime.$('#roadRestart').onclick = () => runtime.roadStartTest(runtime.ROAD.seed, {count: runtime.ROAD.testCount});
+  const setZoom = value => {runtime.ROAD.zoom = runtime.clamp(value, .75, 2); runtime.$('#roadZoom').textContent = Math.round(runtime.ROAD.zoom * 100) + '%';};
+  runtime.$('#roadZoomOut').onclick = () => setZoom(runtime.ROAD.zoom - .25);
+  runtime.$('#roadZoomIn').onclick = () => setZoom(runtime.ROAD.zoom + .25);
   runtime.$('#roadMenu').onclick = () => location.reload();
   document.addEventListener('keydown', e => {
     if (!runtime.ROAD.test || e.target.closest('input,select,textarea')) return;
@@ -355,6 +360,7 @@ export function initializeCombatRoadIntegration(runtime) {
     MP: runtime.MP,
     artReady: runtime.roadArtReady,
     render: runtime.renderBattle,
+    pose: runtime.battleFigurePose,
     attach: runtime.mpAttachConnection,
     applySnapshot: runtime.mpApplySnapshot,
     sendSnapshot: runtime.mpSendSnapshot,
@@ -362,6 +368,7 @@ export function initializeCombatRoadIntegration(runtime) {
     pack: runtime.mpPack,
     mirror: runtime.mpMirrorUnit,
     snapshot: () => ({
+      testCount: runtime.ROAD.testCount,
       seed: runtime.ROAD.seed,
       combatTime: runtime.ROAD.clock,
       time: runtime.state.time,

@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.15.0',
-  label: 'V4.15 · MODULÁRIS ALAP',
-  title: 'Roadlords – Moduláris alap',
+  version: '4.16.0',
+  label: 'V4.16 · HARCPRÓBA',
+  title: 'Roadlords – Harcpróba',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

@@ -22,7 +22,7 @@ async function main(){
   check('TESZT is a distinct main menu entry',await page.locator('.menuMain #roadTestMenu').isVisible());
   await page.locator('#roadTestMenu').click();await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
   let initial=await page.evaluate(()=>__ROADLORDS_ROAD__.snapshot());
-  check('One menu click generates exactly 500 units per side and all 14 types',initial.initial.counts.every(n=>n===500)&&initial.initial.keys.length===14);
+  check('One menu click generates exactly 50 units per side and all 14 types',initial.initial.counts.every(n=>n===50)&&initial.initial.keys.length===14);
   report.randomFixture=initial.initial;
   // Keep performance and casualty checks reproducible; the menu's random generation is checked above.
   await page.evaluate(()=>{__ROADLORDS_ROAD__.startTest(42);__ROADLORDS_ROAD__.pause();});
@@ -79,7 +79,7 @@ async function main(){
       u.lane=1500;v.lane=1526;u.offset=v.offset=0;u.cooldown=v.cooldown=100;Q.reindex();return [u,v];
     }
     let [u,v]=setup(),hp=v.hp;R.attackUnit(u,v);let instant=v.hp===hp;R.updateBattle(.05);let windup=v.hp===hp;R.updateBattle(.2);let melee=v.hp<hp;
-    [u,v]=setup('archer');v.lane=1630;Q.reindex();hp=v.hp;R.attackUnit(u,v);R.updateBattle(.1);let flying=v.hp===hp;R.updateBattle(.3);let arrow=v.hp<hp;
+    [u,v]=setup('archer');v.lane=1630;Q.reindex();hp=v.hp;R.attackUnit(u,v);R.updateBattle(.1);let flying=v.hp===hp;R.updateBattle(.4);let arrow=v.hp<hp;
     [u,v]=setup();v.offset=160;Q.reindex();let far=!R.preferredTarget(u,[v]);v.offset=0;u.roadAimAt=0;Q.reindex();let near=R.preferredTarget(u,[v])===v;
     R.killUnit(v,true);let death=road.dead.some(d=>d.key===v.key);
     road.paused=false;R.state.running=true;R.state.ended=false;Q.step(1/30);const victory=R.state.ended&&!!road.result;road.paused=true;

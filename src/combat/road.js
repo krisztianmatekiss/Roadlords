@@ -1,4 +1,4 @@
-import { assetUrl } from '../assets/urls.js';
+import { installRoadMovement } from './movement.js';
 export function register(runtime) {
   runtime.roadDistance = function roadDistance(a, b) {
     return Math.hypot(a.lane - b.lane, (a.offset || 0) - (b.offset || 0));
@@ -25,111 +25,21 @@ export function register(runtime) {
       if (b) for (const v of b) if (v.alive && v !== u) fn(v);
     }
   };
-  runtime.roadAdvance = function roadAdvance(u, opps, dt) {
-    if (u.roadAttack && runtime.ROAD.clock < u.roadAttack.hit) return;
-    const dir = u.side === 'player' ? 1 : -1,
-      c = runtime.cityForSide(u.side),
-      speed = runtime.effectiveMoveSpeed(u, c),
-      old = u.lane;
-    let target = u.roadSeek;
-    if (!target?.alive || runtime.ROAD.clock >= (u.roadSeekAt || 0)) {
-      target = null;
-      let best = Infinity;
-      runtime.roadVisit(u, Math.max(280, u.range + 30), v => {
-        if (v.side === u.side) return;
-        const dx = v.lane - u.lane,
-          dy = (v.offset || 0) - (u.offset || 0),
-          score = dx * dx + dy * dy + (v.roadEngaged || 0) * 225;
-        if (score < best) {
-          best = score;
-          target = v;
-        }
-      });
-      u.roadSeek = target;
-      u.roadSeekAt = runtime.ROAD.clock + .3 + u.id % 7 * .017;
-    }
-    if (!target) {
-      const structure = runtime.targetStructure(u.side);
-      if (Math.abs(structure.lane - u.lane) < 500) target = {
-        lane: structure.lane,
-        offset: structure.lateral || 0
-      };
-    }
-    let dx = dir,
-      dy = 0;
-    if (target) {
-      dx = target.lane - u.lane;
-      dy = (target.offset || 0) - (u.offset || 0);
-      const d = Math.hypot(dx, dy) || 1,
-        stop = u.tags.includes('ranged') ? Math.max(25, u.range * .88) : Math.max(21, u.range * .78);
-      if (d <= stop) return;
-      const step = Math.min(speed * dt, d - stop);
-      dx = dx / d * step;
-      dy = dy / d * step;
-    } else {
-      dx = dir * speed * dt;
-      const row = ((u.id - 1) % 20 - 9.5) * 24;
-      dy = runtime.clamp(row - (u.offset || 0), -speed * dt * .45, speed * dt * .45);
-    }
-    let blocked = false;
-    if (target?.phalanx) runtime.roadVisit(u, 45, v => {
-      if (v.side !== u.side && v.phalanx && Math.abs((v.offset || 0) - (u.offset || 0)) < 20 && Math.abs(v.lane - (u.lane + dx)) < 20) blocked = true;
-    });
-    let crowded = false;
-    runtime.roadVisit(u, 34, v => {
-      const gap = u.tags.includes('heavy') || v.tags.includes('heavy') ? 25 : 21;
-      const ox = v.lane - u.lane,
-        oy = (v.offset || 0) - (u.offset || 0),
-        nx = ox - dx,
-        ny = oy - dy;
-      if (nx * nx + ny * ny < gap * gap && nx * nx + ny * ny < ox * ox + oy * oy - .01) crowded = true;
-    });
-    if (crowded) {
-      dx = 0;
-      dy = 0;
-    }
-    if (!blocked) runtime.setBattleLane(u, runtime.clamp(u.lane + dx, 8, runtime.PATH_LENGTH - 8));
-    u.offset = runtime.clamp((u.offset || 0) + dy, -runtime.ROAD.half, runtime.ROAD.half);
-    if (u.key === 'knight') u.chargeDist += Math.abs(old - u.lane);
-  };
-  runtime.roadSeparate = function roadSeparate() {
-    for (let pass = 0; pass < 1; pass++) {
-      runtime.roadReindex();
-      for (const u of runtime.state.units) {
-        if (!u.alive) continue;
-        runtime.roadVisit(u, 30, v => {
-          if (v.id <= u.id) return;
-          let dx = v.lane - u.lane,
-            dy = (v.offset || 0) - (u.offset || 0),
-            d = Math.hypot(dx, dy);
-          const gap = u.tags.includes('heavy') || v.tags.includes('heavy') ? 25 : 21;
-          if (d >= gap) return;
-          if (d < .001) {
-            dx = 0;
-            dy = u.id % 2 ? 1 : -1;
-            d = 1;
-          }
-          const push = Math.min(3, (gap - d) * .5),
-            px = dx / d * push,
-            py = dy / d * push;
-          runtime.setBattleLane(u, runtime.clamp(u.lane - px, 8, runtime.PATH_LENGTH - 8));
-          runtime.setBattleLane(v, runtime.clamp(v.lane + px, 8, runtime.PATH_LENGTH - 8));
-          u.offset = runtime.clamp((u.offset || 0) - py, -runtime.ROAD.half, runtime.ROAD.half);
-          v.offset = runtime.clamp((v.offset || 0) + py, -runtime.ROAD.half, runtime.ROAD.half);
-        });
-      }
-    }
-  };
+  installRoadMovement(runtime);
   runtime.roadQueueAttack = function roadQueueAttack(u, t, structure, opts) {
     if (!u?.alive || !structure && !t?.alive || u.roadPending) return;
-    const ranged = u.tags.includes('ranged'),
-      wind = Math.min(.16, Math.max(.055, u.cooldownTime * .16)),
-      flight = ranged ? runtime.clamp(runtime.roadDistance(u, t) / 800, .09, .48) : 0;
+    const orcSpear = u.key === 'orc_warg' && !!u.orcSpearReady;
+    const ranged = u.tags.includes('ranged') || !!u.spearVolleyReady || orcSpear,
+      wind = Math.min(.28, Math.max(.12, u.cooldownTime * .24)),
+      flight = ranged ? runtime.clamp(runtime.roadDistance(u, t) / 800, .09, .48) : 0,
+      recovery = Math.min(.24, Math.max(.07, u.cooldownTime * .26));
     const a = {
       start: runtime.ROAD.clock,
       launch: runtime.ROAD.clock + wind,
       hit: runtime.ROAD.clock + wind + flight,
-      end: runtime.ROAD.clock + wind + flight + .14,
+      end: runtime.ROAD.clock + wind + flight + recovery,
+      recovery,
+      orcSpear,
       lane: u.lane,
       offset: u.offset || 0,
       to: t.lane,
@@ -137,8 +47,11 @@ export function register(runtime) {
       ranged,
       key: u.key
     };
+    u.roadFace = t.lane >= u.lane ? 1 : -1;
     u.roadAttack = a;
     u.roadPending = true;
+    if (orcSpear) u.orcSpearReady = false;
+    u.roadAttacks = (u.roadAttacks || 0) + 1;
     runtime.ROAD.pending.push({
       u,
       t,
@@ -155,6 +68,9 @@ export function register(runtime) {
         p.u.roadPending = false;
         continue;
       }
+      // The visual projectile follows the same live target that receives the hit.
+      p.a.to = p.t.lane;
+      p.a.toOffset = p.t.offset || p.t.lateral || 0;
       if (runtime.ROAD.clock + 1e-8 < p.a.hit) {
         runtime.ROAD.pending[n++] = p;
         continue;
@@ -164,9 +80,12 @@ export function register(runtime) {
       if (!p.a.ranged && runtime.roadDistance(p.u, p.t) > p.u.range + 12) continue;
       if (p.structure && !p.t.capital && !p.t.alive) continue;
       runtime.roadResolving = true;
+      // Before-combat hooks consume this flag immediately; preserve the queued throw.
+      if (p.a.orcSpear) p.u.orcSpearReady = true;
       try {
         if (p.structure) runtime.roadRealStructure(p.u, p.t);else runtime.roadRealAttack(p.u, p.t, p.opts);
       } finally {
+        if (p.a.orcSpear) p.u.orcSpearReady = false;
         runtime.roadResolving = false;
       }
     }

@@ -1,4 +1,3 @@
-import { assetUrl } from '../assets/urls.js';
 export function register(runtime) {
   runtime.roadResetCity = function roadResetCity(c, race) {
     for (const k of Object.keys(c)) delete c[k];
@@ -69,7 +68,11 @@ export function register(runtime) {
       }
     };
   };
-  runtime.roadStartTest = function roadStartTest(seed) {
+  runtime.roadStartTest = function roadStartTest(seed, {count = 500} = {}) {
+    if (![50, 500].includes(count)) throw new RangeError("Supported test sizes: 50 or 500 per side");
+    runtime.ROAD.testCount = count;
+    runtime.ROAD.zoom = count === 50 ? 1.25 : 1;
+    runtime.$("#roadZoom").textContent = Math.round(runtime.ROAD.zoom * 100) + "%";
     seed = Number.isInteger(seed) ? seed : crypto.getRandomValues(new Uint32Array(1))[0];
     runtime.ROAD.seed = seed;
     const savedRandom = Math.random;
@@ -125,20 +128,22 @@ export function register(runtime) {
       for (const c of [runtime.P, runtime.E]) {
         const keys = Object.keys(runtime.UNITS).filter(k => c.race === 'orc' === k.startsWith('orc_'));
         const entries = Array.from({
-          length: 500
+          length: count
         }, (_, i) => ({
           key: keys[i % keys.length],
           i
         }));
         entries.sort((a, b) => Number(runtime.UNITS[a.key].tags.includes('ranged')) - Number(runtime.UNITS[b.key].tags.includes('ranged')) || a.i - b.i);
         const dir = c === runtime.P ? 1 : -1;
-        for (let i = 0; i < 500; i++) {
+        for (let i = 0; i < count; i++) {
           const origin = c.buildings.find(b => runtime.BUILDINGS[b.type].unit === entries[i].key);
           const u = runtime.releaseUnit(c, runtime.makeEntry(c, entries[i].key, {
             originBuildingId: origin?.id
           }));
-          u.offset = (i % 20 - 9.5) * 24;
-          u.lane = runtime.PATH_LENGTH / 2 - dir * (100 + Math.floor(i / 20) * 32);
+          const rows = count === 50 ? 8 : 20, spacing = count === 50 ? 36 : 24;
+          u.offset = (i % rows - (rows - 1) / 2) * spacing;
+          u.roadHomeOffset = u.offset;
+          u.lane = runtime.PATH_LENGTH / 2 - dir * (100 + Math.floor(i / rows) * (count === 50 ? 42 : 32));
           u.cooldown = .1 + i % 13 * .025;
         }
       }
@@ -163,7 +168,7 @@ export function register(runtime) {
       runtime.last = performance.now();
       runtime.roadWar.scrollLeft = runtime.ROAD.city + runtime.PATH_LENGTH / 2 - runtime.roadWar.clientWidth / 2;
       runtime.$('#roadPause').textContent = 'Szünet';
-      runtime.roadTestSummary.textContent = `500 × 500 · ${runtime.P.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.E.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. Minden egységtípus, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Görgetés: egérgörgő, érintés vagy alsó görgetősáv. Szünet: szóköz.`;
+      runtime.roadTestSummary.textContent = `${count} × ${count} · ${runtime.P.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.E.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. Minden egységtípus, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Görgetés: egérgörgő, érintés vagy alsó görgetősáv. Szünet: szóköz.`;
     } finally {
       Math.random = savedRandom;
     }

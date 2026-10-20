@@ -1,0 +1,4 @@
+
+    #inspector.show .ihead{cursor:grab;user-select:none;touch-action:none}
+    #inspector.show.dragging .ihead{cursor:grabbing}
+    #inspector.show .ihead button,#inspector.show .ihead input,#inspector.show .ihead select{cursor:pointer;touch-action:auto}

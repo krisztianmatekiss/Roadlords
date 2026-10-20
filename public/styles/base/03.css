@@ -1,0 +1,4 @@
+
+body:not(.resource-rates-active39) .topLeftCluster .res small,
+body.roadlords-menu-open .topLeftCluster .res small,
+body.pregame-active .topLeftCluster .res small{display:none!important}

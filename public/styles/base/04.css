@@ -1,0 +1,8 @@
+
+.rlCodexTitle h3{display:flex;align-items:center;gap:9px}
+.rlCodexTitle .pickFootprint{display:grid;grid-template-columns:repeat(var(--fp-cols),9px);gap:2px;padding:4px;border:1px solid #bda85e;border-radius:4px;flex-shrink:0}
+.rlCodexTitle .pickFootprint i{display:block;width:9px;height:9px;box-sizing:border-box;border-radius:2px}
+.rlCodexTitle .pickFootprint i.on{background:linear-gradient(145deg,#f0cd66,#9a7027);border:1px solid #f0d472}
+.rlCodexTitle .pickFootprint i.off{visibility:hidden}
+.lexResource{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;margin-right:8px}
+.lexResource img{width:20px!important;height:20px!important;object-fit:contain;vertical-align:middle}

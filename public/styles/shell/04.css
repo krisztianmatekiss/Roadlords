@@ -1,0 +1,53 @@
+
+    .rlMenuExtraBtn{margin-top:0!important}
+    .rlMenuPanel{position:absolute;z-index:25;inset:0;display:none;place-items:center;padding:22px;background:#030805e8;backdrop-filter:blur(7px);font-family:Inter,Segoe UI,Arial,sans-serif}
+    .rlMenuPanel.show{display:grid}
+    .rlMenuPanelCard{position:relative;width:min(1120px,94vw);max-height:92vh;overflow:hidden;border:1px solid #8d793f;border-radius:14px;background:linear-gradient(180deg,#142019fa,#09110dfa);box-shadow:0 24px 70px #000d,inset 0 1px #ffffff12;color:#e8e1cc}
+    .rlSettingsCard{width:min(760px,92vw)}
+    .rlPanelHead{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid #59634faa;background:#0d1712}
+    .rlPanelHead h2{margin:0;color:#f1d77c;font:900 25px/1 Georgia,serif;letter-spacing:.08em;text-shadow:0 2px 5px #000}
+    .rlPanelBack{min-width:102px;height:36px;border:1px solid #8d793f;border-radius:7px;background:#292617;color:#f2df9c;font-size:11px;font-weight:950;letter-spacing:.06em;cursor:pointer}
+    .rlPanelBack:hover{background:#40391e;border-color:#d0ad55}
+    .rlPanelBody{padding:18px 20px;overflow:auto;max-height:calc(92vh - 73px)}
+    .rlSection{margin-bottom:18px;padding:15px;border:1px solid #435246;border-radius:11px;background:#0d1712cc}
+    .rlSection:last-child{margin-bottom:0}
+    .rlSectionTitle{margin:0 0 11px;color:#d8c47d;font-size:11px;font-weight:950;letter-spacing:.12em}
+    .rlSettingsCard .uiScaleControl{margin:0!important;grid-template-columns:110px repeat(3,1fr)!important;padding:10px!important;background:#101a14!important}
+    .rlSettingsCard .uiScaleControl>span{font-size:10px!important}
+    .rlHotkeys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 12px}
+    .rlHotkeyRow{display:grid;grid-template-columns:90px 1fr;align-items:center;min-height:38px;padding:6px 8px;border:1px solid #344339;border-radius:7px;background:#111c16}
+    .rlHotkeyKeys{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+    .rlKey{display:inline-grid;place-items:center;min-width:29px;height:25px;padding:0 7px;border:1px solid #9d8547;border-radius:5px;background:#211f14;color:#ffe28b;font:950 10px/1 system-ui;box-shadow:inset 0 1px #fff1}
+    .rlHotkeyText{color:#cbd4ca;font-size:11px;line-height:1.25}
+    .rlSettingsNote{margin-top:9px;color:#8fa096;font-size:9px;line-height:1.45}
+
+    .rlCodexTools{display:grid;grid-template-columns:1fr minmax(220px,330px);gap:10px;margin-bottom:12px}
+    .rlCodexTabs{display:flex;gap:6px;flex-wrap:wrap}
+    .rlCodexTab{height:38px;padding:0 13px;border:1px solid #4b5d50;border-radius:7px;background:#111c16;color:#b8c4ba;font-size:10px;font-weight:950;letter-spacing:.04em;cursor:pointer}
+    .rlCodexTab.active{border-color:#c8aa59;background:#302b18;color:#ffe28b}
+    .rlCodexSearch{height:38px;box-sizing:border-box;width:100%;padding:0 12px;border:1px solid #4b5d50;border-radius:7px;outline:none;background:#08100c;color:#e6eadf;font-size:11px}
+    .rlCodexSearch:focus{border-color:#ba9b4e;box-shadow:0 0 0 2px #ba9b4e22}
+    .rlCodexCount{margin:0 0 9px;color:#819087;font-size:9px;font-weight:850;letter-spacing:.06em}
+    .rlCodexGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+    .rlCodexCard{min-width:0;border:1px solid #3e5144;border-radius:10px;background:linear-gradient(180deg,#142119,#0c1510);box-shadow:0 7px 16px #0005;overflow:hidden}
+    .rlCodexCardHead{display:flex;align-items:center;gap:9px;min-height:54px;padding:8px 10px;border-bottom:1px solid #34443a;background:#101b15}
+    .rlCodexIcon{flex:0 0 auto;display:grid;place-items:center;width:42px;height:42px;border:1px solid #4a5d50;border-radius:7px;background:#08100c;font-size:24px;overflow:hidden}
+    .rlCodexIcon img{width:100%;height:100%;object-fit:cover;display:block}
+    .rlCodexTitle{min-width:0}.rlCodexTitle h3{margin:0 0 3px;color:#f1dfaa;font-size:14px;line-height:1.1}.rlCodexTitle small{display:block;color:#809087;font-size:8px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+    .rlCodexContent{padding:10px;color:#bfc9c0;font-size:10px;line-height:1.42}
+    .rlCodexContent p{margin:0 0 9px}.rlCodexContent p:last-child{margin-bottom:0}
+    .rlCodexMeta{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 9px}
+    .rlChip{display:inline-flex;align-items:center;min-height:21px;padding:2px 6px;border:1px solid #425447;border-radius:5px;background:#0a120e;color:#aebdb2;font-size:8px;font-weight:850}
+    .rlChip.gold{border-color:#746126;color:#f0d681;background:#1d1b10}
+    .rlCodexStats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin:8px 0}
+    .rlStat{padding:5px 6px;border:1px solid #334239;border-radius:5px;background:#0a120e}.rlStat span{display:block;color:#718079;font-size:7px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}.rlStat b{display:block;margin-top:1px;color:#d9e0d8;font-size:10px}
+    .rlUpgradeBlock{margin-top:9px;padding-top:8px;border-top:1px solid #2e3c33}.rlUpgradeBlock>strong{display:block;margin-bottom:5px;color:#d7bd67;font-size:9px;letter-spacing:.05em}
+    .rlUpgradeStep{margin:5px 0;padding:6px 7px;border-left:2px solid #5e704f;background:#101b15;border-radius:0 5px 5px 0;color:#aeb9b0;font-size:9px}.rlUpgradeStep b{color:#e0d5ad}.rlUpgradeStep .upgradeDeltaV497{display:block;margin-top:3px}
+    .rlBranch{margin:5px 0;padding:7px;border:1px solid #5d4f2c;border-radius:6px;background:#1b190f}.rlBranch b{color:#f1d77c}
+    .rlCodexEmpty{grid-column:1/-1;padding:45px;text-align:center;color:#85958b;border:1px dashed #465649;border-radius:10px}
+    .rlLegendCard{border-color:#7f6530;background:linear-gradient(180deg,#221d11,#100e09)}.rlLegendCard .rlCodexCardHead{background:#201b10;border-bottom-color:#67562d}.rlLegendCard .rlCodexIcon{border-color:#7c6634;background:#17130c}
+
+    body[data-ui-scale="large"] .rlPanelHead h2{font-size:29px}body[data-ui-scale="large"] .rlCodexContent{font-size:12px}body[data-ui-scale="large"] .rlCodexTitle h3{font-size:16px}body[data-ui-scale="large"] .rlHotkeyText{font-size:13px}
+    body[data-ui-scale="tv-legacy"] .rlMenuPanelCard{width:min(1500px,94vw)}body[data-ui-scale="tv-legacy"] .rlSettingsCard{width:min(980px,92vw)}body[data-ui-scale="tv-legacy"] .rlPanelHead{padding:24px 28px}body[data-ui-scale="tv-legacy"] .rlPanelHead h2{font-size:36px}body[data-ui-scale="tv-legacy"] .rlPanelBack{height:46px;font-size:14px}body[data-ui-scale="tv-legacy"] .rlPanelBody{padding:24px 28px;max-height:calc(92vh - 95px)}body[data-ui-scale="tv-legacy"] .rlSectionTitle{font-size:15px}body[data-ui-scale="tv-legacy"] .rlHotkeys{gap:10px 16px}body[data-ui-scale="tv-legacy"] .rlHotkeyRow{grid-template-columns:120px 1fr;min-height:50px}body[data-ui-scale="tv-legacy"] .rlKey{min-width:38px;height:32px;font-size:13px}body[data-ui-scale="tv-legacy"] .rlHotkeyText{font-size:16px}body[data-ui-scale="tv-legacy"] .rlCodexTab,body[data-ui-scale="tv-legacy"] .rlCodexSearch{height:48px;font-size:14px}body[data-ui-scale="tv-legacy"] .rlCodexContent{font-size:15px}body[data-ui-scale="tv-legacy"] .rlCodexTitle h3{font-size:20px}body[data-ui-scale="tv-legacy"] .rlCodexTitle small{font-size:11px}body[data-ui-scale="tv-legacy"] .rlCodexIcon{width:58px;height:58px;font-size:32px}body[data-ui-scale="tv-legacy"] .rlCodexCardHead{min-height:70px;padding:10px 13px}body[data-ui-scale="tv-legacy"] .rlChip{font-size:11px;min-height:27px}body[data-ui-scale="tv-legacy"] .rlStat span{font-size:10px}body[data-ui-scale="tv-legacy"] .rlStat b{font-size:14px}body[data-ui-scale="tv-legacy"] .rlUpgradeBlock>strong{font-size:13px}body[data-ui-scale="tv-legacy"] .rlUpgradeStep,body[data-ui-scale="tv-legacy"] .rlBranch{font-size:13px}
+    @media(max-width:1000px){.rlCodexGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.rlHotkeys{grid-template-columns:1fr}.rlCodexTools{grid-template-columns:1fr}}
+    @media(max-width:650px){.rlCodexGrid{grid-template-columns:1fr}.rlMenuPanel{padding:8px}.rlPanelBody{padding:12px}.rlPanelHead{padding:13px}.rlSettingsCard .uiScaleControl{grid-template-columns:1fr!important}.rlHotkeyRow{grid-template-columns:78px 1fr}}

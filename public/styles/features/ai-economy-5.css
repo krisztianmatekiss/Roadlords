@@ -1,0 +1,3 @@
+
+.citygrid{grid-template-columns:repeat(10,1fr)!important;grid-template-rows:repeat(10,1fr)!important}
+.warModeControls{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0;padding:8px;border:1px solid #4b6452;border-radius:7px;background:#0d1712}.warModeControls button{min-height:42px;border:1px solid #506858;border-radius:5px;background:#17251d;color:#ddd5bb;padding:5px 3px;font-size:8px;font-weight:900}.warModeControls button.active{background:#604a25;border-color:#f0c665;color:#fff0b8}.warModeControls button:disabled{opacity:.6}.warModeInfo{grid-column:1/-1;color:#b9c7bd;font-size:8px;line-height:1.35;text-align:center}.savedUnitMark{font:900 12px sans-serif}

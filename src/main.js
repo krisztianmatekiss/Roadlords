@@ -1,0 +1,12 @@
+import './styles/application.css';
+import Peer from 'peerjs';
+import { applyAppIdentity } from './config/app.js';
+import { createGame } from './core/create-game.js';
+import { installApplicationShell } from './ui/application-shell.js';
+import { initializeVersionAndScaling } from './ui/version-and-scaling.js';
+window.Peer = Peer;
+const game = createGame();
+installApplicationShell();
+initializeVersionAndScaling();
+applyAppIdentity();
+window.__ROADLORDS_RUNTIME__ = game;

@@ -1,0 +1,46 @@
+
+    /* v4.9.50 óta a topbar két közvetlen gyereke: .topLeftCluster + .run.
+       A v4.9.63 responsive patch tévesen újra három grid oszlopot kényszerített rá,
+       ezért a teljes bal HUD 220px-be szorult és levágódott. */
+    .topbar{
+      grid-template-columns:minmax(0,1fr) auto!important;
+      gap:clamp(8px,.55vw,16px)!important;
+    }
+    .topLeftCluster{
+      min-width:0!important;
+      overflow:visible!important;
+    }
+
+    @media(max-width:1450px){
+      .topbar{
+        grid-template-columns:minmax(0,1fr) auto!important;
+        gap:7px!important;
+        padding-inline:8px!important;
+      }
+      .topLeftCluster{gap:6px!important;overflow:visible!important}
+      .topLeftCluster .resources{
+        min-width:0!important;
+        width:auto!important;
+        max-width:none!important;
+        grid-template-columns:repeat(3,minmax(112px,138px))!important;
+        gap:5px!important;
+      }
+      .topLeftCluster .res{
+        min-width:0!important;
+        padding:4px 6px!important;
+        gap:5px!important;
+      }
+      .topLeftCluster .res .ri,
+      .topLeftCluster .res .ri .resourceIcon{width:30px!important;height:30px!important}
+      .topLeftCluster .res b,.topLeftCluster .res small{font-size:11px!important}
+      .topLeftCluster .res small{gap:5px!important}
+      .unitProductionHud{max-width:min(22vw,280px)!important}
+    }
+
+    @media(max-width:1220px){
+      .topLeftCluster .brand h1{font-size:14px!important}
+      .topLeftCluster .brand{gap:6px!important}
+      .topLeftCluster .crest{width:34px!important;height:40px!important;font-size:22px!important}
+      .topLeftCluster .resources{grid-template-columns:repeat(3,minmax(102px,118px))!important}
+      .unitProductionHud{max-width:190px!important}
+    }

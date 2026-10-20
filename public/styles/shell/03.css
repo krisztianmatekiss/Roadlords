@@ -1,0 +1,199 @@
+
+    /* Three explicit readability presets. Normal deliberately leaves the old geometry alone. */
+    .uiScaleControl{display:grid;grid-template-columns:auto repeat(3,1fr);gap:6px;align-items:center;margin-top:8px;padding:8px;border:1px solid #5b695c;border-radius:10px;background:#0b130ee8;box-shadow:inset 0 1px #ffffff0c}
+    .uiScaleControl>span{padding:0 5px;color:#cabf9f;font:900 9px/1 Inter,Segoe UI,Arial,sans-serif;letter-spacing:.11em;white-space:nowrap}
+    .uiScaleBtn{min-height:32px;border:1px solid #526557;border-radius:7px;background:#16241c;color:#d7ddcf;font:900 9px/1 Inter,Segoe UI,Arial,sans-serif;cursor:pointer}
+    .uiScaleBtn:hover{border-color:#d6b85f;color:#ffe9a4}.uiScaleBtn.active{border-color:#e7c765;background:#493d21;color:#fff0b3;box-shadow:inset 0 0 0 1px #e7c76544}
+
+    /* LARGE: readable on desktop / 1080p television without changing the overall game footprint much. */
+    body[data-ui-scale="large"] .res b{font-size:15px!important}
+    body[data-ui-scale="large"] .res small{font-size:13px!important}
+    body[data-ui-scale="large"] .run small{font-size:9px!important}
+    body[data-ui-scale="large"] .run b{font-size:15px!important}
+    body[data-ui-scale="large"] .btn{font-size:15px!important}
+    body[data-ui-scale="large"] .unitProdChip b{font-size:12px!important}
+    body[data-ui-scale="large"] .cityhp{font-size:15px!important}
+    body[data-ui-scale="large"] .cityarmy>b,body[data-ui-scale="large"] .cityfoot>.stack b,body[data-ui-scale="large"] .enemyfoot>.stack b{font-size:17px!important}
+    body[data-ui-scale="large"] .unitchip b{font-size:13px!important}
+    body[data-ui-scale="large"] .tab{font-size:11px!important}
+    body[data-ui-scale="large"] .buildcard .cardname{font-size:16px!important}
+    body[data-ui-scale="large"] .buildcard .carddesc{font-size:12px!important;line-height:1.22!important}
+    body[data-ui-scale="large"] .buildcard .cardunit{font-size:10px!important}
+    body[data-ui-scale="large"] .buildcard .cardunit b{font-size:12px!important}
+    body[data-ui-scale="large"] .buildcard .cardunit .utime{font-size:11px!important}
+    body[data-ui-scale="large"] .buildcard .cardunit .ucost{font-size:9px!important}
+    body[data-ui-scale="large"] .buildcard .cardcosts{font-size:13px!important}
+    body[data-ui-scale="large"] .placementhint{font-size:12px!important}
+    body[data-ui-scale="large"] .visualHintsToggle .toggleLabel{font-size:10px!important}
+
+    body[data-ui-scale="large"] #choiceOverlay .modal{width:min(1440px,96vw)!important;max-height:calc(100vh - 105px)!important}
+    body[data-ui-scale="large"] #choiceOverlay .choicehead small{font-size:10px!important}
+    body[data-ui-scale="large"] #choiceOverlay .choicehead h2{font-size:27px!important}
+    body[data-ui-scale="large"] #choiceOverlay .choicehead p{font-size:13px!important}
+    body[data-ui-scale="large"] #choiceList{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
+    body[data-ui-scale="large"] #choiceList.five{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+    body[data-ui-scale="large"] #choiceList.six{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+    body[data-ui-scale="large"] #choiceList .choice.gamecard{height:360px!important;min-height:360px!important;grid-template-rows:22px 38px 135px minmax(0,1fr) 34px!important;padding:10px 11px!important}
+    body[data-ui-scale="large"] #choiceList.six .choice.gamecard{height:330px!important;min-height:330px!important}
+    body[data-ui-scale="large"] #choiceList .choice .ctype{font-size:9px!important;line-height:21px!important}
+    body[data-ui-scale="large"] #choiceList .choice h3{font-size:19px!important;line-height:36px!important}
+    body[data-ui-scale="large"] #choiceList .choice .choiceArt.card-media{height:135px!important;min-height:135px!important;max-height:135px!important}
+    body[data-ui-scale="large"] #choiceList .choiceBody p{font-size:13px!important;line-height:1.35!important}
+    body[data-ui-scale="large"] #choiceList .choiceBody .choicemeta{font-size:11px!important;line-height:1.4!important}
+    body[data-ui-scale="large"] #choiceList .choiceFooter{font-size:13px!important}
+    body[data-ui-scale="large"] .choiceTool{font-size:11px!important;height:40px!important}
+    body[data-ui-scale="large"] .choiceTokens,body[data-ui-scale="large"] .choiceBanHint{font-size:11px!important}
+    body[data-ui-scale="large"] .choiceMinimize{font-size:11px!important;height:34px!important}
+
+    body[data-ui-scale="large"] .buildingInspectorWindow{width:min(410px,calc(100vw - 20px))!important}
+    body[data-ui-scale="large"] .inspectorCard .ihead h3{font-size:21px!important}
+    body[data-ui-scale="large"] .inspectorCard .ihead small{font-size:10px!important}
+    body[data-ui-scale="large"] .inspectorCard .idesc{font-size:11.5px!important}
+    body[data-ui-scale="large"] .inspectorCard .istat{font-size:11px!important}
+    body[data-ui-scale="large"] .inspectorCard .upgradeNote{font-size:10px!important}
+    body[data-ui-scale="large"] .warModeTitle,body[data-ui-scale="large"] .warModeStat,body[data-ui-scale="large"] .marketRoute select,body[data-ui-scale="large"] .rallyControls button{font-size:10px!important}
+
+    /* TV: high-resolution / couch-distance mode. Geometry grows with text, avoiding browser-zoom clipping. */
+    body[data-ui-scale="tv-legacy"] #app{grid-template-rows:150px minmax(0,1fr) 380px!important}
+    body[data-ui-scale="tv-legacy"] .topbar{padding:13px 22px!important;gap:18px!important}
+    body[data-ui-scale="tv-legacy"] .topLeftCluster{gap:16px!important;overflow:visible!important}
+    body[data-ui-scale="tv-legacy"] .brand{gap:12px!important}
+    body[data-ui-scale="tv-legacy"] .crest{width:70px!important;height:82px!important;font-size:45px!important}
+    body[data-ui-scale="tv-legacy"] .brand h1{font-size:31px!important}
+    body[data-ui-scale="tv-legacy"] .brand small{font-size:13px!important}
+    body[data-ui-scale="tv-legacy"] .topLeftCluster .resources{grid-template-columns:repeat(3,220px)!important;gap:10px!important}
+    body[data-ui-scale="tv-legacy"] .topLeftCluster .res{min-height:78px!important;padding:9px 12px!important;gap:10px!important}
+    body[data-ui-scale="tv-legacy"] .topLeftCluster .res .ri,body[data-ui-scale="tv-legacy"] .topLeftCluster .res .ri .resourceIcon{width:54px!important;height:54px!important}
+    body[data-ui-scale="tv-legacy"] .res b{font-size:25px!important;line-height:1.05!important}
+    body[data-ui-scale="tv-legacy"] .res small{font-size:19px!important;gap:12px!important}
+    body[data-ui-scale="tv-legacy"] .unitProductionHud{gap:10px!important;padding-left:15px!important;overflow:visible!important}
+    body[data-ui-scale="tv-legacy"] .unitProductionLabel{font-size:13px!important}
+    body[data-ui-scale="tv-legacy"] .unitProductionList{gap:10px!important;overflow:visible!important}
+    body[data-ui-scale="tv-legacy"] .unitProdChip{height:64px!important;padding:4px 13px 4px 5px!important;gap:7px!important}
+    body[data-ui-scale="tv-legacy"] .unitProdChip .prodPortrait{width:52px!important;height:52px!important}
+    body[data-ui-scale="tv-legacy"] .unitProdChip b{font-size:20px!important}
+    body[data-ui-scale="tv-legacy"] .unitProductionEmpty{font-size:18px!important}
+    body[data-ui-scale="tv-legacy"] .run{gap:12px!important}
+    body[data-ui-scale="tv-legacy"] .run .datum{padding:0 14px!important}
+    body[data-ui-scale="tv-legacy"] .run small{font-size:14px!important}
+    body[data-ui-scale="tv-legacy"] .run b{font-size:25px!important}
+    body[data-ui-scale="tv-legacy"] .btn{height:62px!important;min-width:66px!important;font-size:24px!important}
+    body[data-ui-scale="tv-legacy"] .dynamicPickChip{height:52px!important;min-width:64px!important;font-size:18px!important;padding-inline:11px!important}
+    body[data-ui-scale="tv-legacy"] .dynamicPickChip .pickIcon{font-size:22px!important}
+
+    body[data-ui-scale="tv-legacy"] .cityzone{grid-template-rows:112px auto 106px!important}
+    body[data-ui-scale="tv-legacy"] .cityhp{font-size:24px!important;padding:7px 13px!important}
+    body[data-ui-scale="tv-legacy"] .cityhead>.cityarmy,body[data-ui-scale="tv-legacy"] .cityhead.enemy>.cityarmy,body[data-ui-scale="tv-legacy"] .cityfoot,body[data-ui-scale="tv-legacy"] .enemyfoot{grid-template-columns:78px minmax(0,1fr)!important;gap:12px!important}
+    body[data-ui-scale="tv-legacy"] .cityarmy>b,body[data-ui-scale="tv-legacy"] .cityfoot>.stack b,body[data-ui-scale="tv-legacy"] .enemyfoot>.stack b{font-size:24px!important}
+    body[data-ui-scale="tv-legacy"] .unitmix{gap:10px!important;min-height:68px!important}
+    body[data-ui-scale="tv-legacy"] .unitchip{width:62px!important;height:62px!important}
+    body[data-ui-scale="tv-legacy"] .unitchip b{min-width:32px!important;height:32px!important;font-size:18px!important}
+    body[data-ui-scale="tv-legacy"] .gate .gateModeIcon{width:44px!important;height:44px!important;font-size:27px!important}
+    body[data-ui-scale="tv-legacy"] .gate .gateLabel{font-size:13px!important}
+    body[data-ui-scale="tv-legacy"] .levelStars{font-size:19px!important}
+    body[data-ui-scale="tv-legacy"] .buffBadge{min-width:30px!important;height:30px!important;font-size:16px!important}
+    body[data-ui-scale="tv-legacy"] section.cityzone .cityfoot>button.visualHintsToggle{height:48px!important;padding:0 14px!important;gap:8px!important}
+    body[data-ui-scale="tv-legacy"] .visualHintsToggle .toggleMark{font-size:23px!important}
+    body[data-ui-scale="tv-legacy"] .visualHintsToggle .toggleLabel{font-size:16px!important}
+
+    body[data-ui-scale="tv-legacy"] .catalog{grid-template-columns:160px minmax(0,1fr)!important;padding:10px 12px!important;gap:0 12px!important}
+    body[data-ui-scale="tv-legacy"] .tabs{gap:8px!important}
+    body[data-ui-scale="tv-legacy"] .tab{min-height:62px!important;padding:0 15px!important;font-size:18px!important;border-radius:10px!important}
+    body[data-ui-scale="tv-legacy"] .buildnav{padding:0 54px!important}
+    body[data-ui-scale="tv-legacy"] .scrollbtn{width:42px!important;height:110px!important;font-size:36px!important}
+    body[data-ui-scale="tv-legacy"] .buildlist{gap:13px!important}
+    body[data-ui-scale="tv-legacy"] .buildcard{flex-basis:390px!important;height:350px!important;padding:7px 12px 9px!important;grid-template-rows:42px 138px 121px 38px!important;border-radius:13px!important}
+    body[data-ui-scale="tv-legacy"] .buildcard .cardname{font-size:28px!important;line-height:40px!important}
+    body[data-ui-scale="tv-legacy"] .buildcard .cardart.card-media{width:360px!important;height:138px!important;min-width:360px!important;min-height:138px!important;max-width:360px!important;max-height:138px!important;padding:4px 8px!important}
+    body[data-ui-scale="tv-legacy"] .buildcard .cardinfo{padding:8px 5px 4px!important}
+    body[data-ui-scale="tv-legacy"] .buildcard .carddesc{font-size:22px!important;line-height:1.24!important;-webkit-line-clamp:4!important}
+    body[data-ui-scale="tv-legacy"] .buildcard .cardunit{padding:7px 9px!important;gap:4px 8px!important;font-size:19px!important}
+    body[data-ui-scale="tv-legacy"] .buildcard .cardunit b{font-size:22px!important}
+    body[data-ui-scale="tv-legacy"] .buildcard .cardunit .utime{font-size:20px!important}
+    body[data-ui-scale="tv-legacy"] .buildcard .cardunit .ucost{font-size:17px!important}
+    body[data-ui-scale="tv-legacy"] .buildcard .cardunit .ucost .unitresources{font-size:19px!important}
+    body[data-ui-scale="tv-legacy"] .buildcard .cardcosts{height:38px!important;padding-top:7px!important;font-size:23px!important}
+    body[data-ui-scale="tv-legacy"] .buildcard .cardcosts .costIcon{width:22px!important;height:22px!important}
+    body[data-ui-scale="tv-legacy"] .buildcard .uniquechip{top:44px!important;font-size:13px!important;padding:3px 7px!important}
+    body[data-ui-scale="tv-legacy"] .placementhint{font-size:18px!important;padding:9px 20px!important;bottom:10px!important}
+    body[data-ui-scale="tv-legacy"] .placementRotate{font-size:17px!important;padding:8px 13px!important}
+
+    body[data-ui-scale="tv-legacy"] #choiceOverlay{padding:170px 24px 22px!important}
+    body[data-ui-scale="tv-legacy"] #choiceOverlay .modal{width:min(3200px,95vw)!important;max-width:95vw!important;max-height:calc(100vh - 180px)!important;padding:22px 28px 20px!important;border-radius:18px!important;overflow:auto!important}
+    body[data-ui-scale="tv-legacy"] #choiceOverlay .choicehead{margin-bottom:16px!important;padding-right:150px!important}
+    body[data-ui-scale="tv-legacy"] #choiceOverlay .choicehead small{font-size:17px!important}
+    body[data-ui-scale="tv-legacy"] #choiceOverlay .choicehead h2{font-size:44px!important;margin:5px 0!important}
+    body[data-ui-scale="tv-legacy"] #choiceOverlay .choicehead p{font-size:24px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:22px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList.five{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:17px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList.six{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:18px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choice.gamecard{height:690px!important;min-height:690px!important;grid-template-rows:35px 58px 285px minmax(0,1fr) 52px!important;padding:15px 17px 14px!important;border-radius:16px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList.five .choice.gamecard{height:640px!important;min-height:640px!important;grid-template-rows:32px 52px 245px minmax(0,1fr) 48px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList.six .choice.gamecard{height:560px!important;min-height:560px!important;grid-template-rows:30px 48px 205px minmax(0,1fr) 44px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choice .ctype{font-size:16px!important;line-height:32px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choice h3{font-size:34px!important;line-height:54px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choice .choiceArt.card-media{height:285px!important;min-height:285px!important;max-height:285px!important;padding:8px 10px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList.five .choice .choiceArt.card-media{height:245px!important;min-height:245px!important;max-height:245px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList.six .choice .choiceArt.card-media{height:205px!important;min-height:205px!important;max-height:205px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choiceBody{padding:14px 7px 9px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choiceBody p{font-size:27px!important;line-height:1.38!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choiceBody .choicemeta{font-size:22px!important;line-height:1.42!important;margin-top:10px!important;padding-top:10px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choiceFooter{font-size:25px!important;padding-top:10px!important}
+    body[data-ui-scale="tv-legacy"] #choiceOverlay .choiceTools{margin-top:15px!important;padding-top:14px!important;gap:12px!important}
+    body[data-ui-scale="tv-legacy"] .choiceTool{height:58px!important;padding:0 19px!important;font-size:18px!important;border-radius:10px!important}
+    body[data-ui-scale="tv-legacy"] .choiceTokens{font-size:18px!important}
+    body[data-ui-scale="tv-legacy"] .choiceBanHint{font-size:17px!important;min-height:22px!important}
+    body[data-ui-scale="tv-legacy"] .choiceMinimize{right:25px!important;top:22px!important;height:50px!important;padding:0 16px!important;font-size:17px!important}
+    body[data-ui-scale="tv-legacy"] .pickReminder{height:58px!important;padding:0 24px!important;font-size:18px!important}
+
+    body[data-ui-scale="tv-legacy"] .buildingInspectorWindow{width:min(560px,calc(100vw - 28px))!important;border-radius:16px!important}
+    body[data-ui-scale="tv-legacy"] .buildingInspectorWindow .inspectorCard,body[data-ui-scale="tv-legacy"] .inspectorCard{max-height:min(840px,calc(100vh - 170px))!important;padding:18px!important}
+    body[data-ui-scale="tv-legacy"] .inspectorCard .ihead h3{font-size:30px!important}
+    body[data-ui-scale="tv-legacy"] .inspectorCard .ihead small{font-size:16px!important}
+    body[data-ui-scale="tv-legacy"] .inspectorCard .idesc{font-size:18px!important;line-height:1.48!important}
+    body[data-ui-scale="tv-legacy"] .inspectorCard .istat{font-size:17px!important;margin:7px 0!important}
+    body[data-ui-scale="tv-legacy"] .boxlabel{font-size:14px!important}
+    body[data-ui-scale="tv-legacy"] .spawnCompact{grid-template-columns:150px minmax(0,1fr)!important;gap:13px!important;padding:12px!important}
+    body[data-ui-scale="tv-legacy"] .unitPortraitFrame{width:150px!important;height:190px!important}
+    body[data-ui-scale="tv-legacy"] .unitTitle b{font-size:22px!important}.unitTitle span{font-size:14px!important}
+    body[data-ui-scale="tv-legacy"] .spawnCompact .unitstat span{font-size:12px!important}.spawnCompact .unitstat b{font-size:17px!important}
+    body[data-ui-scale="tv-legacy"] .spawnCosts,body[data-ui-scale="tv-legacy"] .unitcostrow{font-size:15px!important}
+    body[data-ui-scale="tv-legacy"] .inspectorCard .upgradeNote{font-size:16px!important;line-height:1.45!important;padding:11px!important}
+    body[data-ui-scale="tv-legacy"] .inspectorCard .iactions button{font-size:16px!important;min-height:46px!important}
+    body[data-ui-scale="tv-legacy"] .multiInspectorButtons button{width:42px!important;height:42px!important;font-size:18px!important}
+    body[data-ui-scale="tv-legacy"] #inspector.show.warcenterWide{width:760px!important}
+    body[data-ui-scale="tv-legacy"] .warModeControls{gap:12px!important;padding:13px!important}
+    body[data-ui-scale="tv-legacy"] .warModeCard{gap:10px!important;padding:12px!important}
+    body[data-ui-scale="tv-legacy"] .warModeTitle{font-size:15px!important}
+    body[data-ui-scale="tv-legacy"] .warModeStat{font-size:14px!important;padding:7px 8px!important}
+    body[data-ui-scale="tv-legacy"] .warModeLegend{font-size:13px!important}
+    body[data-ui-scale="tv-legacy"] .marketControls,body[data-ui-scale="tv-legacy"] .rallyControls{gap:10px!important;padding:12px!important}
+    body[data-ui-scale="tv-legacy"] .marketRoute select{padding:9px!important;font-size:16px!important}
+    body[data-ui-scale="tv-legacy"] .rallyControls button{padding:10px!important;font-size:15px!important}
+
+    body[data-ui-scale="tv-legacy"] .terrainTooltip{min-width:360px!important;max-width:470px!important;padding:15px 17px!important}
+    body[data-ui-scale="tv-legacy"] .terrainTooltip .ttTitle{font-size:23px!important}
+    body[data-ui-scale="tv-legacy"] .terrainTooltip .ttDesc{font-size:18px!important;line-height:1.42!important}
+    body[data-ui-scale="tv-legacy"] .terrainTooltip .ttCost{font-size:16px!important}
+    body[data-ui-scale="tv-legacy"] .relicitem{font-size:17px!important;padding:14px!important}.relicitem b{font-size:20px!important}
+    body[data-ui-scale="tv-legacy"] .ledgerhead h2{font-size:34px!important}.ledgerhead .close{width:48px!important;height:44px!important;font-size:20px!important}
+    body[data-ui-scale="tv-legacy"] .end{width:min(700px,90vw)!important}.end .big{font-size:80px!important}.end h2{font-size:42px!important}.end p{font-size:20px!important}.end button{height:56px!important;font-size:18px!important}
+    body[data-ui-scale="tv-legacy"] .toast{font-size:17px!important;padding:10px 17px!important}
+
+    body[data-ui-scale="tv-legacy"] .pregameSetup{grid-template-columns:128px 150px 128px!important;gap:13px 22px!important}
+    body[data-ui-scale="tv-legacy"] .pregameBtn{width:128px!important;height:128px!important;font-size:54px!important}
+    body[data-ui-scale="tv-legacy"] .pregameBtn.ready{width:150px!important;height:150px!important;font-size:68px!important}
+    body[data-ui-scale="tv-legacy"] .pregameSideLabel,body[data-ui-scale="tv-legacy"] .pregameReadyText{font-size:16px!important;padding:7px 12px!important}
+    body[data-ui-scale="tv-legacy"] .pregameReadyText{min-width:430px!important}
+
+    /* Prevent TV geometry from leaking onto narrow viewports even when a stale saved setting exists. */
+    @media(max-width:1599px){
+      body[data-ui-scale="tv-legacy"] #app{grid-template-rows:64px minmax(0,1fr) 160px!important}
+      body[data-ui-scale="tv-legacy"] .topLeftCluster .resources{grid-template-columns:repeat(3,minmax(102px,118px))!important}
+      body[data-ui-scale="tv-legacy"] .catalog{grid-template-columns:100px minmax(0,1fr)!important}
+      body[data-ui-scale="tv-legacy"] .buildcard{flex-basis:160px!important;height:132px!important;grid-template-rows:21px 55px 31px 20px!important;padding:3px 6px 4px!important}
+      body[data-ui-scale="tv-legacy"] .buildcard .cardart.card-media{width:144px!important;height:55px!important;min-width:144px!important;min-height:55px!important;max-width:144px!important;max-height:55px!important}
+      body[data-ui-scale="tv-legacy"] .buildcard .cardname{font-size:13px!important;line-height:20px!important}
+      body[data-ui-scale="tv-legacy"] .buildcard .carddesc{font-size:9.5px!important;-webkit-line-clamp:2!important}
+      body[data-ui-scale="tv-legacy"] .buildcard .cardcosts{height:20px!important;font-size:11.5px!important}
+    }

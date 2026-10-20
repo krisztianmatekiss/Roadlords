@@ -1,0 +1,920 @@
+[
+  {
+    "path": "art/image-b71ccef7ff5faaa4.png",
+    "type": "image/png",
+    "bytes": 51093,
+    "sha256": "b71ccef7ff5faaa47a071005f64c8c271b4f7dc2acaa36cbd0c932e2677f239f"
+  },
+  {
+    "path": "art/image-5b10423e3db1e02b.png",
+    "type": "image/png",
+    "bytes": 48845,
+    "sha256": "5b10423e3db1e02b0e4936bca106d8d7b56edccbbcbad4bb5d43494fe57fbb7d"
+  },
+  {
+    "path": "art/image-0076e8e02d788b14.png",
+    "type": "image/png",
+    "bytes": 82224,
+    "sha256": "0076e8e02d788b14dc077a076686e285ebf0bc2384ff33da3c14d53d91a2dc24"
+  },
+  {
+    "path": "art/image-49fc94f89991296a.png",
+    "type": "image/png",
+    "bytes": 70724,
+    "sha256": "49fc94f89991296ad5c411bedbc005cb53e69a8a122c56b5112ec639ace4b1e7"
+  },
+  {
+    "path": "art/image-376d74c4008e862a.png",
+    "type": "image/png",
+    "bytes": 72762,
+    "sha256": "376d74c4008e862a666f037752844e579ef786609b35cc5d79a6d273ac3c8319"
+  },
+  {
+    "path": "art/image-ae663196885306da.png",
+    "type": "image/png",
+    "bytes": 61427,
+    "sha256": "ae663196885306dae50a9c617fc8405f363dc5b1b5d77c8f390b40ee98ce2d1a"
+  },
+  {
+    "path": "art/keep-688ac739acd5cd5c.webp",
+    "type": "image/webp",
+    "bytes": 50294,
+    "sha256": "688ac739acd5cd5c2ac5333a1c60536df5c6bebbeb79f43d5dbccf3a4eb0df87"
+  },
+  {
+    "path": "art/lumber-90d246fca28fb280.webp",
+    "type": "image/webp",
+    "bytes": 19398,
+    "sha256": "90d246fca28fb280fd7700861194d1cf6546b6a3d10d6569f6fd8f7d2dee09fa"
+  },
+  {
+    "path": "art/stonecutter-60bcd5d7cb194c60.webp",
+    "type": "image/webp",
+    "bytes": 20590,
+    "sha256": "60bcd5d7cb194c60ea0728a9304993d78187042f6d37d67c062efb21f15c35b2"
+  },
+  {
+    "path": "art/farm-1eadeee926b51a38.webp",
+    "type": "image/webp",
+    "bytes": 19278,
+    "sha256": "1eadeee926b51a386642a8d4a135f5a3b17d6b8c9cd240ee93b337fe23f9c71a"
+  },
+  {
+    "path": "art/warehouse-c558a5904fa726f4.webp",
+    "type": "image/webp",
+    "bytes": 28130,
+    "sha256": "c558a5904fa726f4fc4b31a43627dd13962a26b1ad5e0f3ef356d4cf899f07e0"
+  },
+  {
+    "path": "art/barracks-20cab4b83fe32aa1.webp",
+    "type": "image/webp",
+    "bytes": 19128,
+    "sha256": "20cab4b83fe32aa15946c48ea776212849c3121e12ab59674cf44a408e463830"
+  },
+  {
+    "path": "art/archery-af90d3264469201a.webp",
+    "type": "image/webp",
+    "bytes": 19758,
+    "sha256": "af90d3264469201ac5a6609009c3fa1ad285d9b4a75a30cbdb0eb15936882c99"
+  },
+  {
+    "path": "art/spearhall-6c71c73a2ac97765.webp",
+    "type": "image/webp",
+    "bytes": 18544,
+    "sha256": "6c71c73a2ac977657a0e81739d0468906c44713b488288299d99ff2e3ecdfdbe"
+  },
+  {
+    "path": "art/stable-bd96c8f9114b93da.webp",
+    "type": "image/webp",
+    "bytes": 25398,
+    "sha256": "bd96c8f9114b93daaf5f25445c033e150688e50a3fc354e26a6c0d6a2be51467"
+  },
+  {
+    "path": "art/temple-14bde3c21208a99e.webp",
+    "type": "image/webp",
+    "bytes": 22022,
+    "sha256": "14bde3c21208a99e00c6bf0e34378fe52ae1def1a7885e5381e002b226b30163"
+  },
+  {
+    "path": "art/siegeworks-7e91cb77b7a13e03.webp",
+    "type": "image/webp",
+    "bytes": 34992,
+    "sha256": "7e91cb77b7a13e03e48c2d7f45fbfa9ac911f0bb93a702d4cac6c8f9ba894475"
+  },
+  {
+    "path": "art/magetower-44fc7af2157df867.webp",
+    "type": "image/webp",
+    "bytes": 58956,
+    "sha256": "44fc7af2157df867e1027b8dee6bf24c5209154a707ae92454e1cc8262b4b0af"
+  },
+  {
+    "path": "art/guildhouse-635f19b0f22f04d1.webp",
+    "type": "image/webp",
+    "bytes": 25026,
+    "sha256": "635f19b0f22f04d1193cc51cf84e34277665f0eb75018b6a959d6e6a80b85c05"
+  },
+  {
+    "path": "art/market-b089a1a805d085f7.webp",
+    "type": "image/webp",
+    "bytes": 54016,
+    "sha256": "b089a1a805d085f77070d6aebf7fe9059d47ce1b17674c31e922071b53dd885b"
+  },
+  {
+    "path": "art/builders-39fe4d0d95c88b81.webp",
+    "type": "image/webp",
+    "bytes": 23072,
+    "sha256": "39fe4d0d95c88b815b43dd9f24ee1b22333c5724850e255d716650a05e1c13cf"
+  },
+  {
+    "path": "art/townhall-edb44ed6eeef124a.webp",
+    "type": "image/webp",
+    "bytes": 52452,
+    "sha256": "edb44ed6eeef124a4cba6224387555021a8dccc4358e3e45440bbc666650a3af"
+  },
+  {
+    "path": "art/rally-be075aced5916476.webp",
+    "type": "image/webp",
+    "bytes": 58794,
+    "sha256": "be075aced5916476254f8b555064ef01c083571b35f559e305bda20e6b1a383f"
+  },
+  {
+    "path": "art/tavern-be24e4bd68488a39.webp",
+    "type": "image/webp",
+    "bytes": 18542,
+    "sha256": "be24e4bd68488a398e4c88768dcd982db07aad100b3c1f8b47c079ee1f5a34c6"
+  },
+  {
+    "path": "art/guardhouse-74512351d756dc3b.webp",
+    "type": "image/webp",
+    "bytes": 16974,
+    "sha256": "74512351d756dc3b0ea10fe9d58f0ba91104e8a97b5bade230b4e22bc9948090"
+  },
+  {
+    "path": "art/archery-d15cf851931ac727.webp",
+    "type": "image/webp",
+    "bytes": 46474,
+    "sha256": "d15cf851931ac72711c836e38cf4b4036d49a162ddab12e1b0dc3735954594d3"
+  },
+  {
+    "path": "art/barracks-b922ccf140db8121.webp",
+    "type": "image/webp",
+    "bytes": 42898,
+    "sha256": "b922ccf140db8121deeb8ac9cee4195be8f0e6cc70c297f3947aa086dfca7e03"
+  },
+  {
+    "path": "art/builders-681805cff2e9c343.webp",
+    "type": "image/webp",
+    "bytes": 32408,
+    "sha256": "681805cff2e9c3436e1363cf1775529c17d27fa418f067fb1b1b9151351d2969"
+  },
+  {
+    "path": "art/farm-0abfde4479b31093.webp",
+    "type": "image/webp",
+    "bytes": 45242,
+    "sha256": "0abfde4479b31093768a0cfce24a568d469b74aa12990499242da6ab584d091c"
+  },
+  {
+    "path": "art/guardhouse-fee8d4902a11c49c.webp",
+    "type": "image/webp",
+    "bytes": 37684,
+    "sha256": "fee8d4902a11c49c89d77c57c92774e3a3bf16fbad08d3ad55d94f51d167e93e"
+  },
+  {
+    "path": "art/guildhouse-b2308240feca0d06.webp",
+    "type": "image/webp",
+    "bytes": 35560,
+    "sha256": "b2308240feca0d0632f835fa79c5e2f1c97240dd335e87bb1da2404090eed7c9"
+  },
+  {
+    "path": "art/keep-26379677c50b344b.webp",
+    "type": "image/webp",
+    "bytes": 47068,
+    "sha256": "26379677c50b344b1540986d3c3daac51aa93183598d5d5c317f2c9f43d6fd73"
+  },
+  {
+    "path": "art/lumber-d0e8ff55376b041b.webp",
+    "type": "image/webp",
+    "bytes": 40788,
+    "sha256": "d0e8ff55376b041b6c54ddff24684f5e8fe7f54ca00d5421e6e8fabd58fa88ab"
+  },
+  {
+    "path": "art/magetower-8aa7b9568deb62d7.webp",
+    "type": "image/webp",
+    "bytes": 37596,
+    "sha256": "8aa7b9568deb62d7f02805193ac8a5b0a23aa51154d967f9df8c257d3b2fc71d"
+  },
+  {
+    "path": "art/market-d92481564fd64957.webp",
+    "type": "image/webp",
+    "bytes": 41604,
+    "sha256": "d92481564fd649578671979020e1675ad7e077a304455fb58aa56b3f86137169"
+  },
+  {
+    "path": "art/rally-67ebd43145075f0c.webp",
+    "type": "image/webp",
+    "bytes": 46560,
+    "sha256": "67ebd43145075f0cc1fd66be9137bb7b685bb0776dc31a7cd36b2b01cb2d5234"
+  },
+  {
+    "path": "art/siegeworks-33f652b96ea25000.webp",
+    "type": "image/webp",
+    "bytes": 32512,
+    "sha256": "33f652b96ea2500081b391fb4b5b82abf489a35d7d2adef44d67de53566f51d7"
+  },
+  {
+    "path": "art/spearhall-40b4102bfe148033.webp",
+    "type": "image/webp",
+    "bytes": 39178,
+    "sha256": "40b4102bfe14803389bed707dc4b6430130c8b0674bedd8d0ea2a734b9c3f997"
+  },
+  {
+    "path": "art/stable-dec44fcaf4dc6996.webp",
+    "type": "image/webp",
+    "bytes": 33738,
+    "sha256": "dec44fcaf4dc69968d8776e04660ea4b5fdd73e1be422a4e806a60073609b227"
+  },
+  {
+    "path": "art/stonecutter-28978b28e5f1fecc.webp",
+    "type": "image/webp",
+    "bytes": 38978,
+    "sha256": "28978b28e5f1fecc90ba8c2e04e2cd769e6f6fd98bad2ab17bd138e4bc642336"
+  },
+  {
+    "path": "art/tavern-ca8f8930257dd6e0.webp",
+    "type": "image/webp",
+    "bytes": 43874,
+    "sha256": "ca8f8930257dd6e08d2714f1544ff18ca5cf51a1f418c2b204551b8592af6c0d"
+  },
+  {
+    "path": "art/temple-b11271089405678e.webp",
+    "type": "image/webp",
+    "bytes": 33132,
+    "sha256": "b11271089405678eb0796270d2a7c0b863da9eab69e4432a435ee76025dbb869"
+  },
+  {
+    "path": "art/townhall-691f628c6e5f52c3.webp",
+    "type": "image/webp",
+    "bytes": 38904,
+    "sha256": "691f628c6e5f52c3c6a6317e2ed99804ee3789436af61ad5c81add7cd8e79128"
+  },
+  {
+    "path": "art/warcenter-e8314827cfa66f11.webp",
+    "type": "image/webp",
+    "bytes": 40132,
+    "sha256": "e8314827cfa66f11a8e9b21fe39f153dfc3d957bf6cad199cdf70fbd78f31473"
+  },
+  {
+    "path": "art/warehouse-92d2f15780abce46.webp",
+    "type": "image/webp",
+    "bytes": 35492,
+    "sha256": "92d2f15780abce4619c4599f8a30ab8dac5590cf60541fa93276b7df169d45b1"
+  },
+  {
+    "path": "art/food-5a55b60020d4aba8.webp",
+    "type": "image/webp",
+    "bytes": 6196,
+    "sha256": "5a55b60020d4aba839de09dcc22ac84d0de17169a559025d73f193647feb79eb"
+  },
+  {
+    "path": "art/stone-7b62fafa3d25f326.webp",
+    "type": "image/webp",
+    "bytes": 3770,
+    "sha256": "7b62fafa3d25f32625163ae6d696dd9e980d80b16005617842d9980353a2630f"
+  },
+  {
+    "path": "art/wood-ad426a1dcdc5e609.webp",
+    "type": "image/webp",
+    "bytes": 4472,
+    "sha256": "ad426a1dcdc5e609b53476e809db12e4c213f0f4b353984d9c510430be529176"
+  },
+  {
+    "path": "art/image-c3002f6fa54315a0.webp",
+    "type": "image/webp",
+    "bytes": 41668,
+    "sha256": "c3002f6fa54315a03bd0873f7381e8e1cb794d78e1a899a6f0c1f6c4ecb914a7"
+  },
+  {
+    "path": "art/swordsman-8aff42af8e9f60ec.webp",
+    "type": "image/webp",
+    "bytes": 34308,
+    "sha256": "8aff42af8e9f60ecb18bc0b0dc41e4e0ef3e106eb07d6441285491b8fa4ca049"
+  },
+  {
+    "path": "art/archer-bb8cbbcd0ca762ae.webp",
+    "type": "image/webp",
+    "bytes": 32160,
+    "sha256": "bb8cbbcd0ca762ae1fa6dcd1ee71009cf5fc4ae83edda5984dd5db9b48cd076a"
+  },
+  {
+    "path": "art/spearman-b5c357624432cb16.webp",
+    "type": "image/webp",
+    "bytes": 36346,
+    "sha256": "b5c357624432cb16eb44382c76fb78c3bbbd8b27c87c276e5d3de92b2ab3cef5"
+  },
+  {
+    "path": "art/knight-1b097f4bc7c4c122.webp",
+    "type": "image/webp",
+    "bytes": 40382,
+    "sha256": "1b097f4bc7c4c122c64bfb2849c6f5f051848abd698923e9577b9d7cf9f8e451"
+  },
+  {
+    "path": "art/priest-a16efae80c72b241.webp",
+    "type": "image/webp",
+    "bytes": 34584,
+    "sha256": "a16efae80c72b241167926a2fe71edfb2206f5370d1f052e908e44e18b737239"
+  },
+  {
+    "path": "art/catapult-769ae291300eb7cf.webp",
+    "type": "image/webp",
+    "bytes": 40748,
+    "sha256": "769ae291300eb7cfc34361394b3702a420d537ad81dc823055f82f9e062e969f"
+  },
+  {
+    "path": "art/mage-faaa5bfec9ce9a5c.webp",
+    "type": "image/webp",
+    "bytes": 43702,
+    "sha256": "faaa5bfec9ce9a5ca9e7cca3bb46c6c3db6ea760d088f0d701e1de66cc9c8d0b"
+  },
+  {
+    "path": "art/spawn-speed-be6ee8fdafd5a33a.webp",
+    "type": "image/webp",
+    "bytes": 62898,
+    "sha256": "be6ee8fdafd5a33a7041904d2e9ecc60e35eecd774c45256b8d50a2b3e51da97"
+  },
+  {
+    "path": "art/production-85fee95df5693b1a.webp",
+    "type": "image/webp",
+    "bytes": 71384,
+    "sha256": "85fee95df5693b1a3930ded226161c84c819843b4fc3c02e643bd020ab10e184"
+  },
+  {
+    "path": "art/all-damage-27068e568d563870.webp",
+    "type": "image/webp",
+    "bytes": 57244,
+    "sha256": "27068e568d563870911a864fcc0383e9835f66d6a8ca6a0d619775def76b99e9"
+  },
+  {
+    "path": "art/all-as-cc4c765057396f4d.webp",
+    "type": "image/webp",
+    "bytes": 68182,
+    "sha256": "cc4c765057396f4df119f1b6cd1c45e0ead1a2bba5d0c1a0161aaface90e3725"
+  },
+  {
+    "path": "art/all-hp-cb9744efc262efef.webp",
+    "type": "image/webp",
+    "bytes": 66968,
+    "sha256": "cb9744efc262efeff3820cbf567cb6e6b5c8e205b10f5ef9bebc6d7679440cad"
+  },
+  {
+    "path": "art/all-move-4090d0485b10336a.webp",
+    "type": "image/webp",
+    "bytes": 71570,
+    "sha256": "4090d0485b10336a1fe09e7c085af39923e7e6f08bbc1d015c208b98402ad7a4"
+  },
+  {
+    "path": "art/building-hp-7ef513b0bbd137ab.webp",
+    "type": "image/webp",
+    "bytes": 56380,
+    "sha256": "7ef513b0bbd137abbbca3e4cb95e5bad1d175d4df12c741bf19a5f1f6b4538d2"
+  },
+  {
+    "path": "art/inf-dmg-70fbf5f0c40c600d.webp",
+    "type": "image/webp",
+    "bytes": 62174,
+    "sha256": "70fbf5f0c40c600d6ecd11a44d0be9c2d0df11580fed1d44ad9d06c4131cff79"
+  },
+  {
+    "path": "art/mag-dmg-cf8ab9a80b30637b.webp",
+    "type": "image/webp",
+    "bytes": 63754,
+    "sha256": "cf8ab9a80b30637b1d7b0e8e592ddb1bd107cab74708b559c579964165e63dd7"
+  },
+  {
+    "path": "art/inf-hp-4563247e8167d15b.webp",
+    "type": "image/webp",
+    "bytes": 57768,
+    "sha256": "4563247e8167d15bedfcc5c12fae269814f8c49fb8905937d53dcc06805f91a9"
+  },
+  {
+    "path": "art/mag-hp-82ba923693d0e50a.webp",
+    "type": "image/webp",
+    "bytes": 54968,
+    "sha256": "82ba923693d0e50a7f61012a03ecbf1e1a5b0fb61793ce15d3cb2bf3e0a93633"
+  },
+  {
+    "path": "art/chain-spawn-949731eeacccbd2d.webp",
+    "type": "image/webp",
+    "bytes": 67594,
+    "sha256": "949731eeacccbd2d69d34c43e02fb7637372ce29a15e58ca175279f8df9cedb7"
+  },
+  {
+    "path": "art/siege-doctrine-458812413fffdeac.webp",
+    "type": "image/webp",
+    "bytes": 83938,
+    "sha256": "458812413fffdeac45b078aee6c810af8af6199179113a49c6e7b6c971e597a6"
+  },
+  {
+    "path": "art/melee-doctrine-7b9cebcca43811a5.webp",
+    "type": "image/webp",
+    "bytes": 76910,
+    "sha256": "7b9cebcca43811a5f54e2a721fd8868b24554ad3e5e5c68a8b234b8514a7bfcd"
+  },
+  {
+    "path": "art/factory-network-81dfbc0d697063ea.webp",
+    "type": "image/webp",
+    "bytes": 63664,
+    "sha256": "81dfbc0d697063ea0181f12ddbb9e7f013bde01798270714ae92b7d16d40fb5e"
+  },
+  {
+    "path": "art/double-assault-055c6c3471d0df64.webp",
+    "type": "image/webp",
+    "bytes": 75880,
+    "sha256": "055c6c3471d0df64beef04dc9bee5ae361fae7c9c2fe2414fffa0e577b9d79c6"
+  },
+  {
+    "path": "art/no-food-a0f54391876b1b8b.webp",
+    "type": "image/webp",
+    "bytes": 89300,
+    "sha256": "a0f54391876b1b8bfbd33173b0fe3056d5efbefc64b3a94d770766510dc6e8a2"
+  },
+  {
+    "path": "art/mobilization-8898065ae3351e56.webp",
+    "type": "image/webp",
+    "bytes": 82330,
+    "sha256": "8898065ae3351e568afbc72dc21c3e45f80a434a086a7097021fd9ab5748f450"
+  },
+  {
+    "path": "art/mono-veteran-8a6deaaea185affd.webp",
+    "type": "image/webp",
+    "bytes": 65996,
+    "sha256": "8a6deaaea185affdc96be23e9c53314f99fe4f5cb2adcb19925ab7f03e947124"
+  },
+  {
+    "path": "art/long-training-f5e3d06999569351.webp",
+    "type": "image/webp",
+    "bytes": 78912,
+    "sha256": "f5e3d0699956935152c6870926376e927ae5775a345e358b89ef459e1b2853ae"
+  },
+  {
+    "path": "art/glass-cannon-11283572ac476c24.webp",
+    "type": "image/webp",
+    "bytes": 81862,
+    "sha256": "11283572ac476c2405dc230f512ca81d5f1443e34563962668a4a903c8099031"
+  },
+  {
+    "path": "art/last-line-810b069028fa3628.webp",
+    "type": "image/webp",
+    "bytes": 75068,
+    "sha256": "810b069028fa36280c527896d7f1581557931c88a7819b38862e36a4638e3d0c"
+  },
+  {
+    "path": "art/specialization-5dc01498fda4d99a.webp",
+    "type": "image/webp",
+    "bytes": 77550,
+    "sha256": "5dc01498fda4d99a46e5267770f4cad60ef9b36497f9b97b422b0845dd68c4a0"
+  },
+  {
+    "path": "art/full-blueprints-bfd019f55c79083a.webp",
+    "type": "image/webp",
+    "bytes": 73258,
+    "sha256": "bfd019f55c79083aedc05c899c75179c07aa6016be5198bfdc137ab7f03a8ae6"
+  },
+  {
+    "path": "art/wide-choice-2061b9ce49b92eaa.webp",
+    "type": "image/webp",
+    "bytes": 67772,
+    "sha256": "2061b9ce49b92eaacab1ce62429822b89b2a5dc18a7325387a39a05582b737b1"
+  },
+  {
+    "path": "art/double-choice-4da2011961e52d92.webp",
+    "type": "image/webp",
+    "bytes": 66396,
+    "sha256": "4da2011961e52d9254a271ba9c5caa31dcdfe5f032cf9e3ea0d29233435e458d"
+  },
+  {
+    "path": "art/full-garrison-economy-6d4e4db2c15a6e6e.webp",
+    "type": "image/webp",
+    "bytes": 89210,
+    "sha256": "6d4e4db2c15a6e6ed42426bdaf3871332ea725fc2709f9278f97b10779d2f679"
+  },
+  {
+    "path": "art/large-garrison-641e56dcbb539bbb.webp",
+    "type": "image/webp",
+    "bytes": 92942,
+    "sha256": "641e56dcbb539bbbd89dfa65efdb2ad83e2a1857b6d39d12cc4af0b3f4384e29"
+  },
+  {
+    "path": "art/road-rush-539a567db7a4d966.webp",
+    "type": "image/webp",
+    "bytes": 80776,
+    "sha256": "539a567db7a4d9668bc7cd70af0b5f8009c5137362ae266c5546eaa2b0a76756"
+  },
+  {
+    "path": "art/overproduction-0f31679d3ad25400.webp",
+    "type": "image/webp",
+    "bytes": 91642,
+    "sha256": "0f31679d3ad25400bcf8bba1c0d400701ce0e67a9cad036d755b6ad8e25a566f"
+  },
+  {
+    "path": "art/instant-l3-b7b12099725651fc.webp",
+    "type": "image/webp",
+    "bytes": 69486,
+    "sha256": "b7b12099725651fc78d78d7e6a9d31d90859dcc7d3d130d51a2f56e0da66ec3f"
+  },
+  {
+    "path": "art/image-e0986b8ee71fbe47.webp",
+    "type": "image/webp",
+    "bytes": 26958,
+    "sha256": "e0986b8ee71fbe47d37ba14c91768ee5319306b71cc4db9d37f27f0740a130db"
+  },
+  {
+    "path": "art/image-d2f05ffb06a9a4f6.webp",
+    "type": "image/webp",
+    "bytes": 65436,
+    "sha256": "d2f05ffb06a9a4f692722321a8073ca5bbf32da1869c104b43e5462991a8361e"
+  },
+  {
+    "path": "art/image-ccf70706248564df.webp",
+    "type": "image/webp",
+    "bytes": 24348,
+    "sha256": "ccf70706248564df1a4fe3b599f15488f641e7024685b32507e9c81a539e52d6"
+  },
+  {
+    "path": "art/image-24643872b156b703.webp",
+    "type": "image/webp",
+    "bytes": 30946,
+    "sha256": "24643872b156b70344d050d5bbefbc75773bbf3368888f78c9b6dd57956818d5"
+  },
+  {
+    "path": "art/image-3316e38b8fdce6cb.webp",
+    "type": "image/webp",
+    "bytes": 24974,
+    "sha256": "3316e38b8fdce6cbc4d633fe963721355079eeeed0ee9a9bfc842e8a75129cdc"
+  },
+  {
+    "path": "art/image-64c1d78d51eb0c7d.webp",
+    "type": "image/webp",
+    "bytes": 22502,
+    "sha256": "64c1d78d51eb0c7dec4ec3502460698b8bee4cb64e31c09f96ce7d321be71b95"
+  },
+  {
+    "path": "art/image-df80f73b5b46f23b.webp",
+    "type": "image/webp",
+    "bytes": 185148,
+    "sha256": "df80f73b5b46f23b1252f5d4a5187ad2301d77ab39d301c93435d0f653017492"
+  },
+  {
+    "path": "art/mastersBuild-864794f9d54c8ab2.png",
+    "type": "image/png",
+    "bytes": 257053,
+    "sha256": "864794f9d54c8ab21420473b45fa34b1f437b0d170ff38f9c2611cc9adfeef84"
+  },
+  {
+    "path": "art/mastersCard-21a475cd0366bebd.webp",
+    "type": "image/webp",
+    "bytes": 66438,
+    "sha256": "21a475cd0366bebdedff088398216ec635d07c55e721ea0646b575bf29bfafc2"
+  },
+  {
+    "path": "art/academyBuild-661fe8f717ac5dd3.webp",
+    "type": "image/webp",
+    "bytes": 47730,
+    "sha256": "661fe8f717ac5dd37b240bacac097f1c538411d29d974a75bb4780496a9e9695"
+  },
+  {
+    "path": "art/academyCard-d02fe17307e8dc3e.webp",
+    "type": "image/webp",
+    "bytes": 68680,
+    "sha256": "d02fe17307e8dc3e983233d592090b1048792c29641c7052b30a353da3f675d4"
+  },
+  {
+    "path": "art/mercBuild-6e96cad38ea8cd5a.webp",
+    "type": "image/webp",
+    "bytes": 46238,
+    "sha256": "6e96cad38ea8cd5a478042323ae6bdb49c36a4e2c54b66e508ffc9f513ddc50c"
+  },
+  {
+    "path": "art/mercCard-69f75499e3002ad9.webp",
+    "type": "image/webp",
+    "bytes": 68102,
+    "sha256": "69f75499e3002ad9718032a905286527a97d8f1e19b2c3a2303cd19afb93c09c"
+  },
+  {
+    "path": "art/image-f6ce87440e7db6a4.png",
+    "type": "image/png",
+    "bytes": 1459770,
+    "sha256": "f6ce87440e7db6a424e8dc606636d175574ce139efc94466bb1ab3c787c93006"
+  },
+  {
+    "path": "art/image-5fbf6b0826483991.png",
+    "type": "image/png",
+    "bytes": 1872489,
+    "sha256": "5fbf6b0826483991bb64eccddae1c224e26f8ed87d6084d31e0aacdb7b7dae23"
+  },
+  {
+    "path": "art/orc-war-005c305d9d485e51.webp",
+    "type": "image/webp",
+    "bytes": 302966,
+    "sha256": "005c305d9d485e51f8c408c74e6da440f2dc5f96e40a8f6b9691740f818c9b1a"
+  },
+  {
+    "path": "art/orc-work-a6ef23a9e8d45c77.webp",
+    "type": "image/webp",
+    "bytes": 395094,
+    "sha256": "a6ef23a9e8d45c77f035312105e5da6bcfb19b465edb41ad83d5c58f84872593"
+  },
+  {
+    "path": "art/orc-hunt-0f92b8392b8d882b.webp",
+    "type": "image/webp",
+    "bytes": 338044,
+    "sha256": "0f92b8392b8d882b74a11254338d5b7bba85ec63751032e16b051d957cb7ef29"
+  },
+  {
+    "path": "art/orc-hut-9515beebf300f5b7.webp",
+    "type": "image/webp",
+    "bytes": 322402,
+    "sha256": "9515beebf300f5b7c67e1c590ba68a20ee429571853aec6bb333bda41cd44dbf"
+  },
+  {
+    "path": "art/orc-arena-9f0479f6d79b7bc8.webp",
+    "type": "image/webp",
+    "bytes": 457298,
+    "sha256": "9f0479f6d79b7bc8ec7ee30a06987200963d1d9e4a7e4e5a48b9a5f9aaa0a22a"
+  },
+  {
+    "path": "art/orc-overseer-a8eb0767bc593f2e.webp",
+    "type": "image/webp",
+    "bytes": 461334,
+    "sha256": "a8eb0767bc593f2ed41ba5801b338b57e03258616f4bec0c31d40e94935395ce"
+  },
+  {
+    "path": "art/orc-altar-97a955674a873090.webp",
+    "type": "image/webp",
+    "bytes": 473318,
+    "sha256": "97a955674a8730902a5512ff35310b60fe7ba9893cee261f9c0295d1e899adb5"
+  },
+  {
+    "path": "art/orc-totem-405f81d44a16b6ef.webp",
+    "type": "image/webp",
+    "bytes": 452218,
+    "sha256": "405f81d44a16b6ef55da8f29f86d6325bbfb6df47490a709672bb53411d5502a"
+  },
+  {
+    "path": "art/orc-shaman-0180280ef4c6119c.webp",
+    "type": "image/webp",
+    "bytes": 490406,
+    "sha256": "0180280ef4c6119c00972aa3f7bf8951cbb67881368ee0113d329e32531dd900"
+  },
+  {
+    "path": "art/orc-warg-fbd4557132237fd1.webp",
+    "type": "image/webp",
+    "bytes": 510708,
+    "sha256": "fbd4557132237fd19ec24d7c6d3788d27ba2f4aa70152aa25f6dfdff13862018"
+  },
+  {
+    "path": "art/orc-gob-f28e50a89a053b7c.webp",
+    "type": "image/webp",
+    "bytes": 407058,
+    "sha256": "f28e50a89a053b7c3366679aeef20774e8bdb258e2ca76ae6bd7569077eaf135"
+  },
+  {
+    "path": "art/orc-bers-84376948ee8cd0e5.webp",
+    "type": "image/webp",
+    "bytes": 347898,
+    "sha256": "84376948ee8cd0e5bb641f5396b62ba6f94bdfcde33ee22e6aa87675f9095279"
+  },
+  {
+    "path": "art/orc-troll-336fb1704d6ff2f9.webp",
+    "type": "image/webp",
+    "bytes": 483510,
+    "sha256": "336fb1704d6ff2f90353046953cd416edd45b3537633b18bde91e4e0b38beac7"
+  },
+  {
+    "path": "art/orc-ram-25c4e57cde32f909.webp",
+    "type": "image/webp",
+    "bytes": 448106,
+    "sha256": "25c4e57cde32f9098f18332c5da4131598fe97779476dc43b1c6101852757177"
+  },
+  {
+    "path": "art/orc-slave-bbd5318bd40eea00.webp",
+    "type": "image/webp",
+    "bytes": 470452,
+    "sha256": "bbd5318bd40eea00426a04596ff3bf06fe73a33371c057020d71462f6b3ee08c"
+  },
+  {
+    "path": "art/orc-raider-0ac1ef3edeba4c9f.webp",
+    "type": "image/webp",
+    "bytes": 452588,
+    "sha256": "0ac1ef3edeba4c9f8423cb04518279c99f51aad856d5cd112297ef375f2535fb"
+  },
+  {
+    "path": "art/orc-tunnel-ee8cf1dde8e31849.webp",
+    "type": "image/webp",
+    "bytes": 470594,
+    "sha256": "ee8cf1dde8e31849713d5f37c1e6f79b5f44a4b6bca8b5e6478e5429d8393341"
+  },
+  {
+    "path": "art/orc-war-bc9136b39cc27493.webp",
+    "type": "image/webp",
+    "bytes": 382162,
+    "sha256": "bc9136b39cc27493b19117f25538e1a80ef46ffcb8799986aa958b5e260b7bd6"
+  },
+  {
+    "path": "art/orc-work-35604cd9700edfa7.webp",
+    "type": "image/webp",
+    "bytes": 521816,
+    "sha256": "35604cd9700edfa7271acd6b4ff4697d4a770f15a6cf98b4d377e75037d286a1"
+  },
+  {
+    "path": "art/orc-hunt-b75cfe8d93d58b80.webp",
+    "type": "image/webp",
+    "bytes": 503276,
+    "sha256": "b75cfe8d93d58b808741157cdc8d3c5cbfd1e10b2fd98f6b4978341959ceb9d8"
+  },
+  {
+    "path": "art/orc-hut-3d79ba782362ed42.webp",
+    "type": "image/webp",
+    "bytes": 450798,
+    "sha256": "3d79ba782362ed42354db3f3c8080ade906274c89e4b36c9265a9552bc3948e3"
+  },
+  {
+    "path": "art/orc-arena-4d06fe3c687f6b33.webp",
+    "type": "image/webp",
+    "bytes": 506988,
+    "sha256": "4d06fe3c687f6b33d98813d5644ca4bed6c94655fa0522f370ac28119d010eb1"
+  },
+  {
+    "path": "art/orc-overseer-f781fb3cdea1b64f.webp",
+    "type": "image/webp",
+    "bytes": 528680,
+    "sha256": "f781fb3cdea1b64f7bd16175aa313d788bd5d05f657a034e06aa719aac3eb311"
+  },
+  {
+    "path": "art/orc-altar-f9c7a2a550dcf772.webp",
+    "type": "image/webp",
+    "bytes": 561020,
+    "sha256": "f9c7a2a550dcf772119cb30d402e705622b6938a11055b5d3e76dcc44c016395"
+  },
+  {
+    "path": "art/orc-totem-13bbd43ce93c5d9b.webp",
+    "type": "image/webp",
+    "bytes": 571346,
+    "sha256": "13bbd43ce93c5d9b51918cc14fb1cd6bf14839284bb8d117787bae9b2e0390aa"
+  },
+  {
+    "path": "art/orc-shaman-0e58c808f97192ec.webp",
+    "type": "image/webp",
+    "bytes": 500346,
+    "sha256": "0e58c808f97192ec38cf15aadf5ca3ff6dbb768c7cc7d6d06d2068ca3b7e1ddf"
+  },
+  {
+    "path": "art/orc-warg-f838c361f01c5db2.webp",
+    "type": "image/webp",
+    "bytes": 577198,
+    "sha256": "f838c361f01c5db2ac0a345841560c7efabc77828622b7745f1bc31606448ead"
+  },
+  {
+    "path": "art/orc-gob-2ff6a8e483c4af6c.webp",
+    "type": "image/webp",
+    "bytes": 445030,
+    "sha256": "2ff6a8e483c4af6c7ec40ab6f5c933d475ab2c80d3ca28f9b1b47fbbfe4eeeb6"
+  },
+  {
+    "path": "art/orc-bers-86e4d0c18002de85.webp",
+    "type": "image/webp",
+    "bytes": 437184,
+    "sha256": "86e4d0c18002de85a73e0a9f9fca51fde8d098c7521846972003b96f97a6b347"
+  },
+  {
+    "path": "art/orc-troll-553919d8a4bd17fd.webp",
+    "type": "image/webp",
+    "bytes": 567576,
+    "sha256": "553919d8a4bd17fda03d0a5e1c892774a4d8d8a3bf5b1aaeaeddb708df6b0047"
+  },
+  {
+    "path": "art/orc-ram-d5cec9f29b4a804f.webp",
+    "type": "image/webp",
+    "bytes": 475584,
+    "sha256": "d5cec9f29b4a804f5feb3214e70c696c66050a6fc03df489f40896083136ee4d"
+  },
+  {
+    "path": "art/orc-slave-613c078962dc2bdb.webp",
+    "type": "image/webp",
+    "bytes": 537322,
+    "sha256": "613c078962dc2bdb566a060af8339f2d71e059239c0f13d090f7999eb6b4dfc9"
+  },
+  {
+    "path": "art/orc-raider-915ca7bdd3e1382c.webp",
+    "type": "image/webp",
+    "bytes": 456656,
+    "sha256": "915ca7bdd3e1382c50e2eb39b2e1d3b8ba8f1abe5eb936a027ad9e001d45c10f"
+  },
+  {
+    "path": "art/orc-tunnel-56d940196335052d.webp",
+    "type": "image/webp",
+    "bytes": 536094,
+    "sha256": "56d940196335052d4f2f551a21cd0623ac3b657edf49c41436f3c7e1febbbec8"
+  },
+  {
+    "path": "art/keep-card-e99076dec274e516.webp",
+    "type": "image/webp",
+    "bytes": 468772,
+    "sha256": "e99076dec274e516b3da24bf254c6af518cf7cce83311065834bcb918195df64"
+  },
+  {
+    "path": "art/warehouse-map-56a46807fc084ff4.webp",
+    "type": "image/webp",
+    "bytes": 502006,
+    "sha256": "56a46807fc084ff424e8b77441dbbfde79e9798f3001cfc233446a96fada3562"
+  },
+  {
+    "path": "art/keep-map-f29aa58d7eb3e3f4.webp",
+    "type": "image/webp",
+    "bytes": 474882,
+    "sha256": "f29aa58d7eb3e3f4e4bcccf220b9b9a2981c56865edecd35bfae09c8caa5042d"
+  },
+  {
+    "path": "art/warehouse-card-c996cf340d956ce2.webp",
+    "type": "image/webp",
+    "bytes": 424720,
+    "sha256": "c996cf340d956ce227223ba9375c61bb38719667f4cdb3835b78eae87a1b4770"
+  },
+  {
+    "path": "art/orc-warrior-f292123f9dc5117b.webp",
+    "type": "image/webp",
+    "bytes": 332598,
+    "sha256": "f292123f9dc5117b133efead8c4fdd564f0e3e68a112ff356e678a297d2b432e"
+  },
+  {
+    "path": "art/orc-berserker-2e4697111084e1ff.webp",
+    "type": "image/webp",
+    "bytes": 333280,
+    "sha256": "2e4697111084e1ff5ce5a09d6bea15f8a715bdc85033fd6a30bdbdf33b3d9bfb"
+  },
+  {
+    "path": "art/orc-goblin-cf82f169b54bbe5b.webp",
+    "type": "image/webp",
+    "bytes": 283028,
+    "sha256": "cf82f169b54bbe5b8ef7f1a2b785c8c46c24e121124ba5ae4ac144056b6c01f4"
+  },
+  {
+    "path": "art/orc-shaman-58deb975519425eb.webp",
+    "type": "image/webp",
+    "bytes": 376006,
+    "sha256": "58deb975519425ebe2adbecc920440d38a67c918e886fd097e58e5ccc826a95a"
+  },
+  {
+    "path": "art/orc-warg-f15fd6dec2f14145.webp",
+    "type": "image/webp",
+    "bytes": 419100,
+    "sha256": "f15fd6dec2f14145437da2794a8b30436f34ce5f4132f446452d6272ce3e6e73"
+  },
+  {
+    "path": "art/orc-troll-f45ff70a696148d6.webp",
+    "type": "image/webp",
+    "bytes": 399490,
+    "sha256": "f45ff70a696148d69efff347753914f6ba1147b677f43d634361868433ece564"
+  },
+  {
+    "path": "art/orc-ram-80838b8165868c19.webp",
+    "type": "image/webp",
+    "bytes": 418524,
+    "sha256": "80838b8165868c19a4d9e38d7b399dc12ffcb227db3d05069a869dd562bc2b93"
+  },
+  {
+    "path": "art/image-b8c02ed059e88a53.png",
+    "type": "image/png",
+    "bytes": 2232795,
+    "sha256": "b8c02ed059e88a534219488bd3282200567f08876eaf1bd3339bd4eb5a123066"
+  },
+  {
+    "path": "art/terrain-54a28312d892d23a.png",
+    "type": "image/png",
+    "bytes": 75137,
+    "sha256": "54a28312d892d23a563121d2177b4ae68ca59077ec9424fdfe0f526cde1df74c"
+  },
+  {
+    "path": "art/terrain-ecfb45c21913204f.png",
+    "type": "image/png",
+    "bytes": 65846,
+    "sha256": "ecfb45c21913204f07b21cf1f6f0ec4d06fd848e6c08423aee03587a250543a9"
+  },
+  {
+    "path": "art/terrain-8ca0a51d12cbbdd0.png",
+    "type": "image/png",
+    "bytes": 64710,
+    "sha256": "8ca0a51d12cbbdd0c4ec556fa9d59a7a4759a64d96b6307f53cdc46ea939bf34"
+  },
+  {
+    "path": "art/terrain-cf7c9babba151e72.png",
+    "type": "image/png",
+    "bytes": 68305,
+    "sha256": "cf7c9babba151e72f4e009ba7ba8746964e2ba4d14c444fa81c664bbf91bef36"
+  },
+  {
+    "path": "art/terrain-26142187139677a6.png",
+    "type": "image/png",
+    "bytes": 70088,
+    "sha256": "26142187139677a65c36023a8b0aa72a7866d7d12e4b5dc84cc351a5ff26dedb"
+  }
+]

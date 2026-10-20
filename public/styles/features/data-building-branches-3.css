@@ -1,0 +1,6 @@
+
+#choiceList.six{grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+#choiceList.six .choice.gamecard{--card-height:clamp(250px,14vw,360px)}
+#choiceList.six .choiceBody p,#choiceList.six .choicemeta{font-size:clamp(8px,.43vw,16px)!important}
+.branchTag{color:#ffe195!important}.marketControls,.rallyControls{display:grid;gap:6px;margin:8px 0;padding:8px;border:1px solid #4b6452;border-radius:7px;background:#0d1712}.marketRoute{display:grid;grid-template-columns:1fr auto 1fr;gap:5px;align-items:center}.marketRoute select{min-width:0;background:#18271f;color:#eee4c7;border:1px solid #506858;border-radius:5px;padding:5px;font-size:9px}.rallyControls{grid-template-columns:repeat(3,1fr)}.rallyControls button{border:1px solid #506858;border-radius:5px;background:#17251d;color:#ddd5bb;padding:6px;font-size:8px;font-weight:900}.rallyControls button.active{background:#3c5d46;border-color:#e4bd5d;color:#fff0b8}.buffdot{font:900 10px/1 sans-serif}.sudden{color:#ff8e7f!important}
+@media(max-width:1450px){#choiceList.six{grid-template-columns:repeat(3,minmax(180px,1fr))}#choiceOverlay .modal{max-height:78vh}}

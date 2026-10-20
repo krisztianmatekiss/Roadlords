@@ -1,0 +1,63 @@
+
+    #choiceOverlay .choicehead{text-align:center!important;padding-right:0!important;margin-bottom:9px!important}
+    #choiceOverlay .choicehead small{display:block;text-align:center!important;letter-spacing:.13em!important}
+    #choiceOverlay .choicehead h2{text-align:center!important;margin:3px 72px 0!important}
+    #choiceOverlay #choiceDesc{display:none!important}
+
+    #choiceOverlay .choiceMinimize{width:48px!important;height:38px!important;padding:0!important;display:grid!important;place-items:center!important;border-radius:12px!important}
+    #choiceOverlay .choiceMinimize span{font-size:22px!important;line-height:1!important;transform:translateY(-1px)}
+
+    #choiceOverlay .choiceSkip{color:#ff8d86!important;border-color:#914a46!important;background:linear-gradient(#321b1a,#1b1110)!important;text-shadow:0 1px 2px #000!important}
+    #choiceOverlay .choiceSkip:hover:not(:disabled){color:#ffd0cc!important;border-color:#e1766f!important;background:linear-gradient(#552824,#2c1715)!important}
+
+    body:not([data-ui-scale="tv-legacy"]) #choiceOverlay .modal{width:min(1280px,calc(100vw - 28px))!important}
+    body:not([data-ui-scale="tv-legacy"]) #choiceList{grid-template-columns:repeat(4,minmax(0,300px))!important;justify-content:center!important;gap:12px!important}
+    body:not([data-ui-scale="tv-legacy"]) #choiceList.five{grid-template-columns:repeat(5,minmax(0,238px))!important;gap:10px!important}
+    body:not([data-ui-scale="tv-legacy"]) #choiceList.six{grid-template-columns:repeat(3,minmax(0,300px))!important;gap:12px!important}
+
+    #choiceList .choiceArt.card-media{position:relative!important}
+    #choiceList .choiceArt.card-media>.choiceBuildingImage{z-index:1!important}
+    #choiceList .pickFootprint,#choiceList .pickUnitCost{position:absolute;z-index:5;bottom:7px;pointer-events:none;backdrop-filter:blur(3px);box-shadow:0 3px 9px #000a}
+    #choiceList .pickFootprint{left:7px;display:grid;grid-template-columns:repeat(var(--fp-cols),13px);grid-template-rows:repeat(var(--fp-rows),13px);gap:2px;padding:5px;border:1px solid #d8bd696f;border-radius:7px;background:#09110cce}
+    #choiceList .pickFootprint i{display:block;width:13px;height:13px;border-radius:2px;border:1px solid #bda85e55;background:#27322988}
+    #choiceList .pickFootprint i.on{border-color:#f0d472;background:linear-gradient(145deg,#f0cd66,#9a7027);box-shadow:inset 0 1px #fff5,0 0 4px #ddb94b66}
+    #choiceList .pickFootprint i.off{opacity:.14;background:transparent}
+    #choiceList .pickUnitCost{right:7px;display:flex;align-items:center;gap:7px;min-height:27px;padding:4px 7px;border:1px solid #7a835f88;border-radius:8px;background:#09110cda;color:#f1e6c5;font-size:11px;font-weight:950}
+    #choiceList .pickUnitCost>span{display:flex;align-items:center;gap:2px;white-space:nowrap}
+    #choiceList .pickUnitCost .costIcon{width:15px!important;height:15px!important;margin:0!important;vertical-align:0!important}
+    #choiceList .choiceArt.card-media .pickUnitCost img.costIcon{display:block!important;width:15px!important;height:15px!important;min-width:15px!important;min-height:15px!important;max-width:15px!important;max-height:15px!important;object-fit:contain!important;transform:none!important;filter:drop-shadow(0 1px 1px #000)!important}
+
+    #choiceList .choice.buildingunlock{grid-template-rows:38px 135px minmax(0,1fr) 34px!important;height:344px!important;min-height:344px!important}
+    #choiceList .choice.buildingunlock h3{grid-row:1!important;line-height:36px!important;font-size:19px!important}
+    #choiceList .choice.buildingunlock .choiceArt{grid-row:2!important;height:135px!important;min-height:135px!important;max-height:135px!important}
+    #choiceList .choice.buildingunlock .choiceBody{grid-row:3!important;overflow:hidden!important;padding:9px 4px 6px!important}
+    #choiceList .choice.buildingunlock .choiceBody p{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:3!important;overflow:hidden!important;font-size:12.5px!important;line-height:1.34!important}
+    #choiceList .choice.buildingunlock .choiceBody .choicemeta{display:block!important;margin-top:7px!important;padding-top:6px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;font-size:10.5px!important;line-height:1.2!important}
+    #choiceList .choice.buildingunlock .choiceFooter{grid-row:4!important;font-size:13px!important}
+
+    body[data-ui-scale="large"] #choiceOverlay .modal{width:min(1320px,96vw)!important}
+    body[data-ui-scale="large"] #choiceList{grid-template-columns:repeat(4,minmax(0,310px))!important;gap:12px!important}
+    body[data-ui-scale="large"] #choiceList.five{grid-template-columns:repeat(5,minmax(0,248px))!important;gap:10px!important}
+    body[data-ui-scale="large"] #choiceList.six{grid-template-columns:repeat(3,minmax(0,310px))!important}
+    body[data-ui-scale="large"] #choiceList .choice.buildingunlock{height:350px!important;min-height:350px!important;grid-template-rows:39px 138px minmax(0,1fr) 34px!important}
+    body[data-ui-scale="large"] #choiceList .choice.buildingunlock .choiceArt{height:138px!important;min-height:138px!important;max-height:138px!important}
+    body[data-ui-scale="large"] #choiceList .choice.buildingunlock .choiceBody p{font-size:13px!important}
+    body[data-ui-scale="large"] #choiceOverlay .choiceMinimize{width:52px!important;height:40px!important}
+    body[data-ui-scale="large"] #choiceOverlay .choiceMinimize span{font-size:24px!important}
+
+    body[data-ui-scale="tv-legacy"] #choiceOverlay .choicehead{text-align:center!important;padding-right:0!important}
+    body[data-ui-scale="tv-legacy"] #choiceOverlay .choicehead h2{margin-left:130px!important;margin-right:130px!important}
+    body[data-ui-scale="tv-legacy"] #choiceOverlay .choiceMinimize{width:76px!important;height:58px!important}
+    body[data-ui-scale="tv-legacy"] #choiceOverlay .choiceMinimize span{font-size:34px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .pickFootprint{grid-template-columns:repeat(var(--fp-cols),24px);grid-template-rows:repeat(var(--fp-rows),24px);gap:4px;padding:8px;bottom:12px;left:12px}
+    body[data-ui-scale="tv-legacy"] #choiceList .pickFootprint i{width:24px;height:24px;border-radius:3px}
+    body[data-ui-scale="tv-legacy"] #choiceList .pickUnitCost{right:12px;bottom:12px;min-height:44px;padding:7px 11px;gap:11px;font-size:20px}
+    body[data-ui-scale="tv-legacy"] #choiceList .pickUnitCost .costIcon{width:25px!important;height:25px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choiceArt.card-media .pickUnitCost img.costIcon{width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important;max-width:25px!important;max-height:25px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choice.buildingunlock{grid-template-rows:58px 285px minmax(0,1fr) 52px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList.five .choice.buildingunlock{grid-template-rows:52px 245px minmax(0,1fr) 48px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList.six .choice.buildingunlock{grid-template-rows:48px 205px minmax(0,1fr) 44px!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choice.buildingunlock h3{grid-row:1!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choice.buildingunlock .choiceArt{grid-row:2!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choice.buildingunlock .choiceBody{grid-row:3!important;overflow:hidden!important}
+    body[data-ui-scale="tv-legacy"] #choiceList .choice.buildingunlock .choiceFooter{grid-row:4!important}

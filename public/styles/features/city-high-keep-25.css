@@ -1,0 +1,5 @@
+
+    .building.compactKeepVisual .bsprite{object-fit:contain!important;transform-origin:center center!important}
+    #choiceOverlay.highKeepBranchChoice .choiceTools,#choiceOverlay.highKeepBranchChoice .choiceBanHint{display:none!important}
+    #choiceOverlay.highKeepBranchChoice .choices{grid-template-columns:repeat(2,minmax(250px,1fr))!important;max-width:760px;margin-inline:auto}
+    #choiceOverlay.highKeepBranchChoice .choice.gamecard{min-height:300px}

@@ -1,0 +1,59 @@
+
+    .topLeftCluster{gap:clamp(6px,.34vw,12px)!important}
+    .topLeftCluster .resources{
+      grid-template-columns:repeat(3,minmax(clamp(150px,7.82vw,288px),1fr))!important;
+      gap:clamp(7px,.36vw,14px)!important;
+      max-width:clamp(690px,36vw,1380px)!important;
+      width:auto!important;
+    }
+    .topLeftCluster .res{
+      min-height:clamp(46px,2.4vw,88px)!important;
+      padding:clamp(6px,.31vw,12px) clamp(9px,.47vw,18px)!important;
+      gap:clamp(8px,.42vw,16px)!important;
+    }
+    .topLeftCluster .res .ri,
+    .topLeftCluster .res .ri .resourceIcon{
+      width:clamp(34px,1.77vw,64px)!important;
+      height:clamp(34px,1.77vw,64px)!important;
+    }
+    .topLeftCluster .res b,
+    .topLeftCluster .res small{
+      font-size:clamp(13px,.68vw,25px)!important;
+    }
+    .topLeftCluster .res small{
+      gap:clamp(10px,.52vw,20px)!important;
+      margin-top:clamp(2px,.1vw,4px)!important;
+    }
+
+    .unitProductionHud{
+      gap:clamp(6px,.34vw,10px)!important;
+      padding-left:clamp(7px,.42vw,12px)!important;
+      max-width:min(36vw,560px);
+      min-height:clamp(46px,2.4vw,88px);
+    }
+    .unitProductionLabel{display:none!important}
+    .unitProductionList{gap:clamp(6px,.34vw,10px)!important;overflow:hidden}
+    .unitProdChip{
+      height:clamp(38px,2vw,52px)!important;
+      padding:3px clamp(8px,.42vw,12px) 3px 4px!important;
+      gap:clamp(5px,.26vw,8px)!important;
+      background:linear-gradient(180deg,#1a2921,#101914)!important;
+      border-color:#5e735f!important;
+    }
+    .unitProdChip .prodPortrait{
+      width:clamp(30px,1.56vw,40px)!important;
+      height:clamp(30px,1.56vw,40px)!important;
+    }
+    .unitProdChip b{
+      font-size:clamp(13px,.73vw,18px)!important;
+      color:#f5e8bf!important;
+    }
+    .unitProductionEmpty{display:none!important}
+    @media(max-width:1550px){
+      .topLeftCluster .resources{grid-template-columns:repeat(3,minmax(138px,1fr))!important}
+      .unitProductionHud{max-width:min(31vw,420px)}
+    }
+    @media(max-width:1220px){
+      .topLeftCluster .resources{grid-template-columns:repeat(3,minmax(124px,1fr))!important}
+      .unitProductionHud{max-width:min(28vw,320px)}
+    }

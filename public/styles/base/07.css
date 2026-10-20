@@ -1,0 +1,54 @@
+
+#choiceOverlay #choiceList .pickCD,
+#choiceOverlay #choiceList .pickUnitCost{
+  position:absolute;
+  z-index:7;
+  pointer-events:none;
+  backdrop-filter:blur(3px);
+  box-shadow:0 3px 9px #000a;
+}
+#choiceOverlay #choiceList .pickCD{
+  right:7px;
+  top:7px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-height:27px;
+  padding:4px 8px;
+  border:1px solid #b28f4e88;
+  border-radius:8px;
+  background:#09110ce2;
+  color:#f1e6c5;
+  font-size:11px;
+  font-weight:950;
+}
+#choiceOverlay #choiceList .pickCD .cdClock{display:grid;place-items:center;width:15px;height:15px;filter:drop-shadow(0 1px 1px #000)}
+#choiceOverlay #choiceList .pickCD .cdClock svg{display:block;width:15px;height:15px}
+#choiceOverlay #choiceList .pickCD b{font-weight:950;color:#ffe4a3}
+
+#choiceOverlay #choiceList .pickUnitCost{
+  right:7px;
+  bottom:7px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  min-height:0;
+  padding:5px 7px;
+  border:1px solid #7a835f88;
+  border-radius:8px;
+  background:#09110cda;
+  color:#f1e6c5;
+  font-size:11px;
+  font-weight:950;
+}
+#choiceOverlay #choiceList .pickUnitCost>span{display:flex;align-items:center;gap:4px;white-space:nowrap}
+#choiceOverlay #choiceList .pickUnitCost .costIcon{width:15px!important;height:15px!important;margin:0!important;vertical-align:0!important}
+#choiceOverlay #choiceList .choiceArt.card-media .pickUnitCost img.costIcon{display:block!important;width:15px!important;height:15px!important;min-width:15px!important;min-height:15px!important;max-width:15px!important;max-height:15px!important;object-fit:contain!important;transform:none!important;filter:drop-shadow(0 1px 1px #000)!important}
+
+body[data-ui-scale="tv-legacy"] #choiceOverlay #choiceList .pickCD{right:12px;top:12px;min-height:44px;padding:7px 11px;gap:10px;font-size:20px}
+body[data-ui-scale="tv-legacy"] #choiceOverlay #choiceList .pickCD .cdClock,
+body[data-ui-scale="tv-legacy"] #choiceOverlay #choiceList .pickCD .cdClock svg{width:24px;height:24px}
+body[data-ui-scale="tv-legacy"] #choiceOverlay #choiceList .pickUnitCost{right:12px;bottom:12px;gap:7px;padding:7px 11px;font-size:20px}
+body[data-ui-scale="tv-legacy"] #choiceOverlay #choiceList .pickUnitCost .costIcon{width:25px!important;height:25px!important}
+body[data-ui-scale="tv-legacy"] #choiceOverlay #choiceList .choiceArt.card-media .pickUnitCost img.costIcon{width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important;max-width:25px!important;max-height:25px!important}

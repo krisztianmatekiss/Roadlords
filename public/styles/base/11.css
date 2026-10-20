@@ -1,0 +1,200 @@
+
+/* ======================================================================
+   V4.11.00 FINAL CARD FRAME LAYER
+   One frame layer only. Images are embedded, so the HTML is standalone.
+   ====================================================================== */
+
+/* Frame renderer. */
+.gamecard[data-frame]{position:relative!important;overflow:visible!important;isolation:isolate!important}
+.gamecard[data-frame]::after{
+  content:""!important;
+  position:absolute!important;
+  z-index:45!important;
+  pointer-events:none!important;
+  border-style:solid!important;
+  border-color:transparent!important;
+  border-image-slice:92!important;
+  border-image-repeat:stretch!important;
+  box-sizing:border-box!important;
+}
+.gamecard[data-frame="common"]::after{border-image-source:url("../../art/terrain-54a28312d892d23a.png")!important}
+.gamecard[data-frame="economy"]::after{border-image-source:url("../../art/terrain-ecfb45c21913204f.png")!important}
+.gamecard[data-frame="military"]::after{border-image-source:url("../../art/terrain-8ca0a51d12cbbdd0.png")!important}
+.gamecard[data-frame="support"]::after{border-image-source:url("../../art/terrain-cf7c9babba151e72.png")!important}
+.gamecard[data-frame="legendary"]::after{border-image-source:url("../../art/terrain-26142187139677a6.png")!important}
+
+/* Big pick cards: frame grows mainly outward. */
+#choiceList{overflow:visible!important}
+body:not([data-ui-scale="tv-legacy"]) #choiceOverlay .modal{width:min(1480px,calc(100vw - 34px))!important;overflow:visible!important}
+body:not([data-ui-scale="tv-legacy"]) #choiceList{grid-template-columns:repeat(4,minmax(0,300px))!important;gap:48px!important;justify-content:center!important}
+body:not([data-ui-scale="tv-legacy"]) #choiceList.five{grid-template-columns:repeat(5,minmax(0,238px))!important;gap:42px!important}
+body:not([data-ui-scale="tv-legacy"]) #choiceList.six{grid-template-columns:repeat(3,minmax(0,300px))!important;gap:48px!important}
+#choiceList .choice.gamecard[data-frame]::after{inset:-20px!important;border-width:25px!important;border-image-width:25px!important}
+#choiceList .choice.gamecard[data-frame]{border-color:transparent!important;box-shadow:0 8px 22px #0009!important}
+
+/* Construction prices centered in pick cards. */
+#choiceOverlay #choiceList .choice.buildingunlock .choiceFooter{
+  justify-content:center!important;
+  gap:34px!important;
+  padding-left:0!important;
+  padding-right:0!important;
+}
+#choiceOverlay #choiceList .choice.buildingunlock .choiceFooter .woodcost,
+#choiceOverlay #choiceList .choice.buildingunlock .choiceFooter .stonecost{
+  margin:0!important;
+  min-width:72px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:4px!important;
+}
+
+/* Bottom bar: keep the accepted placement, but consolidate it into one block. */
+body[data-ui-scale="normal"] #app,
+body:not([data-ui-scale]) #app{
+  grid-template-rows:clamp(64px,3.33vw,128px) minmax(0,1fr) 206px!important;
+}
+.command{
+  position:relative!important;
+  overflow:visible!important;
+  border-top-color:transparent!important;
+}
+.command::before{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:-11px!important;
+  height:1px!important;
+  background:#465c4c!important;
+  box-shadow:0 1px 0 #0006!important;
+  pointer-events:none!important;
+  z-index:1!important;
+}
+.catalog,.buildnav{overflow:visible!important}
+.catalog{padding-top:0!important;padding-bottom:10px!important}
+.buildlist{
+  position:relative!important;
+  align-items:flex-start!important;
+  gap:8px!important;
+  padding:18px 8px 14px!important;
+  margin:-18px 0 0!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  min-height:178px!important;
+}
+.buildcard.gamecard.compactPickCard{
+  overflow:visible!important;
+  transform:none!important;
+  border-color:transparent!important;
+}
+.buildcard.gamecard.compactPickCard[data-frame]::after{
+  inset:-12px!important;
+  border-width:17px!important;
+  border-image-width:17px!important;
+}
+
+/* Hotkey + building count live in a dedicated slot ABOVE the card.
+   They are inside the horizontal scroller's content area, so they cannot be clipped. */
+.buildSlot{
+  flex:0 0 184px!important;
+  width:184px!important;
+  height:150px!important;
+  display:grid!important;
+  grid-template-rows:18px 132px!important;
+  justify-items:center!important;
+  align-items:start!important;
+  overflow:visible!important;
+}
+.buildSlotBadges{
+  width:160px!important;
+  height:18px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:flex-start!important;
+  gap:4px!important;
+  padding-left:2px!important;
+  box-sizing:border-box!important;
+  position:relative!important;
+  z-index:80!important;
+  pointer-events:none!important;
+}
+.buildSlot>.buildcard.gamecard.compactPickCard{
+  grid-row:2!important;
+  margin:0!important;
+}
+.buildSlotBadges .buildHotkey{
+  position:relative!important;
+  inset:auto!important;
+  width:24px!important;
+  height:17px!important;
+  min-width:24px!important;
+  min-height:17px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  border:1px solid #17130a!important;
+  border-radius:4px 4px 2px 2px!important;
+  background:linear-gradient(180deg,#ffe98e 0%,#e1bb4e 100%)!important;
+  color:#111!important;
+  font:950 10px/1 Inter,Segoe UI,Arial,sans-serif!important;
+  text-shadow:none!important;
+  box-shadow:0 2px 6px #0008,inset 0 1px #fff8!important;
+  transform:none!important;
+  z-index:82!important;
+}
+.buildSlotBadges .buildCountBadge{
+  position:relative!important;
+  inset:auto!important;
+  min-width:30px!important;
+  height:17px!important;
+  padding:0 6px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid #66766a!important;
+  border-radius:4px!important;
+  background:#101914f2!important;
+  color:#f3e7bd!important;
+  font:950 9px/1 Inter,Segoe UI,Arial,sans-serif!important;
+  box-shadow:0 2px 6px #0008,inset 0 1px #fff1!important;
+  z-index:81!important;
+}
+.buildSlotBadges .buildCountBadge.zero{border-color:#4e5d52!important;color:#93a095!important;background:#0d1511ed!important}
+
+/* Bottom construction costs centered; icon size matches the number size. */
+.buildcard.compactPickCard .cardcosts{
+  justify-content:center!important;
+  gap:18px!important;
+  padding:2px 0 1px!important;
+  font-size:10px!important;
+}
+.buildcard.compactPickCard .cardcosts .woodcost,
+.buildcard.compactPickCard .cardcosts .stonecost{
+  margin:0!important;
+  min-width:48px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+}
+.buildcard.compactPickCard .cardcosts .costIcon{
+  width:10px!important;
+  height:10px!important;
+  min-width:10px!important;
+  min-height:10px!important;
+  max-width:10px!important;
+  max-height:10px!important;
+  margin:0!important;
+}
+
+/* Placement helper stays above the build bar. */
+.placementhint{
+  left:50%!important;
+  bottom:calc(100% + 10px)!important;
+  transform:translateX(-50%)!important;
+  z-index:80!important;
+  max-width:min(92vw,1200px)!important;
+  box-shadow:0 10px 24px #0009!important;
+}
+body[data-ui-scale="large"] .placementhint{bottom:calc(100% + 12px)!important}
+body[data-ui-scale="tv-legacy"] .placementhint{bottom:calc(100% + 14px)!important}

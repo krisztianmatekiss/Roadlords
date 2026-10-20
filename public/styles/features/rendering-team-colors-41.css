@@ -1,0 +1,8 @@
+
+ .unitColorRaceRow{display:grid;grid-template-columns:minmax(0,1fr) 42px;gap:10px;align-items:center}
+ .unitColorSwatch{width:38px!important;height:38px!important;min-height:38px!important;padding:0!important;border:2px solid #f1dfac!important;border-radius:5px!important;box-shadow:inset 0 0 0 2px #0003;cursor:pointer}
+ .unitColorSwatch:focus-visible,.unitColorOption:focus-visible{outline:3px solid #fff;outline-offset:3px}
+ #unitColorPalette{position:fixed;z-index:100000;background:#16271f;color:#f3e6c5;padding:14px;border:1px solid #9c895c;border-radius:9px;box-shadow:0 8px 24px #0009;width:240px}
+ #unitColorPalette[hidden]{display:none!important}.unitColorOptions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+ .unitColorOption{width:42px;height:38px;min-height:38px;border:2px solid #b5b8ab;border-radius:4px;cursor:pointer;color:white;font:bold 19px system-ui;text-shadow:0 1px 3px #000}
+ .unitColorCaption{font:13px system-ui;margin-top:10px;color:#c6cfbf}

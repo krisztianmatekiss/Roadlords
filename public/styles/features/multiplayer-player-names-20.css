@@ -1,0 +1,18 @@
+
+    .mpNameEntry{display:grid;gap:5px;margin-bottom:clamp(8px,.5vw,12px);text-align:left}
+    .mpNameEntry label{color:#b9c5ba;font:900 8px/1 Inter,Segoe UI,Arial,sans-serif;letter-spacing:.12em}
+    .mpNameEntry input{width:100%;height:clamp(38px,2.2vw,46px);box-sizing:border-box;padding:0 11px;border:1px solid #617365;border-radius:7px;background:#0d1712;color:#f3e7c9;outline:none;font:850 clamp(11px,.65vw,14px)/1 Inter,Segoe UI,Arial,sans-serif;letter-spacing:.03em}
+    .mpNameEntry input:focus{border-color:#d6b657;box-shadow:0 0 0 2px #d6b65722}
+    .mpNameTag{display:block!important;position:absolute;z-index:4;top:clamp(27px,1.55vw,39px);max-width:clamp(95px,7vw,150px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:3px 7px;border:1px solid #59685d;border-radius:999px;background:#0c1510e8;color:#dce6dd;font:900 clamp(8px,.46vw,12px)/1 Inter,Segoe UI,Arial,sans-serif;letter-spacing:.04em;box-shadow:0 2px 7px #0008}
+    .cityhp>.mpNameTag{top:100%;margin-top:3px;max-width:160px;font-size:11px}.mpNameTag.player{right:0;text-align:right}.mpNameTag.enemy{left:0;text-align:left}.mpNameTag.hidden{display:none!important}
+    /* A jobb oldali város számai tényleg a jobb pályaszélen ülnek. */
+    .cityhead.enemy>.cityarmy{grid-template-columns:minmax(0,1fr) clamp(48px,2.8vw,72px)!important}
+    .cityhead.enemy>.cityarmy>b{grid-column:2;grid-row:1;text-align:right!important;justify-self:end}
+    .cityhead.enemy>.cityarmy>.unitmix{grid-column:1;grid-row:1}
+    .enemyfoot{grid-template-columns:minmax(0,1fr) clamp(48px,2.8vw,72px)!important}
+    .enemyfoot>.stack{grid-column:2!important;grid-row:1;justify-content:flex-end!important;text-align:right}
+    .enemyfoot>.reservemix{grid-column:1!important;grid-row:1}
+    .enemyfoot>button.visualHintsToggle{left:clamp(3px,.18vw,7px);right:auto}
+    @media(max-width:1450px){
+      .cityhead.enemy>.cityarmy,.enemyfoot{grid-template-columns:minmax(0,1fr) 44px!important}
+    }

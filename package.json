@@ -1,0 +1,36 @@
+{
+  "name": "roadlords",
+  "version": "4.15.0",
+  "description": "Roadlords modular browser game",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node scripts/test.cjs",
+    "test:multiplayer": "node scripts/test.cjs tests/multiplayer.cjs tests/multiplayer-rtc.cjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krisztianmatekiss/Roadlords.git"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/krisztianmatekiss/Roadlords/issues"
+  },
+  "homepage": "https://github.com/krisztianmatekiss/Roadlords",
+  "devDependencies": {
+    "acorn": "^8.19.0",
+    "playwright": "^1.64.1",
+    "vite": "^8.3.4"
+  },
+  "dependencies": {
+    "peerjs": "1.5.5"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=24 <25"
+  }
+}

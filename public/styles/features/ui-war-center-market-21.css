@@ -1,0 +1,16 @@
+
+    #inspector.show.warcenterWide{width:520px!important;max-width:calc(100vw - 20px)!important}
+    .warModeControls{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;padding:9px!important;align-items:stretch}
+    .warModeCard{display:grid;grid-template-rows:auto 1fr auto;gap:7px;min-width:0;padding:8px;border:1px solid #43564a;border-radius:8px;background:#121d17}
+    .warModeCard.active{border-color:#d9bb65;box-shadow:inset 0 0 0 1px #d9bb6533;background:#1b281e}
+    .warModeTitle{text-align:center;font-size:8.5px;font-weight:950;letter-spacing:.045em;color:#eee4c7;white-space:nowrap}
+    .warModeStats{display:grid;gap:4px;align-content:start}
+    .warModeStat{display:flex;justify-content:space-between;gap:6px;padding:4px 5px;border-radius:5px;background:#0d1511;font-size:8px;line-height:1.15}
+    .warModeStat span{color:#98a59c}.warModeStat b{font-weight:950;white-space:nowrap}
+    .warModeStat.neutral b{color:#a9b2ac}.warModeStat.good b{color:#75d58b}.warModeStat.bad b{color:#ef7f78}
+    .warModePick{width:100%;min-height:34px!important;border-radius:7px!important;font-size:18px!important;line-height:1!important;padding:0!important;background:#17251d!important;color:#9aa69d!important;border-color:#4e6253!important}
+    .warModePick:hover{border-color:#d9bb65!important;color:#ffe39a!important;background:#29372d!important}
+    .warModeCard.active .warModePick{background:#4d4225!important;color:#ffe39a!important;border-color:#e5c76c!important}
+    .warModeLegend{grid-column:1/-1;margin-top:1px;text-align:center;color:#8f9d93;font-size:7.5px;line-height:1.3}
+    .warModeLegend .good{color:#75d58b}.warModeLegend .bad{color:#ef7f78}.warModeLegend .neutral{color:#a9b2ac}
+    @media(max-width:650px){#inspector.show.warcenterWide{width:calc(100vw - 20px)!important}.warModeControls{grid-template-columns:1fr!important}.warModeTitle{font-size:9px}.warModeCard{grid-template-columns:100px 1fr 48px;grid-template-rows:auto;align-items:center}.warModeStats{grid-template-columns:repeat(2,minmax(0,1fr))}.warModeLegend{grid-column:1/-1}}

@@ -1,0 +1,155 @@
+
+/* =====================================================================
+   V4.11.09 — ENGINEERED BOTTOM DOCK
+   One final geometry pass. No transforms, no negative margins.
+   The complete badge+card block is centered inside the dock.
+   ===================================================================== */
+
+/* Give the dock enough real vertical room. */
+body[data-ui-scale="normal"] #app,
+body[data-ui-scale="large"] #app,
+body:not([data-ui-scale]) #app{
+  grid-template-rows:
+    clamp(64px,3.33vw,128px)
+    minmax(0,1fr)
+    209px!important;
+}
+
+/* The separator is the actual top edge of the dock. */
+.command{
+  position:relative!important;
+  display:block!important;
+  min-height:0!important;
+  padding:6px 8px 7px!important;
+  overflow:hidden!important;
+  border-top:1px solid #465c4c!important;
+  box-sizing:border-box!important;
+}
+.command::before{display:none!important}
+
+/* One contained inner panel from left edge to right edge. */
+.catalog{
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  display:grid!important;
+  grid-template-columns:118px minmax(0,1fr)!important;
+  grid-template-rows:1fr!important;
+  column-gap:8px!important;
+  padding:6px 8px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+
+/* Categories vertically centered in the exact same panel. */
+.tabs{
+  grid-column:1!important;
+  grid-row:1!important;
+  align-self:center!important;
+  width:100%!important;
+  height:132px!important;
+  min-height:0!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:repeat(4,1fr)!important;
+  gap:4px!important;
+  padding:0!important;
+  margin:0!important;
+}
+.tab{
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+}
+
+/* The card viewport occupies the full remaining panel height. */
+.buildnav{
+  grid-column:2!important;
+  grid-row:1!important;
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  padding:0 34px!important;
+  margin:0!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+
+/* Exact vertical centering of the whole badge+card unit. */
+.buildlist{
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:0 6px!important;
+  margin:0!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  box-sizing:border-box!important;
+  scrollbar-width:none!important;
+}
+.buildlist::-webkit-scrollbar{display:none!important}
+
+/* One slot = badge lane + card. No translation, no negative offsets. */
+.buildSlot{
+  flex:0 0 166px!important;
+  width:166px!important;
+  height:150px!important;
+  min-height:150px!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:18px 132px!important;
+  justify-items:center!important;
+  align-items:start!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+}
+
+.buildSlotBadges{
+  width:160px!important;
+  height:18px!important;
+  min-height:18px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:flex-start!important;
+  gap:4px!important;
+  padding:0 0 1px 1px!important;
+  margin:0!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+}
+
+/* Preserve the accepted card dimensions exactly. */
+.buildSlot>.buildcard.gamecard.compactPickCard{
+  grid-row:2!important;
+  width:160px!important;
+  height:132px!important;
+  min-height:132px!important;
+  margin:0!important;
+  transform:none!important;
+  align-self:start!important;
+}
+
+/* Navigation arrows stay inside the bordered panel. */
+.scrollbtn{
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  z-index:20!important;
+}
+.scrollbtn:first-child{left:2px!important}
+.scrollbtn:last-child{right:2px!important}
+
+/* Nothing from the card deck may protrude outside the dock horizontally. */
+.buildcard.gamecard.compactPickCard,
+.buildSlotBadges{
+  max-width:100%!important;
+}

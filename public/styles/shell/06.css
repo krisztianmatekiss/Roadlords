@@ -1,0 +1,40 @@
+
+    .rlMenuPanel{position:fixed!important;z-index:46000!important}
+    .brand.rlGameMenuBrand{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:0!important;min-width:0!important}
+    .rlGameMenuButton{display:flex;align-items:center;justify-content:center;gap:9px;height:42px;min-width:116px;padding:0 15px;border:1px solid #a28743;border-radius:8px;background:linear-gradient(180deg,#2d2a19,#17170f);color:#ffe49a;font:950 11px/1 Inter,Segoe UI,Arial,sans-serif;letter-spacing:.09em;cursor:pointer;box-shadow:0 5px 14px #0008,inset 0 1px #fff1;transition:.13s ease}
+    .rlGameMenuButton:hover{transform:translateY(-1px);border-color:#e4c361;background:linear-gradient(180deg,#403820,#201e12);color:#fff1bb}
+    .rlGameMenuButton .rlBurger{font-size:18px;line-height:1;letter-spacing:0}
+
+    .rlIngameMenu{position:fixed;z-index:44000;inset:0;display:none;place-items:center;padding:20px;background:#020705d9;backdrop-filter:blur(8px);font-family:Inter,Segoe UI,Arial,sans-serif}
+    .rlIngameMenu.show{display:grid}
+    .rlIngameMenuCard{width:min(470px,92vw);padding:20px;border:1px solid #8d793f;border-radius:14px;background:linear-gradient(180deg,#142019fa,#09110dfa);box-shadow:0 26px 80px #000e,inset 0 1px #ffffff13;color:#e8e1cc}
+    .rlIngameMenuHead{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:2px 2px 16px;border-bottom:1px solid #435246}
+    .rlIngameMenuHead h2{margin:0;color:#f1d77c;font:900 25px/1 Georgia,serif;letter-spacing:.08em}
+    .rlIngameMenuMode{color:#87968d;font-size:9px;font-weight:900;letter-spacing:.09em;text-align:right}
+    .rlIngameMenuButtons{display:grid;gap:9px;padding-top:16px}
+    .rlIngameMenuBtn{min-height:48px;border:1px solid #536357;border-radius:8px;background:#111c16;color:#d8e0d7;font-size:11px;font-weight:950;letter-spacing:.08em;cursor:pointer;box-shadow:inset 0 1px #fff1}
+    .rlIngameMenuBtn:hover{border-color:#c7a956;background:#282719;color:#ffe59a}
+    .rlIngameMenuBtn.primary{border-color:#c7a956;background:#493d21;color:#fff0b3}
+    .rlIngameMenuBtn.danger{border-color:#79514a;color:#d8aaa1;background:#1c1211}
+    .rlIngameMenuBtn.danger:hover{border-color:#c46c5e;color:#ffd0c8;background:#301817}
+    .rlIngameMenuNote{min-height:32px;margin:13px 2px 0;color:#8f9e95;font-size:9px;line-height:1.45;text-align:center}
+    .rlIngameMenuVersion{margin-top:9px;color:#5f6d65;font-size:8px;text-align:center;letter-spacing:.07em}
+
+    .rlSoundRow{display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,250px);align-items:center;gap:16px;padding:9px 10px;margin:7px 0;border:1px solid #344339;border-radius:8px;background:#111c16}
+    .rlSoundRow>div{display:flex;flex-direction:column;gap:3px}.rlSoundRow b{color:#e8dfc0;font-size:11px;letter-spacing:.05em}.rlSoundRow small{color:#8fa096;font-size:9px}
+    .rlMusicToggle{height:34px;border:1px solid #8d793f;border-radius:7px;background:#292617;color:#f2df9c;font-size:10px;font-weight:950;cursor:pointer}.rlMusicToggle.off{border-color:#4a5149;background:#111712;color:#879087}
+    .rlMusicVolume{width:100%;accent-color:#c8aa59}
+
+    body[data-ui-scale="large"] .rlGameMenuButton{height:46px;min-width:132px;font-size:13px}
+    body[data-ui-scale="large"] .rlIngameMenuCard{width:min(520px,92vw)}
+    body[data-ui-scale="large"] .rlIngameMenuBtn{min-height:55px;font-size:13px}
+    body[data-ui-scale="tv-legacy"] .rlGameMenuButton{height:58px;min-width:170px;padding:0 20px;font-size:17px;gap:12px}
+    body[data-ui-scale="tv-legacy"] .rlGameMenuButton .rlBurger{font-size:27px}
+    body[data-ui-scale="tv-legacy"] .rlIngameMenuCard{width:min(690px,92vw);padding:28px}
+    body[data-ui-scale="tv-legacy"] .rlIngameMenuHead h2{font-size:37px}
+    body[data-ui-scale="tv-legacy"] .rlIngameMenuMode{font-size:13px}
+    body[data-ui-scale="tv-legacy"] .rlIngameMenuButtons{gap:13px;padding-top:22px}
+    body[data-ui-scale="tv-legacy"] .rlIngameMenuBtn{min-height:70px;font-size:17px}
+    body[data-ui-scale="tv-legacy"] .rlIngameMenuNote{font-size:13px;min-height:44px}
+    body[data-ui-scale="tv-legacy"] .rlIngameMenuVersion{font-size:11px}
+    @media(max-width:700px){.rlSoundRow{grid-template-columns:1fr}.rlMusicToggle{width:100%}.rlGameMenuButton{min-width:100px;padding:0 10px}}

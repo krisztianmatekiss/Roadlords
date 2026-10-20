@@ -1,0 +1,13 @@
+
+    @media(max-width:1450px){
+      #app{min-width:0!important}
+      .war{grid-template-columns:minmax(300px,31vw) minmax(400px,1fr) minmax(300px,31vw)!important}
+      .cityzone{max-width:none!important;min-width:0!important}
+      .topbar{grid-template-columns:220px minmax(420px,1fr) auto!important;gap:8px!important;padding-inline:8px!important}
+      .resources{min-width:0!important;max-width:620px!important}
+      .res{min-width:0!important}
+    }
+    @media(max-width:1250px){
+      #app{min-width:1080px!important}
+      .war{grid-template-columns:300px minmax(400px,1fr) 300px!important}
+    }

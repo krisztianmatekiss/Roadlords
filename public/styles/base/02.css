@@ -1,0 +1,10 @@
+
+/* A tereprajz átlátszó margója ne foglaljon helyet a mezőn. */
+.plot.terrain{padding:0}
+.plot.terrain .ticonimg{position:absolute;max-width:none;max-height:none;object-fit:fill;transform:none}
+.plot.terrain.forest .ticonimg{width:145.45455%;height:130.61224%;left:-21.59091%;top:-10.20408%;transform:none}
+.plot.terrain.quarry .ticonimg{width:119.62617%;height:143.01676%;left:-7.00935%;top:-25.69832%;transform:none}
+.plot.terrain.fertile .ticonimg{width:126.73267%;height:133.33333%;left:-18.31683%;top:-19.27083%;transform:none}
+.plot.terrain.foundation .ticonimg{width:122.48804%;height:118.51852%;left:-11.48325%;top:-11.11111%;transform:none}
+.plot.terrain.ruin .ticonimg{width:126.73267%;height:142.22222%;left:-13.86139%;top:-20.00000%;transform:none}
+.plot.terrain.ancient .ticonimg{width:114.79821%;height:134.73684%;left:-5.82960%;top:-17.36842%;transform:none}

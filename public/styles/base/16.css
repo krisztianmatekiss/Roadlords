@@ -1,0 +1,31 @@
+html body{overflow:hidden!important}
+html body #app{min-width:0!important;min-height:0!important;height:100dvh!important;grid-template-rows:64px minmax(260px,1fr) 220px!important}
+html body #app .war{display:block!important;overflow-x:auto!important;overflow-y:hidden!important;padding:0!important;overscroll-behavior:contain;scrollbar-color:#ba9c58 #102018;scrollbar-width:auto;touch-action:pan-x}
+.roadWorld{position:relative;height:100%;min-height:260px;background:#23382a}
+html body .roadWorld .cityzone{position:absolute!important;top:50%!important;transform:translateY(-50%)!important;width:440px!important;max-width:440px!important;min-width:0!important;z-index:5!important;padding:12px!important}
+html body .roadWorld .cityzone:first-child{left:0!important}
+html body .roadWorld .cityzone:last-child{right:0!important}
+html body .roadWorld .battle{position:absolute!important;left:440px!important;top:0!important;height:100%!important;max-height:none!important;aspect-ratio:auto!important;overflow:hidden!important;border:0!important}
+html body .roadWorld .battle canvas{display:block!important;position:absolute!important;left:0!important;top:0!important;max-width:none!important;object-fit:fill!important;touch-action:pan-x}
+.roadWorld .armycount,.roadWorld .battlemsg,.roadWorld #suddenOverlay{display:none!important}
+#roadHud{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:35;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:96vw;padding:9px 14px;border:1px solid #ab9258;border-radius:9px;background:#0b1813ed;box-shadow:0 6px 24px #0009;font:700 12px system-ui;color:#eee4c4}
+#roadHud button{border:1px solid #65765f;background:#203429;color:#fff0c5;padding:6px 10px;border-radius:5px;cursor:pointer}
+#roadHud [data-test]{display:none}
+body.road-test #roadHud [data-test]{display:inline-block}
+body.roadlords-menu-open #roadHud{display:none}
+#roadCounts{font-variant-numeric:tabular-nums;white-space:nowrap}
+#roadStatus{color:#e2c772}
+body.road-test .command{pointer-events:none;opacity:.65}
+body.road-test #pauseBtn,body.road-test #speedBtn{display:none!important}
+#roadTestMenu{color:#ffe29b;border-color:#b89a4b}
+@media(max-width:900px){html body #app{grid-template-rows:60px minmax(250px,1fr) 180px!important}#roadHud{top:66px;width:96vw;gap:5px;font-size:11px}#roadHud button{padding:5px 7px}html body .topbar{overflow-x:auto!important;grid-template-columns:auto 1fr auto!important}.topbar .brand{display:none}.roadWorld .cityzone{font-size:12px}}
+
+#roadTestSummary{display:none}
+body.road-test .command .catalog{display:none!important}
+body.road-test #roadTestSummary{display:block;margin:10px auto;max-width:920px;font:15px/1.7 system-ui;color:#c8d2bf}
+body.road-test #nextPick,body.road-test .unitProductionHud{display:none!important}
+body.road-test .command{opacity:1}
+
+html body .roadWorld .gate{top:50%!important;transform:translateY(-50%)!important}
+
+#roadHud{width:max-content;max-width:96vw}

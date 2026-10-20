@@ -1,0 +1,486 @@
+{
+  "canonicalFunctions": 432,
+  "removedDuplicateDeclarations": 121,
+  "extractedAssets": 153,
+  "assetReferences": 147,
+  "stylesheetFiles": 58,
+  "registrationModules": [
+    "ai/strategy",
+    "city/systems",
+    "combat/rules",
+    "progression/choices",
+    "economy/resources",
+    "core/utilities",
+    "rendering/drawing",
+    "ui/presentation",
+    "multiplayer/protocol",
+    "combat/road",
+    "diagnostics/stress-battle"
+  ],
+  "startup": [
+    {
+      "domain": "core/initial-state",
+      "name": "initializeCoreInitialState"
+    },
+    {
+      "domain": "data/unit-definitions",
+      "name": "initializeDataUnitDefinitions"
+    },
+    {
+      "domain": "data/artwork",
+      "name": "initializeDataArtwork"
+    },
+    {
+      "domain": "data/building-definitions",
+      "name": "initializeDataBuildingDefinitions"
+    },
+    {
+      "domain": "data/upgrades",
+      "name": "initializeDataUpgrades"
+    },
+    {
+      "domain": "core/cities",
+      "name": "initializeCoreCities"
+    },
+    {
+      "domain": "world/battlefield",
+      "name": "initializeWorldBattlefield"
+    },
+    {
+      "domain": "combat/initial-state",
+      "name": "initializeCombatInitialState"
+    },
+    {
+      "domain": "ui/initial-controls",
+      "name": "initializeUiInitialControls"
+    },
+    {
+      "domain": "city/support-balance",
+      "name": "initializeCitySupportBalance"
+    },
+    {
+      "domain": "combat/projectile-state",
+      "name": "initializeCombatProjectileState"
+    },
+    {
+      "domain": "ui/inspector-controls",
+      "name": "initializeUiInspectorControls"
+    },
+    {
+      "domain": "data/building-branches",
+      "name": "initializeDataBuildingBranches"
+    },
+    {
+      "domain": "progression/balance",
+      "name": "initializeProgressionBalance"
+    },
+    {
+      "domain": "city/advanced-support",
+      "name": "initializeCityAdvancedSupport"
+    },
+    {
+      "domain": "combat/advanced-rules",
+      "name": "initializeCombatAdvancedRules"
+    },
+    {
+      "domain": "ai/economy",
+      "name": "initializeAiEconomy"
+    },
+    {
+      "domain": "multiplayer/initial-state",
+      "name": "initializeMultiplayerInitialState"
+    },
+    {
+      "domain": "core/startup",
+      "name": "initializeCoreStartup"
+    },
+    {
+      "domain": "city/guardhouse-network",
+      "name": "initializeCityGuardhouseNetwork"
+    },
+    {
+      "domain": "ui/city-inspection",
+      "name": "initializeUiCityInspection"
+    },
+    {
+      "domain": "ui/initial-hud",
+      "name": "initializeUiInitialHud"
+    },
+    {
+      "domain": "combat/sudden-death",
+      "name": "initializeCombatSuddenDeath"
+    },
+    {
+      "domain": "combat/sudden-death-state",
+      "name": "initializeCombatSuddenDeathState"
+    },
+    {
+      "domain": "ui/tower-inspection",
+      "name": "initializeUiTowerInspection"
+    },
+    {
+      "domain": "combat/sudden-death-timing",
+      "name": "initializeCombatSuddenDeathTiming"
+    },
+    {
+      "domain": "ui/catalog-affordability",
+      "name": "initializeUiCatalogAffordability"
+    },
+    {
+      "domain": "ui/catalog-details",
+      "name": "initializeUiCatalogDetails"
+    },
+    {
+      "domain": "ui/menu-state",
+      "name": "initializeUiMenuState"
+    },
+    {
+      "domain": "ui/menu-intro",
+      "name": "initializeUiMenuIntro"
+    },
+    {
+      "domain": "progression/early-game",
+      "name": "initializeProgressionEarlyGame"
+    },
+    {
+      "domain": "progression/starter-choices",
+      "name": "initializeProgressionStarterChoices"
+    },
+    {
+      "domain": "ai/composition",
+      "name": "initializeAiComposition"
+    },
+    {
+      "domain": "economy/build-pricing",
+      "name": "initializeEconomyBuildPricing"
+    },
+    {
+      "domain": "ai/placement",
+      "name": "initializeAiPlacement"
+    },
+    {
+      "domain": "ui/hotkeys",
+      "name": "initializeUiHotkeys"
+    },
+    {
+      "domain": "ai/ruin-clearing",
+      "name": "initializeAiRuinClearing"
+    },
+    {
+      "domain": "ui/menu-brand",
+      "name": "initializeUiMenuBrand"
+    },
+    {
+      "domain": "ui/menu-labels",
+      "name": "initializeUiMenuLabels"
+    },
+    {
+      "domain": "economy/match-statistics",
+      "name": "initializeEconomyMatchStatistics"
+    },
+    {
+      "domain": "core/ready-state",
+      "name": "initializeCoreReadyState"
+    },
+    {
+      "domain": "multiplayer/pregame",
+      "name": "initializeMultiplayerPregame"
+    },
+    {
+      "domain": "ai/army-planning",
+      "name": "initializeAiArmyPlanning"
+    },
+    {
+      "domain": "diagnostics/public-api",
+      "name": "initializeDiagnosticsPublicApi"
+    },
+    {
+      "domain": "city/tower-command",
+      "name": "initializeCityTowerCommand"
+    },
+    {
+      "domain": "economy/terrain-stacking",
+      "name": "initializeEconomyTerrainStacking"
+    },
+    {
+      "domain": "ui/inspector-drag",
+      "name": "initializeUiInspectorDrag"
+    },
+    {
+      "domain": "rendering/shield-feedback",
+      "name": "initializeRenderingShieldFeedback"
+    },
+    {
+      "domain": "rendering/tower-health",
+      "name": "initializeRenderingTowerHealth"
+    },
+    {
+      "domain": "progression/rerolls",
+      "name": "initializeProgressionRerolls"
+    },
+    {
+      "domain": "economy/stockpile",
+      "name": "initializeEconomyStockpile"
+    },
+    {
+      "domain": "ui/placement-cancellation",
+      "name": "initializeUiPlacementCancellation"
+    },
+    {
+      "domain": "ui/choice-layout",
+      "name": "initializeUiChoiceLayout"
+    },
+    {
+      "domain": "core/features",
+      "name": "initializeCoreFeatures1"
+    },
+    {
+      "domain": "city/library-and-guild",
+      "name": "initializeCityLibraryAndGuild"
+    },
+    {
+      "domain": "combat/priest-healing",
+      "name": "initializeCombatPriestHealing"
+    },
+    {
+      "domain": "data/temple-balance",
+      "name": "initializeDataTempleBalance"
+    },
+    {
+      "domain": "ui/match-summary",
+      "name": "initializeUiMatchSummary"
+    },
+    {
+      "domain": "multiplayer/player-names",
+      "name": "initializeMultiplayerPlayerNames"
+    },
+    {
+      "domain": "rendering/guild-artwork",
+      "name": "initializeRenderingGuildArtwork"
+    },
+    {
+      "domain": "city/campaign-feast",
+      "name": "initializeCityCampaignFeast"
+    },
+    {
+      "domain": "city/support-synergies",
+      "name": "initializeCitySupportSynergies"
+    },
+    {
+      "domain": "ui/war-center-market",
+      "name": "initializeUiWarCenterMarket"
+    },
+    {
+      "domain": "ui/production-hud",
+      "name": "initializeUiProductionHud"
+    },
+    {
+      "domain": "ui/resource-hud",
+      "name": "initializeUiResourceHud"
+    },
+    {
+      "domain": "progression/synergy-relics",
+      "name": "initializeProgressionSynergyRelics"
+    },
+    {
+      "domain": "city/academy",
+      "name": "initializeCityAcademy"
+    },
+    {
+      "domain": "city/high-keep",
+      "name": "initializeCityHighKeep"
+    },
+    {
+      "domain": "data/training-balance",
+      "name": "initializeDataTrainingBalance"
+    },
+    {
+      "domain": "city/mercenaries",
+      "name": "initializeCityMercenaries"
+    },
+    {
+      "domain": "rendering/support-artwork",
+      "name": "initializeRenderingSupportArtwork"
+    },
+    {
+      "domain": "city/alchemist",
+      "name": "initializeCityAlchemist"
+    },
+    {
+      "domain": "ui/multiple-inspectors",
+      "name": "initializeUiMultipleInspectors"
+    },
+    {
+      "domain": "city/alchemy-recipes",
+      "name": "initializeCityAlchemyRecipes"
+    },
+    {
+      "domain": "city/alchemy-progression",
+      "name": "initializeCityAlchemyProgression"
+    },
+    {
+      "domain": "rendering/potion-badges",
+      "name": "initializeRenderingPotionBadges"
+    },
+    {
+      "domain": "progression/strategic-superiority",
+      "name": "initializeProgressionStrategicSuperiority"
+    },
+    {
+      "domain": "ui/minimized-choices",
+      "name": "initializeUiMinimizedChoices"
+    },
+    {
+      "domain": "core/game-loop",
+      "name": "initializeCoreGameLoop"
+    },
+    {
+      "domain": "ai/mercenary-planning",
+      "name": "initializeAiMercenaryPlanning"
+    },
+    {
+      "domain": "core/features",
+      "name": "initializeCoreFeatures2"
+    },
+    {
+      "domain": "ui/hud-layering",
+      "name": "initializeUiHudLayering"
+    },
+    {
+      "domain": "rendering/tower-labels",
+      "name": "initializeRenderingTowerLabels"
+    },
+    {
+      "domain": "multiplayer/speed-consensus",
+      "name": "initializeMultiplayerSpeedConsensus"
+    },
+    {
+      "domain": "ui/choice-text",
+      "name": "initializeUiChoiceText"
+    },
+    {
+      "domain": "multiplayer/snapshots",
+      "name": "initializeMultiplayerSnapshots"
+    },
+    {
+      "domain": "multiplayer/reconnect",
+      "name": "initializeMultiplayerReconnect"
+    },
+    {
+      "domain": "city/mercenary-network",
+      "name": "initializeCityMercenaryNetwork"
+    },
+    {
+      "domain": "ui/readable-summary",
+      "name": "initializeUiReadableSummary"
+    },
+    {
+      "domain": "data/archer-balance",
+      "name": "initializeDataArcherBalance"
+    },
+    {
+      "domain": "economy/spend-history",
+      "name": "initializeEconomySpendHistory"
+    },
+    {
+      "domain": "economy/resource-history",
+      "name": "initializeEconomyResourceHistory"
+    },
+    {
+      "domain": "factions/orc-foundation",
+      "name": "initializeFactionsOrcFoundation"
+    },
+    {
+      "domain": "factions/orc-bootstrap",
+      "name": "initializeFactionsOrcBootstrap"
+    },
+    {
+      "domain": "factions/orc-roster",
+      "name": "initializeFactionsOrcRoster"
+    },
+    {
+      "domain": "factions/orc-support",
+      "name": "initializeFactionsOrcSupport"
+    },
+    {
+      "domain": "factions/orc-gate-support",
+      "name": "initializeFactionsOrcGateSupport"
+    },
+    {
+      "domain": "factions/orc-descriptions",
+      "name": "initializeFactionsOrcDescriptions"
+    },
+    {
+      "domain": "factions/orc-capital",
+      "name": "initializeFactionsOrcCapital"
+    },
+    {
+      "domain": "factions/orc-berserker-goblin",
+      "name": "initializeFactionsOrcBerserkerGoblin"
+    },
+    {
+      "domain": "factions/orc-military-branches",
+      "name": "initializeFactionsOrcMilitaryBranches"
+    },
+    {
+      "domain": "factions/orc-relics",
+      "name": "initializeFactionsOrcRelics"
+    },
+    {
+      "domain": "rendering/orc-emblems",
+      "name": "initializeRenderingOrcEmblems"
+    },
+    {
+      "domain": "factions/orc-positive-statuses",
+      "name": "initializeFactionsOrcPositiveStatuses"
+    },
+    {
+      "domain": "combat/curse-damage",
+      "name": "initializeCombatCurseDamage"
+    },
+    {
+      "domain": "combat/timed-regeneration",
+      "name": "initializeCombatTimedRegeneration"
+    },
+    {
+      "domain": "ui/building-level-copy",
+      "name": "initializeUiBuildingLevelCopy"
+    },
+    {
+      "domain": "data/roster-cleanup",
+      "name": "initializeDataRosterCleanup"
+    },
+    {
+      "domain": "rendering/orc-card-artwork",
+      "name": "initializeRenderingOrcCardArtwork"
+    },
+    {
+      "domain": "rendering/orc-map-artwork",
+      "name": "initializeRenderingOrcMapArtwork"
+    },
+    {
+      "domain": "rendering/orc-unit-artwork",
+      "name": "initializeRenderingOrcUnitArtwork"
+    },
+    {
+      "domain": "rendering/team-colors",
+      "name": "initializeRenderingTeamColors"
+    },
+    {
+      "domain": "ai/coordinated-waves",
+      "name": "initializeAiCoordinatedWaves"
+    },
+    {
+      "domain": "ui/battle-status",
+      "name": "initializeUiBattleStatus"
+    },
+    {
+      "domain": "ui/choice-cards",
+      "name": "initializeUiChoiceCards"
+    },
+    {
+      "domain": "combat/road-integration",
+      "name": "initializeCombatRoadIntegration"
+    }
+  ]
+}

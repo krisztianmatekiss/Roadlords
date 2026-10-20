@@ -1,0 +1,221 @@
+
+/* =====================================================================
+   V4.11.15 — CLEAN TV 4K
+   New TV mode inherits the normal/large UI instead of resurrecting the
+   old TV stylesheet. Only the construction dock gets a dedicated scale.
+
+   --tv4k-s = 0.90 at a 1920×1080-or-smaller effective browser viewport,
+               matching the user's known-good 90% browser-zoom look.
+             = scales proportionally above that, up to true 4K CSS space.
+   ===================================================================== */
+:root{--tv4k-s:.9}
+
+body[data-ui-scale="tv"] #app{
+  grid-template-rows:
+    clamp(64px,3.33vw,128px)
+    minmax(0,1fr)
+    calc(209px * var(--tv4k-s))!important;
+}
+
+body[data-ui-scale="tv"] .command{
+  position:relative!important;
+  display:block!important;
+  min-height:0!important;
+  padding:
+    calc(6px * var(--tv4k-s))
+    calc(8px * var(--tv4k-s))
+    calc(7px * var(--tv4k-s))!important;
+  overflow:hidden!important;
+  border-top:1px solid #465c4c!important;
+  box-sizing:border-box!important;
+}
+body[data-ui-scale="tv"] .command::before{display:none!important}
+
+body[data-ui-scale="tv"] .catalog{
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  display:grid!important;
+  grid-template-columns:
+    calc(118px * var(--tv4k-s))
+    minmax(0,1fr)!important;
+  grid-template-rows:1fr!important;
+  column-gap:calc(8px * var(--tv4k-s))!important;
+  padding:
+    calc(6px * var(--tv4k-s))
+    calc(8px * var(--tv4k-s))!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+
+body[data-ui-scale="tv"] .tabs{
+  grid-column:1!important;
+  grid-row:1!important;
+  align-self:center!important;
+  width:100%!important;
+  height:calc(132px * var(--tv4k-s))!important;
+  min-height:0!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:repeat(4,1fr)!important;
+  gap:calc(4px * var(--tv4k-s))!important;
+  padding:0!important;
+  margin:0!important;
+}
+body[data-ui-scale="tv"] .tab{
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  padding:0 calc(8px * var(--tv4k-s))!important;
+  font-size:calc(9px * var(--tv4k-s))!important;
+  border-radius:calc(6px * var(--tv4k-s))!important;
+}
+
+body[data-ui-scale="tv"] .buildnav{
+  grid-column:2!important;
+  grid-row:1!important;
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  padding:0 calc(34px * var(--tv4k-s))!important;
+  margin:0!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+
+body[data-ui-scale="tv"] .buildlist{
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:calc(8px * var(--tv4k-s))!important;
+  padding:0 calc(6px * var(--tv4k-s))!important;
+  margin:0!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  box-sizing:border-box!important;
+  scrollbar-width:none!important;
+}
+body[data-ui-scale="tv"] .buildlist::-webkit-scrollbar{display:none!important}
+
+body[data-ui-scale="tv"] .buildSlot{
+  flex:0 0 calc(166px * var(--tv4k-s))!important;
+  width:calc(166px * var(--tv4k-s))!important;
+  height:calc(150px * var(--tv4k-s))!important;
+  min-height:calc(150px * var(--tv4k-s))!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:
+    calc(18px * var(--tv4k-s))
+    calc(132px * var(--tv4k-s))!important;
+  justify-items:center!important;
+  align-items:start!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+}
+
+body[data-ui-scale="tv"] .buildSlotBadges{
+  width:calc(160px * var(--tv4k-s))!important;
+  height:calc(18px * var(--tv4k-s))!important;
+  min-height:calc(18px * var(--tv4k-s))!important;
+  gap:calc(4px * var(--tv4k-s))!important;
+  padding:0 0 calc(1px * var(--tv4k-s)) calc(1px * var(--tv4k-s))!important;
+  margin:0!important;
+  transform:none!important;
+}
+body[data-ui-scale="tv"] .buildSlotBadges .buildHotkey{
+  width:calc(24px * var(--tv4k-s))!important;
+  height:calc(17px * var(--tv4k-s))!important;
+  min-width:calc(24px * var(--tv4k-s))!important;
+  min-height:calc(17px * var(--tv4k-s))!important;
+  font-size:calc(10px * var(--tv4k-s))!important;
+}
+body[data-ui-scale="tv"] .buildSlotBadges .buildCountBadge{
+  min-width:calc(30px * var(--tv4k-s))!important;
+  height:calc(17px * var(--tv4k-s))!important;
+  padding:0 calc(6px * var(--tv4k-s))!important;
+  font-size:calc(9px * var(--tv4k-s))!important;
+}
+
+body[data-ui-scale="tv"] .buildSlot>.buildcard.gamecard.compactPickCard{
+  grid-row:2!important;
+  flex:0 0 calc(160px * var(--tv4k-s))!important;
+  width:calc(160px * var(--tv4k-s))!important;
+  height:calc(132px * var(--tv4k-s))!important;
+  min-height:calc(132px * var(--tv4k-s))!important;
+  grid-template-rows:
+    calc(20px * var(--tv4k-s))
+    calc(55px * var(--tv4k-s))
+    calc(35px * var(--tv4k-s))
+    calc(18px * var(--tv4k-s))!important;
+  padding:
+    calc(2px * var(--tv4k-s))
+    calc(5px * var(--tv4k-s))
+    calc(2px * var(--tv4k-s))!important;
+  margin:0!important;
+  transform:none!important;
+  align-self:start!important;
+  overflow:hidden!important;
+  border-radius:calc(8px * var(--tv4k-s))!important;
+  box-sizing:border-box!important;
+}
+
+body[data-ui-scale="tv"] .buildcard.compactPickCard .cardname{
+  font-size:calc(11.5px * var(--tv4k-s))!important;
+  line-height:calc(19px * var(--tv4k-s))!important;
+}
+body[data-ui-scale="tv"] .buildcard.compactPickCard .cardart.card-media{
+  width:100%!important;
+  height:calc(55px * var(--tv4k-s))!important;
+  min-width:0!important;
+  min-height:calc(55px * var(--tv4k-s))!important;
+  max-width:none!important;
+  max-height:calc(55px * var(--tv4k-s))!important;
+  padding:
+    calc(1px * var(--tv4k-s))
+    calc(3px * var(--tv4k-s))!important;
+}
+body[data-ui-scale="tv"] .buildcard.compactPickCard .cardinfo{
+  padding:
+    calc(3px * var(--tv4k-s))
+    calc(2px * var(--tv4k-s))
+    calc(1px * var(--tv4k-s))!important;
+}
+body[data-ui-scale="tv"] .buildcard.compactPickCard .carddesc{
+  font-size:calc(8px * var(--tv4k-s))!important;
+  line-height:1.16!important;
+  -webkit-line-clamp:3!important;
+}
+body[data-ui-scale="tv"] .buildcard.compactPickCard .cardcosts{
+  height:calc(18px * var(--tv4k-s))!important;
+  gap:calc(18px * var(--tv4k-s))!important;
+  padding:calc(2px * var(--tv4k-s)) calc(1px * var(--tv4k-s)) 0!important;
+  font-size:calc(9.5px * var(--tv4k-s))!important;
+}
+body[data-ui-scale="tv"] .buildcard.compactPickCard .cardcosts .costIcon{
+  width:calc(10px * var(--tv4k-s))!important;
+  height:calc(10px * var(--tv4k-s))!important;
+  min-width:calc(10px * var(--tv4k-s))!important;
+  min-height:calc(10px * var(--tv4k-s))!important;
+  max-width:calc(10px * var(--tv4k-s))!important;
+  max-height:calc(10px * var(--tv4k-s))!important;
+}
+
+body[data-ui-scale="tv"] .scrollbtn{
+  top:50%!important;
+  width:calc(24px * var(--tv4k-s))!important;
+  height:calc(58px * var(--tv4k-s))!important;
+  font-size:calc(19px * var(--tv4k-s))!important;
+  transform:translateY(-50%)!important;
+  z-index:20!important;
+}
+body[data-ui-scale="tv"] .scrollbtn:first-child{left:2px!important}
+body[data-ui-scale="tv"] .scrollbtn:last-child{right:2px!important}

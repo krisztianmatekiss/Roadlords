@@ -1,0 +1,24 @@
+
+    #endOverlay .end{width:min(1440px,97vw)!important;max-height:92vh!important;padding:18px 20px 20px!important}
+    #endOverlay .end .big{font-size:36px!important}
+    #endOverlay .end>p{margin-bottom:12px!important}
+    .endStats.dualSummary{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0 15px;text-align:left}
+    .endPlayerPanel{min-width:0;border:1px solid #526257;border-radius:14px;background:linear-gradient(155deg,#18241d,#0e1611);overflow:hidden;box-shadow:inset 0 1px #ffffff0c}
+    .endPlayerHead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid #ffffff12;background:#ffffff05}
+    .endPlayerName{min-width:0}.endPlayerName small{display:block;color:#89968d;font-size:8px;font-weight:900;letter-spacing:.12em}.endPlayerName b{display:block;margin-top:2px;color:#f3ead0;font:900 20px/1.05 Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .endResultBadge{flex:0 0 auto;padding:7px 10px;border-radius:999px;font-size:9px;font-weight:950;letter-spacing:.11em;border:1px solid}
+    .endResultBadge.win{color:#d7ffcd;border-color:#70b76b;background:#234628}.endResultBadge.loss{color:#ffc8c8;border-color:#ad5b5b;background:#4b2323}
+    .endPlayerBody{display:grid;gap:10px;padding:11px}
+    .endCompareGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+    .endCompareStat{min-width:0;padding:7px 8px;border:1px solid #35463b;border-radius:8px;background:#0d1510}.endCompareStat span{display:block;color:#89968d;font-size:7px;font-weight:900;line-height:1.2;min-height:17px}.endCompareStat b{display:block;margin-top:3px;color:#f0e5c7;font-size:12px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+    .endSection{padding:9px;border:1px solid #34463a;border-radius:9px;background:#101914}.endSection h3{margin:0 0 7px;color:#e7c96f;font:850 11px Georgia,serif;letter-spacing:.02em}.endSection h3 small{font:800 7px Inter,Segoe UI,Arial,sans-serif;color:#7f8f84;margin-left:5px}
+    .endChipRows{display:flex;flex-wrap:wrap;gap:5px}.endChip{padding:4px 6px;border:1px solid #ffffff12;border-radius:7px;background:#0a110d;color:#c8d0c8;font-size:8px;line-height:1.25}.endChip b{color:#fff0bd}
+    .endUpgrades{display:flex;flex-wrap:wrap;gap:5px}
+    .endUpgrade{position:relative;display:inline-flex;align-items:center;gap:4px;max-width:100%;padding:5px 7px;border:1px solid #5b6048;border-radius:7px;background:linear-gradient(180deg,#1b241c,#101611);color:#eee3c1;font-size:8px;font-weight:850;cursor:help}
+    .endUpgrade.common{border-color:#657267}.endUpgrade.legendary{border-color:#bd9142;color:#ffe4a1;background:linear-gradient(180deg,#3a2b12,#1c160c)}.endUpgrade.building{border-color:#617590;color:#d9e8ff;background:linear-gradient(180deg,#1b2935,#101820)}
+    .endUpgrade .stack{color:#ffe08c;font-weight:950}
+    .endUpgradeTooltip{position:fixed;z-index:9999;display:none;max-width:min(420px,80vw);padding:9px 11px;border:1px solid #8a7650;border-radius:9px;background:#0b120ef5;color:#eee6cf;box-shadow:0 12px 35px #000d;font:500 10px/1.45 Inter,Segoe UI,Arial,sans-serif;pointer-events:none;text-align:left}
+    .endUpgradeTooltip b{display:block;margin-bottom:3px;color:#ffe094;font:900 12px Georgia,serif}.endUpgradeTooltip span{color:#bfc8bf}
+    .endEmpty{color:#758179;font-size:8px;font-style:italic}
+    @media(max-width:1050px){.endStats.dualSummary{grid-template-columns:1fr}.endCompareGrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    @media(max-width:620px){.endCompareGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.endPlayerHead{align-items:flex-start}}

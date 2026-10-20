@@ -1,0 +1,9 @@
+
+    .academySpendBox,.capitalStudyBox{margin:9px 0;padding:9px;border:1px solid #526657;border-radius:8px;background:#101a14}
+    .academySpendBox .boxlabel,.capitalStudyBox .boxlabel{margin-bottom:7px;color:#dbc477;font-size:8px;font-weight:950;letter-spacing:.09em}
+    .academySpendGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+    .academySpend{display:grid;gap:3px;min-width:0;padding:7px 5px;border:1px solid #455a4b;border-radius:7px;background:#17251d;color:#eee4c9;cursor:pointer;text-align:center}
+    .academySpend:hover:not(:disabled){border-color:#d9bb65;background:#26382c}.academySpend:disabled{opacity:.38;cursor:not-allowed}
+    .academySpend .academyIcon{font-size:17px}.academySpend b{font-size:9px}.academySpend small{color:#9eaea2;font-size:7.5px;line-height:1.25}.academySpend em{font-style:normal;color:#ffe099;font-size:8px;font-weight:950}
+    .capitalStudyActions{display:grid;grid-template-columns:1fr 1fr;gap:6px}.capitalStudyActions button{min-height:36px;border:1px solid #526657;border-radius:7px;background:#17251d;color:#eee4c9;font-size:8px;font-weight:950;cursor:pointer}.capitalStudyActions button:hover:not(:disabled){border-color:#d9bb65;background:#29382e}.capitalStudyActions button:disabled{opacity:.38;cursor:not-allowed}.capitalStudyActions button.active{border-color:#73b887;color:#caffd4;background:#1b3524}
+    .capitalStudyPrice{margin-bottom:7px;color:#aebcaf;font-size:8px;line-height:1.35}.capitalStudyPrice b{color:#ffe099}

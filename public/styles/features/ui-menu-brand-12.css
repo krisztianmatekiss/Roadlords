@@ -1,0 +1,78 @@
+
+    .mpLobbyCard .menuBrand{
+      position:relative!important;
+      left:50%!important;
+      transform:translateX(-50%)!important;
+      width:min(88vw,760px)!important;
+      margin:0 0 clamp(30px,5.2vh,58px)!important;
+      display:grid!important;
+      grid-template-columns:minmax(40px,1fr) auto minmax(40px,1fr)!important;
+      grid-template-rows:auto auto!important;
+      align-items:center!important;
+      justify-items:center!important;
+      row-gap:clamp(10px,1.3vh,16px)!important;
+      overflow:visible!important;
+      text-align:center!important;
+    }
+    .mpLobbyCard .menuBrand::before,
+    .mpLobbyCard .menuBrand::after{
+      content:'';
+      width:100%;
+      max-width:120px;
+      height:1px;
+      margin:0 clamp(10px,1.2vw,20px);
+      background:linear-gradient(90deg,transparent,#c99e46 58%,#f0d17a);
+      box-shadow:0 0 8px #c89a3c55;
+      opacity:.8;
+      grid-row:1!important;
+    }
+    .mpLobbyCard .menuBrand::before{
+      grid-column:1!important;
+      justify-self:end!important;
+    }
+    .mpLobbyCard .menuBrand::after{
+      grid-column:3!important;
+      justify-self:start!important;
+      transform:scaleX(-1);
+    }
+    .mpLobbyCard .menuBrand h2{
+      grid-column:2!important;
+      grid-row:1!important;
+      width:auto!important;
+      min-width:0!important;
+      margin:0!important;
+      padding:.06em .02em .12em!important;
+      white-space:nowrap!important;
+      text-align:center!important;
+      text-indent:0!important;
+      font-family:Constantia,"Palatino Linotype",Palatino,Georgia,serif!important;
+      font-weight:900!important;
+      font-size:clamp(48px,4.45vw,78px)!important;
+      line-height:.88!important;
+      letter-spacing:.145em!important;
+      color:#efd17b!important;
+      background:linear-gradient(180deg,#fff6cf 0%,#f4dc92 38%,#d5a94d 72%,#9b6824 100%)!important;
+      -webkit-background-clip:text!important;
+      background-clip:text!important;
+      -webkit-text-fill-color:transparent!important;
+      -webkit-text-stroke:.45px #e7c36e!important;
+      text-shadow:none!important;
+      filter:drop-shadow(0 4px 3px #000b) drop-shadow(0 0 13px #a4722650)!important;
+      overflow:visible!important;
+    }
+    .mpLobbyCard .menuBrand .menuStartHint{
+      grid-column:1 / -1!important;
+      grid-row:2!important;
+      justify-self:center!important;
+      margin:0!important;
+      width:auto!important;
+      text-align:center!important;
+      white-space:nowrap!important;
+    }
+    @media(max-width:760px){
+      .mpLobbyCard .menuBrand{width:94vw!important;margin-bottom:30px!important;grid-template-columns:1fr!important}
+      .mpLobbyCard .menuBrand::before,.mpLobbyCard .menuBrand::after{display:none!important}
+      .mpLobbyCard .menuBrand h2{grid-column:1!important}
+      .mpLobbyCard .menuBrand .menuStartHint{grid-column:1!important}
+      .mpLobbyCard .menuBrand h2{font-size:clamp(34px,10vw,54px)!important;letter-spacing:.105em!important}
+    }

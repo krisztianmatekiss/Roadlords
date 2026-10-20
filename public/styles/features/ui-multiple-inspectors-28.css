@@ -1,0 +1,16 @@
+
+    #buildingInspectorLayer{position:fixed;inset:0;pointer-events:none;z-index:9100;display:none}
+    #buildingInspectorLayer.show{display:block}
+    .buildingInspectorWindow{position:fixed;pointer-events:auto;width:min(340px,calc(100vw - 20px));max-width:calc(100vw - 20px);background:linear-gradient(180deg,#1c2920f4,#0f1813f0);border:1px solid #6f7f69;border-radius:14px;box-shadow:0 16px 34px #000b,inset 0 1px 0 #ffffff12;overflow:hidden}
+    .buildingInspectorWindow .inspectorCard{max-height:min(610px,calc(100vh - 90px));overflow:auto}
+    .buildingInspectorWindow.dragging .ihead{cursor:grabbing}
+    .buildingInspectorWindow .ihead{cursor:grab;user-select:none;touch-action:none}
+    .buildingInspectorWindow .ihead button,.buildingInspectorWindow .ihead input,.buildingInspectorWindow .ihead select{cursor:pointer;touch-action:auto}
+    .multiInspectorButtons{display:flex;align-items:center;gap:6px;margin-left:10px}
+    .multiInspectorButtons button{width:28px;height:28px;display:grid;place-items:center;border:1px solid #6f7f69;border-radius:8px;background:#102018;color:#f3ebcf;font-weight:950;cursor:pointer;box-shadow:inset 0 1px 0 #ffffff14}
+    .multiInspectorButtons .closeAllInspectors{width:24px;height:24px;font-size:10px;opacity:.95}
+    .multiInspectorButtons .closeSingleInspector{font-size:14px}
+    .building[data-btype="academy"] .bspriteWrap{transform:scale(1.10) translateY(2%);transform-origin:center center}
+    .building[data-btype="merc_tent"] .bspriteWrap{transform:scale(1.09) translateY(1%);transform-origin:center center}
+    .building[data-btype="mastersguild"] .bspriteWrap{transform:none;transform-origin:center center}
+    .building[data-btype="academy"] .bsprite,.building[data-btype="merc_tent"] .bsprite,.building[data-btype="mastersguild"] .bsprite{object-fit:contain}

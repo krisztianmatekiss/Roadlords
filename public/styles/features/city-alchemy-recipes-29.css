@@ -1,0 +1,7 @@
+
+    .alchemyV4960{margin:9px 0 11px;padding:10px;border:1px solid #6c7e6d;border-radius:10px;background:linear-gradient(180deg,#17251dcc,#0d1611e8)}
+    .alchemyV4960 .alchemyHead{margin-bottom:8px}.alchemyV4960 .alchemyHead b{display:block;color:#f4e5b8;font-size:10px}.alchemyV4960 .alchemyHead small{display:block;color:#aebbad;font-size:8px;margin-top:2px}
+    .alchemySliderRows{display:grid;gap:7px}.alchemySliderRow{display:grid;grid-template-columns:minmax(112px,.9fr) minmax(120px,1.2fr);gap:9px;align-items:center;padding:7px;border:1px solid #425647;border-radius:8px;background:#101a14}
+    .alcName{display:flex;gap:7px;align-items:center}.alcName>span:first-child{font-size:18px;width:20px;text-align:center}.alcName b{display:block;color:#eee3c7;font-size:9px}.alcName small{display:block;color:#91a497;font-size:7px;line-height:1.2}
+    .alcSlider{display:grid;gap:3px}.alcSlider input[type=range]{width:100%;accent-color:#d4b45a}.alcSlider input:disabled{opacity:.48}.alcSlider small{font-size:7px;color:#aebbad}.alcSlider small b{color:#f0d88c}.alchemySliderRow.alcRemoved{opacity:.55}.alchemySliderRow.alcRemoved strong{justify-self:end;color:#b9aaa0}
+    .alchemyRule{margin-top:8px;padding-top:7px;border-top:1px solid #ffffff12;color:#aebbad;font-size:7.5px;line-height:1.35}

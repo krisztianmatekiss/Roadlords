@@ -1,0 +1,32 @@
+
+    .topbar{
+      position:relative!important;
+      z-index:20000!important;
+      isolation:isolate;
+    }
+
+    /* A játékbeli modális rétegek a HUD ALATT kezdődjenek. */
+    #choiceOverlay,#relicOverlay,#endOverlay{
+      top:clamp(64px,3.33vw,128px)!important;
+      right:0!important;
+      bottom:0!important;
+      left:0!important;
+      height:auto!important;
+    }
+    #choiceOverlay{
+      padding-top:clamp(8px,.55vw,18px)!important;
+    }
+
+    /* Értesítések alul, a build dock fölött. A felső HUD közelébe sem kerülhetnek. */
+    .toast{
+      top:auto!important;
+      bottom:calc(clamp(160px,8.33vw,320px) + 12px)!important;
+      z-index:15000!important;
+    }
+    .toast.show{transform:translate(-50%,0)!important}
+
+    /* Pick reminder se úszhasson rá a felső menüsávra. */
+    .pickReminder{
+      top:calc(clamp(64px,3.33vw,128px) + 10px)!important;
+      z-index:15000!important;
+    }

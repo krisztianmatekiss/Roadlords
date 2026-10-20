@@ -1,0 +1,14 @@
+
+    .buildCountBadge{position:absolute;left:7px;top:27px;z-index:6;min-width:24px;height:20px;padding:0 6px;display:grid;place-items:center;border:1px solid #d9bd6a;border-radius:999px;background:#101a14ed;color:#ffe8a4;font:950 10px/1 Inter,Segoe UI,Arial,sans-serif;box-shadow:0 2px 6px #000b,inset 0 1px #fff2;pointer-events:none}
+    .buildCountBadge.zero{border-color:#56665b;color:#87958a;background:#101712d9}
+    #endOverlay .end{width:min(940px,94vw);max-height:88vh;overflow:auto;padding:18px 20px 20px}
+    #endOverlay .end .big{font-size:44px}#endOverlay .end h2{margin-bottom:2px}
+    #endOverlay .end>p{margin:2px 0 10px;color:#aeb9af}
+    .endStats{display:grid;gap:10px;text-align:left;margin:10px 0 15px}
+    .endHero{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .endHeroCard{padding:10px 8px;border:1px solid #62583d;border-radius:9px;background:linear-gradient(155deg,#202c24,#101712);text-align:center;box-shadow:inset 0 1px #ffffff0c}
+    .endHeroCard small{display:block;color:#9eaa9f;font-size:8px;font-weight:900;letter-spacing:.09em}.endHeroCard b{display:block;margin-top:4px;color:#ffe096;font:900 20px/1 Georgia,serif}
+    .endStatGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.endStat{padding:7px 8px;border:1px solid #394b40;border-radius:7px;background:#101914}.endStat span{display:block;color:#91a096;font-size:7.5px;font-weight:850}.endStat b{display:block;margin-top:2px;color:#eee4c7;font-size:12px;font-variant-numeric:tabular-nums}
+    .endDetailGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.endDetail{padding:9px;border:1px solid #435649;border-radius:8px;background:#121c17}.endDetail h3{margin:0 0 6px;color:#e8ca77;font:800 12px Georgia,serif}.endMiniRows{display:flex;flex-wrap:wrap;gap:4px}.endMini{padding:4px 6px;border:1px solid #ffffff12;border-radius:999px;background:#0c130f;color:#c8d0c8;font-size:8px}.endMini b{color:#fff0bd}
+    #endOverlay .end>button{margin-top:3px}
+    @media(max-width:760px){.endHero,.endStatGrid{grid-template-columns:repeat(2,1fr)}.endDetailGrid{grid-template-columns:1fr}}

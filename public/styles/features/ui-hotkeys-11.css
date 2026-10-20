@@ -1,0 +1,7 @@
+
+    .tabHotkey{display:inline-grid;place-items:center;min-width:16px;height:16px;margin-right:5px;padding:0 3px;border:1px solid #d2b65c88;border-radius:3px;background:#0a120e;color:#f2d16f;font-size:8px;font-weight:950;line-height:1;vertical-align:middle;box-shadow:inset 0 1px #fff1}
+    .tab.active .tabHotkey{background:#2a2414;color:#ffe58d;border-color:#5d481c}
+    .buildcard{position:relative}
+    .buildHotkey{position:absolute;z-index:12;left:4px;top:4px;display:grid;place-items:center;width:18px;height:18px;border:1px solid #e0bd5dcc;border-radius:4px;background:#101811e8;color:#ffe38a;font:950 9px/1 system-ui;box-shadow:0 2px 5px #000b,inset 0 1px #fff2;pointer-events:none}
+    .buildcard.selected .buildHotkey{background:#b6872d;color:#171006;border-color:#ffe28b}
+    .buildcard:disabled .buildHotkey{opacity:.42}

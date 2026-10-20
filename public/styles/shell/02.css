@@ -1,0 +1,7 @@
+
+    /* A játék HUD-ja a főmenü alatt egyáltalán ne látszódjon.
+       A lobby eltűnésekor automatikusan visszakapcsol. */
+    body.roadlords-menu-open .topbar{
+      visibility:hidden!important;
+      pointer-events:none!important;
+    }

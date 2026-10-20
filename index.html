@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Roadlords</title>
+<link rel="stylesheet" href="/styles/base/01.css">
+<link rel="stylesheet" href="/styles/base/02.css">
+<link rel="stylesheet" href="/styles/base/03.css">
+<link rel="stylesheet" href="/styles/base/04.css"></head>
+<body>
+<main id="app">
+  <header class="topbar">
+    <div class="brand"><span class="crest">R</span><div><h1>ROADLORDS</h1><small>HUMAN · 1V1 · BUILDING BALANCE</small></div></div>
+    <section class="resources">
+      <div class="res"><span class="ri"><img class="resourceIcon" src="/art/wood-ad426a1dcdc5e609.webp" alt="Fa"></span><div><b id="woodStock">100 / 100</b><small><span class="gain" id="woodGain">+0.5/s</span><span class="use" id="woodUse"></span></small></div></div>
+      <div class="res"><span class="ri"><img class="resourceIcon" src="/art/stone-7b62fafa3d25f326.webp" alt="Kő"></span><div><b id="stoneStock">100 / 100</b><small><span class="gain" id="stoneGain">+0.5/s</span><span class="use" id="stoneUse"></span></small></div></div>
+      <div class="res"><span class="ri"><img class="resourceIcon" src="/art/food-5a55b60020d4aba8.webp" alt="Élelem"></span><div><b id="foodStock">100 / 100</b><small><span class="gain" id="foodGain">+0.5/s</span><span class="use" id="foodUse"></span></small></div></div>
+    </section>
+    <section class="run">
+      <div class="datum"><small>IDŐ</small><b id="timer">00:00</b></div>
+      <div class="datum"><small>KÖVETKEZŐ VÁLASZTÁS</small><b id="nextPick">KEZDÉS</b></div>
+      <div id="dynamicPickHud" class="dynamicPickHud" aria-label="Változó ereklyehatások"></div>
+      <button class="btn" id="relicBtn" title="Aktív relicek">✦ <span id="relicCount">0</span></button>
+      <button class="btn pause on" id="pauseBtn" title="Szünet / folytatás">▶</button>
+      <button class="btn active" id="speedBtn" title="Sebesség">1×</button>
+    </section>
+  </header>
+
+  <section class="war">
+    <section class="cityzone">
+      <div class="cityhead"><span><small>EMBERI BIRODALOM</small><b>A te városod</b></span><span class="cityarmy"><small>SEREG</small><b id="playerArmy">0/50</b><span id="playerArmyMix" class="unitmix"></span></span><span class="cityhp"><span id="playerHp">2000</span> HP</span></div>
+      <div class="cityframe playerframe"><span class="corner tl"></span><span class="corner bl"></span><div id="playerGrid" class="citygrid"></div><div class="gate right playergate" id="playerGate" role="button" tabindex="0" aria-label="Kapuállítás" data-mode="open"><span class="gateModeIcon" id="gateModeIcon">🔓</span><span class="gateLabel">KAPU</span><div class="gateMenu" id="gateMenu"><button class="gatebubble open active" data-gate="open" type="button" title="Nyitott kapu">🔓</button><button class="gatebubble closed" data-gate="closed" type="button" title="Zárt kapu">🔒</button><button class="gatebubble auto" data-gate="auto" type="button" title="Automata kapu">↻</button></div></div></div>
+      <div class="cityfoot">
+        <span class="stack"><small>HELYŐRSÉG</small><b id="garrisonCount">0 / 30</b></span>
+        <div id="playerGarrisonMix" class="unitmix reservemix"></div>
+        <div class="bar"><i id="garrisonFill"></i></div>
+
+      </div>
+    </section>
+
+    <section class="battle">
+      <canvas id="battlefield" width="1200" height="700"></canvas>
+      <div class="battlemsg" id="battleMsg">Az első 4 választás csak épületet old fel.</div>
+    </section>
+
+    <section class="cityzone">
+      <div class="cityhead enemy"><span class="cityhp"><span id="enemyHp">2000</span> HP</span><span class="cityarmy"><small>SEREG</small><b id="enemyArmy">0/50</b><span id="enemyArmyMix" class="unitmix"></span></span><span><small>BLACKFANG KLÁN</small><b>Ellenséges város</b></span></div>
+      <div class="cityframe enemyframe"><div class="gate left enemygate" id="enemyGate" data-mode="closed"><span class="gateModeIcon" id="enemyGateModeIcon">🔒</span><span class="gateLabel">KAPU</span></div><div id="enemyGrid" class="citygrid enemygrid"></div><span class="corner tr"></span><span class="corner br"></span></div>
+      <div class="cityfoot enemyfoot"><span class="stack"><small>ELLENFÉL TARTALÉK</small><b id="enemyGarrison">0</b></span><div id="enemyGarrisonMix" class="unitmix reservemix"></div><div class="auto" id="enemyAiInfo">AI · VÁLASZTÁS #4</div></div>
+    </section>
+  </section>
+
+  <section class="command">
+    <nav class="catalog">
+      <div class="decktitle"></div>
+      <div class="tabs"><button class="tab active" data-cat="all">Mind</button><button class="tab" data-cat="economy">Gazdaság</button><button class="tab" data-cat="military">Hadsereg</button><button class="tab" data-cat="support">Támogatás</button></div>
+      <div class="buildnav"><button id="buildPrev" class="scrollbtn" type="button" aria-label="Előző">‹</button><div id="buildList" class="buildlist"></div><button id="buildNext" class="scrollbtn" type="button" aria-label="Következő">›</button></div>
+    </nav>
+    <aside id="inspector" class="inspector"></aside>
+    <div id="placementHint" class="placementhint"></div>
+  </section>
+</main>
+
+<div id="choiceOverlay" class="overlay hidden"><section class="modal"><button id="minimizeChoice" class="choiceMinimize eyeOnly" type="button" aria-label="Elrejtés" data-tip="Elrejtés"><span aria-hidden="true">👁</span></button><div class="choicehead"><small id="choiceKicker">KEZDŐ VÁLASZTÁS</small><h2 id="choiceTitle">Válassz épületet</h2><p id="choiceDesc"></p></div><div id="choiceList" class="choices"></div><div class="choiceTools choiceDockBar"><button id="rerollChoice" class="choiceTool choiceDock choiceReroll" type="button" title="Újrasorsolás"><span class="dockIcon" aria-hidden="true"><svg class="rerollSvg" viewBox="0 0 40 40" aria-hidden="true"><path d="M8.5 18.5A12.5 12.5 0 0 1 29 9.5"/><path d="M28.8 5.7l1.1 7.1-7.1-1.1"/><path d="M31.5 21.5A12.5 12.5 0 0 1 11 30.5"/><path d="M11.2 34.3l-1.1-7.1 7.1 1.1"/></svg></span><span class="dockCount" id="rerollCount">0</span></button><button id="skipChoice" class="choiceTool choiceSkip" type="button" title="Kihagyás">Kihagyás</button><button id="banChoice" class="choiceTool ban choiceDock choiceBan" type="button" title="Kitiltás"><span class="dockIcon" aria-hidden="true">⊘</span><span class="dockCount" id="banCount">0</span></button><span id="choiceTokens" class="choiceTokens srOnly" aria-hidden="true"></span></div><div id="choiceBanHint" class="choiceBanHint"></div></section></div>
+<button id="pickReminder" class="pickReminder hidden" type="button">VÁLASZTÁS VÁR · <span>1</span></button>
+<div id="relicOverlay" class="overlay hidden"><section class="modal"><div class="ledgerhead"><h2>Aktív relicek</h2><button class="close" id="closeRelics">✕</button></div><div id="relicList" class="reliclist"></div></section></div>
+<div id="endOverlay" class="overlay hidden"><section class="modal end"><div class="big" id="endIcon">♛</div><h2 id="endTitle">Győzelem</h2><p id="endText"></p><button id="restartBtn">ÚJ RUN</button></section></div>
+<div id="toast" class="toast"></div>
+
+
+
+
+<link rel="stylesheet" href="/styles/base/05.css">
+
+
+
+<link rel="stylesheet" href="/styles/base/06.css">
+
+
+
+<link rel="stylesheet" href="/styles/base/07.css">
+
+
+
+
+<link rel="stylesheet" href="/styles/base/08.css">
+
+
+<link rel="stylesheet" href="/styles/base/09.css">
+
+
+<link rel="stylesheet" href="/styles/base/10.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/styles/base/11.css">
+
+
+<link rel="stylesheet" href="/styles/base/12.css">
+
+
+<link rel="stylesheet" href="/styles/base/13.css">
+
+<link rel="stylesheet" href="/styles/base/14.css">
+
+
+
+<link rel="stylesheet" href="/styles/base/15.css">
+
+<link rel="stylesheet" href="/styles/base/16.css">
+
+
+<script type="module" src="/src/main.js"></script>
+</body></html>

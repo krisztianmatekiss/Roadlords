@@ -1,0 +1,16 @@
+
+  .command{position:relative!important;overflow:visible!important}
+  .placementhint{
+    left:50%!important;
+    bottom:calc(100% + 10px)!important;
+    transform:translateX(-50%)!important;
+    z-index:35!important;
+    max-width:min(92vw,1200px)!important;
+    box-shadow:0 10px 24px #0009!important;
+  }
+  body[data-ui-scale="large"] .placementhint{
+    bottom:calc(100% + 12px)!important;
+  }
+  body[data-ui-scale="tv-legacy"] .placementhint{
+    bottom:calc(100% + 14px)!important;
+  }

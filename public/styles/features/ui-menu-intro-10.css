@@ -1,0 +1,12 @@
+
+    .mpLobbyCard .menuBrand h2{
+      width:100%!important;margin:0 auto!important;padding:0!important;text-align:center!important;text-indent:0!important;
+      font-family:"Copperplate Gothic Bold","Palatino Linotype",Constantia,Georgia,serif!important;
+      font-weight:900!important;font-size:clamp(46px,5.15vw,76px)!important;line-height:.96!important;
+      letter-spacing:.13em!important;
+      color:#f3d47c!important;
+      background:linear-gradient(180deg,#fff7d6 8%,#edcf82 52%,#b98531 100%);
+      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+      -webkit-text-stroke:.35px #e6c36c;
+      text-shadow:none!important;filter:drop-shadow(0 5px 12px #000) drop-shadow(0 0 14px #8a632c45)
+    }

@@ -1,0 +1,47 @@
+
+  /* Keskenyebb pick kártyák, de a képablak magassága és az artwork vizuális mérete maradjon. */
+  body:not([data-ui-scale="tv-legacy"]) #choiceOverlay .modal{
+    width:min(1320px,calc(100vw - 28px))!important;
+  }
+  body:not([data-ui-scale="tv-legacy"]) #choiceList{
+    grid-template-columns:repeat(4,minmax(0,310px))!important;
+    justify-content:center!important;
+    gap:12px!important;
+  }
+  body:not([data-ui-scale="tv-legacy"]) #choiceList.five{
+    grid-template-columns:repeat(5,minmax(0,242px))!important;
+    gap:10px!important;
+  }
+  body:not([data-ui-scale="tv-legacy"]) #choiceList.six{
+    grid-template-columns:repeat(3,minmax(0,300px))!important;
+  }
+
+  /* A képek ne legyenek összenyomva a keskenyebb kártyák miatt. */
+  body:not([data-ui-scale="tv-legacy"]) #choiceList .choiceArt.card-media{
+    height:135px!important;
+    min-height:135px!important;
+    max-height:135px!important;
+  }
+  body:not([data-ui-scale="tv-legacy"]) #choiceList .choiceArt.card-media > img.choiceBuildingImage{
+    width:112%!important;
+    height:108%!important;
+    max-width:none!important;
+    max-height:none!important;
+    object-fit:contain!important;
+  }
+
+  body[data-ui-scale="large"] #choiceOverlay .modal{
+    width:min(1320px,96vw)!important;
+  }
+  body[data-ui-scale="large"] #choiceList{
+    grid-template-columns:repeat(4,minmax(0,310px))!important;
+    justify-content:center!important;
+    gap:12px!important;
+  }
+  body[data-ui-scale="large"] #choiceList.five{
+    grid-template-columns:repeat(5,minmax(0,242px))!important;
+    gap:10px!important;
+  }
+  body[data-ui-scale="large"] #choiceList.six{
+    grid-template-columns:repeat(3,minmax(0,300px))!important;
+  }

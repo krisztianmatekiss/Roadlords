@@ -1,0 +1,18 @@
+
+    .mercBox{margin-top:8px;padding:8px;border:1px solid #5e725f;border-radius:8px;background:linear-gradient(180deg,#141f19,#0d1410)}
+    .mercHeader{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:7px;font-size:9px;color:#d9d0b0}
+    .mercHeader b{color:#f3e5bc;font-size:11px}
+    .mercRows{display:grid;gap:7px}
+    .mercRow{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:8px;align-items:center;padding:7px;border:1px solid #55675a;border-radius:8px;background:linear-gradient(180deg,#1a271f,#101814)}
+    .mercRow .mercDir{display:grid;place-items:center;width:32px;height:32px;border-radius:999px;border:1px solid #72816f;background:#101813;font-weight:900;font-size:16px}
+    .mercMid{min-width:0}
+    .mercTitle{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:3px}
+    .mercTitle b{font-size:10px;color:#f4e7c6}
+    .mercTitle span{font-size:8px;color:#9eb2a2}
+    .mercComp{font-size:8px;line-height:1.35;color:#d2dbc9}
+    .mercPrice{margin-top:4px;font-size:8px;color:#f0d992}
+    .mercBtns{display:grid;gap:5px;justify-items:end}
+    .mercBtns button{min-width:88px;height:28px;border:1px solid #647869;border-radius:6px;background:#203026;color:#f2e7ca;font-size:8px;font-weight:900;cursor:pointer}
+    .mercBtns button.active{border-color:#e6bf64;color:#ffe3a0;box-shadow:inset 0 0 0 1px #e6bf6444}
+    .mercBtns button:disabled{opacity:.45;cursor:default}
+    .mercFoot{margin-top:7px;font-size:8px;color:#9eb1a2;line-height:1.35}

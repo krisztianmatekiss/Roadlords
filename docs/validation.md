@@ -1,10 +1,14 @@
-# V4.17 – részletes minták, baráti áthaladás, toronysorrend
+# V4.17.1 – tesztalmenü és menetirány
 
 2026-10-20. Linux, Node.js 24, headless Chromium, 1440×960. Az ellenőrzések a kész production buildet futtatják `/Roadlords/` alatt; a helyi funkcionális tesztekben a külső HTTPS-forgalom tiltott.
 
 ## Grafika
 
-Két részletes minta készült az eredeti illusztrációk alapján: **kardos és ork harcos**. A generált, átlátszó atlasz öt külön mozgatható elemet tartalmaz karakterenként: torso/fej, fegyverkar, pajzskar, hátsó láb, első láb. Az atlasz összeállított referenciafiguráit nem használjuk mozgó állóképként. A többi 12 típus a V4.16 procedurális figuráit tartja meg. A részletes változatok a normál játékban, a TESZT-ben és az 500-as próbában is szerepelnek.
+V4.17.1: az összes próba a főmenü egyetlen **TESZTEK** pontjába került, saját VISSZA/Escape visszalépéssel. A normál játék és a vegyes 50/500-as csaták ismét az egyszerű figurákat használják. A részletes kétkarakteres minta a grafikai próbában marad; a **Grafika: Részletes / Egyszerű** kapcsoló ugyanabban a csatában vált megjelenést, a létszámot, HP-t, pozíciókat és időt nem módosítja. Újraindításkor a választott grafika megmarad.
+
+A menetirányt már a tényleges elmozdulás adja, az aktuális támadás pedig a találati cél felé fordítja a figurát. A korábbi célpont- vagy lejárt támadásirány nem írja ezt felül. Mindkét csapatot és mindkét megjelenést valódi harci lépésen át vizsgáljuk; a Canvas tényleges rajzolási transzformációjából ellenőrizzük az előrehaladás, megfordulás és támadás irányát. A multiplayer vendég rajzolása az interpolált haladásból állapítja meg az irányt, a 20 oszlopos hálózati formátum megmaradt.
+
+Két részletes minta készült az eredeti illusztrációk alapján: **kardos és ork harcos**. A generált, átlátszó atlasz öt külön mozgatható elemet tartalmaz karakterenként: torso/fej, fegyverkar, pajzskar, hátsó láb, első láb. Az atlasz összeállított referenciafiguráit nem használjuk mozgó állóképként. A többi 12 típus a V4.16 procedurális figuráit tartja meg. A részletes változatok kizárólag a grafikai próbában választhatók.
 
 Az új **GRAFIKAI PRÓBA · Kardos / Ork** menüpont 20/20 egységet indít valódi, teljesen fejlesztett városokkal és harci szabályokkal. A kezdő nagyítás 175%; a harctéri −/+ gombokkal változtatható. Újraindításkor megmarad a kétkarakteres mód, darabszám és városmag.
 
@@ -26,9 +30,9 @@ A teszt mindkét csapatot az út közepén és a két szélén ellenőrzi. Való
 
 ## Ellenőrzések és korlátok
 
-**61 sikeres ellenőrzés:** 12 grafikai/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás, 16 harc/animációteszt, 26 korábbi böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
+**71 sikeres ellenőrzés:** 22 menü/grafikai/menetirány/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás, 16 harc/animációteszt, 26 korábbi böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
 
-A három rögzített 50/50 csata 27,6–32,0 szimulált másodperc alatt eldőlt; mindegyikben mind a 100 egység mozgott vagy támadott, és nem maradt tartósan tétlen közelharcos. A helyi mérésben az 50/50 kb. 52,8 FPS, az 500/500 kb. 11,0 FPS volt. Ezek headless felhőgépes adatok: a felhasználó a V4.16 500-as változatán saját gépén 60 FPS-t jelzett, így a különböző környezetek nem hasonlíthatók közvetlenül. Stabil 60 FPS-t minden eszközre továbbra sem állítunk.
+A három rögzített 50/50 csata 27,0–32,0 szimulált másodperc alatt eldőlt; mindegyikben mind a 100 egység mozgott vagy támadott, és nem maradt tartósan tétlen közelharcos. A helyi mérésben az 50/50 kb. 48,4 FPS, az 500/500 kb. 9,0 FPS volt. Ezek headless felhőgépes adatok: a felhasználó a V4.16 500-as változatán saját gépén 60 FPS-t jelzett, így a különböző környezetek nem hasonlíthatók közvetlenül. Stabil 60 FPS-t minden eszközre továbbra sem állítunk.
 
 A valódi WebRTC-próba itt **környezeti akadály miatt kihagyva**: Chromium nulla ICE jelöltet szolgáltat. Az 1000 egységes csomagküldés, tükrözés és vendégparancsok tesztje sikeres; két internetes gép közötti kapcsolat ebből nem következik. A felhős Chromium éles HTTPS-próbájának korábbi tanúsítványkorlátját nem kerüljük meg. A GitHub Actions a kiadást ismét felépíti és ellenőrzi, mielőtt Pages-re teszi.
 

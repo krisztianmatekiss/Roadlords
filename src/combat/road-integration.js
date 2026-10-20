@@ -1,6 +1,7 @@
 import { loadDetailedFigures } from '../rendering/detailed-figures.js';
 import { installTowerFrontiers } from './frontiers.js';
 import { drawBattleGround } from '../rendering/battle-ground.js';
+import { installTestMenu } from '../ui/test-menu.js';
 export function initializeCombatRoadIntegration(runtime) {
   runtime.ROAD = {
     city: 440,
@@ -143,6 +144,8 @@ export function initializeCombatRoadIntegration(runtime) {
     for (const u of runtime.state.units) {
       const distance = Math.hypot(u.lane - u.roadPrev, (u.offset || 0) - u.roadPrevOffset);
       u.roadMoving = distance > .08;
+      // Facing follows actual travel, rather than an old navigation target.
+      if (Math.abs(u.lane-u.roadPrev)>.08) u.roadFace=Math.sign(u.lane-u.roadPrev);
       u.roadWalk = (u.roadWalk || 0) + distance * .17;
       u.roadTravel = (u.roadTravel || 0) + distance;
       const engaged = u.roadAim?.alive && runtime.roadDistance(u, u.roadAim) <= u.range + 1;
@@ -195,7 +198,7 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.roadBattle.style.setProperty('width', runtime.PATH_LENGTH + 'px', 'important');
   runtime.roadHud = document.createElement('div');
   runtime.roadHud.id = 'roadHud';
-  runtime.roadHud.innerHTML = '<span id="roadCounts"></span><span id="roadFps"></span><span id="roadStatus"></span><button data-camera="0">Saját város</button><button data-camera="1">Csata</button><button data-camera="2">Ellenfél</button><button id="roadZoomOut" aria-label="Kicsinyítés">−</button><span id="roadZoom">100%</span><button id="roadZoomIn" aria-label="Nagyítás">+</button><button data-test id="roadPause">Szünet</button><button data-test id="roadRestart">Újraindítás</button><button data-test id="roadMenu">Főmenü</button>';
+  runtime.roadHud.innerHTML = '<span id="roadCounts"></span><span id="roadFps"></span><span id="roadStatus"></span><button data-camera="0">Saját város</button><button data-camera="1">Csata</button><button data-camera="2">Ellenfél</button><button id="roadZoomOut" aria-label="Kicsinyítés">−</button><span id="roadZoom">100%</span><button id="roadZoomIn" aria-label="Nagyítás">+</button><button id="roadArtToggle" hidden aria-pressed="true">Grafika: Részletes</button><button data-test id="roadPause">Szünet</button><button data-test id="roadRestart">Újraindítás</button><button data-test id="roadMenu">Főmenü</button>';
   document.body.appendChild(runtime.roadHud);
   runtime.roadHud.querySelectorAll('[data-camera]').forEach(b => b.onclick = () => {
     const v = +b.dataset.camera;
@@ -227,7 +230,14 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.roadArtReady = Promise.all([originalArt, loadDetailedFigures(runtime)]);
   runtime.renderBattle = function (raw) {
     const begin = performance.now();
+    const guest=runtime.MP.enabled&&runtime.MP.role==='guest';
+    if(guest)for(const u of runtime.state.units)u.roadRenderPrev=u.lane;
     runtime.mpInterpolateUnits(raw);
+    if(guest)for(const u of runtime.state.units){
+      const dx=u.lane-u.roadRenderPrev;
+      if(Math.abs(dx)>.08)u.roadFace=Math.sign(dx);
+      u.roadWalk=(u.roadWalk||0)+Math.abs(dx)*.17;
+    }
     if (runtime.MP.enabled && runtime.MP.role === 'guest') {
       runtime.ROAD.clock = runtime.state.time;
       const previous = runtime.ROAD.guestPrevious || new Map(),
@@ -298,27 +308,17 @@ export function initializeCombatRoadIntegration(runtime) {
     }
   };
   runtime.ROAD.templates = [structuredClone(runtime.P), structuredClone(runtime.E)];
-  runtime.roadTestBtn = document.createElement('button');
-  runtime.roadTestBtn.id = 'roadTestMenu';
-  runtime.roadTestBtn.className = 'menuButton';
-  runtime.roadTestBtn.textContent = 'TESZT · 50 vs 50';
-  runtime.roadTestBtn.type = 'button';
-  runtime.roadTestBtn.onclick = () => runtime.roadStartTest(undefined, {count: 50});
-  const stressButton = document.createElement('button');
-  stressButton.id = 'roadStressMenu'; stressButton.className = 'menuButton'; stressButton.type = 'button';
-  stressButton.textContent = 'TERHELÉS · 500 vs 500';
-  stressButton.onclick = () => runtime.roadStartTest(undefined, {count: 500});
-  runtime.MP.lobby.querySelector('.menuMain').appendChild(runtime.roadTestBtn);
-  runtime.MP.lobby.querySelector('.menuMain').appendChild(stressButton);
-  const artButton=document.createElement('button');artButton.id='roadArtMenu';artButton.className='menuButton';artButton.type='button';
-  artButton.textContent='GRAFIKAI PRÓBA · Kardos / Ork';
-  artButton.onclick=()=>runtime.roadStartTest(undefined,{count:20,roster:'art'});
-  runtime.MP.lobby.querySelector('.menuMain').appendChild(artButton);
+  installTestMenu(runtime);
   runtime.roadTestSummary = document.createElement('p');
   runtime.roadTestSummary.id = 'roadTestSummary';
   runtime.$('.command').appendChild(runtime.roadTestSummary);
   runtime.$('#roadPause').onclick = runtime.roadPause;
-  runtime.$('#roadRestart').onclick = () => runtime.roadStartTest(runtime.ROAD.seed, {count: runtime.ROAD.testCount, roster: runtime.ROAD.testRoster});
+  runtime.$('#roadArtToggle').onclick=()=>{
+    runtime.ROAD.figureStyle=runtime.ROAD.figureStyle==='painted'?'simple':'painted';
+    runtime.$('#roadArtToggle').textContent=runtime.ROAD.figureStyle==='painted'?'Grafika: Részletes':'Grafika: Egyszerű';
+    runtime.$('#roadArtToggle').setAttribute('aria-pressed',String(runtime.ROAD.figureStyle==='painted'));
+  };
+  runtime.$('#roadRestart').onclick = () => runtime.roadStartTest(runtime.ROAD.seed, {count: runtime.ROAD.testCount, roster: runtime.ROAD.testRoster, figureStyle: runtime.ROAD.figureStyle});
   const setZoom = value => {runtime.ROAD.zoom = runtime.clamp(value, .75, 2); runtime.$('#roadZoom').textContent = Math.round(runtime.ROAD.zoom * 100) + '%';};
   runtime.$('#roadZoomOut').onclick = () => setZoom(runtime.ROAD.zoom - .25);
   runtime.$('#roadZoomIn').onclick = () => setZoom(runtime.ROAD.zoom + .25);

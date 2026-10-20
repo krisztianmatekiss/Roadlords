@@ -35,6 +35,11 @@ export function figurePose(u, clock, dead = false) {
   if (u.roadMoving) return { state: 'walk', frame: Math.floor(((u.roadWalk ?? clock * 8) + u.id * .73) / TAU * 8) % 8 };
   return { state: 'idle', frame: 0 };
 }
+function figureFacing(u,pose){
+  // Only a current attack may override travel direction; expired attacks cannot.
+  if(pose.state==='attack')return u.roadAttack.to>=u.lane?1:-1;
+  return u.roadFace||(u.side==='enemy'?-1:1);
+}
 function phase(pose) {
   const n = pose.frame;
   return {
@@ -167,7 +172,7 @@ function humanoid(g, style, color, p) {
   if(style.dual)weapon(g,'axe',-9,-20,-2.5+ p.strike*.9,color,p);
 }
 function sprite(R, u, pose) {
-  const color=R.unitTeamFill(u),detailed=hasDetailedFigure(R,u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${detailed?":painted":""}`;
+  const color=R.unitTeamFill(u),detailed=R.ROAD.figureStyle==='painted'&&hasDetailedFigure(R,u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${detailed?":painted":""}`;
   let canvas=R.ROAD.sprites.get(key);if(canvas)return canvas;
   const style=FIGURES[u.key];if(!style)return null;
   canvas=document.createElement('canvas');canvas.width=canvas.height=detailed?192:128;
@@ -192,7 +197,7 @@ export function installBattleFigures(R) {
     const g=R.ctx,scale=R.ROAD.h/600*zoom*(detail?1:.78),style=FIGURES[u.key],r=style.mount||style.machine?18:style.size>1?15:10;
     g.save();g.translate(p.x,p.y);g.scale(scale,scale);g.globalAlpha=dead?clamp(1-Math.max(0,age-1.2)/1.3)*.75:1;
     if(!dead&&detail){g.strokeStyle=R.unitTeamFill(u);g.globalAlpha=.5;g.lineWidth=1;g.beginPath();g.ellipse(0,2,r,3.5,0,0,TAU);g.stroke();g.globalAlpha=1;}
-    g.save();const face=u.roadFace||(u.roadAttack ? (u.roadAttack.to>=u.lane?1:-1) : u.side==='enemy'?-1:1);g.scale(face,1);
+    g.save();g.scale(figureFacing(u,pose),1);
     const hurt=dead?0:clamp(1-(R.ROAD.clock-(u.roadHurtAt??-99))/.16);g.translate(-Math.sin(hurt*Math.PI)*1.5,0);
     g.drawImage(image,...image.figureBounds);g.restore();
     if(!dead){

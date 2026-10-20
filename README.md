@@ -1,4 +1,4 @@
-# Roadlords · V4.17
+# Roadlords · V4.17.1
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság, fejlesztések, egységstatisztikák és a multiplayer-protokoll megmaradt.
 
@@ -6,9 +6,13 @@ A meglévő játék moduláris változata, a kapott harcprototípushoz közelít
 
 **https://krisztianmatekiss.github.io/Roadlords/**
 
-A főmenü **GRAFIKAI PRÓBA · Kardos / Ork** gombja egy 20 vs 20-as csatában mutatja a két részletes, eredeti illusztrációkból kiinduló mintakaraktert. A kardos és az ork harcos külön torso-, fegyverkar-, pajzskar- és két lábelemből animálódik; a ruhák/pajzsok a nyolc választható csapatszínt követik. A másik 12 típus egyelőre a V4.16 egyszerűbb figuráit használja. A két új minta a normál játékban és a többi tesztcsatában is megjelenik.
+A főmenüben egyetlen **TESZTEK** gomb nyitja az összes próbát. A külön almenüből a **VISSZA** vagy az **Escape** visz vissza; a szóló és multiplayer menüpontok külön maradnak.
 
-A főmenü **TESZT · 50 vs 50** gombja indítja a kisebb látványpróbát, a **TERHELÉS · 500 vs 500** a nagy seregek próbáját. Mindkettő két meglévő faj szabályos endgame városát és vegyes seregét használja, a valódi harcrendszerrel. A seregek maguktól megütköznek; újraindításkor ugyanazt a várost és seregösszeállítást kapják, a találatok véletlen kimenetele változhat.
+A **TESZTEK → GRAFIKAI PRÓBA · Kardos / Ork** egy 20 vs 20-as csatában mutatja a két részletes, eredeti illusztrációkból kiinduló mintakaraktert. A kardos és az ork harcos külön torso-, fegyverkar-, pajzskar- és két lábelemből animálódik; a ruhák/pajzsok a nyolc választható csapatszínt követik. A **Grafika: Részletes / Egyszerű** kapcsoló ugyanabban a csatában, a szimuláció újraindítása nélkül vált a két megjelenés között. Újraindításkor a választott grafika megmarad. A részletes minták animációja még merevebb; ezért csak ebben a próbában szerepelnek, a normál játék és a vegyes csaták a korábbi figurákat használják.
+
+A **TESZTEK → PRÓBAHARC · 50 vs 50** indítja a kisebb látványpróbát, a **TERHELÉS · 500 vs 500** a nagy seregek próbáját. Mindkettő két meglévő faj szabályos endgame városát és vegyes seregét használja, a valódi harcrendszerrel. A seregek maguktól megütköznek; újraindításkor ugyanazt a várost és seregösszeállítást kapják, a találatok véletlen kimenetele változhat.
+
+A figura menet közben a tényleges haladás felé fordul, támadás közben az aktuális ütés/lövés célpontja felé. Lejárt támadás vagy korábbi üldözési irány nem tartja hátrafelé fordítva. Ez az egyszerű és részletes figurákra egyaránt érvényes; a multiplayer vendégénél az interpolált haladás adja a menetirányt.
 
 A csatatér feletti gombokkal városra/csatára ugorhatsz, a **− / +** a csata nagyítását módosítja (75–200%). Szünet: gomb vagy szóköz. A főmenübe visszalépés új játékállapotot tölt be. A TESZT nem gyárt utánpótlást.
 

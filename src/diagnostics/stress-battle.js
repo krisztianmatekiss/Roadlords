@@ -68,10 +68,14 @@ export function register(runtime) {
       }
     };
   };
-  runtime.roadStartTest = function roadStartTest(seed, {count = 500, roster = 'mixed'} = {}) {
+  runtime.roadStartTest = function roadStartTest(seed, {count = 500, roster = 'mixed', figureStyle} = {}) {
     if (!(roster === 'art' && count === 20 || roster === 'mixed' && [50,500].includes(count))) throw new RangeError('Unsupported test roster or size');
     runtime.ROAD.testRoster = roster;
     runtime.ROAD.testCount = count;
+    runtime.ROAD.figureStyle=roster==='art'?(figureStyle==='simple'?'simple':'painted'):'simple';
+    runtime.$('#roadArtToggle').hidden=roster!=='art';
+    runtime.$('#roadArtToggle').textContent=runtime.ROAD.figureStyle==='painted'?'Grafika: Részletes':'Grafika: Egyszerű';
+    runtime.$('#roadArtToggle').setAttribute('aria-pressed',String(runtime.ROAD.figureStyle==='painted'));
     runtime.ROAD.zoom = roster === 'art' ? 1.75 : count === 50 ? 1.25 : 1;
     runtime.$("#roadZoom").textContent = Math.round(runtime.ROAD.zoom * 100) + "%";
     seed = Number.isInteger(seed) ? seed : crypto.getRandomValues(new Uint32Array(1))[0];

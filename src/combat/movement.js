@@ -38,7 +38,6 @@ export function installRoadMovement(R) {
       }
       aimX = target.lane - dir * Math.cos(angle) * stop;
       aimY = (target.offset || 0) + Math.sin(angle) * stop;
-      u.roadFace = target.lane >= u.lane ? 1 : -1;
     } else {
       const structure = R.targetStructure(u.side);
       aimX = structure.lane;

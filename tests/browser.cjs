@@ -19,7 +19,8 @@ async function main(){
   check('Production modules load all 14 unit sprites without an external CDN',await page.evaluate(()=>__ROADLORDS_ROAD__.state.art.size===14&&typeof Peer==='function'));
   await page.locator('.menuBrand').click();await page.waitForTimeout(1000);
   await page.screenshot({path:'artifacts/menu.png'});
-  check('TESZT is a distinct main menu entry',await page.locator('.menuMain #roadTestMenu').isVisible());
+  check('TESZTEK groups battle tests behind one main menu entry',await page.locator('.menuMain #roadTestsMenu').isVisible()&&!await page.locator('#roadTestMenu').isVisible());
+  await page.locator('#roadTestsMenu').click();
   await page.locator('#roadTestMenu').click();await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
   let initial=await page.evaluate(()=>__ROADLORDS_ROAD__.snapshot());
   check('One menu click generates exactly 50 units per side and all 14 types',initial.initial.counts.every(n=>n===50)&&initial.initial.keys.length===14);

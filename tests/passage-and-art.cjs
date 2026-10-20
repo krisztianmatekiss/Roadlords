@@ -8,7 +8,17 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   const page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));
   await page.goto(URL);await page.waitForFunction(()=>!!window.__ROADLORDS_ROAD__);await page.evaluate(()=>__ROADLORDS_ROAD__.artReady);
   await page.locator('.menuBrand').click();await page.waitForTimeout(900);
-  check('Main menu exposes the detailed two-character battle sample',await page.locator('#roadArtMenu').isVisible());
+  check('Main menu exposes only TESZTEK while all three battle entries stay hidden',await page.locator('#roadTestsMenu').isVisible()&&await page.locator('.menuMain #roadTestMenu,.menuMain #roadStressMenu,.menuMain #roadArtMenu').count()===0&&!await page.locator('#roadArtMenu').isVisible());
+  await page.locator('#roadTestsMenu').click();
+  check('TESZTEK opens all three experiments in a separate panel',await page.locator('#roadTestsPanel').isVisible()&&await page.locator('#roadArtMenu').isVisible()&&await page.locator('#roadTestMenu').isVisible()&&await page.locator('#roadStressMenu').isVisible());
+  await page.screenshot({path:'artifacts/test-submenu.png'});
+  await page.keyboard.press('Escape');
+  check('Escape returns to main menu and restores keyboard focus',!await page.locator('#roadTestsPanel').isVisible()&&await page.locator('#roadTestsMenu').evaluate(e=>document.activeElement===e));
+  await page.locator('#roadTestsMenu').click();await page.locator('#roadTestsBack').click();
+  check('VISSZA closes the test submenu without starting a game',!await page.locator('#roadTestsPanel').isVisible()&&!await page.evaluate(()=>__ROADLORDS_ROAD__.state.test));
+  await page.locator('#mpOpenMulti').click();
+  check('Multiplayer submenu remains reachable after closing tests',await page.locator('#mpCreateRoom').isVisible());
+  await page.locator('#mpMenuBack').click();await page.locator('#roadTestsMenu').click();
   await page.locator('#roadArtMenu').click();await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
   const initial=await page.evaluate(()=>({snapshot:__ROADLORDS_ROAD__.snapshot(),roster:__ROADLORDS_ROAD__.state.testRoster,art:__ROADLORDS_ROAD__.state.detailedArt?.ready}));
   check('Art sample loads 20/20 human swordsmen and orc warriors using the real cities and battle system',initial.art&&initial.roster==='art'&&initial.snapshot.counts.every(n=>n===20)&&initial.snapshot.initial.keys.join(',')==='swordsman,orc_warrior');
@@ -43,6 +53,42 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('Both sample characters have five separate art pieces and painted animation frames',textures.parts.length===2&&textures.parts.every(n=>n===5)&&Object.values(textures.models).every(v=>v.blue.resolution===192&&v.red.resolution===192));
   check('Blue/red cloth remains identifiable while gold armor and green orc skin survive recoloring',Object.values(textures.models).every(v=>v.blue.painted>50&&v.red.painted>50)&&textures.models.swordsman.blue.gold>50&&textures.models.orc_warrior.red.skin>1000&&textures.models.orc_warrior.red.preservedSkin/textures.models.orc_warrior.red.skin>.98);
   check('Detailed textures retain bounded sprite and color caches',textures.sprites<=768&&textures.colorCache===16);
+  const beforeStyle=await page.evaluate(()=>({time:__ROADLORDS_ROAD__.snapshot().time,units:__ROADLORDS__.state.units.map(u=>[u.id,u.hp,u.lane,u.offset])}));
+  await page.locator('#roadArtToggle').click();
+  check('Graphics comparison changes only rendering while the same paused battle is preserved',await page.evaluate(before=>{const Q=__ROADLORDS_ROAD__,R=__ROADLORDS_RUNTIME__;Q.render(0);return Q.state.figureStyle==='simple'&&Q.snapshot().time===before.time&&JSON.stringify(R.state.units.map(u=>[u.id,u.hp,u.lane,u.offset]))===JSON.stringify(before.units)&&[...Q.state.sprites].some(([k])=>k.startsWith('figure:swordsman:')&&!k.endsWith(':painted'));},beforeStyle));
+  await page.screenshot({path:'artifacts/art-comparison-simple.png'});
+  await page.locator('#roadRestart').click();await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
+  check('Restart preserves the selected comparison graphics',await page.evaluate(()=>__ROADLORDS_ROAD__.state.figureStyle==='simple'));
+  await page.locator('#roadArtToggle').click();
+  const facing=await page.evaluate(()=>{
+    const R=__ROADLORDS_RUNTIME__,Q=__ROADLORDS_ROAD__,results=[];
+    for(const t of R.towers)t.alive=false;R.roadRefreshFrontiers();
+    for(const c of [R.P,R.E]){c.race='human';c.normal={};c.legends=new Set();c.l4Branches={};}
+    function drawSign(u){
+      const draw=R.ctx.drawImage;let sign;
+      R.ctx.drawImage=function(...args){sign=Math.sign(this.getTransform().a);return draw.apply(this,args);};
+      try{R.roadDrawUnit(u);}finally{R.ctx.drawImage=draw;}return sign;
+    }
+    for(const style of ['simple','painted'])for(const side of ['player','enemy']){
+      Q.state.figureStyle=style;R.state.units=[];Q.state.pending=[];
+      const dir=side==='player'?1:-1,u=R.releaseUnit(side==='player'?R.P:R.E,{key:'swordsman'});
+      u.lane=Q.state.camera+300;u.offset=u.roadHomeOffset=0;u.cooldown=999;u.roadFace=-dir;
+      u.roadAttack={start:Q.state.clock-2,launch:Q.state.clock-1.8,hit:Q.state.clock-1.8,end:Q.state.clock-1,to:u.lane-dir*100};
+      const start=u.lane;R.updateBattle(.1);
+      const forward=u.lane-start,forwardDraw=drawSign(u);
+      const v=R.releaseUnit(side==='player'?R.E:R.P,{key:'swordsman'});
+      v.lane=u.lane-dir*100;v.offset=0;v.cooldown=999;v.stunTime=100;
+      const turn=u.lane;R.updateBattle(.1);
+      const backward=u.lane-turn,turnDraw=drawSign(u);
+      v.lane=u.lane+dir*25;u.cooldown=0;R.attackUnit(u,v);u.roadFace=-dir;
+      const attackDraw=drawSign(u);
+      results.push({style,side,forward,forwardDraw,backward,turnDraw,attackDraw,dir});
+    }
+    Q.state.figureStyle='painted';return results;
+  });report.facing=facing;
+  check('Both renderers face actual forward travel despite a stale opposite target',facing.every(x=>x.forward*x.dir>0&&x.forwardDraw===x.dir));
+  check('Both renderers turn toward reverse travel on either team',facing.every(x=>x.backward*x.dir<0&&x.turnDraw===-x.dir));
+  check('Active attacks face their impact target instead of stale movement',facing.every(x=>x.attackDraw===x.dir));
   const mobility=await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,Q=__ROADLORDS_ROAD__;
    for(const t of R.towers)t.alive=false;R.roadRefreshFrontiers();
@@ -101,6 +147,8 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('Painted sample battle advances and deals real damage',live.metrics.attacks>0&&live.metrics.damage>0&&live.time>3);
   await page.screenshot({path:'artifacts/detailed-art-contact.png'});
   check('No application errors in the art, passage or tower scenarios',report.errors.length===0&&!live.error);
+  await page.evaluate(()=>{__ROADLORDS_ROAD__.startTest(42,{count:50});__ROADLORDS_ROAD__.pause();});
+  check('Mixed battles use the established simple figures and hide the experimental toggle',await page.evaluate(()=>__ROADLORDS_ROAD__.state.figureStyle==='simple')&&!await page.locator('#roadArtToggle').isVisible());
   fs.writeFileSync('artifacts/passage-and-art-results.json',JSON.stringify(report,null,2));
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

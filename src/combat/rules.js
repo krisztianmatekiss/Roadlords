@@ -336,7 +336,7 @@ export function register(runtime) {
           continue;
         }
         if (sd <= u.range) {
-          if (!structureSlots[u.side].has(u.id)) continue;
+          if (!structureSlots[u.side].has(u.id)) {runtime.roadAdvance(u,opps,dt);continue;}
           if (sacred) continue;
           if (u.cooldown <= 0) {
             runtime.attackStructure(u, s);
@@ -478,7 +478,7 @@ export function register(runtime) {
     };
     for (const side of ['player', 'enemy']) {
       const s = structures[side];
-      for (const u of alive) if (u.side === side && runtime.roadDistance(s, u) <= u.range) allowed[side].add(u.id);
+      for (const u of alive) if (u.side === side && runtime.roadDistance(s, u) <= u.range && (!runtime.roadTowerPositionReady||runtime.roadTowerPositionReady(u,s))) allowed[side].add(u.id);
     }
     return allowed;
   };

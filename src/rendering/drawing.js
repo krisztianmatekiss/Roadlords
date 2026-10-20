@@ -360,8 +360,16 @@ export function register(runtime) {
     return window.__ROADLORDS_UNIT_COLORS__?.draw(runtime.ctx, u, r) || false;
   };
   runtime.roadResize = function roadResize() {
+    const oldCity=runtime.ROAD.city,oldScroll=runtime.roadWar.scrollLeft;
+    const atEnd=oldScroll>0&&oldScroll>=runtime.roadWar.scrollWidth-runtime.roadWar.clientWidth-2;
     runtime.ROAD.w = Math.max(320, runtime.roadWar.clientWidth);
     runtime.ROAD.h = Math.max(260, runtime.roadWar.clientHeight);
+    runtime.ROAD.city=runtime.ROAD.h;
+    runtime.roadWorld.style.width=runtime.PATH_LENGTH+runtime.ROAD.city*2+'px';
+    runtime.roadWorld.style.height=runtime.ROAD.h+'px';
+    runtime.roadWorld.style.setProperty('--road-city-size',runtime.ROAD.city+'px');
+    runtime.roadWorld.style.setProperty('--capital-gate-height',Math.max(100,Math.min(240,runtime.ROAD.city*.28))+'px');
+    if(oldScroll>0&&oldCity!==runtime.ROAD.city)runtime.roadWar.scrollLeft=atEnd?runtime.roadWar.scrollWidth:oldScroll+runtime.ROAD.city-oldCity;
     if (runtime.canvas.width !== runtime.ROAD.w || runtime.canvas.height !== runtime.ROAD.h) {
       runtime.canvas.width = runtime.ROAD.w;
       runtime.canvas.height = runtime.ROAD.h;

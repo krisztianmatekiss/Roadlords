@@ -1,4 +1,4 @@
-# Roadlords · V4.17.1
+# Roadlords · V4.18
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság, fejlesztések, egységstatisztikák és a multiplayer-protokoll megmaradt.
 
@@ -14,13 +14,17 @@ A **TESZTEK → PRÓBAHARC · 50 vs 50** indítja a kisebb látványpróbát, a 
 
 A figura menet közben a tényleges haladás felé fordul, támadás közben az aktuális ütés/lövés célpontja felé. Lejárt támadás vagy korábbi üldözési irány nem tartja hátrafelé fordítva. Ez az egyszerű és részletes figurákra egyaránt érvényes; a multiplayer vendégénél az interpolált haladás adja a menetirányt.
 
-A csatatér feletti gombokkal városra/csatára ugorhatsz, a **− / +** a csata nagyítását módosítja (75–200%). Szünet: gomb vagy szóköz. A főmenübe visszalépés új játékállapotot tölt be. A TESZT nem gyárt utánpótlást.
+A tesztcsaták alsó vezérlősorával városra/csatára ugorhatsz, a **− / +** a csata nagyítását módosítja (75–200%). Szünet: gomb vagy szóköz. A főmenübe visszalépés új játékállapotot tölt be. A TESZT nem gyárt utánpótlást.
 
 A katonák külön láb-, test- és fegyvermozgást kapnak. A figurák felszerelése és anyagszínei a meglévő egységgrafikákat követik; a kártyák eredeti részletes illusztrációi megmaradtak. Ez stilizált, procedurális 2D/2.5D megjelenítés, nem 3D modell vagy az eredeti képek automatikus csontozása. A támadás felkészülését, elengedését/találatát és visszaállását közös szimulációs óra időzíti.
 
 A közelharcosok foglalt célpontok helyett szabadabb ellenfelet és megközelítési helyet keresnek. A saját egységeken át lehet haladni: az enyhe oldalirányú széthúzás nem akadályozza az előrejutást, ezért sűrű helyzetben baráti átfedés is lehet. Az ellenfelekkel továbbra is ütköznek.
 
-Az első élő ellenséges torony lezárja a teljes útszélesség mögötte lévő szakaszát. Az út szélén, üldözéssel, képességgel vagy ütközési eltolással sem lehet megkerülni. A torony elpusztítása a következő toronyig nyitja meg az utat, végül a fővárosig. A torony mögötti elérhetetlen ellenfél nem vonja el a mozgási célzást. A távolságiak lőtávon belül helyben is támadhatnak; ez rendes működés. A nagy csatában automatikus részletcsökkentés könnyíti a rajzolást; a 60 FPS-es 500 vs 500 cél további optimalizálást igényel.
+A város fala kitölti a harctér magasságát; a 10×10-es építési terület a rendelkezésre álló magassággal együtt nő. A helyőrség balra, a sereg jobbra, az építési sáv feletti rögzített alsó sorban jelenik meg a meglévő portrékkal és kapacitásszámlálókkal. A Saját/Ellenfél gombok váltanak a két csapat adatai között. A főváros HP-csíkja a kapu alá, a multiplayernév a kapu fölé került. Normál játékban nincs lebegő harctéri panel; az FPS és a tesztvezérlők a próbák alsó sorában maradnak.
+
+A tornyok a korábbi rajz nagyobb változatai, kamerához igazított mérettel és kattintható területtel. A közelharcosok a torony körül keresnek támadóhelyet, a túloldalról is üthetnek. A torony környezetében ellenféllel is harcolhatnak; rövid kitérő után lőtávon belül a torony ismét elsőbbséget kap. A torony helyi harci területéről nem üldöznek át a következő szakaszra, és a pálya szélén sem kerülhetik meg a toronysorrendet. Az első torony ledöntése nyitja a következő szakaszt.
+
+A főváros teljes falát lehet támadni: a hatótávot a faltól mért vízszintes távolság adja, a katonák megtartják az oldalsó pozíciójukat. A lövedék/találat a fal adott pontjához érkezik. Az egységek közötti támadótáv változatlan; tornyoknál a nagyobb építmény szélétől mérünk. A 60 FPS-es 500 vs 500 cél teljesülése továbbra is gépfüggő.
 
 ## Közzététel
 

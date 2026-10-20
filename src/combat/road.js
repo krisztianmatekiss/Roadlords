@@ -1,7 +1,8 @@
 import { installRoadMovement } from './movement.js';
 export function register(runtime) {
   runtime.roadDistance = function roadDistance(a, b) {
-    return Math.hypot(a.lane - b.lane, (a.offset ?? a.lateral ?? 0) - (b.offset ?? b.lateral ?? 0));
+    if(a.capital||b.capital)return Math.abs(a.lane-b.lane);
+    return Math.max(0,Math.hypot(a.lane-b.lane,(a.offset??a.lateral??0)-(b.offset??b.lateral??0))-(a.roadRadius||b.roadRadius||0));
   };
   runtime.roadReindex = function roadReindex() {
     for (const bucket of runtime.ROAD.grid.values()) bucket.length = 0;
@@ -43,11 +44,16 @@ export function register(runtime) {
       lane: u.lane,
       offset: u.offset || 0,
       to: t.lane,
-      toOffset: t.offset || t.lateral || 0,
+      toOffset: t.capital ? u.offset||0 : t.offset || t.lateral || 0,
       ranged,
       key: u.key
     };
     u.roadFace = t.lane >= u.lane ? 1 : -1;
+    if(!structure&&u.tags.includes('melee')){
+      const tower=runtime.targetStructure(u.side);
+      runtime.roadShouldReturnTower(u);
+      if(!tower.capital&&!u.roadTowerDiversionUntil&&Math.hypot(u.lane-tower.lane,(u.offset||0)-(tower.lateral||0))<160)u.roadTowerDiversionUntil=runtime.ROAD.clock+2.5;
+    }
     u.roadAttack = a;
     u.roadPending = true;
     if (orcSpear) u.orcSpearReady = false;
@@ -70,7 +76,7 @@ export function register(runtime) {
       }
       // The visual projectile follows the same live target that receives the hit.
       p.a.to = p.t.lane;
-      p.a.toOffset = p.t.offset || p.t.lateral || 0;
+      p.a.toOffset = p.t.capital ? p.u.offset||0 : p.t.offset || p.t.lateral || 0;
       if (runtime.ROAD.clock + 1e-8 < p.a.hit) {
         runtime.ROAD.pending[n++] = p;
         continue;
@@ -85,6 +91,7 @@ export function register(runtime) {
       try {
         if (p.structure) runtime.roadRealStructure(p.u, p.t);else runtime.roadRealAttack(p.u, p.t, p.opts);
       } finally {
+        if(p.structure&&p.u.roadTowerObjective===p.t.id){p.u.roadTowerDiversionUntil=0;p.u.roadSeek=null;p.u.roadSeekAt=0;}
         if (p.a.orcSpear) p.u.orcSpearReady = false;
         runtime.roadResolving = false;
       }

@@ -9,11 +9,13 @@ export function installRoadMovement(R) {
     const dir = u.side === 'player' ? 1 : -1;
     const speed = R.effectiveMoveSpeed(u, R.cityForSide(u.side));
     let target = u.roadSeek;
+    const returning=R.roadShouldReturnTower(u);
+    if(returning){if(target?.alive)target.roadEngaged=Math.max(0,(target.roadEngaged||0)-1);target=null;u.roadSeek=null;}
     if (!target?.alive || !R.roadCanPursue(u, target) || R.ROAD.clock >= (u.roadSeekAt || 0)) {
       if (target?.alive) target.roadEngaged = Math.max(0, (target.roadEngaged || 0) - 1);
       target = null;
       let best = Infinity;
-      R.roadVisit(u, Math.max(340, u.range + 60), v => {
+      if(!returning)R.roadVisit(u, Math.max(340, u.range + 60), v => {
         if (v.side === u.side || !R.roadCanPursue(u,v)) return;
         const dx = v.lane - u.lane, dy = (v.offset || 0) - (u.offset || 0);
         // Prefer reachable, less occupied opponents instead of piling onto one soldier.
@@ -41,7 +43,15 @@ export function installRoadMovement(R) {
     } else {
       const structure = R.targetStructure(u.side);
       aimX = structure.lane;
-      aimY = Math.abs(structure.lane - u.lane) < 420 ? structure.lateral || 0 : u.roadHomeOffset ?? u.offset ?? 0;
+      aimY = structure.capital ? u.offset||0 : Math.abs(structure.lane-u.lane)<420 ? structure.lateral||0 : u.roadHomeOffset??u.offset??0;
+      const slot=R.roadTowerSlot(u,structure);
+      if(slot&&Math.abs(structure.lane-u.lane)<420){
+        const x=u.lane-structure.lane,y=(u.offset||0)-(structure.lateral||0),angle=Math.atan2(y,x);
+        const to=Math.atan2(slot.offset-(structure.lateral||0),slot.lane-structure.lane);
+        const turn=Math.atan2(Math.sin(to-angle),Math.cos(to-angle));
+        const next=angle+(Math.hypot(x,y)>slot.radius+16?0:R.clamp(turn,-.45,.45));
+        aimX=structure.lane+Math.cos(next)*slot.radius;aimY=(structure.lateral||0)+Math.sin(next)*slot.radius;
+      }
     }
     let dx = aimX - u.lane, dy = aimY - (u.offset || 0);
     const distance = Math.hypot(dx, dy);
@@ -106,6 +116,11 @@ export function installRoadMovement(R) {
       R.roadReindex();
       for (const u of R.state.units) {
         if (!u.alive) continue;
+        const tower=R.targetStructure(u.side);
+        if(!tower.capital){
+          let x=u.lane-tower.lane,y=(u.offset||0)-(tower.lateral||0),d=Math.hypot(x,y),radius=tower.roadRadius+8;
+          if(d<radius){if(d<.001){x=u.side==='player'?-1:1;y=0;d=1;}R.setBattleLane(u,tower.lane+x/d*radius);u.offset=R.clamp((tower.lateral||0)+y/d*radius,-R.ROAD.half,R.ROAD.half);}
+        }
         R.roadVisit(u, 28, v => {
           if (v.id <= u.id) return;
           let dx = v.lane - u.lane, dy = (v.offset || 0) - (u.offset || 0), d = Math.hypot(dx, dy);

@@ -2,6 +2,8 @@ import { loadDetailedFigures } from '../rendering/detailed-figures.js';
 import { installTowerFrontiers } from './frontiers.js';
 import { drawBattleGround } from '../rendering/battle-ground.js';
 import { installTestMenu } from '../ui/test-menu.js';
+import { installBattleLayout } from '../ui/battle-layout.js';
+import { installLargeTowers } from '../rendering/large-towers.js';
 export function initializeCombatRoadIntegration(runtime) {
   runtime.ROAD = {
     city: 440,
@@ -36,6 +38,8 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.roadCell = (x, y) => Math.floor(x / 64) * 32 + Math.floor((y + 512) / 64);
   runtime.roadOldPreferred = runtime.preferredTarget;
   runtime.preferredTarget = function (u, opps) {
+    const structure=runtime.targetStructure(u.side);
+    if(runtime.roadShouldReturnTower(u)&&runtime.roadDistance(u,structure)<=u.range)return null;
     const range = u.spearVolleyReady ? Math.max(190, u.range) : u.range;
     if (u.roadAim?.alive && runtime.roadDistance(u, u.roadAim) <= range) return u.roadAim;
     if ((u.roadAimAt || 0) > runtime.ROAD.clock) return null;
@@ -200,6 +204,8 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.roadHud.id = 'roadHud';
   runtime.roadHud.innerHTML = '<span id="roadCounts"></span><span id="roadFps"></span><span id="roadStatus"></span><button data-camera="0">Saját város</button><button data-camera="1">Csata</button><button data-camera="2">Ellenfél</button><button id="roadZoomOut" aria-label="Kicsinyítés">−</button><span id="roadZoom">100%</span><button id="roadZoomIn" aria-label="Nagyítás">+</button><button id="roadArtToggle" hidden aria-pressed="true">Grafika: Részletes</button><button data-test id="roadPause">Szünet</button><button data-test id="roadRestart">Újraindítás</button><button data-test id="roadMenu">Főmenü</button>';
   document.body.appendChild(runtime.roadHud);
+  installBattleLayout(runtime);
+  installLargeTowers(runtime);
   runtime.roadHud.querySelectorAll('[data-camera]').forEach(b => b.onclick = () => {
     const v = +b.dataset.camera;
     runtime.roadWar.scrollLeft = v === 0 ? 0 : v === 2 ? runtime.roadWorld.offsetWidth : runtime.ROAD.city + runtime.PATH_LENGTH / 2 - runtime.roadWar.clientWidth / 2;
@@ -257,25 +263,24 @@ export function initializeCombatRoadIntegration(runtime) {
       if (runtime.ROAD.dead.length > 220) runtime.ROAD.dead.splice(0, runtime.ROAD.dead.length - 220);
     }
     const viewportX = runtime.clamp(runtime.roadWar.scrollLeft - runtime.ROAD.city, 0, runtime.PATH_LENGTH - runtime.ROAD.w);
-    runtime.ROAD.camera = viewportX + (runtime.ROAD.w - runtime.ROAD.w / runtime.ROAD.zoom) / 2;
+    // Anchor both city walls while zooming; the midpoint still stays centered.
+    runtime.ROAD.camera = viewportX / Math.max(1,runtime.PATH_LENGTH-runtime.ROAD.w) * Math.max(0,runtime.PATH_LENGTH-runtime.ROAD.w/runtime.ROAD.zoom);
     runtime.canvas.style.transform = 'translateX(' + viewportX + 'px)';
     drawBattleGround(runtime);
-    for (const t of runtime.towers) {
-      const x = runtime.pointAt(t.lane).x;
-      if (x > -70 && x < runtime.ROAD.w + 70) runtime.drawTower(t);
-    }
     let n = 0;
     for (const d of runtime.ROAD.dead) {
       if (runtime.ROAD.clock - d.death < 2.5) {
         runtime.ROAD.dead[n++] = d;
-        runtime.roadDrawUnit(d, true);
       }
     }
     runtime.ROAD.dead.length = n;
     const visible = runtime.state.units.filter(u => u.alive && u.lane >= runtime.ROAD.camera - 40 && u.lane <= runtime.ROAD.camera + runtime.ROAD.w / runtime.ROAD.zoom + 60);
     runtime.ROAD.lowDetail = visible.length > 240 && runtime.ROAD.zoom <= 1.25;
-    visible.sort((a, b) => (a.offset || 0) - (b.offset || 0) || a.id - b.id);
-    for (const u of visible) runtime.roadDrawUnit(u);
+    for(const t of runtime.towers){const x=runtime.pointAt(t.lane).x;if(t.alive&&x>-220&&x<runtime.ROAD.w+220)visible.push(t);}
+    visible.push(...runtime.ROAD.dead);
+    const depth=a=>a.roadRadius?(a.lateral||0)+a.roadRadius:(a.offset||0);
+    visible.sort((a,b)=>depth(a)-depth(b)||(Number(a.id)||0)-(Number(b.id)||0));
+    for(const actor of visible){if(actor.roadRadius)runtime.drawTower(actor);else runtime.roadDrawUnit(actor,actor.death!==undefined);}
     runtime.roadDrawShots();
     if (runtime.projectiles.length > 180) runtime.projectiles.splice(0, runtime.projectiles.length - 180);
     if (runtime.combatFx.length > 180) runtime.combatFx.splice(0, runtime.combatFx.length - 180);
@@ -304,6 +309,7 @@ export function initializeCombatRoadIntegration(runtime) {
       for (const u of runtime.state.units) if (u.alive) u.side === 'player' ? p++ : e++;
       runtime.$('#roadCounts').textContent = `SAJÁT ${p} / ELLENFÉL ${e}`;
       runtime.$('#roadFps').textContent = `${runtime.ROAD.metrics.fps.toFixed(0)} FPS`;
+      runtime.updateBattleDock();
       runtime.$('#roadStatus').textContent = runtime.ROAD.test ? runtime.ROAD.result || `${runtime.P.race === 'orc' ? 'Orkok' : 'Emberek'} vs ${runtime.E.race === 'orc' ? 'Orkok' : 'Emberek'} · ${runtime.ROAD.paused ? 'SZÜNET' : runtime.fmt(runtime.state.time)}` : 'HOSSZÚ ÚT';
     }
   };

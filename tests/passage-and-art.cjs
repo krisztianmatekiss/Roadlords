@@ -117,30 +117,31 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    for(const side of ['player','enemy'])for(const offset of [-228,0,228]){
     const u=R.releaseUnit(side==='player'?R.P:R.E,{key:'swordsman'});u.offset=offset;u.hp=u.maxHp=1e6;u.cooldown=999;
     u.lane=side==='player'?1900:2900;R.setBattleLane(u,side==='player'?2200:2600);
-    checks.push({side,offset,lane:u.lane,pass:side==='player'?u.lane<=1982:u.lane>=2818});
+    const advance=(u.lane-(side==='player'?2000:2800))*(side==='player'?1:-1);
+    checks.push({side,offset,lane:u.lane,pass:offset===0?advance>0&&advance<108:advance<=-18});
    }
    const u=R.state.units[0];u.lane=2150;u.stunTime=1;R.updateBattle(.01);const directPlacementCorrected=u.lane<=1982;
    const unreachable=!R.roadCanPursue(u,{lane:2100});
    const savedRace=R.P.race;R.P.race='orc';R.P.legends.add('orc_predator');
    const hunter=R.releaseUnit(R.P,{key:'orc_warg'}),prey=R.releaseUnit(R.E,{key:'archer'});
-   hunter.lane=1982;prey.lane=2070;hunter.offset=prey.offset=0;hunter.orcSpearReady=false;hunter.cooldown=999;
+   hunter.lane=1982;prey.lane=2100;hunter.offset=prey.offset=0;hunter.orcSpearReady=false;hunter.cooldown=999;
    R.orcBeforeCombat13(hunter,[prey],1/30);
    const predatorBlocked=!hunter.orcPredatorMoved&&hunter.lane===1982;
    R.state.units=R.state.units.filter(x=>x!==hunter&&x!==prey);R.P.legends.delete('orc_predator');R.P.race=savedRace;
-   first.hp=1;u.stunTime=0;u.lane=1980;u.offset=-57;
-   const offsetTowerInRange=Math.abs(R.roadDistance(u,first)-20)<1e-8;
+   first.hp=1;u.stunTime=0;u.lane=1950;u.offset=-57;
+   const offsetTowerInRange=Math.abs(R.roadDistance(u,first)-16)<1e-8;
    R.attackStructure(u,first);const a=u.roadAttack;
    if(!a)throw Error('Tower attack was not queued');
    Q.state.clock=a.hit+.001;Q.impact();
    const destroyed=!first.alive;R.setBattleLane(u,2100);
    const opened=u.lane===2100&&R.targetStructure('player')===next;
-   R.setBattleLane(u,2500);const nextBlocks=u.lane<=2282;
+   R.setBattleLane(u,2500);const nextBlocks=u.lane<2408;
    next.alive=false;R.roadRefreshFrontiers();R.setBattleLane(u,2500);const capitalOpen=u.lane===2500&&R.targetStructure('player').capital;
    for(const [tower,lane,lateral] of positions){tower.lane=lane;tower.lateral=lateral;}
    return {checks,directPlacementCorrected,unreachable,predatorBlocked,offsetTowerInRange,destroyed,opened,nextBlocks,capitalOpen};
   });report.frontiers=frontiers;
-  check('Live towers block both teams across the center and both road edges, including ability movement',frontiers.checks.every(x=>x.pass));
-  check('Directly placed units are corrected before combat and cannot chase through a live tower',frontiers.directPlacementCorrected&&frontiers.unreachable&&frontiers.predatorBlocked);
+  check('Melee can enter the rear tower pocket while road edges and further stages stay closed',frontiers.checks.every(x=>x.pass));
+  check('Directly placed units are corrected and distant targets cannot pull melee past the tower pocket',frontiers.directPlacementCorrected&&frontiers.unreachable&&frontiers.predatorBlocked);
   check('A real delayed attack reaches an offset tower and opens only the next stage',frontiers.offsetTowerInRange&&frontiers.destroyed&&frontiers.opened&&frontiers.nextBlocks&&frontiers.capitalOpen);
   await page.evaluate(()=>{__ROADLORDS_ROAD__.startTest(42,{count:20,roster:'art'});});await page.waitForTimeout(6000);await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
   const live=await page.evaluate(()=>__ROADLORDS_ROAD__.snapshot());

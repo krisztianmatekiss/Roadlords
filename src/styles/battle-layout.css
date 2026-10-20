@@ -1,0 +1,39 @@
+html body #app:has(#armyDock){grid-template-rows:64px minmax(260px,1fr) auto 220px!important}
+html body #app .roadWorld .cityzone{top:0!important;transform:none!important;width:var(--road-city-size,440px)!important;max-width:none!important;height:var(--road-city-size,440px)!important;padding:0!important;display:block!important}
+html body #app .roadWorld .cityframe{width:100%!important;height:100%!important;aspect-ratio:auto!important;box-sizing:border-box}
+html body #app .roadWorld .battle{left:var(--road-city-size,440px)!important}
+html body #app .roadWorld .cityhead{display:none!important}
+html body #app .roadWorld .cityfoot{position:absolute!important;top:8px;left:8px;right:auto;bottom:auto;width:auto!important;height:auto!important;padding:0!important;display:block!important;z-index:9}
+html body #app .roadWorld .cityfoot .visualHintsToggle{position:static!important}
+html body #app .roadWorld .cityfoot #enemyAiInfo{display:none!important}
+html body #app .roadWorld .gate{height:var(--capital-gate-height,150px)!important;width:44px!important}
+.capitalHealth,.capitalIdentity{position:absolute;z-index:10;width:126px;text-align:center;pointer-events:none}
+.capitalHealth{top:calc(50% + var(--capital-gate-height,150px)/2 + 12px)}
+.capitalIdentity{bottom:calc(50% + var(--capital-gate-height,150px)/2 + 12px)}
+.playerframe .capitalHealth,.playerframe .capitalIdentity{left:calc(100% - 38px)}
+.enemyframe .capitalHealth,.enemyframe .capitalIdentity{right:calc(100% - 38px)}
+.capitalHealthTrack{height:8px;border:1px solid #0a1510;background:#090f0c;box-shadow:0 2px 5px #0008}
+.capitalHealthTrack i{display:block;height:100%;background:#72b8e1;transition:width .15s linear}
+.enemyframe .capitalHealthTrack i{background:#e77870}
+html body .capitalHealth .cityhp{display:block!important;position:static!important;font:800 12px/1.8 system-ui!important;background:#101a14de;border-radius:0 0 4px 4px;padding:0 5px!important;white-space:nowrap}
+.capitalIdentity>small{display:block;color:#ead69b;font:800 9px/1.6 system-ui;text-shadow:0 2px 3px #000}
+html body .capitalIdentity .mpNameTag{position:static!important;max-width:126px!important;margin:3px 0 0!important;text-align:center!important;font-size:12px!important}
+#armyDock{position:relative;z-index:15;min-width:0;min-height:86px;padding:6px 12px;background:linear-gradient(#152219,#0e1913);border-top:1px solid #4c6048;border-bottom:1px solid #344a3b;color:#e9dfbf}
+body.roadlords-menu-open #armyDock{visibility:hidden}
+.armyDockTabs{position:absolute;left:50%;top:7px;transform:translateX(-50%);display:grid;gap:5px;z-index:2}
+.armyDockTabs button{border:1px solid #52654f;border-radius:4px;background:#18291e;color:#aebeaa;padding:3px 9px;cursor:pointer;font:700 10px system-ui}
+.armyDockTabs button[aria-pressed="true"]{border-color:#b69a56;color:#ffe3a1;background:#302e1c}
+.armyDockTeam{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:98px;max-width:1280px;margin:auto}
+.armyDockTeam[hidden]{display:none!important}
+.armyDockGroup{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:18px 46px;gap:2px 12px;min-width:0;align-items:center}
+.armyDockGroup>small{grid-column:1/-1;color:#b7bd9e;font:800 10px/1 system-ui;letter-spacing:.1em}
+.armyDockGroup>b,.armyDockGroup>.stack b{font:850 16px/1 system-ui!important;white-space:nowrap;color:#f4e4b1}
+.armyDockGroup .stack small{display:none}
+.armyDockGroup .unitmix{width:100%;min-width:0;display:flex!important;flex-wrap:nowrap!important;overflow-x:auto;justify-content:flex-start!important;padding:0!important;margin:0!important;gap:5px}
+.armyDockGroup .unitchip{flex:0 0 40px!important;width:40px!important;height:40px!important}
+.armyDockGroup>.bar{display:none}
+html body #roadHud{position:static;transform:none;display:none;width:auto;max-width:none;min-height:32px;margin:5px auto 0;padding:5px 0 0;gap:7px;border:0;border-top:1px solid #344a3b;border-radius:0;background:none;box-shadow:none;justify-content:center;font:700 11px system-ui}
+html body.road-test #roadHud{display:flex}
+html body #roadHud button{padding:4px 7px;font-size:11px}
+#roadHud #roadStatus{max-width:250px}
+@media(max-width:900px){html body #app:has(#armyDock){grid-template-rows:60px minmax(250px,1fr) auto 180px!important}.armyDockTeam{gap:74px}.armyDockGroup{gap:2px 5px}.armyDockGroup>b,.armyDockGroup>.stack b{font-size:13px!important}#armyDock{padding-inline:7px}.armyDockGroup .unitchip{flex-basis:34px!important;width:34px!important;height:34px!important}.capitalHealth,.capitalIdentity{width:104px}.playerframe .capitalHealth,.playerframe .capitalIdentity{left:calc(100% - 32px)}.enemyframe .capitalHealth,.enemyframe .capitalIdentity{right:calc(100% - 32px)}}

@@ -1,3 +1,4 @@
+import { hasDetailedFigure, drawDetailedFigure } from './detailed-figures.js';
 // Articulated battle figures follow the original roster's armor, equipment and colors.
 // Vector poses are rasterized on demand; regular frames draw cached sprites only.
 const TAU = Math.PI * 2;
@@ -166,15 +167,16 @@ function humanoid(g, style, color, p) {
   if(style.dual)weapon(g,'axe',-9,-20,-2.5+ p.strike*.9,color,p);
 }
 function sprite(R, u, pose) {
-  const color=R.unitTeamFill(u),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}`;
+  const color=R.unitTeamFill(u),detailed=hasDetailedFigure(R,u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${detailed?":painted":""}`;
   let canvas=R.ROAD.sprites.get(key);if(canvas)return canvas;
   const style=FIGURES[u.key];if(!style)return null;
-  canvas=document.createElement('canvas');canvas.width=canvas.height=128;
-  const g=canvas.getContext('2d'),p=phase(pose);g.translate(64,105.6);g.scale(1.6,1.6);
+  canvas=document.createElement('canvas');canvas.width=canvas.height=detailed?192:128;
+  const bounds=detailed?[-44,-74,88,88]:[-40,-66,80,80];canvas.figureBounds=bounds;
+  const g=canvas.getContext('2d'),p=phase(pose),resolution=canvas.width/bounds[2];g.translate(-bounds[0]*resolution,-bounds[1]*resolution);g.scale(resolution,resolution);
   ellipse(g,1,2,style.mount||style.machine?18:style.size>1?15:10,3.5,'#18251e66');
-  if(p.death){g.translate(p.death*7,0);g.rotate(p.death*1.48);g.scale(1,1-p.death*.3);}
+  if(p.death){g.translate(p.death*4,-(1-p.death)*23);g.scale(1,1-p.death*.55);g.rotate(p.death*1.48);g.translate(0,23);}
   g.save();g.scale(style.size||1,style.size||1);
-  if(style.machine)machine(g,style,color,p);else humanoid(g,style,color,p);g.restore();
+  if(detailed)drawDetailedFigure(g,R,u.key,color,p);else if(style.machine)machine(g,style,color,p);else humanoid(g,style,color,p);g.restore();
   if(R.ROAD.sprites.size>=768)R.ROAD.sprites.delete(R.ROAD.sprites.keys().next().value);
   R.ROAD.sprites.set(key,canvas);return canvas;
 }
@@ -192,7 +194,7 @@ export function installBattleFigures(R) {
     if(!dead&&detail){g.strokeStyle=R.unitTeamFill(u);g.globalAlpha=.5;g.lineWidth=1;g.beginPath();g.ellipse(0,2,r,3.5,0,0,TAU);g.stroke();g.globalAlpha=1;}
     g.save();const face=u.roadFace||(u.roadAttack ? (u.roadAttack.to>=u.lane?1:-1) : u.side==='enemy'?-1:1);g.scale(face,1);
     const hurt=dead?0:clamp(1-(R.ROAD.clock-(u.roadHurtAt??-99))/.16);g.translate(-Math.sin(hurt*Math.PI)*1.5,0);
-    g.drawImage(image,-40,-66,80,80);g.restore();
+    g.drawImage(image,...image.figureBounds);g.restore();
     if(!dead){
       if((detail||hurt>.4)&&u.hp<u.maxHp*.98){g.fillStyle='#14251a';g.fillRect(-10,-51,21,3);g.fillStyle=R.unitTeamFill(u);g.fillRect(-9,-50,19*clamp(u.hp/u.maxHp),1.8);}
       if(detail&&u.veteran){g.fillStyle='#edd184';g.fillRect(-1,-46,2.5,2.5);}

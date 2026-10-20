@@ -1,4 +1,4 @@
-# Roadlords · V4.16
+# Roadlords · V4.17
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság, fejlesztések, egységstatisztikák és a multiplayer-protokoll megmaradt.
 
@@ -6,13 +6,17 @@ A meglévő játék moduláris változata, a kapott harcprototípushoz közelít
 
 **https://krisztianmatekiss.github.io/Roadlords/**
 
+A főmenü **GRAFIKAI PRÓBA · Kardos / Ork** gombja egy 20 vs 20-as csatában mutatja a két részletes, eredeti illusztrációkból kiinduló mintakaraktert. A kardos és az ork harcos külön torso-, fegyverkar-, pajzskar- és két lábelemből animálódik; a ruhák/pajzsok a nyolc választható csapatszínt követik. A másik 12 típus egyelőre a V4.16 egyszerűbb figuráit használja. A két új minta a normál játékban és a többi tesztcsatában is megjelenik.
+
 A főmenü **TESZT · 50 vs 50** gombja indítja a kisebb látványpróbát, a **TERHELÉS · 500 vs 500** a nagy seregek próbáját. Mindkettő két meglévő faj szabályos endgame városát és vegyes seregét használja, a valódi harcrendszerrel. A seregek maguktól megütköznek; újraindításkor ugyanazt a várost és seregösszeállítást kapják, a találatok véletlen kimenetele változhat.
 
 A csatatér feletti gombokkal városra/csatára ugorhatsz, a **− / +** a csata nagyítását módosítja (75–200%). Szünet: gomb vagy szóköz. A főmenübe visszalépés új játékállapotot tölt be. A TESZT nem gyárt utánpótlást.
 
 A katonák külön láb-, test- és fegyvermozgást kapnak. A figurák felszerelése és anyagszínei a meglévő egységgrafikákat követik; a kártyák eredeti részletes illusztrációi megmaradtak. Ez stilizált, procedurális 2D/2.5D megjelenítés, nem 3D modell vagy az eredeti képek automatikus csontozása. A támadás felkészülését, elengedését/találatát és visszaállását közös szimulációs óra időzíti.
 
-A közelharcosok foglalt célpontok helyett szabadabb ellenfelet és megközelítési helyet keresnek. A torlódáskor teljes megállás helyett oldalra kerülnek, a testek rugalmasan tartanak távolságot. A távolságiak lőtávon belül helyben is támadhatnak; ez rendes működés. A nagy csatában automatikus részletcsökkentés könnyíti a rajzolást; a 60 FPS-es 500 vs 500 cél további optimalizálást igényel.
+A közelharcosok foglalt célpontok helyett szabadabb ellenfelet és megközelítési helyet keresnek. A saját egységeken át lehet haladni: az enyhe oldalirányú széthúzás nem akadályozza az előrejutást, ezért sűrű helyzetben baráti átfedés is lehet. Az ellenfelekkel továbbra is ütköznek.
+
+Az első élő ellenséges torony lezárja a teljes útszélesség mögötte lévő szakaszát. Az út szélén, üldözéssel, képességgel vagy ütközési eltolással sem lehet megkerülni. A torony elpusztítása a következő toronyig nyitja meg az utat, végül a fővárosig. A torony mögötti elérhetetlen ellenfél nem vonja el a mozgási célzást. A távolságiak lőtávon belül helyben is támadhatnak; ez rendes működés. A nagy csatában automatikus részletcsökkentés könnyíti a rajzolást; a 60 FPS-es 500 vs 500 cél további optimalizálást igényel.
 
 ## Közzététel
 
@@ -59,7 +63,7 @@ A tesztek a kész buildet a GitHub Pages útvonalát követő `/Roadlords/` alk�
 | `archive/` | A korábbi önálló HTML, összehasonlításhoz |
 | `references/` | A kapott harcprototípus, fejlesztési referencia |
 
-A normál build kizárólag az `index.html`, az ES modulok és a `public/` forrásait használja. Nem olvassa az archivált HTML-t, és nem illeszt bele utólag kódfoltokat. A régi funkciók egy része még kompatibilitási burkolókat használ, közös explicit runtime állapottal; ezek fokozatos egyszerűsítése a következő refaktorálási lépés. Az első átvezetés térképe: `docs/migration-map.json`. Az új mozgás a `src/combat/movement.js`, a figurák a `src/rendering/battle-figures.js`, a terep a `src/rendering/battle-ground.js` fájlban található.
+A normál build kizárólag az `index.html`, az ES modulok és a `public/` forrásait használja. Nem olvassa az archivált HTML-t, és nem illeszt bele utólag kódfoltokat. A régi funkciók egy része még kompatibilitási burkolókat használ, közös explicit runtime állapottal; ezek fokozatos egyszerűsítése a következő refaktorálási lépés. Az első átvezetés térképe: `docs/migration-map.json`. Az új mozgás a `src/combat/movement.js`, a toronysorrend a `src/combat/frontiers.js`, a figurák a `src/rendering/battle-figures.js`, a részletes minták a `src/rendering/detailed-figures.js`, a terep a `src/rendering/battle-ground.js` fájlban található.
 
 ## Zene és hálózat
 

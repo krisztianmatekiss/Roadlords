@@ -68,10 +68,11 @@ export function register(runtime) {
       }
     };
   };
-  runtime.roadStartTest = function roadStartTest(seed, {count = 500} = {}) {
-    if (![50, 500].includes(count)) throw new RangeError("Supported test sizes: 50 or 500 per side");
+  runtime.roadStartTest = function roadStartTest(seed, {count = 500, roster = 'mixed'} = {}) {
+    if (!(roster === 'art' && count === 20 || roster === 'mixed' && [50,500].includes(count))) throw new RangeError('Unsupported test roster or size');
+    runtime.ROAD.testRoster = roster;
     runtime.ROAD.testCount = count;
-    runtime.ROAD.zoom = count === 50 ? 1.25 : 1;
+    runtime.ROAD.zoom = roster === 'art' ? 1.75 : count === 50 ? 1.25 : 1;
     runtime.$("#roadZoom").textContent = Math.round(runtime.ROAD.zoom * 100) + "%";
     seed = Number.isInteger(seed) ? seed : crypto.getRandomValues(new Uint32Array(1))[0];
     runtime.ROAD.seed = seed;
@@ -90,7 +91,7 @@ export function register(runtime) {
       runtime.MP.started = false;
       runtime.state.time = 0;
       runtime.state.running = false;
-      const races = runtime.shuffle(['human', 'orc']);
+      const races = roster === 'art' ? ['human','orc'] : runtime.shuffle(['human', 'orc']);
       runtime.roadResetCity(runtime.P, races[0]);
       runtime.roadResetCity(runtime.E, races[1]);
       runtime.state.units = [];
@@ -125,8 +126,9 @@ export function register(runtime) {
         t.hp = t.maxHp;
         t.cooldown = 1;
       }
+      runtime.roadRefreshFrontiers();
       for (const c of [runtime.P, runtime.E]) {
-        const keys = Object.keys(runtime.UNITS).filter(k => c.race === 'orc' === k.startsWith('orc_'));
+        const keys = roster === 'art' ? [c.race === 'human' ? 'swordsman' : 'orc_warrior'] : Object.keys(runtime.UNITS).filter(k => c.race === 'orc' === k.startsWith('orc_'));
         const entries = Array.from({
           length: count
         }, (_, i) => ({
@@ -140,10 +142,10 @@ export function register(runtime) {
           const u = runtime.releaseUnit(c, runtime.makeEntry(c, entries[i].key, {
             originBuildingId: origin?.id
           }));
-          const rows = count === 50 ? 8 : 20, spacing = count === 50 ? 36 : 24;
-          u.offset = (i % rows - (rows - 1) / 2) * spacing;
+          const rows = roster === 'art' ? 5 : count === 50 ? 8 : 20, spacing = roster === 'art' ? 48 : count === 50 ? 36 : 24;
+          u.offset = (i % rows - (rows - 1) / 2) * spacing + (roster === 'art' ? 20 : 0);
           u.roadHomeOffset = u.offset;
-          u.lane = runtime.PATH_LENGTH / 2 - dir * (100 + Math.floor(i / rows) * (count === 50 ? 42 : 32));
+          u.lane = runtime.PATH_LENGTH / 2 - dir * (100 + Math.floor(i / rows) * (roster === 'art' ? 48 : count === 50 ? 42 : 32));
           u.cooldown = .1 + i % 13 * .025;
         }
       }
@@ -168,7 +170,7 @@ export function register(runtime) {
       runtime.last = performance.now();
       runtime.roadWar.scrollLeft = runtime.ROAD.city + runtime.PATH_LENGTH / 2 - runtime.roadWar.clientWidth / 2;
       runtime.$('#roadPause').textContent = 'Szünet';
-      runtime.roadTestSummary.textContent = `${count} × ${count} · ${runtime.P.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.E.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. Minden egységtípus, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Görgetés: egérgörgő, érintés vagy alsó görgetősáv. Szünet: szóköz.`;
+      runtime.roadTestSummary.textContent = `${count} × ${count} · ${runtime.P.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.E.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. ${roster === 'art' ? 'Részletes kardosok és ork harcosok' : 'Minden egységtípus'}, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Görgetés: egérgörgő, érintés vagy alsó görgetősáv. Szünet: szóköz.`;
     } finally {
       Math.random = savedRandom;
     }

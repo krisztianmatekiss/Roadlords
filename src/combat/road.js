@@ -1,7 +1,7 @@
 import { installRoadMovement } from './movement.js';
 export function register(runtime) {
   runtime.roadDistance = function roadDistance(a, b) {
-    return Math.hypot(a.lane - b.lane, (a.offset || 0) - (b.offset || 0));
+    return Math.hypot(a.lane - b.lane, (a.offset ?? a.lateral ?? 0) - (b.offset ?? b.lateral ?? 0));
   };
   runtime.roadReindex = function roadReindex() {
     for (const bucket of runtime.ROAD.grid.values()) bucket.length = 0;

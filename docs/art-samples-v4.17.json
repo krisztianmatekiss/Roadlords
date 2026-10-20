@@ -1,0 +1,24 @@
+{
+  "asset": "public/art/battle-parts-human-orc.png",
+  "sha256": "2fde0ec109a9273dae2b18ddbab1bd2e1d69211282e6769b9bef16b3f9c95df7",
+  "bytes": 2128032,
+  "width": 1774,
+  "height": 887,
+  "models": [
+    "swordsman",
+    "orc_warrior"
+  ],
+  "parts": [
+    "torso",
+    "weapon",
+    "shield",
+    "rearLeg",
+    "frontLeg"
+  ],
+  "sources": [
+    "public/art/swordsman-8aff42af8e9f60ec.webp",
+    "public/art/orc-warrior-f292123f9dc5117b.webp"
+  ],
+  "method": "Generated transparent cutout atlas based on original illustrations; component isolation, team-color masks and animation are applied in the browser. Source files are preserved.",
+  "remainingRoster": "The other twelve types retain the V4.16 procedural figures."
+}

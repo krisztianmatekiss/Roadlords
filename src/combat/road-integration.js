@@ -1,3 +1,5 @@
+import { loadDetailedFigures } from '../rendering/detailed-figures.js';
+import { installTowerFrontiers } from './frontiers.js';
 import { drawBattleGround } from '../rendering/battle-ground.js';
 export function initializeCombatRoadIntegration(runtime) {
   runtime.ROAD = {
@@ -29,6 +31,7 @@ export function initializeCombatRoadIntegration(runtime) {
     seed: 0,
     initial: null
   };
+  installTowerFrontiers(runtime);
   runtime.roadCell = (x, y) => Math.floor(x / 64) * 32 + Math.floor((y + 512) / 64);
   runtime.roadOldPreferred = runtime.preferredTarget;
   runtime.preferredTarget = function (u, opps) {
@@ -121,7 +124,9 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.updateBattle = function (dt) {
     const begin = performance.now();
     runtime.ROAD.clock += dt;
+    runtime.roadRefreshFrontiers();
     for (const u of runtime.state.units) {
+      runtime.setBattleLane(u, u.lane);
       u.roadPrev = u.lane;
       u.roadPrevOffset = u.offset || 0;
       u.roadEngaged = 0;
@@ -130,6 +135,8 @@ export function initializeCombatRoadIntegration(runtime) {
     runtime.roadReindex();
     runtime.roadImpacts();
     runtime.roadOldBattle(dt);
+    runtime.roadRefreshFrontiers();
+    for (const u of runtime.state.units) runtime.setBattleLane(u, u.lane);
     runtime.roadSeparate();
     runtime.roadReindex();
     let idleMelee = 0;
@@ -211,12 +218,13 @@ export function initializeCombatRoadIntegration(runtime) {
     };
   };
   runtime.ROAD.art = new Map();
-  runtime.roadArtReady = Promise.all(Object.entries(runtime.UNIT_IMAGES).filter(([k]) => runtime.UNITS[k]).map(async ([key, src]) => {
+  const originalArt = Promise.all(Object.entries(runtime.UNIT_IMAGES).filter(([k]) => runtime.UNITS[k]).map(async ([key, src]) => {
     const image = new Image();
     image.src = src;
     await image.decode();
     runtime.ROAD.art.set(key, image);
   }));
+  runtime.roadArtReady = Promise.all([originalArt, loadDetailedFigures(runtime)]);
   runtime.renderBattle = function (raw) {
     const begin = performance.now();
     runtime.mpInterpolateUnits(raw);
@@ -302,11 +310,15 @@ export function initializeCombatRoadIntegration(runtime) {
   stressButton.onclick = () => runtime.roadStartTest(undefined, {count: 500});
   runtime.MP.lobby.querySelector('.menuMain').appendChild(runtime.roadTestBtn);
   runtime.MP.lobby.querySelector('.menuMain').appendChild(stressButton);
+  const artButton=document.createElement('button');artButton.id='roadArtMenu';artButton.className='menuButton';artButton.type='button';
+  artButton.textContent='GRAFIKAI PRÓBA · Kardos / Ork';
+  artButton.onclick=()=>runtime.roadStartTest(undefined,{count:20,roster:'art'});
+  runtime.MP.lobby.querySelector('.menuMain').appendChild(artButton);
   runtime.roadTestSummary = document.createElement('p');
   runtime.roadTestSummary.id = 'roadTestSummary';
   runtime.$('.command').appendChild(runtime.roadTestSummary);
   runtime.$('#roadPause').onclick = runtime.roadPause;
-  runtime.$('#roadRestart').onclick = () => runtime.roadStartTest(runtime.ROAD.seed, {count: runtime.ROAD.testCount});
+  runtime.$('#roadRestart').onclick = () => runtime.roadStartTest(runtime.ROAD.seed, {count: runtime.ROAD.testCount, roster: runtime.ROAD.testRoster});
   const setZoom = value => {runtime.ROAD.zoom = runtime.clamp(value, .75, 2); runtime.$('#roadZoom').textContent = Math.round(runtime.ROAD.zoom * 100) + '%';};
   runtime.$('#roadZoomOut').onclick = () => setZoom(runtime.ROAD.zoom - .25);
   runtime.$('#roadZoomIn').onclick = () => setZoom(runtime.ROAD.zoom + .25);

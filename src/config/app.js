@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.16.0',
-  label: 'V4.16 · HARCPRÓBA',
-  title: 'Roadlords – Harcpróba',
+  version: '4.17.0',
+  label: 'V4.17 · RÉSZLETES HARCPRÓBA',
+  title: 'Roadlords – Részletes harcpróba',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

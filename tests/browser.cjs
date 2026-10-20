@@ -95,8 +95,8 @@ async function main(){
   times.sort((a,b)=>a-b);const long=await page.evaluate(()=>__ROADLORDS_ROAD__.snapshot());
   report.benchmarks.push({mode:'900 real combat steps = 30 simulation seconds, seed 42',p50TickMs:times[450],p95TickMs:times[855],p99TickMs:times[891],...long});
   check('Sustained battle remains finite with bounded pending attacks and corpse cache',long.counts.every(n=>Number.isFinite(n)&&n>=0)&&long.pending<=1000&&long.corpses<=220&&!long.error);
-  const crowd=await page.evaluate(()=>{const R=__ROADLORDS__,units=R.state.units.filter(u=>u.alive);let close=0;for(let i=0;i<units.length;i++)for(let j=i+1;j<units.length;j++)if(__ROADLORDS_ROAD__.distance(units[i],units[j])<10)close++;return {units:units.length,severeOverlaps:close};});
-  report.crowding=crowd;check('No severe unit stacking after sustained combat',crowd.severeOverlaps<crowd.units*.03);
+  const crowd=await page.evaluate(()=>{const R=__ROADLORDS__,units=R.state.units.filter(u=>u.alive);let close=0,friendly=0;for(let i=0;i<units.length;i++)for(let j=i+1;j<units.length;j++)if(__ROADLORDS_ROAD__.distance(units[i],units[j])<10){if(units[i].side===units[j].side)friendly++;else close++;}return {units:units.length,opposingOverlaps:close,friendlyOverlaps:friendly};});
+  report.crowding=crowd;check('Opposing units remain separated; friendly overlap is intentional',crowd.opposingOverlaps===0);
   const cdp=await context.newCDPSession(page);await cdp.send('HeapProfiler.collectGarbage');report.heap=await cdp.send('Runtime.getHeapUsage');
   // The return button performs a clean reload; no battle state leaks into solo/multiplayer.
   await Promise.all([page.waitForEvent('domcontentloaded'),page.locator('#roadMenu').click()]);await page.waitForFunction(()=>!!window.__ROADLORDS_ROAD__);

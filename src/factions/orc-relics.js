@@ -484,7 +484,7 @@ export function initializeFactionsOrcRelics(runtime) {
     u.orcPredatorMoved = false;
     oldBefore(u, opps, dt);
     if (!u.alive || u.key !== 'orc_warg' || !leg(own(u), 'predator')) return;
-    const t = near(u, u.side === 'player' ? 'enemy' : 'player', 160).find(v => v.tags?.includes('ranged'));
+    const t = near(u, u.side === 'player' ? 'enemy' : 'player', 160).find(v => v.tags?.includes('ranged') && (!runtime.roadCanPursue || runtime.roadCanPursue(u,v)));
     if (!t) return;
     u.orcPredatorTarget = t.id;
     if (runtime.roadDistance(t, u) > u.range) {

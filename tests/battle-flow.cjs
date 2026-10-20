@@ -56,7 +56,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
     for(let i=0;i<150;i++){R.updateBattle(1/30);maxY=Math.max(maxY,Math.abs(rear.offset));minGap=Math.min(minGap,Q.distance(rear,blocker));}
     return {advance:rear.lane-1500,maxY,minGap};
   });report.bypass=bypass;
-  check('A rear melee soldier passes a stationary ally using lateral space',bypass.advance>60&&bypass.maxY>15&&bypass.minGap>19);
+  check('A rear melee soldier can pass through a stationary friendly body',bypass.advance>60&&bypass.minGap<17);
   const spear=await page.evaluate(()=>{
     const R=__ROADLORDS_RUNTIME__,Q=__ROADLORDS_ROAD__;
     R.P.race='orc';R.E.race='human';R.state.units=[];Q.state.pending=[];

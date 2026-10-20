@@ -1,31 +1,39 @@
-# V4.18 – város, alsó sáv és körbejárható ostrom
+# V4.17.1 – tesztalmenü és menetirány
 
-2026-10-20. Linux, Node.js 24, Chromium. Production build `/Roadlords/` alkönyvtárból, külső HTTPS nélkül futtatott funkcionális próbák.
+2026-10-20. Linux, Node.js 24, headless Chromium, 1440×960. Az ellenőrzések a kész production buildet futtatják `/Roadlords/` alatt; a helyi funkcionális tesztekben a külső HTTPS-forgalom tiltott.
 
-## Elrendezés
+## Grafika
 
-A város kerete négyzetes és a harctér teljes rendelkezésre álló magasságát tölti ki. A világ városszélessége, a canvas mérete és a görgetés horgonyai átméretezéskor együtt frissülnek. A zoom mindkét városfalat a csatatér megfelelő széléhez rögzíti. A 10×10-es építési terület és a szabályos épületelhelyezés megmaradt; tényleges egérkattintással is ellenőrzött az új cellaméret mellett.
+V4.17.1: az összes próba a főmenü egyetlen **TESZTEK** pontjába került, saját VISSZA/Escape visszalépéssel. A normál játék és a vegyes 50/500-as csaták ismét az egyszerű figurákat használják. A részletes kétkarakteres minta a grafikai próbában marad; a **Grafika: Részletes / Egyszerű** kapcsoló ugyanabban a csatában vált megjelenést, a létszámot, HP-t, pozíciókat és időt nem módosítja. Újraindításkor a választott grafika megmarad.
 
-A helyőrség és a sereg eredeti DOM-elemei kerültek az építési sáv fölé, balra és jobbra. A portrék és számlálók megőrzik a meglévő frissítési útvonalakat; a seregkapacitás továbbra is figyelembe veszi az eltérő helyigényű egységeket és szállított katonákat. A Saját/Ellenfél kapcsoló egy helyen mutatja bármelyik csapat adatait. A főváros HP-csíkja a kapu alatt, a multiplayernév fölötte jelenik meg. A normál játékból eltűnt a lebegő harctéri panel. A tesztek FPS-kijelzése és vezérlése az alsó sáv része.
+A menetirányt már a tényleges elmozdulás adja, az aktuális támadás pedig a találati cél felé fordítja a figurát. A korábbi célpont- vagy lejárt támadásirány nem írja ezt felül. Mindkét csapatot és mindkét megjelenést valódi harci lépésen át vizsgáljuk; a Canvas tényleges rajzolási transzformációjából ellenőrizzük az előrehaladás, megfordulás és támadás irányát. A multiplayer vendég rajzolása az interpolált haladásból állapítja meg az irányt, a 20 oszlopos hálózati formátum megmaradt.
 
-A méretezés 900×768, 1440×960 és 1920×1080 nézetben ellenőrzött. Egyedi, szélsőséges képarányokra ez nem teljes körű garancia.
+Két részletes minta készült az eredeti illusztrációk alapján: **kardos és ork harcos**. A generált, átlátszó atlasz öt külön mozgatható elemet tartalmaz karakterenként: torso/fej, fegyverkar, pajzskar, hátsó láb, első láb. Az atlasz összeállított referenciafiguráit nem használjuk mozgó állóképként. A többi 12 típus a V4.16 procedurális figuráit tartja meg. A részletes változatok kizárólag a grafikai próbában választhatók.
 
-## Torony és főváros
+Az új **GRAFIKAI PRÓBA · Kardos / Ork** menüpont 20/20 egységet indít valódi, teljesen fejlesztett városokkal és harci szabályokkal. A kezdő nagyítás 175%; a harctéri −/+ gombokkal változtatható. Újraindításkor megmarad a kétkarakteres mód, darabszám és városmag.
 
-A korábbi toronyrajz 2,4-es alapszorzót kapott, a harctér magasságával és zoomjával együtt méretezve. A HP-felirat és a tényleges kattintható terület is követi ezt. A rajzolás az egységeket és a tornyokat közös mélységi sorrendben kezeli.
+Az atlasz 1774×887 RGBA PNG, kb. 2,1 MB. Eredet, SHA-256 és forrásképek: `art-samples-v4.17.json`. Az eredeti forrásképek változatlanok. A böngésző a komponenseket elkülöníti, majd csak a kék ruházat/pajzsfestés színét módosítja. Mind a nyolc választható csapatszín ellenőrzött; az ork torso 7761 vizsgált bőrpixelének anyagszíne minden változatnál megmaradt. Az arany fémrészek is megmaradnak.
 
-A nagyobb torony közelharci távolságát a peremétől mérjük. Nyolc körkörös megközelítési irány osztja el a közelharcosokat, és a torony teste nem járható át. Az első élő ellenséges torony mögött egy helyi harci terület nyílik meg; a többi útszakasz zárt marad. Ez tudatos játékszabály, nem általános útkereső rendszer. A baráti áthaladás megmaradt; nagyon nagy tömegben a baráti átfedés szándékos.
+A kész animációs képkockák gyorsítótárazottak: legfeljebb 768 darab, a részletes mintáknál 192×192, a többi típusnál 128×128 pixel. A színezett alkatrészek tára legfeljebb 16 készlet; az atlaszfeldolgozás nem képkockánként történik. Ez festett textúrákból összeállított 2D/2.5D animáció, nem teljes 3D vagy anatómiailag teljes csontváz. A két minta a további 12 figura művészeti irányának kipróbálására szolgál.
 
-A torony közelében kezdett egységharc 2,5 másodperc után visszaadja a torony elsőbbségét, ha az lőtávon belül van. A toronytól távolabb eső ellenfél üldözése nem viheti a katonát a következő szakaszra. A toronyra bevitt valódi találat feloldja ezt az elsőbbséget, így ismét védekezhet közeli egység ellen. Testi akadályokkal elzárt helyzetben a visszatérés ideje nem garantált.
+## Baráti áthaladás
 
-A kétoldali, nyolc katonás 20 másodperces próbákban oldalanként mind a nyolc katona támadott: 124 valódi toronytalálatból 43 a túloldalról érkezett. A minimum távolság a torony közepétől 43,1 útegység volt, a torony teste nem került átfedésbe a katonaközépponttal. Az ellenfél elleni kitérő mellett 3,40 és 7,53 másodpercnél toronysebzés is történt, az ellenfél még élt.
+A saját egységek nem blokkolják és nem lassítják le egymás előrehaladását. Megmarad egy enyhe oldalirányú széthúzás, a sűrű tömegben viszont a baráti átfedés szándékos. Az ellenfeleket a mozgási szakasz ütközésvizsgálata és a különválasztó lépés tartja távol. A támadótáv változatlan.
 
-A fővárosnál a teljes fal támadható. Mindkét oldal kardosával és íjászával, a −228/0/+228 oldalsó pozícióból ellenőrzött a valódi sebzés és a találat oldalsó koordinátája. A katonák nem húzódtak a középvonalhoz. Az egység-egység harc geometriája változatlan; az épületek elleni új geometria szándékosan módosítja a toronyhoz érkezés idejét és az ostrom eloszlását. A hosszú normál meccsek egyensúlya külön játéktesztet igényel.
+A három mozdulatlan baráti sorral végzett próbában a katona 2 szimulált másodperc alatt 83,89 útegységet haladt az üres úton mért 84,00 helyett; a legközelebbi baráti távolság 1,22 volt, vagyis ténylegesen áthaladt a saját sorokon. A 30 szimulált másodperces 500/500 próbában 0, tíz útegységnél közelebbi **ellenséges** pár volt; a baráti átfedéseket külön mérjük, és nem minősítjük hibának.
+
+## Tornyok
+
+Az első élő ellenséges torony a teljes útszélességet lezárja, 18 útegységnyi első oldali megállási vonallal. A korlát a közös pozícióállító függvényben is érvényes: a képességek, eltolások és ütközési korrekciók sem juttatják az egységet mögé. A közvetlenül elhelyezett egységek pozícióját a harci lépés elején és végén is korrigáljuk. A torony mögötti célpont nem választható üldözéshez; a Warg Ragadozó képessége is követi ezt.
+
+A teszt mindkét csapatot az út közepén és a két szélén ellenőrzi. Valódi késleltetett közelharci támadás pusztítja el az első, középvonaltól −57-re eltolt tornyot; a hatótáv a tényleges oldalsó koordinátát veszi figyelembe; ezután csak a következő toronyig nyílik meg az út. Az utolsó torony után a főváros válik célponttá.
 
 ## Ellenőrzések és korlátok
 
-A teljes csomag 86 ellenőrzést tartalmaz: 15 új város/ostrompróba, 22 menü/grafikai/áthaladási próba, 2 archiváltadat-összehasonlítás, 16 harc/animációpróba, 26 böngészős játékteszt és 5 multiplayer-protokollteszt. Az eredmények az `artifacts/` mappába kerülnek; a GitHub Actions ugyanazt a csomagot futtatja közzététel előtt.
+**71 sikeres ellenőrzés:** 22 menü/grafikai/menetirány/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás, 16 harc/animációteszt, 26 korábbi böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
 
-A valódi internetes WebRTC-kapcsolat környezeti akadály miatt kihagyott, amennyiben Chromium nem ad ICE-jelöltet; ezt a külön WebRTC-jelentés rögzíti. A protokollteszt 1000 egység 20 oszlopos csomagját, tükrözését, találati koordinátáit és vendégparancsait ellenőrzi. A fejlesztői felhőgép FPS-adatai nem hasonlíthatók közvetlenül a játékos által saját gépen jelzett 60 FPS-hez.
+A három rögzített 50/50 csata 27,0–32,0 szimulált másodperc alatt eldőlt; mindegyikben mind a 100 egység mozgott vagy támadott, és nem maradt tartósan tétlen közelharcos. A helyi mérésben az 50/50 kb. 48,4 FPS, az 500/500 kb. 9,0 FPS volt. Ezek headless felhőgépes adatok: a felhasználó a V4.16 500-as változatán saját gépén 60 FPS-t jelzett, így a különböző környezetek nem hasonlíthatók közvetlenül. Stabil 60 FPS-t minden eszközre továbbra sem állítunk.
 
-A részletes kétkarakteres grafika továbbra is kísérleti, csak a grafikai próbában választható; a normál játék és a vegyes seregek az egyszerűbb figurákat használják. Az eredeti grafikák és gazdasági/egységadatok megmaradtak. Előző ellenőrzés: [V4.17.1](history/v4.17.1-test-results.md).
+A valódi WebRTC-próba itt **környezeti akadály miatt kihagyva**: Chromium nulla ICE jelöltet szolgáltat. Az 1000 egységes csomagküldés, tükrözés és vendégparancsok tesztje sikeres; két internetes gép közötti kapcsolat ebből nem következik. A felhős Chromium éles HTTPS-próbájának korábbi tanúsítványkorlátját nem kerüljük meg. A GitHub Actions a kiadást ismét felépíti és ellenőrzi, mielőtt Pages-re teszi.
+
+A jelentések és képek az `artifacts/` mappában, CI-ben a `test-results` artifactban találhatók. Korábbi fázis: [V4.16](history/v4.16-test-results.md).

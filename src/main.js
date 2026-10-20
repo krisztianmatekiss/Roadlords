@@ -1,5 +1,4 @@
 import './styles/application.css';
-import './styles/battle-layout.css';
 import Peer from 'peerjs';
 import { applyAppIdentity } from './config/app.js';
 import { createGame } from './core/create-game.js';

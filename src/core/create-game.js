@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { initializeUiUpgradeCopy } from '../ui/upgrade-copy.js';
 import { register as registerAiStrategy } from '../ai/strategy.js';
 import { register as registerCitySystems } from '../city/systems.js';
 import { register as registerCombatRules } from '../combat/rules.js';
@@ -255,6 +256,7 @@ export function createGame() {
   initializeAiCoordinatedWaves(runtime);
   initializeUiBattleStatus(runtime);
   initializeUiChoiceCards(runtime);
+  initializeUiUpgradeCopy(runtime);
   initializeCombatRoadIntegration(runtime);
   return runtime;
 }

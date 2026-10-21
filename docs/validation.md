@@ -1,6 +1,16 @@
-# V4.21.0 – új kardos és ork a bevált animációs vázon
+# V4.22.0 – érthető kártyák és fejlesztési előnézetek
 
 2026-10-21. Linux, Node.js 24, headless Chromium, 1440×960. Az ellenőrzések a kész production buildet futtatják `/Roadlords/` alatt; a helyi funkcionális tesztekben a külső HTTPS-forgalom tiltott.
+
+## Kártyaszövegek és fejlesztési előnézetek
+
+A végleges inicializálás 44 épület, 58 gyakori és 85 legendás fejlesztés leírását közös adatmodulból tölti be, így a régi modulok inicializálási sorrendje nem írja felül a szöveget. A választóablak az előzetesen másolt opcióknál is a végleges szöveget használja. A meglévő választási és kitiltási kezelők megmaradnak.
+
+A statisztikai előnézet csak a város normál fejlesztéseinek másolatával hívja a meglévő `statsFor` függvényt; nem használ `applyChoice`-t, `recomputeCity`-t vagy véletlen sorsolást. Nem veterán alapegységet mutat, egységenkénti és ideiglenes módosítók nélkül. A termelés-, esély- és kedvezménysorok kizárólag az adott kártya hozzájárulását mutatják, külön felirattal. A gyakori lapok és a négy ismételhető legendás lap felvételszáma, korlátja és a Specializáció többletfelvétele külön szöveget kap. A normál és legendás választókártyák 500 képpont magasak, a szövegterület görgethető; cím, illusztráció és lábléc nem fedik egymást. A játéktér és az építési sáv felbontása nem változott.
+
+**19 új böngészős ellenőrzés:** teljes aktív fejlesztéskészlet, állapot- és RNG-mentes előnézet, emberi/ork statisztikák, papi gyógyítás, támadási időköz, első és későbbi Vérzés/életlopás, összeadódó és szorzódó kedvezmények, 100% fölötti kritikus esély, korlátok, ismételhető legendás lapok, Specializáció, tényleges `applyChoice` utáni egyezés több meglévő fejlesztéssel/ereklyével, végleges szöveg régi opciómásolatból, rétegek átfedésének hiánya, hosszú szöveg elérhetősége 1440×960 és 800×900 méreten, épülettípus-szintlépés és kattintható választás. Jelentés: `artifacts/upgrade-copy.json`; képek: `upgrade-copy-human.png`, `upgrade-copy-legends.png`, `upgrade-copy-800.png`.
+
+A kártyaképek külön, csak olvasással ellenőrizve: `roadlords-music/cards/orc`, 55 WebP (19 épület, 36 fejlesztés), két ténylegesen megnyitott mintakép. A keretek cím- és leírásmezője üres. Emberi grafikai készlet nincs a repositoryban; a gyökér `human` mappája MP3 fájlokat tartalmaz. Új képek nem kerültek a játékba ebben a kiadásban.
 
 ## Városok és alsó zöld sáv
 
@@ -62,7 +72,7 @@ A teszt mindkét csapatot az út közepén és a két szélén ellenőrzi. Való
 
 ## Ellenőrzések és korlátok
 
-**132 sikeres ellenőrzés:** 18 minitérkép/épületmező próba, 14 városelrendezési próba, 9 új kapukijárati/méretstabilitási próba, 17 új pályamozgatási/városrögzítési próba, 23 menü/grafikai/menetirány/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás, 16 harc/animációteszt, 28 böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
+**151 sikeres ellenőrzés:** 19 új kártyaszöveg/előnézet próba, 18 minitérkép/épületmező próba, 14 városelrendezési próba, 9 új kapukijárati/méretstabilitási próba, 17 új pályamozgatási/városrögzítési próba, 23 menü/grafikai/menetirány/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás, 16 harc/animációteszt, 28 böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
 
 A három rögzített 50/50 csata 26,4–32,0 szimulált másodperc alatt eldőlt; mindegyikben mind a 100 egység mozgott vagy támadott, és nem maradt tartósan tétlen közelharcos. A korábbi V4.17.1 helyi mérésben az 50/50 kb. 48,4 FPS, az 500/500 kb. 9,0 FPS volt. Ezek headless felhőgépes adatok: a felhasználó a V4.16 500-as változatán saját gépén 60 FPS-t jelzett, így a különböző környezetek nem hasonlíthatók közvetlenül. Stabil 60 FPS-t minden eszközre továbbra sem állítunk.
 

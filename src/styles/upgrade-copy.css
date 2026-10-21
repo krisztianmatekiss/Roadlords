@@ -1,0 +1,50 @@
+/* The choice overlay gets readable cards; application and construction-dock sizing stay intact. */
+html body #choiceOverlay #choiceList .choice.upgradeCopyCard {
+  height: 500px !important;
+  min-height: 500px !important;
+  grid-template-rows: 20px 42px 128px minmax(0, 1fr) 28px !important;
+}
+html body #choiceOverlay #choiceList .choice.upgradeCopyCard h3 {
+  white-space: normal !important;
+  font-size: 15px !important;
+  line-height: 19px !important;
+  align-self: center;
+}
+html body #choiceOverlay #choiceList .choice.upgradeCopyCard .choiceArt.card-media {
+  height: 128px !important;
+  min-height: 128px !important;
+  max-height: 128px !important;
+}
+html body #choiceOverlay #choiceList .choice .choiceBody {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  min-height: 0 !important;
+  scrollbar-width: thin;
+  scrollbar-color: #af9651 #142018;
+  overscroll-behavior: contain;
+  text-align: left !important;
+}
+html body #choiceOverlay #choiceList .choice .choiceBody p,
+html body #choiceOverlay #choiceList .choice .choicemeta {
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 1.4 !important;
+}
+html body #choiceOverlay #choiceList .choice .choiceBody .upgradeDescription {
+  margin: 0 0 8px !important;
+  font-size: 13px !important;
+  color: #f0e8cf;
+}
+#choiceOverlay .upgradeHeading { display: block; color: #d7bd70; font-size: 10px; font-weight: 800; margin: 9px 0 5px; }
+#choiceOverlay .upgradeComparison { display: grid; gap: 5px; }
+#choiceOverlay .upgradeRow { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 8px; font-size: 12px; }
+#choiceOverlay .upgradeMetric { color: #cdcbbd; }
+#choiceOverlay .upgradeValues { color: #b6e6b1; white-space: normal; font-variant-numeric: tabular-nums; }
+#choiceOverlay .upgradeContext,
+#choiceOverlay .upgradeStacking,
+#choiceOverlay .upgradeSpecialization { display: block; white-space: normal; font-size: 11px; line-height: 1.4; margin-top: 8px; color: #b8b9a8; }
+#choiceOverlay .upgradeStacking { border-top: 1px solid #8b784c55; padding-top: 6px; color: #e1cc94; }
+#choiceOverlay .upgradeSpecialization { color: #c5b6ee; }

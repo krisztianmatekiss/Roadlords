@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.21.0',
-  label: 'V4.21.0 · ÚJ KARDOS ÉS ORK',
-  title: 'Roadlords – Új kardos és ork',
+  version: '4.22.0',
+  label: 'V4.22.0 · ÉRTHETŐ KÁRTYÁK',
+  title: 'Roadlords – Érthető kártyák',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

@@ -1,4 +1,4 @@
-# Roadlords · V4.21.0
+# Roadlords · V4.22.0
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság, fejlesztések, egységstatisztikák és a multiplayer-protokoll megmaradt.
 
@@ -33,6 +33,16 @@ A katonák külön láb-, test- és fegyvermozgást kapnak. A figurák felszerel
 A közelharcosok foglalt célpontok helyett szabadabb ellenfelet és megközelítési helyet keresnek. A saját egységeken át lehet haladni: az enyhe oldalirányú széthúzás nem akadályozza az előrejutást, ezért sűrű helyzetben baráti átfedés is lehet. Az ellenfelekkel továbbra is ütköznek.
 
 Az első élő ellenséges torony lezárja a teljes útszélesség mögötte lévő szakaszát. Az út szélén, üldözéssel, képességgel vagy ütközési eltolással sem lehet megkerülni. A torony elpusztítása a következő toronyig nyitja meg az utat, végül a fővárosig. A torony mögötti elérhetetlen ellenfél nem vonja el a mozgási célzást. A távolságiak lőtávon belül helyben is támadhatnak; ez rendes működés. A nagy csatában automatikus részletcsökkentés könnyíti a rajzolást, de a figurák mérete a tömegtől függetlenül állandó marad; a 60 FPS-es 500 vs 500 cél további optimalizálást igényel.
+
+## Kártyaleírások
+
+A 44 épület, 58 gyakori fejlesztés és 85 legendás ereklye szövege közös, külön szerkeszthető adatmodulban van: `src/data/upgrade-copy.js`. Az új szövegek a tényleges szabályokat írják le, magyar kifejezésekkel; a Hadkötelezettség tényleges +25% képzési ideje és a Haditermelési lánc +15 százalékpontos előrehaladása is pontosan szerepel.
+
+A fejlesztéskártyák **Jelenleg → Felvétel után** értékeket és felvételszámot mutatnak. Az egységstatisztikákat ugyanaz a `statsFor` számolja, mint a játékban, nem veterán alapegységre, a város jelenlegi fejlesztéseivel. A különleges, egységenkénti és ideiglenes bónuszok nem szerepelnek ebben a példában. A gazdasági és esélybónuszoknál kifejezetten csak az adott lap hozzájárulása látszik. A többször felvehető legendás lapok, a felső korlátok és a Specializáció extra felvételének esélye külön jelölést kapnak. Az előnézet nem módosítja a játékállapotot és nem sorsol.
+
+A választóablak fejlesztéskártyái nagyobb szövegterületet kapnak; a hosszú leírások görgethetők, többé nem vágjuk le őket három sornál. A fő játéknézet és az építési sáv méretezése megmarad. A harci szabályok változatlanok.
+
+A külső ork kártyakészlet a [roadlords-music/cards/orc](https://github.com/krisztianmatekiss/roadlords-music/tree/main/cards/orc) mappában található: **19 épület és 36 fejlesztés, összesen 55 WebP**. A képek üres cím- és leírásmezőket tartalmaznak. Ez a kiadás a meglévő játékbeli illusztrációkat használja; a teljes külső kártyakeretek integrálása és az emberi készlet még nincs benne. `cards/human` mappa jelenleg nincs; a repository gyökerében lévő `human` mappa zenéket tartalmaz.
 
 ## Közzététel
 

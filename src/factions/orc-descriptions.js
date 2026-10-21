@@ -76,7 +76,7 @@ export function initializeFactionsOrcDescriptions(runtime) {
     orc_warg: 'Első támadásként 60 sebzésű lándzsát dob 115 hatótávból, utána közelharcban küzd. Épületek ellen a lándzsa kevesebbet sebez, és nem lehet kritikus.',
     orc_shaman: 'Találatonként egy véletlen átkot tesz a célpontra 4 másodpercre. Elsősorban az átok nélküli ellenfeleket támadja.\nGyengeség: −20% sebzés.\nSorvadás: −20% maximális életerő; lejáratkor nem gyógyít.\nKimerültség: −25% támadási sebesség.\nSebezhetőség: +20% elszenvedett sebzés.\nVakság: 25% eséllyel elhibázza a támadást.\nUgyanaz az átok frissül, nem erősödik.',
     orc_ram: 'Épületek ellen 130-at, egységek ellen 8-at sebez. A fizikai támadásokból 50%-kal kevesebb sebzést kap.',
-    orc_troll: 'A célpontnak 110-et, a körülötte álló ellenségeknek 55-öt sebez.'
+    orc_troll: 'A célpontnak 110-et, a körülötte álló ellenségeknek 35-öt sebez.'
   };
   for (const [key, text] of Object.entries(unitCopy)) runtime.UNITS[key].description = text;
   const picks = {
@@ -89,7 +89,7 @@ export function initializeFactionsOrcDescriptions(runtime) {
     orc_as: 'Minden ork egység +5% támadási sebességet kap.',
     orc_hp: 'Minden ork egység +5% maximális életerőt kap.',
     orc_bers_rage: 'A Dühöngő minden 1% hiányzó életerőért +1% sebzést kap.',
-    orc_gob_bow: 'A Goblin +100% sebzést és +50% hatótávot kap.',
+    orc_gob_bow: 'A Goblin +50% sebzést és +50% hatótávot kap.',
     orc_ancient_deposits: 'A Munkatábor erdő mellett háromszor annyi fát, kőlelőhely mellett háromszor annyi követ termel a kétszeres helyett.',
     orc_bers_blood: 'A Dühöngő dupla sebzést okoz Vérző ellenfeleknek.',
     orc_gob_blood: 'A Goblin találatai 1 Vérzést okoznak. A már Vérző ellenfeleknek +25% sebzést okoz.',

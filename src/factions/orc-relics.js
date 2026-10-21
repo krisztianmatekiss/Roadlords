@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { ORC_BALANCE } from '../data/combat-balance.js';
 export function initializeFactionsOrcRelics(runtime) {
   const O = window.__ROADLORDS_ORCS__,
     orc = O.isOrc,
@@ -98,7 +99,7 @@ export function initializeFactionsOrcRelics(runtime) {
       s.buildingDamage *= kills * (1 + (e.orcVeteranKills || 0) * .1);
       if (leg(c, 'momentum')) {
         let bonus = .1 * runtime.countNormal(c, e.key + '_dmg');
-        if (e.key === 'orc_goblin' && runtime.hasLeg(c, 'orc_gob_bow')) bonus = (1 + bonus) * 2 - 1;
+        if (e.key === 'orc_goblin' && runtime.hasLeg(c, 'orc_gob_bow')) bonus = (1 + bonus) * ORC_BALANCE.goblinBowDamageMultiplier - 1;
         if (e.key === 'orc_ram' && runtime.hasBranch(c, 'orc_ram', 'crusher')) bonus = (1 + bonus) * 7 - 1;
         s.cooldown /= 1 + Math.max(0, bonus) * .5;
       }
@@ -114,7 +115,7 @@ export function initializeFactionsOrcRelics(runtime) {
     let m = 1;
     if (leg(c, 'momentum')) {
       let base = 1 + .1 * runtime.countNormal(c, u.key + '_dmg');
-      if (u.key === 'orc_goblin' && runtime.hasLeg(c, 'orc_gob_bow')) base *= 2;
+      if (u.key === 'orc_goblin' && runtime.hasLeg(c, 'orc_gob_bow')) base *= ORC_BALANCE.goblinBowDamageMultiplier;
       if (u.key === 'orc_ram' && runtime.hasBranch(c, 'orc_ram', 'crusher')) base *= 7;
       let extra = (1 + (u.orcFeasts || 0) * .05) * (1 + (u.orcVeteranKills || 0) * .1);
       if (u.key === 'orc_berserker' && runtime.hasLeg(c, 'orc_bers_rage')) extra *= 2 - u.hp / u.maxHp;

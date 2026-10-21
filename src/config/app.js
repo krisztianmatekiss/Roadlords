@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.23.0',
-  label: 'V4.23.0 · AI VÁROSÉPÍTÉS',
-  title: 'Roadlords – AI városépítés',
+  version: '4.24.0',
+  label: 'V4.24.0 · ELSŐ BALANCE',
+  title: 'Roadlords – Első balance',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

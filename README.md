@@ -1,6 +1,6 @@
-# Roadlords · V4.23.0
+# Roadlords · V4.24.0
 
-A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság, fejlesztések, egységstatisztikák és a multiplayer-protokoll megmaradt.
+A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
 
 ## Játék
 
@@ -48,7 +48,13 @@ A külső ork kártyakészlet a [roadlords-music/cards/orc](https://github.com/k
 
 Az AI helyi támogatói most valódi, közös oldalú szomszédságra épülnek; a hatótávnövelő ágak és ereklyék kivételei megmaradnak. A Gyülekezőtér, Páncélkovács, Aréna és más helyi támogatók környékén az AI szabad helyet részesít előnyben a későbbi katonai termelőknek. A globális épülethatások továbbra sem igényelnek szomszédot. Az emberi AI az ork ellenfél szerepeit is felismeri. Az ork helykeresés egyszeri foglaltságszámítást és döntésenkénti gyorsítótárat használ.
 
-Az egységek, árak és fejlesztéshatások ebben a kiadásban megmaradtak. Az [532 harcmintára és a kód áttekintésére épülő jelentés](docs/balance-audit.md) külön tárgyalja a balance-kockázatokat, az AI korlátait és az első finomhangolás javasolt értékeit. Újrafuttatás: `npm run build && npm run audit:balance`.
+A [532 harcmintára és a kód áttekintésére épülő jelentés](docs/balance-audit.md) külön tárgyalja a balance-kockázatokat, az AI korlátait és az első finomhangolás javasolt értékeit. Újrafuttatás: `npm run build && npm run audit:balance`.
+
+## Első balance · 4.24.0
+
+A három elfogadott változtatás: **Troll másodlagos területsebzése 55→35**, **Ork Harcos alapéletereje 300→250**, **Goblin íjászok sebzésbónusza +100%→+50%**. A Troll elsődleges 110-es találata és 55-ös hatássugara, a Földrengető külön harmadik ütése, valamint a Goblin íjászok +50% hatótávja megmarad. A sebzés- és életerőfejlesztések, veteránbónuszok és Trolltenyészet az új alapértékekből számolnak. A Harci lendület számítása is a csökkentett Goblin íjászok bónuszt használja. Az árak és képzési idők nem változnak.
+
+A közös értékek a `src/data/combat-balance.js` fájlban vannak; a játékbeli leírások frissültek. A régi [balance-jelentés](docs/balance-audit.md) megőrzi a változtatások előtti mérési alapot.
 
 ## Közzététel
 

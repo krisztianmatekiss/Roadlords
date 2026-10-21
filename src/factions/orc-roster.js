@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { ORC_BALANCE } from '../data/combat-balance.js';
 export function initializeFactionsOrcRoster(runtime) {
   const O = window.__ROADLORDS_ORCS__,
     isOrc = O.isOrc;
@@ -93,7 +94,7 @@ export function initializeFactionsOrcRoster(runtime) {
       aoe: 55,
       train: 30,
       cost: runtime.C(25, 60, 60),
-      description: '110 alapsebzés a célpontra, 55 a körülötte álló ellenségekre. Próba AoE-sugár: 55 útegység a célpont körül. Próba épületsebzés: normál közelharci szorzó (torony: 27,5; főváros: 36,67). Az Ősök Totemének és az Áldozati oltárnak 4 pontot ér.'
+      description: `110 alapsebzés a célpontra, ${ORC_BALANCE.trollSecondaryDamage} a körülötte álló ellenségekre. Területi sugár: 55 útegység a célpont körül. Épületsebzés: normál közelharci szorzó (torony: 27,5; főváros: 36,67). Az Ősök Totemének és az Áldozati oltárnak 4 pontot ér.`
     }
   };
   for (const [key, d] of Object.entries(units)) {
@@ -253,7 +254,8 @@ export function initializeFactionsOrcRoster(runtime) {
         enemies = runtime.state.units.filter(x => x.side !== u.side),
         victims = runtime.battleCandidates(enemies, t.lane, radius).filter(x => x.alive && x.id !== t.id && runtime.roadDistance(x, t) <= radius);
       for (const v of [t, ...victims]) {
-        runtime.damageUnit(v, runtime.attackBaseDamage(u, v, mult * (v === t || quake ? 1 : .5)), u.damageType);
+        const secondaryRatio = ORC_BALANCE.trollSecondaryDamage / units.orc_troll.damage;
+        runtime.damageUnit(v, runtime.attackBaseDamage(u, v, mult * (v === t || quake ? 1 : secondaryRatio)), u.damageType);
         if (quake && v.alive && !v.orcLastEvaded) v.stunTime = Math.max(v.stunTime || 0, 1);
       }
       if (quake) runtime.spark(t.lane, 'FÖLDRENGETŐ', '#e6c17a');

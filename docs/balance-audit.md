@@ -1,6 +1,10 @@
 # Emberek és orkok: balance- és AI-áttekintés
 
-2026-10-21. A 4.22.0 harci értékeinek vizsgálata, a 4.23.0 AI-javításával együtt. **Ebben a kiadásban egységérték, ár, képzési idő és fejlesztéshatás nem változott.** Az alábbi számszerű módosítások kipróbálásra javasolt jelöltek.
+2026-10-21. A 4.22.0 harci értékeinek vizsgálata, a 4.23.0 AI-javításával együtt. A 4.23.0-s AI-kiadásban egységérték, ár, képzési idő és fejlesztéshatás nem változott. Az alábbi számszerű módosítások kipróbálásra javasolt jelöltek.
+
+## Elfogadott változtatások · 4.24.0
+
+A felhasználó jóváhagyásával élesítve: Troll másodlagos területsebzése 55→35; Ork Harcos alapéletereje 300→250; Goblin íjászok sebzésbónusza +100%→+50%. A többi javaslat továbbra is kísérleti jelölt. **Az alábbi táblázatok és csataeredmények a változtatások előtti, 4.22.0-s állapotot rögzítik.** Nem az új változat újramért eredményei.
 
 ## Mire épül a vélemény?
 

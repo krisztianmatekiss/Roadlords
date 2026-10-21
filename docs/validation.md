@@ -1,6 +1,16 @@
-# V4.23.0 – AI városépítés és balance-áttekintés
+# V4.24.0 – három elfogadott balance-módosítás
 
 2026-10-21. Linux, Node.js 24, headless Chromium, 1440×960. Az ellenőrzések a kész production buildet futtatják `/Roadlords/` alatt; a helyi funkcionális tesztekben a külső HTTPS-forgalom tiltott.
+
+## Elfogadott balance-változások
+
+A Troll normál másodlagos területsebzése 35; az elsődleges sebzés 110, a sugár 55 marad. A másodlagos arány 35/110, így a veterán, sebzésfejlesztés és Trolltenyészet a korábbi módon skáláz. A Földrengető harmadik ütése továbbra is teljes sebzésű a kibővített körben, kábítással. Az Ork Harcos alapéletereje 250. A Goblin íjászok sebzés- és épületsebzés-szorzója 1,5; a hatótávszorzó szintén 1,5 marad. A Harci lendület alap- és ideiglenes támadásisebesség-számítása is az új ereklyeszorzót használja. A játékbeli leírások frissültek.
+
+**10 új ellenőrzés:** Harcos HP és veterán/fejlesztés; Goblin ereklye sebzés/épületsebzés/hatótáv; Harci lendület mindkét számítása; sebzés kizárólag a tényleges találatkor, pontosan egyszer; 110/35 és távoli célpont; veterán/fejlesztett Troll 198/63; Trolltenyészet 55/17,5; Földrengető 110 és tágabb kör/kábítás; aktuális leírások; futási hibák. Jelentés: `artifacts/balance-changes.json`.
+
+A balance utáni három rögzített 50/50 próba 28,83–33,07 szimulált másodperc alatt eldőlt. Mindháromban mind a 100 egység mozgott vagy támadott; a mért tartósan tétlen közelharcosok maximuma 0 volt. Ezek működési ellenőrzések, nem a két faj teljes játékbeli egyensúlyának bizonyítékai.
+
+Az archivált referencia városai, fejlesztései, induló pozíciói és az érintetlen egységértékek továbbra is egyeznek. A Harcos HP 250/300-as, illetve a Goblin ereklye 1,5/2-es eltérését és annak Harci lendület-hatását a referenciaellenőrzés kifejezetten kiszámolja és ellenőrzi. Más statisztikai eltérés nem megengedett.
 
 ## AI helyi épülethatások és tervezés
 
@@ -10,7 +20,7 @@ Az emberi AI az összes ork típust harci szerepre képezi le, a Trollt 4 hely s
 
 **16 új böngészős ellenőrzés:** átlós hamis Gyülekezőtér-kapcsolat, L4 hatótáv, tíz ház utáni szabad szomszédok, valódi Laktanya→Gyülekezőtér termelési útvonal, nulla célpontú helyi támogatók, globális Kocsma, globális Raktár/Kocsma kivételek, tele város utolsó telke, kiterjesztett Páncélkovács, ork Aréna melletti helymegőrzés, ork céltalan támogatók, két város eltérő alakzatfejlesztései, ideiglenes épületeltávolítás, összes ork szerep és Troll-súly, optimalizált keresés szabályos elhelyezése különböző terepen/forgatásokkal/alakzatokkal, futási hibák. Jelentés: `artifacts/ai-city-planning.json`.
 
-A külön [balance-áttekintés](balance-audit.md) 532 harcmintát és fejlesztési kockázatokat rögzít. A próbák kontrollált harcok, nem teljes gazdasági meccsek; a javasolt értékek még nem kerültek a játékba. A normál tesztcsomag a gyors AI-regressziókat futtatja, az opcionális hosszabb audit a `npm run audit:balance` paranccsal ismételhető.
+A külön [balance-áttekintés](balance-audit.md) 532 harcmintát és fejlesztési kockázatokat rögzít. A próbák kontrollált harcok, nem teljes gazdasági meccsek; a 4.23.0-s áttekintés még nem változtatott értékeket; a 4.24.0-ban három jóváhagyott módosítás élesedik. A normál tesztcsomag a gyors AI-regressziókat futtatja, az opcionális hosszabb audit a `npm run audit:balance` paranccsal ismételhető.
 
 ## Kártyaszövegek és fejlesztési előnézetek
 
@@ -82,9 +92,9 @@ A teszt mindkét csapatot az út közepén és a két szélén ellenőrzi. Való
 
 ## Ellenőrzések és korlátok
 
-**167 sikeres ellenőrzés:** 16 új AI-elhelyezési/szerepfelismerési próba, 19 új kártyaszöveg/előnézet próba, 18 minitérkép/épületmező próba, 14 városelrendezési próba, 9 új kapukijárati/méretstabilitási próba, 17 új pályamozgatási/városrögzítési próba, 23 menü/grafikai/menetirány/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás, 16 harc/animációteszt, 28 böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
+**177 sikeres ellenőrzés:** 10 új balance-próba, 16 új AI-elhelyezési/szerepfelismerési próba, 19 új kártyaszöveg/előnézet próba, 18 minitérkép/épületmező próba, 14 városelrendezési próba, 9 új kapukijárati/méretstabilitási próba, 17 új pályamozgatási/városrögzítési próba, 23 menü/grafikai/menetirány/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás az elfogadott balance-eltérésekkel, 16 harc/animációteszt, 28 böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
 
-A három rögzített 50/50 csata 26,4–32,0 szimulált másodperc alatt eldőlt; mindegyikben mind a 100 egység mozgott vagy támadott, és nem maradt tartósan tétlen közelharcos. A korábbi V4.17.1 helyi mérésben az 50/50 kb. 48,4 FPS, az 500/500 kb. 9,0 FPS volt. Ezek headless felhőgépes adatok: a felhasználó a V4.16 500-as változatán saját gépén 60 FPS-t jelzett, így a különböző környezetek nem hasonlíthatók közvetlenül. Stabil 60 FPS-t minden eszközre továbbra sem állítunk.
+A balance-módosítások előtti három rögzített 50/50 csata 26,4–32,0 szimulált másodperc alatt eldőlt; mindegyikben mind a 100 egység mozgott vagy támadott, és nem maradt tartósan tétlen közelharcos. A korábbi V4.17.1 helyi mérésben az 50/50 kb. 48,4 FPS, az 500/500 kb. 9,0 FPS volt. Ezek headless felhőgépes adatok: a felhasználó a V4.16 500-as változatán saját gépén 60 FPS-t jelzett, így a különböző környezetek nem hasonlíthatók közvetlenül. Stabil 60 FPS-t minden eszközre továbbra sem állítunk.
 
 A rögzített harci próbák külön, frissen betöltött runtime-ot kapnak; így nem öröklik az előző csata és képernyőképezés után maradt állapotot. A 7-es magú próbát külön a `b7ed759` változattal is összevetettük: azonos induló városok/egységek, 26,4 másodperc, 662 támadás, 25/0 végső létszám. A harci tesztek eredeti mozgási, holtpont- és lezárási követelményei megmaradtak.
 

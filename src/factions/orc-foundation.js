@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { ORC_BALANCE } from '../data/combat-balance.js';
 export function initializeFactionsOrcFoundation(runtime) {
   const isOrc = c => c?.race === 'orc',
     orcKey = k => String(k).startsWith('orc_');
@@ -41,7 +42,7 @@ export function initializeFactionsOrcFoundation(runtime) {
       name: 'Ork Harcos',
       icon: '🪓',
       battleIcon: '⚒',
-      hp: 300,
+      hp: ORC_BALANCE.warriorHp,
       damage: 20,
       cooldown: 1.25,
       speed: 34,
@@ -131,7 +132,7 @@ export function initializeFactionsOrcFoundation(runtime) {
     name: 'Goblin íjászok',
     icon: '🏹',
     race: 'orc',
-    description: 'Goblin: +50% hatótáv és +100% sebzés.',
+    description: 'Goblin: +50% hatótáv és +50% sebzés.',
     eligible: c => isOrc(c) && available(c, 'orc_goblin')
   });
   const oldNormal = runtime.eligibleNormal,
@@ -212,8 +213,8 @@ export function initializeFactionsOrcFoundation(runtime) {
     s.buildingDamage *= dmg;
     s.cooldown /= 1 + .05 * runtime.countNormal(c, 'orc_as');
     if (e.key === 'orc_goblin' && runtime.hasLeg(c, 'orc_gob_bow')) {
-      s.dmg *= 2;
-      s.buildingDamage *= 2;
+      s.dmg *= ORC_BALANCE.goblinBowDamageMultiplier;
+      s.buildingDamage *= ORC_BALANCE.goblinBowDamageMultiplier;
       s.range *= 1.5;
     }
     return s;

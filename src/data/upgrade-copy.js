@@ -121,7 +121,7 @@ export const LEGENDARY_COPY = Object.freeze({
   "royal_district": "A Főépület azonnal +1 szintet kap. A közvetlenül mellette álló nyersanyagtermelők +25% termelést, a katonai termelők +25% képzési sebességet kapnak.",
   "strategic_superiority": "Azonnal 3 további választást, 5 újrasorsolást és 3 kitiltást ad. Korlátlanul többször választható.",
   "orc_bers_rage": "A Dühöngő minden 1% hiányzó életerőért +1% sebzést kap.",
-  "orc_gob_bow": "A Goblin +100% sebzést és +50% hatótávot kap.",
+  "orc_gob_bow": "A Goblin +50% sebzést és +50% hatótávot kap.",
   "orc_ancient_deposits": "A Munkatábor erdő mellett háromszor annyi fát, kőlelőhely mellett háromszor annyi követ termel a kétszeres helyett.",
   "orc_bers_blood": "A Dühöngő dupla sebzést okoz Vérző ellenfeleknek.",
   "orc_gob_blood": "A Goblin találatai 1 Vérzést okoznak. A már Vérző ellenfeleknek +25% sebzést okoz.",

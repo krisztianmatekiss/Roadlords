@@ -9,15 +9,16 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('Minimap stays hidden in the main menu',!await page.locator('#roadMinimap').isVisible());
   await page.locator('.menuBrand').click();await page.waitForTimeout(900);await page.locator('#roadTestsMenu').click();await page.locator('#roadTestMenu').click();
   await page.evaluate(()=>{__ROADLORDS_ROAD__.startTest(42);__ROADLORDS_ROAD__.pause();__ROADLORDS_RUNTIME__.roadWar.scrollLeft=0;});await page.waitForTimeout(200);
-  check('Each occupied cell on both teams has a category marking inset from its own hit area',await page.evaluate(()=>{
+  check('Each building has one continuous category footprint with a single inset outer border',await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__;
    return [['#playerGrid',R.P],['#enemyGrid',R.E]].every(([id,c])=>{
     const grid=R.$(id),cells=[...grid.querySelectorAll('.buildingFootprint')];
-    return cells.length===c.buildings.reduce((n,b)=>n+R.buildingCells(b).length,0)&&cells.every(el=>{
-     const b=c.buildings.find(b=>b.id===el.dataset.id),hit=[...grid.querySelectorAll('.buildingHitCell')].find(h=>h.dataset.id===el.dataset.id&&h.dataset.r===el.dataset.r&&h.dataset.c===el.dataset.c);
-     if(!hit||!el.classList.contains(R.BUILDINGS[b.type].category))return false;
-     const a=el.getBoundingClientRect(),r=hit.getBoundingClientRect(),s=getComputedStyle(el);
-     return Math.abs(a.left-r.left-3)<.1&&Math.abs(r.right-a.right-3)<.1&&Math.abs(a.top-r.top-3)<.1&&Math.abs(r.bottom-a.bottom-3)<.1&&s.borderTopWidth==='2px'&&s.pointerEvents==='none'&&s.backgroundColor!=='rgba(0, 0, 0, 0)';
+    return cells.length===c.buildings.length&&cells.every(el=>{
+     const b=c.buildings.find(b=>b.id===el.dataset.id),art=grid.querySelector(`.building[data-id="${b.id}"]`),bounds=R.shapeBounds(b.type,b.rotation||0);
+     if(!art||!el.classList.contains(R.BUILDINGS[b.type].category)||el.children.length!==1)return false;
+     const a=el.getBoundingClientRect(),r=art.getBoundingClientRect(),path=el.firstChild,box=path.getBBox(),s=getComputedStyle(path);
+     const rectangle=bounds.cells.length===bounds.w*bounds.h;
+     return Math.abs(a.left-r.left)<.1&&Math.abs(a.top-r.top)<.1&&Math.abs(box.x-4)<.1&&Math.abs(box.y-4)<.1&&Math.abs(a.width-box.width-8)<.1&&Math.abs(a.height-box.height-8)<.1&&s.strokeWidth==='2px'&&s.fillOpacity==='0.16'&&getComputedStyle(el).pointerEvents==='none'&&(!rectangle||(path.getAttribute('d').match(/L/g)||[]).length===3);
     });
    });
   }));
@@ -31,13 +32,17 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('Repeated render paths do not accumulate footprint layers',await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,n=document.querySelectorAll('.buildingFootprint').length;for(let i=0;i<5;i++)R.renderStatic();return n===document.querySelectorAll('.buildingFootprint').length;}));
   check('Rotated L-shaped buildings leave their empty corner uncolored',await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,grid=document.createElement('div');grid.className='citygrid';
-   for(const rotation of R.rotationOptions('siegeworks')){
-    const b={...R.P.buildings[0],id:'rotated-footprint',type:'siegeworks',row:2,col:2,rotation,level:1};
-    R.roadOldRenderCity(grid,{...R.P,buildings:[b]},true);
-    const occupied=R.buildingCells(b).map(c=>c.join(',')),painted=[...grid.querySelectorAll('.buildingFootprint')].map(e=>`${e.dataset.r},${e.dataset.c}`);
-    if(painted.length!==3||painted.some(c=>!occupied.includes(c))||grid.querySelectorAll('.plot').length!==97)return false;
-   }
-   return true;
+   grid.style.cssText='position:fixed;left:-1000px;top:0;width:400px;height:400px';document.body.append(grid);
+   try{
+    for(const rotation of R.rotationOptions('siegeworks')){
+     const b={...R.P.buildings[0],id:'rotated-footprint',type:'siegeworks',row:2,col:2,rotation,level:1};
+     R.roadOldRenderCity(grid,{...R.P,buildings:[b]},true);
+     const occupied=R.rotatedShape(b.type,rotation).map(c=>c.join(',')),mark=grid.querySelector('.buildingFootprint'),path=mark.firstChild,box=mark.viewBox.baseVal;
+     if(grid.querySelectorAll('.buildingFootprint').length!==1||grid.querySelectorAll('.plot').length!==97||(path.getAttribute('d').match(/L/g)||[]).length!==5)return false;
+     for(let r=0;r<2;r++)for(let c=0;c<2;c++)if(path.isPointInFill(new DOMPoint((c+.5)*box.width/2,(r+.5)*box.height/2))!==occupied.includes(`${r},${c}`))return false;
+    }
+    return true;
+   }finally{grid.remove();}
   }));
   async function layout(){return page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,r=e=>e.getBoundingClientRect().toJSON();return {map:r(R.$('#roadMinimap')),dock:r(R.$('.command')),catalog:r(R.$('.catalog')),roster:r(R.$('#roadRoster')),topbar:r(R.$('.topbar'))};});}
   const desktop=await layout();report.desktop=desktop;

@@ -1,6 +1,6 @@
 export const APP = Object.freeze({
-  version: '4.20.1',
-  label: 'V4.20.1 · MINITÉRKÉP ÉS ÉPÜLETMEZŐK',
+  version: '4.20.2',
+  label: 'V4.20.2 · MINITÉRKÉP ÉS ÉPÜLETMEZŐK',
   title: 'Roadlords – Minitérkép és épületmezők',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',

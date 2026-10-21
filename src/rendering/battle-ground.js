@@ -28,4 +28,11 @@ export function drawBattleGround(R) {
   g.save();g.translate(0,R.ROAD.h/2);g.scale(zoom,R.ROAD.h/600*zoom);
   for (let x = Math.floor(R.ROAD.camera/512)*512; x < R.ROAD.camera+width; x += 512) g.drawImage(R.ROAD.ground,x-R.ROAD.camera,-300);
   g.restore();
+  // Keep the grass beside the city walls visible when zooming the battle.
+  const margin = R.ROAD.h * 49 / 600, bottom = R.ROAD.h * 551 / 600;
+  for (let x = Math.floor(R.ROAD.camera/512)*512; x < R.ROAD.camera+width; x += 512) {
+    const left = (x-R.ROAD.camera)*zoom;
+    g.drawImage(R.ROAD.ground,0,0,512,49,left,0,512*zoom,margin);
+    g.drawImage(R.ROAD.ground,0,551,512,49,left,bottom,512*zoom,margin);
+  }
 }

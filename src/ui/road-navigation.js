@@ -20,6 +20,7 @@ export function installRoadNavigation(R) {
     const inset = Math.max(0, world.offsetWidth - war.scrollLeft - war.clientWidth);
     world.style.setProperty('--enemy-city-inset', `${inset}px`);
   }
+  R.roadPositionPinnedCity = positionCity;
   function updatePin() {
     world.classList.toggle('enemy-city-pinned', R.ROAD.enemyPinned);
     toggle.classList.toggle('active', R.ROAD.enemyPinned);

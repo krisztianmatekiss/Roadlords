@@ -1,0 +1,45 @@
+const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
+(async()=>{
+ const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
+ const report={checks:[],errors:[]},check=(name,ok)=>{assert(ok,name);report.checks.push(name);console.log('PASS',name);};
+ try{
+  const page=await browser.newPage({viewport:{width:1920,height:1080}});await page.route('https://**/*',r=>r.abort());page.on('pageerror',e=>report.errors.push(e.message));
+  await page.goto(URL);await page.waitForFunction(()=>!!window.__ROADLORDS_ROAD__);await page.evaluate(()=>__ROADLORDS_ROAD__.artReady);
+  await page.locator('.menuBrand').click();await page.waitForTimeout(900);await page.locator('#roadTestsMenu').click();await page.locator('#roadTestMenu').click();
+  await page.evaluate(()=>{__ROADLORDS_ROAD__.startTest(42,{count:50});__ROADLORDS_ROAD__.pause();__ROADLORDS_RUNTIME__.roadWar.scrollLeft=0;});
+  async function geometry(){return page.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,war=R.roadWar.getBoundingClientRect();
+   const rect=e=>e.getBoundingClientRect().toJSON();
+   return {size:R.ROAD.city,height:R.ROAD.h,path:R.PATH_LENGTH,world:R.roadWorld.offsetWidth,war:rect(R.roadWar),canvas:rect(R.canvas),topbar:rect(R.$('.topbar')),command:rect(R.$('.command')),roster:rect(R.$('#roadRoster')),cities:[...R.roadWorld.querySelectorAll('.cityzone')].map(city=>({frame:rect(city.querySelector('.cityframe')),grid:rect(city.querySelector('.citygrid')),cell:{width:parseFloat(getComputedStyle(city.querySelector('.citygrid')).gridTemplateColumns),height:parseFloat(getComputedStyle(city.querySelector('.citygrid')).gridTemplateRows)},head:getComputedStyle(city.querySelector('.cityhead')).display,foot:getComputedStyle(city.querySelector('.cityfoot')).display}))};
+  });}
+  const initial=await geometry();report.desktop=initial;
+  check('Both cities reach the two road walls with square frames, grids and cells',initial.cities.every(c=>Math.abs(c.frame.top-(initial.war.top+initial.height*49/600))<1&&Math.abs(c.frame.bottom-(initial.war.top+initial.height*551/600))<1&&Math.abs(c.frame.width-c.frame.height)<1&&Math.abs(c.grid.width-c.grid.height)<1&&Math.abs(c.cell.width-c.cell.height)<1));
+  check('Growing cities extend the world while preserving road distances and matching the battle origin',initial.size>440&&initial.world===initial.path+initial.size*2&&initial.path===4800&&Math.abs(initial.canvas.left-initial.size)<1);
+  check('Original city header and footer no longer occupy map space and icon controls stay removed',await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.v490InstallToggle();R.renderStatic();return R.state.visualHints&&!document.querySelector('.visualHintsToggle');})&&initial.cities.every(c=>c.head==='none'&&c.foot==='none'));
+  const grass=await page.evaluate(()=>{const r=document.querySelector('#roadRoster'),s=getComputedStyle(r);return {background:s.backgroundColor,border:s.borderWidth,shadow:s.boxShadow};});
+  check('Roster sits directly in the lower grass, without a panel or an extra app row',initial.roster.top>=initial.war.top+initial.height*551/600&&initial.roster.bottom<=initial.war.top+initial.height&&grass.background==='rgba(0, 0, 0, 0)'&&grass.border==='0px'&&grass.shadow==='none'&&initial.topbar.height===64&&Math.abs(initial.command.bottom-1080)<1);
+  check('Test army counters and all faction portraits update using the original unique DOM IDs',await page.evaluate(()=>['playerArmy','enemyArmy'].every(id=>document.querySelectorAll('#'+id).length===1&&document.querySelector('#'+id).textContent==='50/50')&&document.querySelectorAll('#playerArmyMix .unitchip').length===7&&document.querySelectorAll('#enemyArmyMix .unitchip').length===7));
+  await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.P.garrison=[R.makeEntry(R.P,'swordsman'),R.makeEntry(R.P,'archer')];R.E.garrison=[R.makeEntry(R.E,'orc_warrior')];R.updateHud();});
+  await page.locator('#roadRoster button[data-side="enemy"]').click();
+  check('Both reserve and army compositions remain available when switching teams',await page.locator('.roadRosterTeam[data-side="enemy"]').isVisible()&&!await page.locator('.roadRosterTeam[data-side="player"]').isVisible()&&await page.locator('#enemyGarrisonMix .unitchip').count()===1&&await page.locator('#playerGarrisonMix .unitchip').count()===2);
+  await page.locator('#roadRoster button[data-side="player"]').click();
+  const hp=await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.P.hp=R.P.maxHp*.42;R.E.hp=R.E.maxHp*.64;R.updateHud();return [...document.querySelectorAll('.roadCapitalHealth')].map(bar=>({ratio:parseFloat(bar.querySelector('i').style.width),value:Number(bar.getAttribute('aria-valuenow')),max:Number(bar.getAttribute('aria-valuemax')),maxText:Number(bar.querySelector('.roadCapitalMax').textContent),top:bar.getBoundingClientRect().top,gateBottom:bar.closest('.cityframe').querySelector('.gate').getBoundingClientRect().bottom}));});
+  check('Capital HP bars below each gate reflect real damage, maximum HP and accessibility values',Math.abs(hp[0].ratio-42)<.01&&Math.abs(hp[1].ratio-64)<.01&&hp.every(x=>x.value>0&&x.value<x.max&&x.maxText===x.max&&x.top>x.gateBottom));
+  await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.MP.enabled=true;R.MP.role='host';R.MP.playerName='Északi Kapitány';R.MP.opponentName='Fekete Farkas';__ROADLORDS_MP_NAMES__.update();});
+  const names=await page.evaluate(()=>['player','enemy'].map(side=>{const el=document.querySelector('#'+side+'NameTag'),gate=el.closest('.cityframe').querySelector('.gate');return {name:el.textContent,visible:!el.classList.contains('hidden'),bottom:el.getBoundingClientRect().bottom,gateTop:gate.getBoundingClientRect().top};}));
+  check('Live multiplayer names appear above their own gates after moving the existing name nodes',names[0].name==='Északi Kapitány'&&names[1].name==='Fekete Farkas'&&names.every(x=>x.visible&&x.bottom<x.gateTop));
+  await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.MP.enabled=false;R.MP.role='solo';__ROADLORDS_MP_NAMES__.update();});
+  await page.locator('#playerGate').click();await page.locator('#gateMenu [data-gate="closed"]').click();
+  check('The enlarged city retains the working gate controller and does not recreate the icon toggle',await page.locator('#playerGate').getAttribute('data-mode')==='closed'&&await page.locator('.visualHintsToggle').count()===0);
+  await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadWar.scrollLeft=2000);await page.waitForTimeout(100);const scrolled=await geometry();
+  check('Scrolling moves the map while the grass roster and the full-size pinned city stay anchored',Math.abs(initial.roster.x-scrolled.roster.x)<1&&Math.abs(initial.roster.y-scrolled.roster.y)<1&&Math.abs(scrolled.cities[1].frame.right-scrolled.war.right)<1&&scrolled.topbar.height===initial.topbar.height&&scrolled.command.height===initial.command.height);
+  await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadWar.scrollLeft=0);await page.waitForTimeout(100);await page.screenshot({path:'artifacts/city-layout-1920.png'});
+  for(const [width,height] of [[3804,1746],[1440,960],[800,900]]){
+   await page.setViewportSize({width,height});await page.waitForTimeout(150);await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadWar.scrollLeft=0);await page.waitForTimeout(80);const g=await geometry();
+   check(`City and grass layout remains proportional at ${width}x${height}`,g.cities.every(c=>Math.abs(c.frame.width-c.frame.height)<1&&Math.abs(c.grid.width-c.grid.height)<1&&Math.abs(c.frame.bottom-(g.war.top+g.height*551/600))<1)&&g.roster.top>=g.war.top+g.height*551/600&&g.roster.bottom<=g.war.top+g.height&&g.roster.x>=0&&g.roster.right<=width&&Math.abs(g.command.bottom-height)<1);
+   if(width===3804)await page.screenshot({path:'artifacts/city-layout-3804.png'});
+  }
+  check('City layout, moved counters and multiplayer labels have no runtime errors',!report.errors.length&&!await page.evaluate(()=>__ROADLORDS__.state.lastRuntimeErrorV4965));
+ }finally{fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/city-layout.json',JSON.stringify(report,null,2));await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});

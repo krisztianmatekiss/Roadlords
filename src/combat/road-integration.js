@@ -4,6 +4,7 @@ import { drawBattleGround } from '../rendering/battle-ground.js';
 import { installTestMenu } from '../ui/test-menu.js';
 import { installRoadNavigation } from '../ui/road-navigation.js';
 import { gateExitOffset } from '../world/gate-exits.js';
+import { installRoadCities } from '../ui/road-cities.js';
 export function initializeCombatRoadIntegration(runtime) {
   runtime.ROAD = {
     city: 440,
@@ -203,6 +204,7 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.roadHud.id = 'roadHud';
   runtime.roadHud.innerHTML = '<span id="roadCounts"></span><span id="roadFps"></span><span id="roadStatus"></span><button data-camera="0">Saját város</button><button data-camera="1">Csata</button><button data-camera="2">Ellenfél</button><button id="roadZoomOut" aria-label="Kicsinyítés">−</button><span id="roadZoom">100%</span><button id="roadZoomIn" aria-label="Nagyítás">+</button><button id="roadArtToggle" hidden aria-pressed="true">Grafika: Részletes</button><button data-test id="roadPause">Szünet</button><button data-test id="roadRestart">Újraindítás</button><button data-test id="roadMenu">Főmenü</button>';
   runtime.$('.command').appendChild(runtime.roadHud);
+  installRoadCities(runtime);
   installRoadNavigation(runtime);
   runtime.roadHud.querySelectorAll('[data-camera]').forEach(b => b.onclick = () => {
     const v = +b.dataset.camera;
@@ -413,5 +415,6 @@ export function initializeCombatRoadIntegration(runtime) {
       const value = runtime.$('#' + r + 'Stock');
       if (value) value.textContent = Math.floor(runtime.P.resources[r]) + ' / ' + Math.floor(runtime.P.caps[r]);
     }
+    runtime.roadUpdateCityHud();
   };
 }

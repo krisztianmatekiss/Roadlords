@@ -19,6 +19,9 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('Restart retains 50/50 mode',await page.evaluate(()=>__ROADLORDS_ROAD__.snapshot().counts.every(n=>n===50)));
   await page.screenshot({path:'artifacts/battle-flow-ready.png'});
   for(const seed of [42,7,98765]){
+   // Give each deterministic battle a fresh runtime rather than inheriting
+   // caches and frame callbacks from the preceding battle and its screenshot.
+   await page.reload();await page.waitForFunction(()=>!!window.__ROADLORDS_ROAD__);
    const result=await page.evaluate(seed=>{
     const R=__ROADLORDS__,Q=__ROADLORDS_ROAD__;Q.startTest(seed,{count:50});Q.pause();
     let random=seed;Math.random=()=>((random=(Math.imul(random,1664525)+1013904223)>>>0)/4294967296);

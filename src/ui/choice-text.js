@@ -122,7 +122,8 @@ export function initializeUiChoiceText(runtime) {
     const h = toastEl.offsetHeight || 32;
     const minTop = (topbar?.bottom || 0) + 8;
     const wanted = dock.top - h - 12;
-    toastEl.style.setProperty('top', Math.round(Math.max(minTop, wanted)) + 'px', 'important');
+    const clearRoster = Number.isFinite(runtime.roadNoticeBottom) ? Math.min(wanted, runtime.roadNoticeBottom - h - 10) : wanted;
+    toastEl.style.setProperty('top', Math.round(Math.max(minTop, clearRoster)) + 'px', 'important');
     toastEl.style.setProperty('bottom', 'auto', 'important');
   }
   const oldToastV4972 = runtime.toast;

@@ -369,6 +369,7 @@ export function register(runtime) {
     }
     runtime.canvas.style.setProperty('width', runtime.ROAD.w + 'px', 'important');
     runtime.canvas.style.setProperty('height', runtime.ROAD.h + 'px', 'important');
+    runtime.roadLayoutCities?.();
   };
   installBattleFigures(runtime);
 }

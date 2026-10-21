@@ -1,10 +1,12 @@
-# Roadlords · V4.17.3
+# Roadlords · V4.19.0
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság, fejlesztések, egységstatisztikák és a multiplayer-protokoll megmaradt.
 
 ## Játék
 
 **https://krisztianmatekiss.github.io/Roadlords/**
+
+A városok négyzetes kerettel és építési ráccsal az út felső és alsó szegélyéig érnek. Magasságuk és szélességük együtt igazodik a pályanézethez; a teljes görgethető világ szélesedik, a harci út távolságai megmaradnak. A sereg és a helyőrség élő számlálói és portréi az alsó zöld sávban vannak, külön panel nélkül; a Saját / Ellenfél kapcsolóval mindkét oldal megtekinthető. A multiplayer név a kapu fölött, a főváros életerőcsíkja alatta jelenik meg. A városi ikonok mindig látszanak, a felesleges ikonkapcsoló megszűnt. Minitérkép ebben a változatban nincs.
 
 A főmenüben egyetlen **TESZTEK** gomb nyitja az összes próbát. A külön almenüből a **VISSZA** vagy az **Escape** visz vissza; a szóló és multiplayer menüpontok külön maradnak.
 
@@ -16,7 +18,7 @@ A figura menet közben a tényleges haladás felé fordul, támadás közben az 
 
 A pályát az **A / D** billentyűvel mozgathatod; nyomva tartva folyamatosan halad. A **dupla A / D** a bal / jobb szélre ugrik. Az **F** a legnagyobb aktív harccsoporthoz vagy az ostromhoz visz, érintkezés előtt a seregek közé. A görgő és a vízszintes trackpad-mozgatás az A/D mellett szintén mozgatja a pályát. Gépelés és nyitott választóablak közben ezek a gyorsgombok nem működnek.
 
-Az időtől balra lévő városikon alapból bekapcsolja az ellenfél városának rögzítését: a teljes méretű, élő város a jobb szélen marad, a kapuja előtti vonaltól balra görgethető a pálya, mint egy rögzített Excel-oszlop. Kattintással feloldható. Nincs másolt város vagy új felbontás; a rögzített város 440 képpontot foglal el a pályából, kis képernyőn kikapcsolható. A toronyhelyek és a harci szabályok nem változtak.
+Az időtől balra lévő városikon alapból bekapcsolja az ellenfél városának rögzítését: a teljes méretű, élő város a jobb szélen marad, a kapuja előtti vonaltól balra görgethető a pálya, mint egy rögzített Excel-oszlop. Kattintással feloldható. Nincs másolt város vagy új felbontás; a város szélessége a magasságával együtt nő, kis képernyőn a rögzítés kikapcsolható. A toronyhelyek és a harci szabályok nem változtak.
 
 A lebegő pályapanel eltűnt. A tesztcsaták FPS-, létszám-, szünet-, újraindítás-, grafika- és nagyításvezérlői a meglévő alsó területre kerültek. A **− / +** a tesztcsata nagyítását módosítja (75–200%). Szünet: gomb vagy szóköz. A főmenübe visszalépés új játékállapotot tölt be. A TESZT nem gyárt utánpótlást.
 

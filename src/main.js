@@ -1,4 +1,5 @@
 import './styles/application.css';
+import './styles/road-cities.css';
 import Peer from 'peerjs';
 import { applyAppIdentity } from './config/app.js';
 import { createGame } from './core/create-game.js';

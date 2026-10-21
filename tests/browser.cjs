@@ -115,6 +115,15 @@ async function main(){
   await page.keyboard.press('d');
   const normalCamera=await page.locator('.war').evaluate(e=>e.scrollLeft);
   check('Normal solo uses the new camera keys and pinned city without the floating road panel',normalCamera>1000&&!await page.locator('#roadHud').isVisible()&&await page.locator('#enemyCityPin').getAttribute('aria-pressed')==='true');
+  await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.state.running=false;R.state.modal=false;R.P.resources={...R.P.caps};R.roadWar.scrollLeft=0;R.renderStatic();});
+  await page.locator('.tab[data-cat="all"]').click();await page.locator('#buildList .buildcard[data-k="lumber"]').click();
+  const placement=await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;for(let r=0;r<R.GRID;r++)for(let c=0;c<R.GRID;c++){
+    const o=R.placementOrigin('lumber',R.state.buildRotation,r,c);
+    if(R.canPlace(R.P,'lumber',o.row,o.col,R.state.buildRotation)&&R.$(`#playerGrid .plot[data-r="${r}"][data-c="${c}"]`))return {r,c,before:R.P.buildings.length};
+  }});
+  assert(placement,'An empty build location must remain available');
+  await page.locator(`#playerGrid .plot[data-r="${placement.r}"][data-c="${placement.c}"]`).click();
+  check('Normal build cards place a real building on the enlarged grid without notices covering the grass counters',await page.evaluate(before=>__ROADLORDS__.P.buildings.length===before+1&&document.querySelector('#toast').getBoundingClientRect().bottom<document.querySelector('#roadRoster').getBoundingClientRect().top,placement.before));
   report.solo=solo;
   await page.screenshot({path:'artifacts/solo.png'});
   check('No application page errors',report.errors.length===0);

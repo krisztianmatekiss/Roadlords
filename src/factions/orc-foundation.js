@@ -8,7 +8,7 @@ export function initializeFactionsOrcFoundation(runtime) {
   }, (_, r) => Array.from({
     length: w
   }, (_, c) => [r, c])).flat();
-  const basic = ['orc_work', 'orc_hunt', 'warehouse', 'orc_war'];
+  const basic = ['orc_work', 'orc_hunt', 'warehouse', 'orc_war', 'orc_hut'];
   const defs = {
     orc_work: ['Munkatábor', '🪓', 'economy', 2, 1, runtime.C(40, 10), 'Fa és Kő: 1/2/3 másodpercenként. Erdő mellett a Fa, Kőlelőhely mellett a Kő ×2. L4: 6 Fa + 4 Kő vagy 4 Fa + 6 Kő.'],
     orc_hunt: ['Vadászház', '🏹', 'economy', 1, 1, runtime.C(25), 'Élelem: 0,5/1/1,5/3 másodpercenként. Városfal mellett +50%, nyitott kapunál +50%; összeadódnak.'],

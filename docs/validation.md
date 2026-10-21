@@ -92,6 +92,8 @@ A teszt mindkét csapatot az út közepén és a két szélén ellenőrzi. Való
 
 ## Ellenőrzések és korlátok
 
+A V4.24.1 Kunyhó-módosítását külön böngészős próbában ellenőriztük: valódi fajválasztás után az ork játékos és az ork AI indulástól ismeri az épületet, az ember nem kapja meg, és feloldókártyaként sem jelenik meg újra. A kezdő választások után a Kunyhó a szokásos építési sávból ténylegesen megépíthető.
+
 **177 sikeres ellenőrzés:** 10 új balance-próba, 16 új AI-elhelyezési/szerepfelismerési próba, 19 új kártyaszöveg/előnézet próba, 18 minitérkép/épületmező próba, 14 városelrendezési próba, 9 új kapukijárati/méretstabilitási próba, 17 új pályamozgatási/városrögzítési próba, 23 menü/grafikai/menetirány/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás az elfogadott balance-eltérésekkel, 16 harc/animációteszt, 28 böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
 
 A balance-módosítások előtti három rögzített 50/50 csata 26,4–32,0 szimulált másodperc alatt eldőlt; mindegyikben mind a 100 egység mozgott vagy támadott, és nem maradt tartósan tétlen közelharcos. A korábbi V4.17.1 helyi mérésben az 50/50 kb. 48,4 FPS, az 500/500 kb. 9,0 FPS volt. Ezek headless felhőgépes adatok: a felhasználó a V4.16 500-as változatán saját gépén 60 FPS-t jelzett, így a különböző környezetek nem hasonlíthatók közvetlenül. Stabil 60 FPS-t minden eszközre továbbra sem állítunk.

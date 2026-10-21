@@ -1,4 +1,4 @@
-# Roadlords · V4.24.0
+# Roadlords · V4.24.1
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
 
@@ -51,6 +51,8 @@ Az AI helyi támogatói most valódi, közös oldalú szomszédságra épülnek;
 A [532 harcmintára és a kód áttekintésére épülő jelentés](docs/balance-audit.md) külön tárgyalja a balance-kockázatokat, az AI korlátait és az első finomhangolás javasolt értékeit. Újrafuttatás: `npm run build && npm run audit:balance`.
 
 ## Első balance · 4.24.0
+
+A **4.24.1** kiadásban az ork **Kunyhó** indulástól építhető alapépület; külön feloldást nem igényel, az építési ára változatlan.
 
 A három elfogadott változtatás: **Troll másodlagos területsebzése 55→35**, **Ork Harcos alapéletereje 300→250**, **Goblin íjászok sebzésbónusza +100%→+50%**. A Troll elsődleges 110-es találata és 55-ös hatássugara, a Földrengető külön harmadik ütése, valamint a Goblin íjászok +50% hatótávja megmarad. A sebzés- és életerőfejlesztések, veteránbónuszok és Trolltenyészet az új alapértékekből számolnak. A Harci lendület számítása is a csökkentett Goblin íjászok bónuszt használja. Az árak és képzési idők nem változnak.
 

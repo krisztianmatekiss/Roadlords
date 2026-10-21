@@ -3,6 +3,7 @@ import { installTowerFrontiers } from './frontiers.js';
 import { drawBattleGround } from '../rendering/battle-ground.js';
 import { installTestMenu } from '../ui/test-menu.js';
 import { installRoadNavigation } from '../ui/road-navigation.js';
+import { gateExitOffset } from '../world/gate-exits.js';
 export function initializeCombatRoadIntegration(runtime) {
   runtime.ROAD = {
     city: 440,
@@ -114,9 +115,10 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.releaseUnit = function (c, entry) {
     const u = runtime.roadOldRelease(c, entry);
     if (u) {
-      u.offset = ((u.id - 1) % 20 - 9.5) * 24;
+      u.offset = gateExitOffset(runtime, u);
       u.roadPrev = u.lane;
-      u.roadHomeOffset = u.offset;
+      // Fan out gradually after leaving the gate; do not spawn across the road.
+      u.roadHomeOffset = ((u.id - 1) % 20 - 9.5) * 24;
       u.roadWalk = 0;
       u.roadTarget = null;
     }

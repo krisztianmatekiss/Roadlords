@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.17.2',
-  label: 'V4.17.2 · PÁLYAMOZGATÁS ÉS VÁROSRÖGZÍTÉS',
-  title: 'Roadlords – Pályamozgatás és városrögzítés',
+  version: '4.17.3',
+  label: 'V4.17.3 · KAPUKIJÁRAT ÉS STABIL EGYSÉGMÉRET',
+  title: 'Roadlords – Kapukijárat és stabil egységméret',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

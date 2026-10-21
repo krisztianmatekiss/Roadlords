@@ -1,4 +1,4 @@
-# Roadlords · V4.17.2
+# Roadlords · V4.17.3
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság, fejlesztések, egységstatisztikák és a multiplayer-protokoll megmaradt.
 
@@ -14,17 +14,19 @@ A **TESZTEK → PRÓBAHARC · 50 vs 50** indítja a kisebb látványpróbát, a 
 
 A figura menet közben a tényleges haladás felé fordul, támadás közben az aktuális ütés/lövés célpontja felé. Lejárt támadás vagy korábbi üldözési irány nem tartja hátrafelé fordítva. Ez az egyszerű és részletes figurákra egyaránt érvényes; a multiplayer vendégénél az interpolált haladás adja a menetirányt.
 
-A pályát az **A / D** billentyűvel mozgathatod; nyomva tartva folyamatosan halad. A **dupla A / D** a bal / jobb szélre ugrik. Az **F** a legnagyobb aktív harccsoporthoz vagy az ostromhoz visz, érintkezés előtt a seregek közé. A görgő nem mozgatja a pályát. Gépelés és nyitott választóablak közben ezek a gyorsgombok nem működnek.
+A pályát az **A / D** billentyűvel mozgathatod; nyomva tartva folyamatosan halad. A **dupla A / D** a bal / jobb szélre ugrik. Az **F** a legnagyobb aktív harccsoporthoz vagy az ostromhoz visz, érintkezés előtt a seregek közé. A görgő és a vízszintes trackpad-mozgatás az A/D mellett szintén mozgatja a pályát. Gépelés és nyitott választóablak közben ezek a gyorsgombok nem működnek.
 
 Az időtől balra lévő városikon alapból bekapcsolja az ellenfél városának rögzítését: a teljes méretű, élő város a jobb szélen marad, a kapuja előtti vonaltól balra görgethető a pálya, mint egy rögzített Excel-oszlop. Kattintással feloldható. Nincs másolt város vagy új felbontás; a rögzített város 440 képpontot foglal el a pályából, kis képernyőn kikapcsolható. A toronyhelyek és a harci szabályok nem változtak.
 
 A lebegő pályapanel eltűnt. A tesztcsaták FPS-, létszám-, szünet-, újraindítás-, grafika- és nagyításvezérlői a meglévő alsó területre kerültek. A **− / +** a tesztcsata nagyítását módosítja (75–200%). Szünet: gomb vagy szóköz. A főmenübe visszalépés új játékállapotot tölt be. A TESZT nem gyárt utánpótlást.
 
+A normál játékban mindkét sereg egységei a saját kapunyílásukból lépnek az útra, majd fokozatosan elfoglalhatják szélesebb menetpozíciójukat. A kapunyílás az út keresztirányában 50%-kal szélesebb. A helyőrség és a gyülekező kijövetele ugyanazt a kapuhelyet használja; a tesztcsaták továbbra is előre felállított sereggel indulnak a pálya közepén. A harctéren keletkező képességegységek (például a lovasból leszálló kardos) a képességük helyén maradnak.
+
 A katonák külön láb-, test- és fegyvermozgást kapnak. A figurák felszerelése és anyagszínei a meglévő egységgrafikákat követik; a kártyák eredeti részletes illusztrációi megmaradtak. Ez stilizált, procedurális 2D/2.5D megjelenítés, nem 3D modell vagy az eredeti képek automatikus csontozása. A támadás felkészülését, elengedését/találatát és visszaállását közös szimulációs óra időzíti.
 
 A közelharcosok foglalt célpontok helyett szabadabb ellenfelet és megközelítési helyet keresnek. A saját egységeken át lehet haladni: az enyhe oldalirányú széthúzás nem akadályozza az előrejutást, ezért sűrű helyzetben baráti átfedés is lehet. Az ellenfelekkel továbbra is ütköznek.
 
-Az első élő ellenséges torony lezárja a teljes útszélesség mögötte lévő szakaszát. Az út szélén, üldözéssel, képességgel vagy ütközési eltolással sem lehet megkerülni. A torony elpusztítása a következő toronyig nyitja meg az utat, végül a fővárosig. A torony mögötti elérhetetlen ellenfél nem vonja el a mozgási célzást. A távolságiak lőtávon belül helyben is támadhatnak; ez rendes működés. A nagy csatában automatikus részletcsökkentés könnyíti a rajzolást; a 60 FPS-es 500 vs 500 cél további optimalizálást igényel.
+Az első élő ellenséges torony lezárja a teljes útszélesség mögötte lévő szakaszát. Az út szélén, üldözéssel, képességgel vagy ütközési eltolással sem lehet megkerülni. A torony elpusztítása a következő toronyig nyitja meg az utat, végül a fővárosig. A torony mögötti elérhetetlen ellenfél nem vonja el a mozgási célzást. A távolságiak lőtávon belül helyben is támadhatnak; ez rendes működés. A nagy csatában automatikus részletcsökkentés könnyíti a rajzolást, de a figurák mérete a tömegtől függetlenül állandó marad; a 60 FPS-es 500 vs 500 cél további optimalizálást igényel.
 
 ## Közzététel
 

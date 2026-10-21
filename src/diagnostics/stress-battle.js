@@ -174,7 +174,7 @@ export function register(runtime) {
       runtime.last = performance.now();
       runtime.roadFocusFront();
       runtime.$('#roadPause').textContent = 'Szünet';
-      runtime.roadTestSummary.textContent = `${count} × ${count} · ${runtime.P.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.E.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. ${roster === 'art' ? 'Részletes kardosok és ork harcosok' : 'Minden egységtípus'}, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Pályamozgatás: A / D, dupla leütés: pálya széle, F: harci front. Az ellenfél városát az idő melletti ikon rögzíti / oldja fel. Szünet: szóköz.`;
+      runtime.roadTestSummary.textContent = `${count} × ${count} · ${runtime.P.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.E.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. ${roster === 'art' ? 'Részletes kardosok és ork harcosok' : 'Minden egységtípus'}, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Pályamozgatás: A / D vagy görgő, dupla leütés: pálya széle, F: harci front. Az ellenfél városát az idő melletti ikon rögzíti / oldja fel. Szünet: szóköz.`;
     } finally {
       Math.random = savedRandom;
     }

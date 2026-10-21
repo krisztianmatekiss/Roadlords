@@ -46,3 +46,5 @@ html body #app .roadWorld.enemy-city-pinned .roadEnemyCity{right:var(--enemy-cit
 #enemyCityPin{flex-shrink:0;padding:6px;line-height:0}
 #enemyCityPin svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 #enemyCityPin[aria-pressed="false"]{color:#8b9b90}
+/* The opening spans the road's vertical axis; keep the wall thickness intact. */
+html body #app .roadWorld .gate{height:clamp(156px,8.13vw,312px)!important}

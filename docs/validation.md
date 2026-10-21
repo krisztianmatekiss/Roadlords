@@ -1,16 +1,24 @@
-# V4.17.2 – pályamozgatás és városrögzítés
+# V4.17.3 – kapukijárat és stabil egységméret
 
 2026-10-21. Linux, Node.js 24, headless Chromium, 1440×960. Az ellenőrzések a kész production buildet futtatják `/Roadlords/` alatt; a helyi funkcionális tesztekben a külső HTTPS-forgalom tiltott.
+
+## Kapukijárat és egységméret
+
+A normál `releaseUnit` mindkét oldalon a tényleges kapunyílásból indít. A kapu az út keresztirányában 104–208 helyett 156–312 képpont magas (50%-os bővítés), a fal vastagsága változatlan. A kilépési koordinátát a kapu aktuális képernyőhelye, a pálya magassága és a nagyítás adja, a figura fejének/lábának hagyott ráhagyással. A geometria méretváltozásig gyorsítótárazott, egy hullám nem kér minden katonához új layoutmérést. A szélesebb menetpozíció mozgási cél marad, nem kezdőpozíció; odáig ténylegesen elsétálnak. A helyőrség és a gyülekező ugyanazt a kijáratot használja. Az előre felállított tesztseregek és a harctéri képességből keletkező egységek helye megmarad.
+
+A 240 látható egység feletti részletcsökkentés korábban 0,78-as méretszorzót is alkalmazott, ezért a csata tömegétől vagy a kamerától függően a figurák összementek, majd visszanőttek. A méretszorzót eltávolítottuk; a részletcsökkentés továbbra is elhagyhat kiegészítő jelzéseket. A kézi nagyítás működik.
+
+**9 új ellenőrzés:** 50%-os kapunyílás mindkét oldalon; 70 kijövetel a 14 egységtípussal, a valódi kapunyílás határai között; külön kilépési és menetpozíció; zárt kapu és tényleges helyőrségi/gyülekező-kieresztés; folyamatos, sebességhatáros széthúzódás; mind a 14 modell rajzolási mérete 240 → 241 → 240 látható egységnél, egyszerű és részletes módban; kézi zoom; átméretezés utáni újramérés; futási hibák. Kép és jelentés: `artifacts/gate-exit.png`, `gate-and-scale.json`.
 
 ## Pályamozgatás és rögzített város
 
 A lebegő pályapanel normál játékban megszűnt. A tesztek vezérlői a meglévő alsó parancsterületen maradnak, nem takarják a harcot. A felbontást, a fő elrendezés sorait, a városok 440 képpontos méretét és a harci szabályokat nem módosítottuk.
 
-Az **A / D** egyszeri és folyamatos mozgatást, a **dupla A / D** szélre ugrást, az **F** az aktív harc legnagyobb csoportjához vagy ostromához ugrást ad. A frontkeresés egyszeri, lineáris bejárás, billentyűnyomáskor fut. A kamera szünetben is mozgatható; gépelés és nyitott választóablak közben nem lopja el a billentyűket. A görgős pályamozgatás kikapcsolva.
+Az **A / D** egyszeri és folyamatos mozgatást, a **dupla A / D** szélre ugrást, az **F** az aktív harc legnagyobb csoportjához vagy ostromához ugrást ad. A frontkeresés egyszeri, lineáris bejárás, billentyűnyomáskor fut. A kamera szünetben is mozgatható; gépelés és nyitott választóablak közben nem lopja el a billentyűket. A görgős pályamozgatás a V4.17.3-ban ismét elérhető, az A/D alternatívájaként; a vízszintes trackpad és a különböző görgőlépés-mértékegységek is kezeltek. Ctrl/Command + görgő megmarad a böngészőnek.
 
 Az idő előtti ikon alapból bekapcsolt, Excel-szerű városrögzítést vezérel: ugyanaz az élő ellenfélváros marad a jobb szélen, nem klón és nem külön szimuláció. A rögzítés scroll/resize eseményekre módosítja a város vízszintes helyét; nincs képkockánkénti városmásolás. F a rögzített város mellett szabadon maradt pályarész közepére viszi a harcot. A teszt indulása is ide céloz. Kis képernyőn a teljes méretű város sok helyet foglal; az ikon kikapcsolásával visszaáll a pályával együtt mozgó város.
 
-**17 új böngészős ellenőrzés**: alapértelmezett rögzítés, ki/be kapcsolás, változatlan méretek, egyetlen élő város és HP-frissítés, alsó tesztvezérlők, szünet alatti mozgás, nyomva tartás/felengedés, dupla leütés, kétirányú görgőtiltás, fő harccsoport és külön ostrom, gépelés/választóablak, átméretezés, keskeny nézet, futási hibák. Egy további ellenőrzés a valódi szólókezdés után vizsgálja a gyorsgombokat és a lebegő panel hiányát. Képek: `artifacts/navigation-pinned-cities.png`, `navigation-pinned-front.png`, `solo.png`.
+**17 új böngészős ellenőrzés**: alapértelmezett rögzítés, ki/be kapcsolás, változatlan méretek, egyetlen élő város és HP-frissítés, alsó tesztvezérlők, szünet alatti mozgás, nyomva tartás/felengedés, dupla leütés, kétirányú görgős pályamozgatás, fő harccsoport és külön ostrom, gépelés/választóablak, átméretezés, keskeny nézet, futási hibák. Egy további ellenőrzés a valódi szólókezdés után vizsgálja a gyorsgombokat és a lebegő panel hiányát. Képek: `artifacts/navigation-pinned-cities.png`, `navigation-pinned-front.png`, `solo.png`.
 
 A toronyhelyek változatlanok: oldalanként a három úti torony közötti rések 600 és 648 útegység, az alap toronylőtáv 165. A kapupár 97 oldalirányú egységre áll egymástól, azonos hosszirányú helyen; a legközelebbi úti torony 432 egységgel kijjebb van. Ez méretarány-ellenőrzés, nem új egyensúlymérés.
 
@@ -42,7 +50,7 @@ A teszt mindkét csapatot az út közepén és a két szélén ellenőrzi. Való
 
 ## Ellenőrzések és korlátok
 
-**89 sikeres ellenőrzés:** 17 új pályamozgatási/városrögzítési próba, 22 menü/grafikai/menetirány/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás, 16 harc/animációteszt, 27 böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
+**98 sikeres ellenőrzés:** 9 új kapukijárati/méretstabilitási próba, 17 új pályamozgatási/városrögzítési próba, 22 menü/grafikai/menetirány/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás, 16 harc/animációteszt, 27 böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
 
 A három rögzített 50/50 csata 27,0–32,0 szimulált másodperc alatt eldőlt; mindegyikben mind a 100 egység mozgott vagy támadott, és nem maradt tartósan tétlen közelharcos. A korábbi V4.17.1 helyi mérésben az 50/50 kb. 48,4 FPS, az 500/500 kb. 9,0 FPS volt. Ezek headless felhőgépes adatok: a felhasználó a V4.16 500-as változatán saját gépén 60 FPS-t jelzett, így a különböző környezetek nem hasonlíthatók közvetlenül. Stabil 60 FPS-t minden eszközre továbbra sem állítunk.
 

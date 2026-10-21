@@ -194,7 +194,7 @@ export function installBattleFigures(R) {
     const age=dead?R.ROAD.clock-u.death:0,pose=figurePose(u,R.ROAD.clock,dead),image=sprite(R,u,pose);
     if(!image)return;
     const detail=!R.ROAD.lowDetail;
-    const g=R.ctx,scale=R.ROAD.h/600*zoom*(detail?1:.78),style=FIGURES[u.key],r=style.mount||style.machine?18:style.size>1?15:10;
+    const g=R.ctx,scale=R.ROAD.h/600*zoom,style=FIGURES[u.key],r=style.mount||style.machine?18:style.size>1?15:10;
     g.save();g.translate(p.x,p.y);g.scale(scale,scale);g.globalAlpha=dead?clamp(1-Math.max(0,age-1.2)/1.3)*.75:1;
     if(!dead&&detail){g.strokeStyle=R.unitTeamFill(u);g.globalAlpha=.5;g.lineWidth=1;g.beginPath();g.ellipse(0,2,r,3.5,0,0,TAU);g.stroke();g.globalAlpha=1;}
     g.save();g.scale(figureFacing(u,pose),1);

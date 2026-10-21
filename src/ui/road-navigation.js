@@ -105,6 +105,11 @@ export function installRoadNavigation(R) {
     if (blocked(document.activeElement)) { held.clear(); return; }
     if (held.size) war.scrollLeft += ((held.has('d') ? 1 : 0) - (held.has('a') ? 1 : 0)) * Math.min(dt, .05) * 850;
   };
-  war.addEventListener('wheel', e => e.preventDefault(), {passive: false});
-  war.title = 'A / D: pályamozgatás · Dupla A / D: pálya széle · F: harci front';
+  war.addEventListener('wheel', e => {
+    if (e.ctrlKey || e.metaKey) return;
+    const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    war.scrollLeft += delta * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? war.clientWidth : 1);
+    e.preventDefault();
+  }, {passive: false});
+  war.title = 'A / D vagy görgő: pályamozgatás · Dupla A / D: pálya széle · F: harci front';
 }

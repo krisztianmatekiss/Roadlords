@@ -1,0 +1,62 @@
+const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
+(async()=>{
+ const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
+ const report={checks:[],errors:[]},check=(name,ok)=>{assert(ok,name);report.checks.push(name);console.log('PASS',name);};
+ try{
+  const page=await browser.newPage({viewport:{width:1440,height:960}});await page.route('https://**/*',r=>r.abort());
+  page.on('pageerror',e=>report.errors.push(e.message));
+  await page.goto(URL);await page.waitForFunction(()=>!!window.__ROADLORDS_ROAD__);
+  check('Main menu has no floating road panel',!await page.locator('#roadHud').isVisible());
+  await page.locator('.menuBrand').click();await page.waitForTimeout(900);
+  await page.locator('#roadTestsMenu').click();await page.locator('#roadTestMenu').click();await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
+  const scroll=()=>page.locator('.war').evaluate(e=>e.scrollLeft);
+  const setScroll=async x=>{await page.locator('.war').evaluate((e,x)=>e.scrollLeft=x,x);await page.waitForTimeout(80);};
+  const geometry=()=>page.evaluate(()=>{
+   const war=document.querySelector('.war').getBoundingClientRect(),enemy=document.querySelector('.roadEnemyCity').getBoundingClientRect(),canvas=document.querySelector('#battlefield');
+   return {warX:war.x,warRight:war.right,warHeight:war.height,cityX:enemy.x,cityRight:enemy.right,cityWidth:enemy.width,canvasWidth:canvas.width,canvasHeight:canvas.height};
+  });
+  const before=await geometry();await setScroll(0);const left=await geometry();await setScroll(3000);const right=await geometry();
+  check('Enemy city is pinned at full size at both ends of the scroll, enabled by default',await page.locator('#enemyCityPin').getAttribute('aria-pressed')==='true'&&Math.abs(left.cityRight-left.warRight)<2&&Math.abs(right.cityRight-right.warRight)<2&&left.cityWidth===440);
+  check('Pinning preserves the previous battlefield and canvas dimensions',before.warHeight===left.warHeight&&before.canvasWidth===right.canvasWidth&&before.canvasHeight===right.canvasHeight);
+  const toolbar=await page.locator('#roadHud').boundingBox(),war=await page.locator('.war').boundingBox();
+  check('Test controls and FPS live below the battlefield, without covering combat',toolbar.y>=war.y+war.height&&await page.locator('#roadPause').isVisible()&&await page.locator('#roadFps').isVisible());
+  await setScroll(0);await page.locator('#enemyCityPin').click();const off=await geometry();
+  check('Pin icon unlocks the actual enemy city into its original world position',await page.locator('#enemyCityPin').getAttribute('aria-pressed')==='false'&&off.cityX>off.warRight&&off.warHeight===left.warHeight);
+  await page.locator('#enemyCityPin').click();
+  const live=await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,grid=document.querySelector('#enemyGrid');R.E.hp-=123;R.updateHud();R.renderCity(grid,R.E,false);return {one:document.querySelectorAll('#enemyGrid').length===1,same:grid===document.querySelector('#enemyGrid'),hp:document.querySelector('#enemyHp').textContent,expected:R.E.hp};});
+  check('Pinned city remains the single live city with real HP and building updates',live.one&&live.same&&Number(live.hp.replace(/[^\d.]/g,''))===live.expected);
+  await setScroll(1000);await page.keyboard.press('d');const movedRight=await scroll();await page.keyboard.press('a');const movedLeft=await scroll();
+  check('A and D move the battlefield while combat is paused',movedRight>1000&&movedLeft<movedRight);
+  await page.waitForTimeout(350);await page.keyboard.down('d');const heldStart=await scroll();await page.waitForTimeout(300);const heldEnd=await scroll();await page.keyboard.up('d');await page.waitForTimeout(100);const released=await scroll();
+  check('Holding a direction moves smoothly; release stops movement',heldEnd-heldStart>100&&Math.abs(released-heldEnd)<25);
+  await page.waitForTimeout(350);await page.keyboard.press('a');await page.keyboard.press('a');const doubleA=await scroll();await page.keyboard.press('d');await page.keyboard.press('d');const doubleD=await scroll();
+  const max=await page.locator('.war').evaluate(e=>e.scrollWidth-e.clientWidth);
+  check('Double A jumps to own edge and double D jumps to enemy edge',doubleA===0&&doubleD===max);
+  await setScroll(1700);await page.locator('.war').hover({position:{x:100,y:200}});await page.mouse.wheel(0,500);await page.mouse.wheel(400,0);await page.waitForTimeout(120);
+  check('Neither vertical nor horizontal mouse-wheel events navigate the road',await scroll()===1700);
+  await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,Q=__ROADLORDS_ROAD__;R.state.units=[];Q.state.pending=[];Q.state.zoom=1;for(let i=0;i<8;i++){const a=R.releaseUnit(R.P,{key:'swordsman'}),b=R.releaseUnit(R.E,{key:'swordsman'});a.lane=3300;b.lane=3325;a.offset=b.offset=i*20;a.roadAim=b;b.roadAim=a;}const a=R.releaseUnit(R.P,{key:'swordsman'}),b=R.releaseUnit(R.E,{key:'swordsman'});a.lane=1000;b.lane=1025;a.roadAim=b;b.roadAim=a;Q.reindex();});
+  await page.keyboard.press('f');await page.waitForTimeout(80);
+  const front=await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,war=R.roadWar.getBoundingClientRect(),city=document.querySelector('.roadEnemyCity').getBoundingClientRect(),canvas=R.canvas.getBoundingClientRect();return {x:canvas.x+R.pointAt(3312.5).x,center:(war.x+city.x-24)/2};});
+  check('F centers the main actual combat group in the free road, not a stray duel or the map midpoint',Math.abs(front.x-front.center)<3);
+  // Replace active attacks with a siege well away from the midpoint.
+  await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,Q=__ROADLORDS_ROAD__;R.state.units=R.state.units.slice(0,4);for(const u of R.state.units){u.roadAim=null;u.roadAttack={end:Q.state.clock+1,to:1500};}});
+  await page.keyboard.press('f');await page.waitForTimeout(80);
+  const siege=await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,war=R.roadWar.getBoundingClientRect(),city=document.querySelector('.roadEnemyCity').getBoundingClientRect(),canvas=R.canvas.getBoundingClientRect();return Math.abs(canvas.x+R.pointAt(1500).x-(war.x+city.x-24)/2);});
+  check('F also finds an active tower siege',siege<3);
+  await setScroll(1200);
+  await page.evaluate(()=>{const input=document.createElement('input');input.id='navTestInput';document.querySelector('.command').append(input);input.focus();});
+  await page.keyboard.type('adf');const typed=await page.locator('#navTestInput').inputValue();
+  check('Navigation keys do not steal text input',typed==='adf'&&await scroll()===1200);
+  await page.locator('#navTestInput').evaluate(e=>e.remove());
+  await page.evaluate(()=>__ROADLORDS__.state.modal=true);await page.keyboard.press('d');await page.keyboard.press('f');
+  check('Open choice dialogs block camera hotkeys',await scroll()===1200);await page.evaluate(()=>__ROADLORDS__.state.modal=false);
+  await page.setViewportSize({width:1920,height:1080});await page.waitForTimeout(120);await setScroll(0);const desktop=await geometry();
+  check('Full-size pinned city stays at the right edge after resizing',Math.abs(desktop.cityRight-desktop.warRight)<2&&desktop.cityWidth===440&&desktop.canvasWidth===1920);
+  await page.screenshot({path:'artifacts/navigation-pinned-cities.png'});
+  await setScroll(1800);await page.screenshot({path:'artifacts/navigation-pinned-front.png'});
+  await page.setViewportSize({width:800,height:900});await page.waitForTimeout(120);const narrow=await geometry();
+  check('Narrow view retains its previous dimensions and a reachable pin toggle',narrow.cityWidth===440&&Math.abs(narrow.cityRight-narrow.warRight)<2&&await page.locator('#enemyCityPin').isVisible());
+  check('Camera and pinned-city integration has no runtime errors',!report.errors.length&&!await page.evaluate(()=>__ROADLORDS__.state.lastRuntimeErrorV4965));
+ }finally{fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/road-navigation.json',JSON.stringify(report,null,2));await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});

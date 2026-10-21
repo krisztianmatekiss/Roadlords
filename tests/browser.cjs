@@ -111,6 +111,10 @@ async function main(){
   }
   const solo=await page.evaluate(()=>{const R=__ROADLORDS__;R.state.modal=false;R.state.running=true;const before=R.P.resources.wood;for(let i=0;i<60;i++)R.tick(1/30);return {time:R.state.time,starters:R.state.startChoices,race:R.E.race,gain:R.P.resources.wood-before,test:__ROADLORDS_ROAD__.state.test,error:R.state.lastRuntimeErrorV4965};});
   check('Normal solo still selects races, completes four starter choices, runs economy and AI',solo.time>0&&solo.starters===0&&solo.race==='orc'&&!solo.test&&!solo.error);
+  await page.locator('.war').evaluate(e=>e.scrollLeft=1000);
+  await page.keyboard.press('d');
+  const normalCamera=await page.locator('.war').evaluate(e=>e.scrollLeft);
+  check('Normal solo uses the new camera keys and pinned city without the floating road panel',normalCamera>1000&&!await page.locator('#roadHud').isVisible()&&await page.locator('#enemyCityPin').getAttribute('aria-pressed')==='true');
   report.solo=solo;
   await page.screenshot({path:'artifacts/solo.png'});
   check('No application page errors',report.errors.length===0);

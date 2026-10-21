@@ -36,3 +36,13 @@ html body .roadWorld .gate{top:50%!important;transform:translateY(-50%)!importan
 .roadTestsList{display:grid;gap:20px}
 .roadTestsList p{margin:8px 0 0;color:#aebdb2;font:13px/1.5 system-ui}
 #roadTestsMenu{color:#ffe29b;border-color:#b89a4b}
+
+/* Test controls stay in the existing bottom area; normal play has no road panel. */
+html body #roadHud{display:none;position:static;transform:none;width:auto;max-width:none;margin:0 auto;padding:8px 0;border:0;border-radius:0;background:none;box-shadow:none;pointer-events:auto}
+html body.road-test:not(.roadlords-menu-open) #roadHud{display:flex}
+html body #app .roadWorld.enemy-city-pinned .roadEnemyCity{right:var(--enemy-city-inset,0px)!important}
+.roadEnemyPane{display:none;position:absolute;top:0;bottom:0;right:var(--enemy-city-inset,0px);width:440px;z-index:4;background:#14231b;border-left:1px solid #a58b4a;box-shadow:-10px 0 20px #0006;pointer-events:none}
+.enemy-city-pinned .roadEnemyPane{display:block}
+#enemyCityPin{flex-shrink:0;padding:6px;line-height:0}
+#enemyCityPin svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+#enemyCityPin[aria-pressed="false"]{color:#8b9b90}

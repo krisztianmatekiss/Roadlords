@@ -1,6 +1,18 @@
-# V4.17.1 – tesztalmenü és menetirány
+# V4.17.2 – pályamozgatás és városrögzítés
 
-2026-10-20. Linux, Node.js 24, headless Chromium, 1440×960. Az ellenőrzések a kész production buildet futtatják `/Roadlords/` alatt; a helyi funkcionális tesztekben a külső HTTPS-forgalom tiltott.
+2026-10-21. Linux, Node.js 24, headless Chromium, 1440×960. Az ellenőrzések a kész production buildet futtatják `/Roadlords/` alatt; a helyi funkcionális tesztekben a külső HTTPS-forgalom tiltott.
+
+## Pályamozgatás és rögzített város
+
+A lebegő pályapanel normál játékban megszűnt. A tesztek vezérlői a meglévő alsó parancsterületen maradnak, nem takarják a harcot. A felbontást, a fő elrendezés sorait, a városok 440 képpontos méretét és a harci szabályokat nem módosítottuk.
+
+Az **A / D** egyszeri és folyamatos mozgatást, a **dupla A / D** szélre ugrást, az **F** az aktív harc legnagyobb csoportjához vagy ostromához ugrást ad. A frontkeresés egyszeri, lineáris bejárás, billentyűnyomáskor fut. A kamera szünetben is mozgatható; gépelés és nyitott választóablak közben nem lopja el a billentyűket. A görgős pályamozgatás kikapcsolva.
+
+Az idő előtti ikon alapból bekapcsolt, Excel-szerű városrögzítést vezérel: ugyanaz az élő ellenfélváros marad a jobb szélen, nem klón és nem külön szimuláció. A rögzítés scroll/resize eseményekre módosítja a város vízszintes helyét; nincs képkockánkénti városmásolás. F a rögzített város mellett szabadon maradt pályarész közepére viszi a harcot. A teszt indulása is ide céloz. Kis képernyőn a teljes méretű város sok helyet foglal; az ikon kikapcsolásával visszaáll a pályával együtt mozgó város.
+
+**17 új böngészős ellenőrzés**: alapértelmezett rögzítés, ki/be kapcsolás, változatlan méretek, egyetlen élő város és HP-frissítés, alsó tesztvezérlők, szünet alatti mozgás, nyomva tartás/felengedés, dupla leütés, kétirányú görgőtiltás, fő harccsoport és külön ostrom, gépelés/választóablak, átméretezés, keskeny nézet, futási hibák. Egy további ellenőrzés a valódi szólókezdés után vizsgálja a gyorsgombokat és a lebegő panel hiányát. Képek: `artifacts/navigation-pinned-cities.png`, `navigation-pinned-front.png`, `solo.png`.
+
+A toronyhelyek változatlanok: oldalanként a három úti torony közötti rések 600 és 648 útegység, az alap toronylőtáv 165. A kapupár 97 oldalirányú egységre áll egymástól, azonos hosszirányú helyen; a legközelebbi úti torony 432 egységgel kijjebb van. Ez méretarány-ellenőrzés, nem új egyensúlymérés.
 
 ## Grafika
 
@@ -30,9 +42,9 @@ A teszt mindkét csapatot az út közepén és a két szélén ellenőrzi. Való
 
 ## Ellenőrzések és korlátok
 
-**71 sikeres ellenőrzés:** 22 menü/grafikai/menetirány/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás, 16 harc/animációteszt, 26 korábbi böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
+**89 sikeres ellenőrzés:** 17 új pályamozgatási/városrögzítési próba, 22 menü/grafikai/menetirány/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás, 16 harc/animációteszt, 27 böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
 
-A három rögzített 50/50 csata 27,0–32,0 szimulált másodperc alatt eldőlt; mindegyikben mind a 100 egység mozgott vagy támadott, és nem maradt tartósan tétlen közelharcos. A helyi mérésben az 50/50 kb. 48,4 FPS, az 500/500 kb. 9,0 FPS volt. Ezek headless felhőgépes adatok: a felhasználó a V4.16 500-as változatán saját gépén 60 FPS-t jelzett, így a különböző környezetek nem hasonlíthatók közvetlenül. Stabil 60 FPS-t minden eszközre továbbra sem állítunk.
+A három rögzített 50/50 csata 27,0–32,0 szimulált másodperc alatt eldőlt; mindegyikben mind a 100 egység mozgott vagy támadott, és nem maradt tartósan tétlen közelharcos. A korábbi V4.17.1 helyi mérésben az 50/50 kb. 48,4 FPS, az 500/500 kb. 9,0 FPS volt. Ezek headless felhőgépes adatok: a felhasználó a V4.16 500-as változatán saját gépén 60 FPS-t jelzett, így a különböző környezetek nem hasonlíthatók közvetlenül. Stabil 60 FPS-t minden eszközre továbbra sem állítunk.
 
 A valódi WebRTC-próba itt **környezeti akadály miatt kihagyva**: Chromium nulla ICE jelöltet szolgáltat. Az 1000 egységes csomagküldés, tükrözés és vendégparancsok tesztje sikeres; két internetes gép közötti kapcsolat ebből nem következik. A felhős Chromium éles HTTPS-próbájának korábbi tanúsítványkorlátját nem kerüljük meg. A GitHub Actions a kiadást ismét felépíti és ellenőrzi, mielőtt Pages-re teszi.
 

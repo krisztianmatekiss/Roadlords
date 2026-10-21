@@ -2,6 +2,7 @@ import { loadDetailedFigures } from '../rendering/detailed-figures.js';
 import { installTowerFrontiers } from './frontiers.js';
 import { drawBattleGround } from '../rendering/battle-ground.js';
 import { installTestMenu } from '../ui/test-menu.js';
+import { installRoadNavigation } from '../ui/road-navigation.js';
 export function initializeCombatRoadIntegration(runtime) {
   runtime.ROAD = {
     city: 440,
@@ -199,21 +200,15 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.roadHud = document.createElement('div');
   runtime.roadHud.id = 'roadHud';
   runtime.roadHud.innerHTML = '<span id="roadCounts"></span><span id="roadFps"></span><span id="roadStatus"></span><button data-camera="0">Saját város</button><button data-camera="1">Csata</button><button data-camera="2">Ellenfél</button><button id="roadZoomOut" aria-label="Kicsinyítés">−</button><span id="roadZoom">100%</span><button id="roadZoomIn" aria-label="Nagyítás">+</button><button id="roadArtToggle" hidden aria-pressed="true">Grafika: Részletes</button><button data-test id="roadPause">Szünet</button><button data-test id="roadRestart">Újraindítás</button><button data-test id="roadMenu">Főmenü</button>';
-  document.body.appendChild(runtime.roadHud);
+  runtime.$('.command').appendChild(runtime.roadHud);
+  installRoadNavigation(runtime);
   runtime.roadHud.querySelectorAll('[data-camera]').forEach(b => b.onclick = () => {
     const v = +b.dataset.camera;
-    runtime.roadWar.scrollLeft = v === 0 ? 0 : v === 2 ? runtime.roadWorld.offsetWidth : runtime.ROAD.city + runtime.PATH_LENGTH / 2 - runtime.roadWar.clientWidth / 2;
+    if (v === 1) runtime.roadFocusFront();
+    else runtime.roadWar.scrollLeft = v === 0 ? 0 : runtime.roadWorld.offsetWidth;
   });
   new ResizeObserver(runtime.roadResize).observe(runtime.roadWar);
   runtime.roadResize();
-  runtime.roadWar.addEventListener('wheel', e => {
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      runtime.roadWar.scrollLeft += e.deltaY;
-      e.preventDefault();
-    }
-  }, {
-    passive: false
-  });
   runtime.pointAt = function (distance, lateral = 0) {
     return {
       x: (runtime.clamp(distance, 0, runtime.PATH_LENGTH) - runtime.ROAD.camera) * runtime.ROAD.zoom,
@@ -230,6 +225,7 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.roadArtReady = Promise.all([originalArt, loadDetailedFigures(runtime)]);
   runtime.renderBattle = function (raw) {
     const begin = performance.now();
+    runtime.roadUpdateNavigation(raw);
     const guest=runtime.MP.enabled&&runtime.MP.role==='guest';
     if(guest)for(const u of runtime.state.units)u.roadRenderPrev=u.lane;
     runtime.mpInterpolateUnits(raw);

@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.17.1',
-  label: 'V4.17.1 · TESZTEK ÉS MENETIRÁNY',
-  title: 'Roadlords – Tesztek és menetirány',
+  version: '4.17.2',
+  label: 'V4.17.2 · PÁLYAMOZGATÁS ÉS VÁROSRÖGZÍTÉS',
+  title: 'Roadlords – Pályamozgatás és városrögzítés',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

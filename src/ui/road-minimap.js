@@ -27,7 +27,7 @@ export function installRoadMinimap(R) {
     const cityWidth = R.ROAD.city / world * w;
     g.clearRect(0, 0, width, height);
     g.fillStyle = '#23382c'; g.fillRect(0, 0, width, height);
-    g.fillStyle = '#84704d'; g.fillRect(x(0), pad + h * 49 / 600, w - cityWidth * 2, h * 502 / 600);
+    g.fillStyle = '#27332c'; g.fillRect(x(0), pad + h * 49 / 600, w - cityWidth * 2, h * 502 / 600);
     for (const side of ['player', 'enemy']) {
       g.fillStyle = R.unitTeamFill({side});
       g.fillRect(side === 'player' ? pad : width - pad - cityWidth, pad + h * 49 / 600, cityWidth, h * 502 / 600);
@@ -35,8 +35,11 @@ export function installRoadMinimap(R) {
       g.beginPath();
       for (const u of R.state.units) if (u.alive && u.side === side) {
         const px = x(u.lane), py = y(u.offset || 0);
-        g.moveTo(px + 1, py); g.arc(px, py, 1, 0, Math.PI * 2);
+        g.moveTo(px + 2.1, py); g.arc(px, py, 2.1, 0, Math.PI * 2);
       }
+      // Outline first, then fill the complete team path: overlapping friendly
+      // dots merge cleanly instead of accumulating bright rings inside a crowd.
+      g.strokeStyle = '#fff4d6'; g.lineWidth = 1.2; g.stroke();
       g.fill();
     }
     // The enemy-city pin is a separate frozen pane, not part of the moving view.

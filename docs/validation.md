@@ -1,4 +1,4 @@
-# V4.20.0 – minitérkép, színezett épületmezők és város fölötti HP
+# V4.20.1 – minitérkép, színezett épületmezők és város fölötti HP
 
 2026-10-21. Linux, Node.js 24, headless Chromium, 1440×960. Az ellenőrzések a kész production buildet futtatják `/Roadlords/` alatt; a helyi funkcionális tesztekben a külső HTTPS-forgalom tiltott.
 
@@ -12,7 +12,7 @@ Az eredeti helyőrségi/sereg-azonosítókat és portrécsomópontokat az alsó 
 
 ## Minitérkép és épületmezők
 
-A minitérkép az eredeti építési sáv jobb alsó sarkában, téglalapként jelenik meg, a kártyasáv számára külön fenntartott hely mellett. A fő elrendezés sorai, a kártyák mérete és az alsó zöld sáv megmaradtak. Egyetlen, legfeljebb 640×256 képpontos Canvas rajzolja a városokat, csapatszínű egységpontokat, toronytéglalapokat és a mozgatható nézet keretét; legfeljebb 10 Hz-es frissítéssel. Nincsenek egységenkénti DOM-elemek vagy tárolt seregképek. A halott egységek és elpusztult tornyok eltűnnek; a színek az élő csapatbeállítást követik, a koordináták a teljes világhoz tartoznak. Szünetben is navigálható kattintással, húzással és fókuszban nyilakkal/Home/End billentyűkkel. A főmenüben rejtett. A jobb oldali rögzített város nem része a mozgó nézet keretének. Nagy seregnél a pontok sűrűségképpé olvadnak össze.
+A minitérkép az eredeti építési sáv jobb oldalán, annak teljes magasságában, téglalapként jelenik meg, a kártyasáv számára külön fenntartott hely mellett. A fő elrendezés sorai, a kártyák mérete és az alsó zöld sáv megmaradtak. Egyetlen, legfeljebb 640 képpont széles, a sáv magasságát legfeljebb kétszeres pixelsűrűséggel követő Canvas rajzolja a városokat, csapatszínű egységpontokat, toronytéglalapokat és a mozgatható nézet keretét; legfeljebb 10 Hz-es frissítéssel. Nincsenek egységenkénti DOM-elemek vagy tárolt seregképek. A halott egységek és elpusztult tornyok eltűnnek; a színek az élő csapatbeállítást követik, a koordináták a teljes világhoz tartoznak. Szünetben is navigálható kattintással, húzással és fókuszban nyilakkal/Home/End billentyűkkel. A főmenüben rejtett. A jobb oldali rögzített város nem része a mozgó nézet keretének. A pontok sugara 1 helyett 2,1 CSS-képpont, 1,2 képpontos világos körvonallal és sötétebb útháttérrel. A körvonal a teljes csapatútvonal kitöltése előtt rajzolódik, ezért átfedéskor nem maradnak világos gyűrűk a baráti tömeg belsejében. Nagy seregnél a pontok sűrűségképpé olvadnak össze.
 
 A foglalt városcellák a meglévő gazdaság/katonai/támogatás/védelem színt kapják, 3 képpontos belső margóval, 2 képpontos kerettel és 16%-os háttérszínezéssel. A külön talajréteg nem veszi át az ellenséges épületgrafika színszűrőjét; nem fog el kattintást és nem fedi el a portrét. A tényleges foglalt cellákat követi, forgatott L alaknál is; az üres sarok szabad marad. Az eredeti kijelölő, építő és megtekintő kattintási rétegek megmaradtak. A gyorsítótárazott ellenséges város újrarajzolása nem halmoz fel színezéseket.
 

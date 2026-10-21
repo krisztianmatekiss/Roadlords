@@ -41,7 +41,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   }));
   async function layout(){return page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,r=e=>e.getBoundingClientRect().toJSON();return {map:r(R.$('#roadMinimap')),dock:r(R.$('.command')),catalog:r(R.$('.catalog')),roster:r(R.$('#roadRoster')),topbar:r(R.$('.topbar'))};});}
   const desktop=await layout();report.desktop=desktop;
-  check('Rectangular minimap occupies the bottom-right of the construction dock without changing app rows',desktop.map.left>1920*.7&&desktop.map.right<=desktop.dock.right&&desktop.map.bottom<=desktop.dock.bottom&&desktop.map.top>=desktop.dock.top&&desktop.map.width>desktop.map.height*2&&desktop.topbar.height===64&&desktop.dock.height===209&&desktop.roster.bottom<desktop.dock.top);
+  check('Minimap fills the construction dock height at the right without changing app rows',desktop.map.left>1920*.7&&desktop.map.right<=desktop.dock.right&&desktop.map.bottom<=desktop.dock.bottom&&Math.abs(desktop.map.top-desktop.dock.top)<=1&&Math.abs(desktop.map.height-desktop.dock.height)<=1&&desktop.topbar.height===64&&desktop.dock.height===209&&desktop.roster.bottom<desktop.dock.top);
   // Capture actual canvas primitives: canonical positions, living units and live towers.
   const draw=await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,canvas=R.$('#roadMinimap'),g=canvas.getContext('2d'),rects=[],dots=[];
@@ -55,7 +55,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
     correct:R.state.units.filter(u=>u.alive).every(u=>dots.some(d=>Math.abs(d.a[0]-(4+(R.ROAD.city+u.lane)/world*w))<.01&&d.color===R.unitTeamFill(u))),pixel: [...g.getImageData(Math.round(canvas.width/2),Math.round(canvas.height/2),1,1).data],canvas:[canvas.width,canvas.height],children:canvas.children.length};
   });report.draw=draw;
   check('Minimap draws both cities and all 1000 live unit dots at world positions with team colors',draw.dots===1000&&draw.alive===1000&&draw.cities===2&&draw.correct&&draw.pixel[3]===255);
-  check('Minimap draws live towers as rectangles using a single small canvas',draw.towers===draw.liveTowers&&draw.canvas[0]<=640&&draw.canvas[1]<=256&&draw.children===0);
+  check('Minimap draws live towers as rectangles using one canvas bounded by dock height and 2x pixel density',draw.towers===draw.liveTowers&&draw.canvas[0]<=640&&draw.canvas[1]<=Math.ceil(desktop.dock.height*2)&&draw.children===0);
   check('Dead units and destroyed towers disappear from the minimap',await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,u=R.state.units[0],t=R.towers[0];u.alive=false;t.alive=false;
    const g=R.$('#roadMinimap').getContext('2d'),arc=g.arc.bind(g),fill=g.fillRect.bind(g);let dots=0,towers=0;
@@ -78,7 +78,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   await page.screenshot({path:'artifacts/minimap-footprints-1920.png'});
   for(const [width,height] of [[3804,1746],[1440,960],[800,900]]){
    await page.setViewportSize({width,height});await page.waitForTimeout(150);const l=await layout();
-   check(`Minimap stays in the dock beside construction cards at ${width}x${height}`,l.map.right<=width&&l.map.bottom<=height&&l.map.top>=l.dock.top&&l.catalog.right<l.map.left&&l.roster.bottom<=l.dock.top);
+   check(`Minimap fills dock height beside construction cards at ${width}x${height}`,l.map.right<=width&&l.map.bottom<=height&&Math.abs(l.map.top-l.dock.top)<=1&&Math.abs(l.map.height-l.dock.height)<=1&&l.catalog.right<l.map.left&&l.roster.bottom<=l.dock.top);
    if(width===3804)await page.screenshot({path:'artifacts/minimap-footprints-3804.png'});
   }
   check('Footprints and minimap produce no runtime errors',!report.errors.length&&!await page.evaluate(()=>__ROADLORDS_RUNTIME__.state.lastRuntimeErrorV4965));

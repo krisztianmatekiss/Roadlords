@@ -41,6 +41,6 @@ html body #app .buildingFootprint{position:relative;z-index:3;min-width:0;min-he
 html body #app .command{--road-minimap-width:clamp(180px,16vw,320px)}
 html body #app .command>.catalog{width:calc(100% - var(--road-minimap-width) - 12px)!important}
 html body #app .command>#roadHud,html body #app .command>#roadTestSummary{margin-right:calc(var(--road-minimap-width) + 16px)}
-html body #app #roadMinimap{position:absolute;right:8px;bottom:12px;width:var(--road-minimap-width);height:calc(var(--road-minimap-width) / 2.5);z-index:10;box-sizing:border-box;border:1px solid #b49b60;border-radius:0;cursor:crosshair;touch-action:none;pointer-events:auto}
+html body #app #roadMinimap{position:absolute;right:8px;top:0;bottom:0;width:var(--road-minimap-width);height:100%;z-index:10;box-sizing:border-box;border:1px solid #b49b60;border-radius:0;cursor:crosshair;touch-action:none;pointer-events:auto}
 html body #app #roadMinimap:focus-visible{outline:2px solid #ffe08e;outline-offset:2px}
 body.roadlords-menu-open #app #roadMinimap{display:none!important}

@@ -1,4 +1,4 @@
-# Roadlords · V4.22.0
+# Roadlords · V4.23.0
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság, fejlesztések, egységstatisztikák és a multiplayer-protokoll megmaradt.
 
@@ -43,6 +43,12 @@ A fejlesztéskártyák **Jelenleg → Felvétel után** értékeket és felvéte
 A választóablak fejlesztéskártyái nagyobb szövegterületet kapnak; a hosszú leírások görgethetők, többé nem vágjuk le őket három sornál. A fő játéknézet és az építési sáv méretezése megmarad. A harci szabályok változatlanok.
 
 A külső ork kártyakészlet a [roadlords-music/cards/orc](https://github.com/krisztianmatekiss/roadlords-music/tree/main/cards/orc) mappában található: **19 épület és 36 fejlesztés, összesen 55 WebP**. A képek üres cím- és leírásmezőket tartalmaznak. Ez a kiadás a meglévő játékbeli illusztrációkat használja; a teljes külső kártyakeretek integrálása és az emberi készlet még nincs benne. `cards/human` mappa jelenleg nincs; a repository gyökerében lévő `human` mappa zenéket tartalmaz.
+
+## AI városépítés és balance-áttekintés
+
+Az AI helyi támogatói most valódi, közös oldalú szomszédságra épülnek; a hatótávnövelő ágak és ereklyék kivételei megmaradnak. A Gyülekezőtér, Páncélkovács, Aréna és más helyi támogatók környékén az AI szabad helyet részesít előnyben a későbbi katonai termelőknek. A globális épülethatások továbbra sem igényelnek szomszédot. Az emberi AI az ork ellenfél szerepeit is felismeri. Az ork helykeresés egyszeri foglaltságszámítást és döntésenkénti gyorsítótárat használ.
+
+Az egységek, árak és fejlesztéshatások ebben a kiadásban megmaradtak. Az [532 harcmintára és a kód áttekintésére épülő jelentés](docs/balance-audit.md) külön tárgyalja a balance-kockázatokat, az AI korlátait és az első finomhangolás javasolt értékeit. Újrafuttatás: `npm run build && npm run audit:balance`.
 
 ## Közzététel
 

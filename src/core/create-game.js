@@ -1,5 +1,6 @@
 import { assetUrl } from '../assets/urls.js';
 import { initializeUiUpgradeCopy } from '../ui/upgrade-copy.js';
+import { initializeAiCityPlanning } from '../ai/city-planning.js';
 import { register as registerAiStrategy } from '../ai/strategy.js';
 import { register as registerCitySystems } from '../city/systems.js';
 import { register as registerCombatRules } from '../combat/rules.js';
@@ -254,6 +255,7 @@ export function createGame() {
   initializeRenderingOrcUnitArtwork(runtime);
   initializeRenderingTeamColors(runtime);
   initializeAiCoordinatedWaves(runtime);
+  initializeAiCityPlanning(runtime);
   initializeUiBattleStatus(runtime);
   initializeUiChoiceCards(runtime);
   initializeUiUpgradeCopy(runtime);

@@ -62,6 +62,8 @@ export function initializeFactionsOrcMilitaryBranches(runtime) {
     const c = runtime.P.buildings.includes(b) ? runtime.P : runtime.E.buildings.includes(b) ? runtime.E : shapeCity || runtime.P;
     return scoped(c, oldCells, [b]);
   };
+  // Geometry previews must use the target city's shape-changing upgrades.
+  runtime.cityBuildingCells = (c, b) => scoped(c, runtime.buildingCells, [b]);
   const oldPlace = runtime.canPlace;
   runtime.canPlace = function (c, ...args) {
     return scoped(c, oldPlace, [c, ...args]);

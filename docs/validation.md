@@ -1,6 +1,16 @@
-# V4.22.0 – érthető kártyák és fejlesztési előnézetek
+# V4.23.0 – AI városépítés és balance-áttekintés
 
 2026-10-21. Linux, Node.js 24, headless Chromium, 1440×960. Az ellenőrzések a kész production buildet futtatják `/Roadlords/` alatt; a helyi funkcionális tesztekben a külső HTTPS-forgalom tiltott.
+
+## AI helyi épülethatások és tervezés
+
+A közös oldal és az átló külön kezelést kap. A helykereső a helyi támogatók valódi hatásához igazodik, a kiterjesztett Páncélkovács, L4 Gyülekezőtér, globális Akadémia és globális épülethatások kivételeivel. A gyengén kihasznált támogatók mellé későbbi katonai termelőknek tart fenn előnyben részesített helyet. Ez nem építési tiltás. A tisztán helyi támogatók nulla aktív célpontú helyét elutasítja. A terv a döntési gyorsítótárban él, és ideiglenes épületeltávolításkor külön kulcsot kap. A város alakzatváltoztató fejlesztéseit a megfelelő városra alkalmazott geometriai előnézet kezeli.
+
+Az emberi AI az összes ork típust harci szerepre képezi le, a Trollt 4 hely súllyal. A nem élő egységeket nem számolja. Az ork kereső foglaltsági térképet és forgatott alakzatot egyszer képez, a döntésen belüli ismételt keresést memoizálja. A 300 mp-es növekedési próbában azonos városdarabszám mellett 98→14,5 ms helyi P95 mérés született; mindkét faj futási hiba nélkül épített.
+
+**16 új böngészős ellenőrzés:** átlós hamis Gyülekezőtér-kapcsolat, L4 hatótáv, tíz ház utáni szabad szomszédok, valódi Laktanya→Gyülekezőtér termelési útvonal, nulla célpontú helyi támogatók, globális Kocsma, globális Raktár/Kocsma kivételek, tele város utolsó telke, kiterjesztett Páncélkovács, ork Aréna melletti helymegőrzés, ork céltalan támogatók, két város eltérő alakzatfejlesztései, ideiglenes épületeltávolítás, összes ork szerep és Troll-súly, optimalizált keresés szabályos elhelyezése különböző terepen/forgatásokkal/alakzatokkal, futási hibák. Jelentés: `artifacts/ai-city-planning.json`.
+
+A külön [balance-áttekintés](balance-audit.md) 532 harcmintát és fejlesztési kockázatokat rögzít. A próbák kontrollált harcok, nem teljes gazdasági meccsek; a javasolt értékek még nem kerültek a játékba. A normál tesztcsomag a gyors AI-regressziókat futtatja, az opcionális hosszabb audit a `npm run audit:balance` paranccsal ismételhető.
 
 ## Kártyaszövegek és fejlesztési előnézetek
 
@@ -72,7 +82,7 @@ A teszt mindkét csapatot az út közepén és a két szélén ellenőrzi. Való
 
 ## Ellenőrzések és korlátok
 
-**151 sikeres ellenőrzés:** 19 új kártyaszöveg/előnézet próba, 18 minitérkép/épületmező próba, 14 városelrendezési próba, 9 új kapukijárati/méretstabilitási próba, 17 új pályamozgatási/városrögzítési próba, 23 menü/grafikai/menetirány/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás, 16 harc/animációteszt, 28 böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
+**167 sikeres ellenőrzés:** 16 új AI-elhelyezési/szerepfelismerési próba, 19 új kártyaszöveg/előnézet próba, 18 minitérkép/épületmező próba, 14 városelrendezési próba, 9 új kapukijárati/méretstabilitási próba, 17 új pályamozgatási/városrögzítési próba, 23 menü/grafikai/menetirány/áthaladási/toronypróba, 2 régi város- és egységadat-összehasonlítás, 16 harc/animációteszt, 28 böngészős játékteszt, 5 multiplayer-protokollteszt. A szabályos endgame összeállítások, pontos 50/500 induló létszámok, mozgó és rögzített felületek, szünet/újraindítás/főmenü, találati időzítések, normál szólójáték kezdő választásai, gazdasága és AI-ja továbbra is ellenőrzöttek.
 
 A három rögzített 50/50 csata 26,4–32,0 szimulált másodperc alatt eldőlt; mindegyikben mind a 100 egység mozgott vagy támadott, és nem maradt tartósan tétlen közelharcos. A korábbi V4.17.1 helyi mérésben az 50/50 kb. 48,4 FPS, az 500/500 kb. 9,0 FPS volt. Ezek headless felhőgépes adatok: a felhasználó a V4.16 500-as változatán saját gépén 60 FPS-t jelzett, így a különböző környezetek nem hasonlíthatók közvetlenül. Stabil 60 FPS-t minden eszközre továbbra sem állítunk.
 

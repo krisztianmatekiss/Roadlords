@@ -345,29 +345,36 @@ export function initializeFactionsOrcFoundation(runtime) {
   const oldFind = runtime.findCell;
   runtime.findCell = function (c, type) {
     if (!isOrc(c) || !orcKey(type)) return oldFind(c, type);
-    let best = null,
-      score = -Infinity;
-    for (const rot of runtime.rotationOptions(type)) for (let row = 0; row < runtime.GRID; row++) for (let col = 0; col < runtime.GRID; col++) {
-      if (!runtime.canPlace(c, type, row, col, rot)) continue;
-      const b = {
-        id: 'orc-preview',
-        type,
-        row,
-        col,
-        rotation: rot
-      };
-      let n = 0;
-      if (type === 'orc_work') n += 100 * (Number(runtime.adjacentTerrain(c, b, 'forest')) + Number(runtime.adjacentTerrain(c, b, 'quarry')));
-      if (type === 'orc_hunt' && runtime.touchesWall(b)) n += 100;
-      if (type === 'orc_arena' || type === 'orc_overseer') n += 50 * runtime.adjacentBuildings(c, b).filter(x => runtime.BUILDINGS[x.type]?.unit).length;
-      if (runtime.BUILDINGS[type].unit) n += 30 * runtime.adjacentBuildings(c, b).filter(x => ['orc_arena', 'orc_overseer'].includes(x.type)).length;
-      n -= Math.abs(row - runtime.CENTER.row) * .1 + Math.abs(col - runtime.CENTER.col) * .1;
-      if (n > score) {
-        score = n;
-        best = [row, col, rot];
+    const choose = () => {
+      const layout = c === runtime.E && !runtime.MP.enabled ? runtime.aiLayoutPlan?.(c) : null;
+      const occupied = runtime.occupancy(c),
+        producers = runtime.spawnerBuildings(c),
+        supports = c.buildings.filter(b => ['orc_arena', 'orc_overseer'].includes(b.type));
+      const touches = (a, b) => runtime.aiBuildingsTouch
+        ? runtime.aiBuildingsTouch(c, a, b)
+        : runtime.adjacentBuildings(c, a).some(x => x.id === b.id);
+      let best = null, score = -Infinity;
+      for (const rot of runtime.rotationOptions(type)) {
+        const shape = runtime.rotatedShape(type, rot);
+        for (let row = 0; row < runtime.GRID; row++) for (let col = 0; col < runtime.GRID; col++) {
+          if (shape.some(([dr, dc]) => row + dr < 0 || col + dc < 0 || row + dr >= runtime.GRID || col + dc >= runtime.GRID || occupied.has(runtime.idx(row + dr, col + dc)) || runtime.terrainBlocks(c, row + dr, col + dc))) continue;
+          const b = { id: 'orc-preview', type, row, col, rotation: rot };
+          let n = 0;
+          if (layout) {
+            if (runtime.aiSupportCoverage(c, b, layout) === 0 && runtime.aiRequiresLocalTargets(c, b)) continue;
+            n += runtime.aiLayoutAdjustment(c, b, layout);
+          }
+          if (type === 'orc_work') n += 100 * (Number(runtime.adjacentTerrain(c, b, 'forest')) + Number(runtime.adjacentTerrain(c, b, 'quarry')));
+          if (type === 'orc_hunt' && runtime.touchesWall(b)) n += 100;
+          if (type === 'orc_arena' || type === 'orc_overseer') n += 50 * producers.filter(x => touches(b, x)).length;
+          if (runtime.BUILDINGS[type].unit) n += 30 * supports.filter(x => touches(b, x)).length;
+          n -= Math.abs(row - runtime.CENTER.row) * .1 + Math.abs(col - runtime.CENTER.col) * .1;
+          if (n > score) { score = n; best = [row, col, rot]; }
+        }
       }
-    }
-    return best;
+      return best;
+    };
+    return c === runtime.E ? runtime.aiMemo('orc-cell:' + type + ':' + c.buildings.map(b => b.id).join(','), choose) : choose();
   };
   const oldAI = runtime.enemyBuildAI;
   runtime.enemyBuildAI = function (dt) {

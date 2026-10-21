@@ -1,0 +1,8622 @@
+{
+  "version": "4.22.0",
+  "units": [
+    {
+      "key": "swordsman",
+      "name": "Kardos",
+      "stats": {
+        "hp": 100,
+        "dmg": 12,
+        "cooldown": 1,
+        "speed": 42,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 12,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 0,
+        "stone": 5,
+        "food": 6
+      },
+      "training": [
+        5,
+        4,
+        3
+      ],
+      "weight": 1,
+      "footprint": 1,
+      "unique": false
+    },
+    {
+      "key": "spearman",
+      "name": "Lándzsás",
+      "stats": {
+        "hp": 90,
+        "dmg": 10,
+        "cooldown": 1.1,
+        "speed": 40,
+        "range": 45,
+        "heal": 0,
+        "buildingDamage": 10,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 5,
+        "stone": 0,
+        "food": 6
+      },
+      "training": [
+        5,
+        4,
+        3
+      ],
+      "weight": 1,
+      "footprint": 1,
+      "unique": false
+    },
+    {
+      "key": "archer",
+      "name": "Íjász",
+      "stats": {
+        "hp": 55,
+        "dmg": 8,
+        "cooldown": 1.2,
+        "speed": 42,
+        "range": 150,
+        "heal": 0,
+        "buildingDamage": 8,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 7,
+        "stone": 0,
+        "food": 6
+      },
+      "training": [
+        6,
+        4.800000000000001,
+        3.5999999999999996
+      ],
+      "weight": 1,
+      "footprint": 1,
+      "unique": false
+    },
+    {
+      "key": "knight",
+      "name": "Lovag",
+      "stats": {
+        "hp": 240,
+        "dmg": 30,
+        "cooldown": 1.25,
+        "speed": 63,
+        "range": 32,
+        "heal": 0,
+        "buildingDamage": 30,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 0,
+        "stone": 16,
+        "food": 15
+      },
+      "training": [
+        9,
+        7.2,
+        5.3999999999999995
+      ],
+      "weight": 1,
+      "footprint": 2,
+      "unique": false
+    },
+    {
+      "key": "priest",
+      "name": "Pap",
+      "stats": {
+        "hp": 90,
+        "dmg": 6,
+        "cooldown": 1.4,
+        "speed": 38,
+        "range": 120,
+        "heal": 30,
+        "buildingDamage": 6,
+        "aoe": 0,
+        "healCooldown": 4.2,
+        "healRange": 150,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 10,
+        "stone": 10,
+        "food": 12
+      },
+      "training": [
+        9,
+        7.2,
+        5.3999999999999995
+      ],
+      "weight": 1,
+      "footprint": 2,
+      "unique": false
+    },
+    {
+      "key": "catapult",
+      "name": "Katapult",
+      "stats": {
+        "hp": 220,
+        "dmg": 12,
+        "cooldown": 2.4,
+        "speed": 24,
+        "range": 400,
+        "heal": 0,
+        "buildingDamage": 65,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 26,
+        "stone": 21,
+        "food": 9
+      },
+      "training": [
+        12,
+        9.600000000000001,
+        7.199999999999999
+      ],
+      "weight": 1,
+      "footprint": 3,
+      "unique": false
+    },
+    {
+      "key": "mage",
+      "name": "Mágus",
+      "stats": {
+        "hp": 75,
+        "dmg": 24,
+        "cooldown": 1.7,
+        "speed": 36,
+        "range": 150,
+        "heal": 0,
+        "buildingDamage": 24,
+        "aoe": 62,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 16,
+        "stone": 16,
+        "food": 12
+      },
+      "training": [
+        12,
+        9.600000000000001,
+        7.199999999999999
+      ],
+      "weight": 1,
+      "footprint": 4,
+      "unique": true
+    },
+    {
+      "key": "orc_warrior",
+      "name": "Ork Harcos",
+      "stats": {
+        "hp": 300,
+        "dmg": 20,
+        "cooldown": 1.25,
+        "speed": 34,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 20,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 0,
+        "stone": 7,
+        "food": 9
+      },
+      "training": [
+        8.5,
+        7.5,
+        6.5
+      ],
+      "weight": 1,
+      "footprint": 2,
+      "unique": false
+    },
+    {
+      "key": "orc_berserker",
+      "name": "Dühöngő",
+      "stats": {
+        "hp": 180,
+        "dmg": 16,
+        "cooldown": 0.65,
+        "speed": 42,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 16,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 4,
+        "stone": 6,
+        "food": 8
+      },
+      "training": [
+        8,
+        7,
+        6
+      ],
+      "weight": 1,
+      "footprint": 2,
+      "unique": false
+    },
+    {
+      "key": "orc_goblin",
+      "name": "Goblin",
+      "stats": {
+        "hp": 30,
+        "dmg": 3.5,
+        "cooldown": 0.55,
+        "speed": 50,
+        "range": 115,
+        "heal": 0,
+        "buildingDamage": 3.5,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 3,
+        "stone": 1,
+        "food": 4
+      },
+      "training": [
+        3.5,
+        2.75,
+        2
+      ],
+      "weight": 1,
+      "footprint": 1,
+      "unique": false
+    },
+    {
+      "key": "orc_warg",
+      "name": "Warglovas",
+      "stats": {
+        "hp": 400,
+        "dmg": 30,
+        "cooldown": 1.5,
+        "speed": 55,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 30,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 5,
+        "stone": 16,
+        "food": 18
+      },
+      "training": [
+        11,
+        10,
+        9
+      ],
+      "weight": 1,
+      "footprint": 2,
+      "unique": false
+    },
+    {
+      "key": "orc_shaman",
+      "name": "Sámán",
+      "stats": {
+        "hp": 100,
+        "dmg": 6,
+        "cooldown": 4.2,
+        "speed": 38,
+        "range": 120,
+        "heal": 0,
+        "buildingDamage": 6,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 10,
+        "stone": 8,
+        "food": 12
+      },
+      "training": [
+        10,
+        9,
+        8
+      ],
+      "weight": 1,
+      "footprint": 2,
+      "unique": false
+    },
+    {
+      "key": "orc_ram",
+      "name": "Faltörő kos",
+      "stats": {
+        "hp": 1100,
+        "dmg": 8,
+        "cooldown": 2,
+        "speed": 20,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 130,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 18,
+        "stone": 22,
+        "food": 10
+      },
+      "training": [
+        12,
+        11,
+        10
+      ],
+      "weight": 1,
+      "footprint": 2,
+      "unique": false
+    },
+    {
+      "key": "orc_troll",
+      "name": "Troll",
+      "stats": {
+        "hp": 3200,
+        "dmg": 110,
+        "cooldown": 2,
+        "speed": 26,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 110,
+        "aoe": 55,
+        "lifeSteal": 0
+      },
+      "cost": {
+        "wood": 25,
+        "stone": 60,
+        "food": 60
+      },
+      "training": [
+        30,
+        27,
+        24
+      ],
+      "weight": 4,
+      "footprint": 9,
+      "unique": true
+    }
+  ],
+  "duels": [
+    {
+      "human": "swordsman",
+      "orc": "orc_warrior",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.75,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 2760
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.75,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 2760
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_warrior",
+      "mode": "cost",
+      "counts": [
+        17,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.85,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 2316
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.75,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 2244
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_warrior",
+      "mode": "time",
+      "counts": [
+        12,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.05,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 1068
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1020
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_warrior",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        9
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 23.25,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 516
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 28.1,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 168
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_warrior",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        36
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 16.75,
+          "human": 0,
+          "orc": 32,
+          "humanHP": 0,
+          "orcHP": 7668
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.35,
+          "human": 0,
+          "orc": 33,
+          "humanHP": 0,
+          "orcHP": 7764
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_berserker",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.15,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 1632
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.1,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 1620
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_berserker",
+      "mode": "cost",
+      "counts": [
+        17,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.65,
+          "human": 0,
+          "orc": 9,
+          "humanHP": 0,
+          "orcHP": 804
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.65,
+          "human": 0,
+          "orc": 9,
+          "humanHP": 0,
+          "orcHP": 828
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_berserker",
+      "mode": "time",
+      "counts": [
+        12,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 14.15,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 516
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.5,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 528
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_berserker",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 18.8,
+          "human": 0,
+          "orc": 3,
+          "humanHP": 0,
+          "orcHP": 360
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.2,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 456
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_berserker",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        40
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.85,
+          "human": 0,
+          "orc": 36,
+          "humanHP": 0,
+          "orcHP": 5112
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.5,
+          "human": 0,
+          "orc": 40,
+          "humanHP": 0,
+          "orcHP": 5256
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_goblin",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9.05,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 913,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9.45,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 906,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_goblin",
+      "mode": "cost",
+      "counts": [
+        17,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.6,
+          "human": 17,
+          "orc": 0,
+          "humanHP": 1025,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.45,
+          "human": 17,
+          "orc": 0,
+          "humanHP": 993,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_goblin",
+      "mode": "time",
+      "counts": [
+        12,
+        17
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.9,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 724,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.9,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 717,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_goblin",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        30
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 12.75,
+          "human": 14,
+          "orc": 0,
+          "humanHP": 1092,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 13.25,
+          "human": 14,
+          "orc": 0,
+          "humanHP": 1057,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_goblin",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        48
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 12.75,
+          "human": 36,
+          "orc": 0,
+          "humanHP": 3341,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 13.35,
+          "human": 37,
+          "orc": 0,
+          "humanHP": 3238,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_warg",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 8.35,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 4584
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 8.35,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 4572
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_warg",
+      "mode": "cost",
+      "counts": [
+        17,
+        4
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 18.6,
+          "human": 10,
+          "orc": 0,
+          "humanHP": 820,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 19.55,
+          "human": 9,
+          "orc": 0,
+          "humanHP": 840,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_warg",
+      "mode": "time",
+      "counts": [
+        12,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 16.5,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 1220
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 18.75,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 1168
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_warg",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 31.5,
+          "human": 3,
+          "orc": 0,
+          "humanHP": 210,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 29.3,
+          "human": 3,
+          "orc": 0,
+          "humanHP": 240,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_warg",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.7,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 7152
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.65,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 7056
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_shaman",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 17,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 969,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 17,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 1000,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_shaman",
+      "mode": "cost",
+      "counts": [
+        17,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.95,
+          "human": 17,
+          "orc": 0,
+          "humanHP": 1612,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.3,
+          "human": 17,
+          "orc": 0,
+          "humanHP": 1618,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_shaman",
+      "mode": "time",
+      "counts": [
+        12,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.5,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 1092,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.3,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 1106,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_shaman",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.5,
+          "human": 20,
+          "orc": 0,
+          "humanHP": 1894,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.65,
+          "human": 20,
+          "orc": 0,
+          "humanHP": 1902,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_shaman",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        28
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 15.25,
+          "human": 48,
+          "orc": 0,
+          "humanHP": 4377,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 15.4,
+          "human": 48,
+          "orc": 0,
+          "humanHP": 4384,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_ram",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 32.95,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 11424
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 32.6,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 11406
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_ram",
+      "mode": "cost",
+      "counts": [
+        17,
+        3
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 45.1,
+          "human": 17,
+          "orc": 0,
+          "humanHP": 1324,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 47.95,
+          "human": 16,
+          "orc": 0,
+          "humanHP": 1320,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_ram",
+      "mode": "time",
+      "counts": [
+        12,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 73.85,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 2516
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 75.15,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 2414
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_ram",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 7,
+          "orc": 1,
+          "humanHP": 556,
+          "orcHP": 20
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 87.7,
+          "human": 9,
+          "orc": 0,
+          "humanHP": 492,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_ram",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 64.85,
+          "human": 0,
+          "orc": 23,
+          "humanHP": 0,
+          "orcHP": 16252
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 65.15,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 16188
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_troll",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 7.55,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 38304
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 6.6,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 38328
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_troll",
+      "mode": "cost",
+      "counts": [
+        17,
+        1
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.55,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 2912
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.55,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 2888
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_troll",
+      "mode": "time",
+      "counts": [
+        12,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.55,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 6292
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.55,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 6292
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_troll",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.55,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 6160
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.55,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 6148
+        }
+      ]
+    },
+    {
+      "human": "swordsman",
+      "orc": "orc_troll",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 14.6,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5680
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.55,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5752
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_warrior",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.4,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 3040
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.7,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 3050
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_warrior",
+      "mode": "cost",
+      "counts": [
+        17,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 16.15,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 2650
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 16.15,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 2620
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_warrior",
+      "mode": "time",
+      "counts": [
+        12,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.4,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1290
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.4,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1260
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_warrior",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        9
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 21.1,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1040
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 22.4,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 1020
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_warrior",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        36
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.7,
+          "human": 0,
+          "orc": 34,
+          "humanHP": 0,
+          "orcHP": 8160
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 18.45,
+          "human": 0,
+          "orc": 34,
+          "humanHP": 0,
+          "orcHP": 8120
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_berserker",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.7,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 1750
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.8,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 1750
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_berserker",
+      "mode": "cost",
+      "counts": [
+        17,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.45,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1080
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1060
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_berserker",
+      "mode": "time",
+      "counts": [
+        12,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.7,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 720
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.9,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 720
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_berserker",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.25,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 870
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.8,
+          "human": 0,
+          "orc": 9,
+          "humanHP": 0,
+          "orcHP": 830
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_berserker",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        40
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.4,
+          "human": 0,
+          "orc": 40,
+          "humanHP": 0,
+          "orcHP": 5630
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.25,
+          "human": 0,
+          "orc": 40,
+          "humanHP": 0,
+          "orcHP": 5680
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_goblin",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9.25,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 783,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9.65,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 790,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_goblin",
+      "mode": "cost",
+      "counts": [
+        17,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 12,
+          "human": 14,
+          "orc": 0,
+          "humanHP": 833,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 12.05,
+          "human": 15,
+          "orc": 0,
+          "humanHP": 860,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_goblin",
+      "mode": "time",
+      "counts": [
+        12,
+        17
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 12.15,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 566,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 12.15,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 588,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_goblin",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        30
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 14.65,
+          "human": 13,
+          "orc": 0,
+          "humanHP": 778,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 13.05,
+          "human": 14,
+          "orc": 0,
+          "humanHP": 900,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_goblin",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        48
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 14.15,
+          "human": 37,
+          "orc": 0,
+          "humanHP": 2767,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 13.8,
+          "human": 36,
+          "orc": 0,
+          "humanHP": 2862,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_warg",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 7.6,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 4475
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 8,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 4450
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_warg",
+      "mode": "cost",
+      "counts": [
+        17,
+        4
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.7,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 900,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.95,
+          "human": 10,
+          "orc": 0,
+          "humanHP": 900,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_warg",
+      "mode": "time",
+      "counts": [
+        12,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.8,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 900
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 14.55,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 825
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_warg",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 14.85,
+          "human": 9,
+          "orc": 0,
+          "humanHP": 690,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 15.75,
+          "human": 7,
+          "orc": 0,
+          "humanHP": 570,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_warg",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.35,
+          "human": 0,
+          "orc": 19,
+          "humanHP": 0,
+          "orcHP": 5225
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 14.95,
+          "human": 0,
+          "orc": 21,
+          "humanHP": 0,
+          "orcHP": 5250
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_shaman",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 19.35,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 842,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 19.25,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 854,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_shaman",
+      "mode": "cost",
+      "counts": [
+        17,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.55,
+          "human": 17,
+          "orc": 0,
+          "humanHP": 1452,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.85,
+          "human": 17,
+          "orc": 0,
+          "humanHP": 1446,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_shaman",
+      "mode": "time",
+      "counts": [
+        12,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 12.95,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 984,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 13.1,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 984,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_shaman",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.25,
+          "human": 20,
+          "orc": 0,
+          "humanHP": 1704,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.35,
+          "human": 20,
+          "orc": 0,
+          "humanHP": 1692,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_shaman",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        28
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 17.2,
+          "human": 48,
+          "orc": 0,
+          "humanHP": 3880,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 17.45,
+          "human": 48,
+          "orc": 0,
+          "humanHP": 3862,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_ram",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 33.6,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 10575
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 33.55,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 10563
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_ram",
+      "mode": "cost",
+      "counts": [
+        17,
+        3
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 25.15,
+          "human": 17,
+          "orc": 0,
+          "humanHP": 1370,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 26,
+          "human": 17,
+          "orc": 0,
+          "humanHP": 1362,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_ram",
+      "mode": "time",
+      "counts": [
+        12,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 65.05,
+          "human": 4,
+          "orc": 0,
+          "humanHP": 240,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 61.5,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 364,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_ram",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 40.6,
+          "human": 16,
+          "orc": 0,
+          "humanHP": 1232,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 39.65,
+          "human": 16,
+          "orc": 0,
+          "humanHP": 1192,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_ram",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 79.05,
+          "human": 0,
+          "orc": 11,
+          "humanHP": 0,
+          "orcHP": 5788
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 74.45,
+          "human": 0,
+          "orc": 15,
+          "humanHP": 0,
+          "orcHP": 7500
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_troll",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 6.95,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 38125
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 7.15,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 38125
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_troll",
+      "mode": "cost",
+      "counts": [
+        17,
+        1
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.95,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 2425
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.95,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 2400
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_troll",
+      "mode": "time",
+      "counts": [
+        12,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.1,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5875
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 8.95,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 6000
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_troll",
+      "mode": "time-L3",
+      "counts": [
+        20,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.95,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5800
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.95,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5950
+        }
+      ]
+    },
+    {
+      "human": "spearman",
+      "orc": "orc_troll",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 14.95,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 4050
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 14.95,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 4150
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_warrior",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.65,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 3234
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.6,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 3226
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_warrior",
+      "mode": "cost",
+      "counts": [
+        14,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.55,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 3152
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.75,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 3136
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_warrior",
+      "mode": "time",
+      "counts": [
+        10,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.55,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1786
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.75,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1774
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_warrior",
+      "mode": "time-L3",
+      "counts": [
+        16,
+        9
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.85,
+          "human": 0,
+          "orc": 9,
+          "humanHP": 0,
+          "orcHP": 2118
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.25,
+          "human": 0,
+          "orc": 9,
+          "humanHP": 0,
+          "orcHP": 2108
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_warrior",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        36
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 16.25,
+          "human": 0,
+          "orc": 36,
+          "humanHP": 0,
+          "orcHP": 8734
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.25,
+          "human": 0,
+          "orc": 34,
+          "humanHP": 0,
+          "orcHP": 8580
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_berserker",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.6,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 1898
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.7,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 1888
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_berserker",
+      "mode": "cost",
+      "counts": [
+        14,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.75,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1480
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.9,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1434
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_berserker",
+      "mode": "time",
+      "counts": [
+        10,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.2,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1030
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.35,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1028
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_berserker",
+      "mode": "time-L3",
+      "counts": [
+        16,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.15,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1398
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.5,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1360
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_berserker",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        40
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.4,
+          "human": 0,
+          "orc": 33,
+          "humanHP": 0,
+          "orcHP": 5596
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.4,
+          "human": 0,
+          "orc": 33,
+          "humanHP": 0,
+          "orcHP": 5514
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_goblin",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 8.5,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 496,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 8.55,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 492,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_goblin",
+      "mode": "cost",
+      "counts": [
+        14,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 17.3,
+          "human": 5,
+          "orc": 0,
+          "humanHP": 188,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 23.3,
+          "human": 2,
+          "orc": 0,
+          "humanHP": 89,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_goblin",
+      "mode": "time",
+      "counts": [
+        10,
+        17
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 12.15,
+          "human": 7,
+          "orc": 0,
+          "humanHP": 161,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 16.1,
+          "human": 2,
+          "orc": 0,
+          "humanHP": 110,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_goblin",
+      "mode": "time-L3",
+      "counts": [
+        16,
+        30
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19.6,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 80
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 18.15,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 130
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_goblin",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        48
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 12.4,
+          "human": 39,
+          "orc": 0,
+          "humanHP": 1991,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 12.9,
+          "human": 36,
+          "orc": 0,
+          "humanHP": 1886,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_warg",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 6.35,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 4696
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 6.35,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 4694
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_warg",
+      "mode": "cost",
+      "counts": [
+        14,
+        4
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 16.65,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 1200
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.6,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 1282
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_warg",
+      "mode": "time",
+      "counts": [
+        10,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.6,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 1838
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.15,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 1850
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_warg",
+      "mode": "time-L3",
+      "counts": [
+        16,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.65,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 2054
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.35,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 2080
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_warg",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.65,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 8642
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.05,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 8598
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_shaman",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 21.55,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 422,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 21.3,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 420,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_shaman",
+      "mode": "cost",
+      "counts": [
+        14,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.9,
+          "human": 14,
+          "orc": 0,
+          "humanHP": 694,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.9,
+          "human": 14,
+          "orc": 0,
+          "humanHP": 694,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_shaman",
+      "mode": "time",
+      "counts": [
+        10,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 14.4,
+          "human": 10,
+          "orc": 0,
+          "humanHP": 467,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 15.05,
+          "human": 10,
+          "orc": 0,
+          "humanHP": 467,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_shaman",
+      "mode": "time-L3",
+      "counts": [
+        16,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.9,
+          "human": 16,
+          "orc": 0,
+          "humanHP": 797,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 12.65,
+          "human": 16,
+          "orc": 0,
+          "humanHP": 797,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_shaman",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        28
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 16.75,
+          "human": 45,
+          "orc": 0,
+          "humanHP": 2296,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 15.75,
+          "human": 47,
+          "orc": 0,
+          "humanHP": 2316,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_ram",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 26.55,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 12778
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 26.05,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 12807
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_ram",
+      "mode": "cost",
+      "counts": [
+        14,
+        3
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 77.25,
+          "human": 0,
+          "orc": 3,
+          "humanHP": 0,
+          "orcHP": 2196
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 77.05,
+          "human": 0,
+          "orc": 3,
+          "humanHP": 0,
+          "orcHP": 2154
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_ram",
+      "mode": "time",
+      "counts": [
+        10,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 38.95,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 5033
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 38.95,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 5033
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_ram",
+      "mode": "time-L3",
+      "counts": [
+        16,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 50.55,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 5674
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 50.85,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 5636
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_ram",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 41.85,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 23526
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 43.3,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 23602
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_troll",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.35,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 38022
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.35,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 38016
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_troll",
+      "mode": "cost",
+      "counts": [
+        14,
+        1
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.45,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 2732
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.65,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 2738
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_troll",
+      "mode": "time",
+      "counts": [
+        10,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.15,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 6058
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.15,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 6058
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_troll",
+      "mode": "time-L3",
+      "counts": [
+        16,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.15,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5878
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.45,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5810
+        }
+      ]
+    },
+    {
+      "human": "archer",
+      "orc": "orc_troll",
+      "mode": "area-time-L3",
+      "counts": [
+        48,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 16.2,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 4562
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.85,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 4794
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_warrior",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 17.1,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 960,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 17.65,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 980,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_warrior",
+      "mode": "cost",
+      "counts": [
+        6,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.25,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 2640
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.4,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 2550
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_warrior",
+      "mode": "time",
+      "counts": [
+        6,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19.95,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 390
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19.2,
+          "human": 0,
+          "orc": 3,
+          "humanHP": 0,
+          "orcHP": 450
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_warrior",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        9
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 16,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 1380,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 15.35,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 1500,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_warrior",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        36
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 17.4,
+          "human": 34,
+          "orc": 0,
+          "humanHP": 6680,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 17.85,
+          "human": 37,
+          "orc": 0,
+          "humanHP": 6560,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_berserker",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.85,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 1056,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.85,
+          "human": 10,
+          "orc": 0,
+          "humanHP": 992,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_berserker",
+      "mode": "cost",
+      "counts": [
+        6,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.35,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1050
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.4,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1050
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_berserker",
+      "mode": "time",
+      "counts": [
+        6,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.35,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 210
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.7,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 210
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_berserker",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.3,
+          "human": 9,
+          "orc": 0,
+          "humanHP": 1088,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.35,
+          "human": 10,
+          "orc": 0,
+          "humanHP": 1248,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_berserker",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        40
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 13.5,
+          "human": 33,
+          "orc": 0,
+          "humanHP": 6272,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 13.65,
+          "human": 35,
+          "orc": 0,
+          "humanHP": 6240,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_goblin",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 5.35,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 2744,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 5.35,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 2744,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_goblin",
+      "mode": "cost",
+      "counts": [
+        6,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.8,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 957,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9.55,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 964,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_goblin",
+      "mode": "time",
+      "counts": [
+        6,
+        17
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 8.3,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 1174,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 8.3,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 1171,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_goblin",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        30
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9.45,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 2101,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 8.35,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 2168,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_goblin",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        48
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 8.8,
+          "human": 44,
+          "orc": 0,
+          "humanHP": 9699,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 8.6,
+          "human": 44,
+          "orc": 0,
+          "humanHP": 9706,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_warg",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.85,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 2670
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.65,
+          "human": 0,
+          "orc": 11,
+          "humanHP": 0,
+          "orcHP": 2750
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_warg",
+      "mode": "cost",
+      "counts": [
+        6,
+        4
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 21.25,
+          "human": 2,
+          "orc": 0,
+          "humanHP": 270,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 23.1,
+          "human": 1,
+          "orc": 0,
+          "humanHP": 240,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_warg",
+      "mode": "time",
+      "counts": [
+        6,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 16.7,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 610
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 16.65,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 640
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_warg",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 14.1,
+          "human": 9,
+          "orc": 0,
+          "humanHP": 1320,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 14.2,
+          "human": 7,
+          "orc": 0,
+          "humanHP": 1320,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_warg",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 18.45,
+          "human": 30,
+          "orc": 0,
+          "humanHP": 4530,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 18.15,
+          "human": 28,
+          "orc": 0,
+          "humanHP": 4680,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_shaman",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.55,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 2658,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.6,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 2609,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_shaman",
+      "mode": "cost",
+      "counts": [
+        6,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.2,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 1254,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.2,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 1254,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_shaman",
+      "mode": "time",
+      "counts": [
+        6,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.2,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 1254,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.2,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 1254,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_shaman",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 8.05,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 2514,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 8.15,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 2508,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_shaman",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        28
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.05,
+          "human": 44,
+          "orc": 0,
+          "humanHP": 10271,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.1,
+          "human": 44,
+          "orc": 0,
+          "humanHP": 10308,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_ram",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 70.2,
+          "human": 0,
+          "orc": 11,
+          "humanHP": 0,
+          "orcHP": 5890
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 74.75,
+          "human": 0,
+          "orc": 9,
+          "humanHP": 0,
+          "orcHP": 4440
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_ram",
+      "mode": "cost",
+      "counts": [
+        6,
+        3
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 51.6,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 976,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 51.35,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 952,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_ram",
+      "mode": "time",
+      "counts": [
+        6,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 1,
+          "orc": 3,
+          "humanHP": 8,
+          "orcHP": 885
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 88.75,
+          "human": 0,
+          "orc": 3,
+          "humanHP": 0,
+          "orcHP": 945
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_ram",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 55.95,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 1568,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 55.95,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 1568,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_ram",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 59.1,
+          "human": 43,
+          "orc": 0,
+          "humanHP": 7104,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 59.8,
+          "human": 41,
+          "orc": 0,
+          "humanHP": 6960,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_troll",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 7.1,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 37980
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 7.15,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 37920
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_troll",
+      "mode": "cost",
+      "counts": [
+        6,
+        1
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.15,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 2150
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.15,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 2120
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_troll",
+      "mode": "time",
+      "counts": [
+        6,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.15,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5800
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.15,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5770
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_troll",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.95,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5170
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.15,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5320
+        }
+      ]
+    },
+    {
+      "human": "knight",
+      "orc": "orc_troll",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.15,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 2890
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19.15,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 2900
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_warrior",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.1,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 3108
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.1,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 3102
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_warrior",
+      "mode": "cost",
+      "counts": [
+        6,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.1,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 3438
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.1,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 3450
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_warrior",
+      "mode": "time",
+      "counts": [
+        6,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 14.85,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1872
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 14.85,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1872
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_warrior",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        9
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19.85,
+          "human": 0,
+          "orc": 9,
+          "humanHP": 0,
+          "orcHP": 2124
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 20.05,
+          "human": 0,
+          "orc": 9,
+          "humanHP": 0,
+          "orcHP": 2118
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_warrior",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        36
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 23.75,
+          "human": 0,
+          "orc": 31,
+          "humanHP": 0,
+          "orcHP": 8520
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 23.7,
+          "human": 0,
+          "orc": 32,
+          "humanHP": 0,
+          "orcHP": 8526
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_berserker",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.05,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 1854
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.15,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 1830
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_berserker",
+      "mode": "cost",
+      "counts": [
+        6,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.45,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1680
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.35,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1674
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_berserker",
+      "mode": "time",
+      "counts": [
+        6,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.1,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1122
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.3,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1104
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_berserker",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.25,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1518
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.9,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1470
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_berserker",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        40
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.85,
+          "human": 0,
+          "orc": 35,
+          "humanHP": 0,
+          "orcHP": 5808
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.85,
+          "human": 0,
+          "orc": 35,
+          "humanHP": 0,
+          "orcHP": 5796
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_goblin",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.5,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 1010,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.3,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 1014,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_goblin",
+      "mode": "cost",
+      "counts": [
+        6,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.35,
+          "human": 0,
+          "orc": 23,
+          "humanHP": 0,
+          "orcHP": 588
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.3,
+          "human": 0,
+          "orc": 23,
+          "humanHP": 0,
+          "orcHP": 594
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_goblin",
+      "mode": "time",
+      "counts": [
+        6,
+        17
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.15,
+          "human": 0,
+          "orc": 13,
+          "humanHP": 0,
+          "orcHP": 318
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.15,
+          "human": 0,
+          "orc": 13,
+          "humanHP": 0,
+          "orcHP": 324
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_goblin",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        30
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.55,
+          "human": 0,
+          "orc": 22,
+          "humanHP": 0,
+          "orcHP": 558
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.25,
+          "human": 0,
+          "orc": 25,
+          "humanHP": 0,
+          "orcHP": 588
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_goblin",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        48
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 15.15,
+          "human": 42,
+          "orc": 0,
+          "humanHP": 3780,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 15.7,
+          "human": 42,
+          "orc": 0,
+          "humanHP": 3780,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_warg",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 8.75,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 4632
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.85,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 4608
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_warg",
+      "mode": "cost",
+      "counts": [
+        6,
+        4
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.95,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 1420
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.65,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 1420
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_warg",
+      "mode": "time",
+      "counts": [
+        6,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 8.95,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 1880
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 8.85,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 1886
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_warg",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.75,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 1968
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19.35,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 1932
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_warg",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 18.65,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 8130
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 20.6,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 7938
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_shaman",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 33.8,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 1080,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 32.1,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 1026,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_shaman",
+      "mode": "cost",
+      "counts": [
+        6,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 31.1,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 540,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 32.3,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 498,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_shaman",
+      "mode": "time",
+      "counts": [
+        6,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 31.1,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 540,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 32.3,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 498,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_shaman",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 21.3,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 990,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 21.55,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 990,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_shaman",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        28
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 23.95,
+          "human": 44,
+          "orc": 0,
+          "humanHP": 3960,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 23.75,
+          "human": 44,
+          "orc": 0,
+          "humanHP": 3906,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_ram",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 12,
+          "orc": 12,
+          "humanHP": 1024,
+          "orcHP": 8880
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 12,
+          "orc": 12,
+          "humanHP": 1032,
+          "orcHP": 8892
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_ram",
+      "mode": "cost",
+      "counts": [
+        6,
+        3
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 6,
+          "orc": 3,
+          "humanHP": 540,
+          "orcHP": 1140
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 6,
+          "orc": 3,
+          "humanHP": 540,
+          "orcHP": 1140
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_ram",
+      "mode": "time",
+      "counts": [
+        6,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 6,
+          "orc": 5,
+          "humanHP": 508,
+          "orcHP": 3340
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 6,
+          "orc": 5,
+          "humanHP": 508,
+          "orcHP": 3340
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_ram",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 11,
+          "orc": 6,
+          "humanHP": 990,
+          "orcHP": 2640
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 11,
+          "orc": 6,
+          "humanHP": 982,
+          "orcHP": 2640
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_ram",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 44,
+          "orc": 15,
+          "humanHP": 3960,
+          "orcHP": 11010
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 44,
+          "orc": 16,
+          "humanHP": 3960,
+          "orcHP": 10784
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_troll",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 8.95,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 38190
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.75,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 38154
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_troll",
+      "mode": "cost",
+      "counts": [
+        6,
+        1
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 14.85,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 3014
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.75,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 3038
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_troll",
+      "mode": "time",
+      "counts": [
+        6,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.75,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 6292
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.75,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 6268
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_troll",
+      "mode": "time-L3",
+      "counts": [
+        11,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.45,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 6196
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.75,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 6124
+        }
+      ]
+    },
+    {
+      "human": "priest",
+      "orc": "orc_troll",
+      "mode": "area-time-L3",
+      "counts": [
+        44,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19.65,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5080
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19.15,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 4942
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_warrior",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 26.75,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 2316
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 27.95,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 2316
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_warrior",
+      "mode": "cost",
+      "counts": [
+        3,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.95,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 3384
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.9,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 3396
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_warrior",
+      "mode": "time",
+      "counts": [
+        5,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 22.1,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1608
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 22.15,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1632
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_warrior",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        9
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 24.65,
+          "human": 0,
+          "orc": 9,
+          "humanHP": 0,
+          "orcHP": 1812
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 24.65,
+          "human": 0,
+          "orc": 9,
+          "humanHP": 0,
+          "orcHP": 1812
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_warrior",
+      "mode": "area-time-L3",
+      "counts": [
+        24,
+        36
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 24.4,
+          "human": 0,
+          "orc": 35,
+          "humanHP": 0,
+          "orcHP": 8604
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 23.75,
+          "human": 0,
+          "orc": 36,
+          "humanHP": 0,
+          "orcHP": 8568
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_berserker",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19.15,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 1224
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19.35,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 1188
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_berserker",
+      "mode": "cost",
+      "counts": [
+        3,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.1,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1632
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.4,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1632
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_berserker",
+      "mode": "time",
+      "counts": [
+        5,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 16.55,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 912
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 16.9,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 888
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_berserker",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.2,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1176
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.3,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 1164
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_berserker",
+      "mode": "area-time-L3",
+      "counts": [
+        24,
+        40
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19.25,
+          "human": 0,
+          "orc": 32,
+          "humanHP": 0,
+          "orcHP": 5496
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19,
+          "human": 0,
+          "orc": 32,
+          "humanHP": 0,
+          "orcHP": 5436
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_goblin",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.9,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 2581,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 10.9,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 2581,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_goblin",
+      "mode": "cost",
+      "counts": [
+        3,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.35,
+          "human": 0,
+          "orc": 19,
+          "humanHP": 0,
+          "orcHP": 570
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 12.95,
+          "human": 0,
+          "orc": 20,
+          "humanHP": 0,
+          "orcHP": 576
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_goblin",
+      "mode": "time",
+      "counts": [
+        5,
+        17
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 32.95,
+          "human": 2,
+          "orc": 0,
+          "humanHP": 202,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 32.95,
+          "human": 3,
+          "orc": 0,
+          "humanHP": 135,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_goblin",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        30
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 30.9,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 144
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 30.75,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 90
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_goblin",
+      "mode": "area-time-L3",
+      "counts": [
+        24,
+        48
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 21.1,
+          "human": 24,
+          "orc": 0,
+          "humanHP": 4199,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 20.7,
+          "human": 23,
+          "orc": 0,
+          "humanHP": 4378,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_warg",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 18.25,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 4008
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 18.65,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 4032
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_warg",
+      "mode": "cost",
+      "counts": [
+        3,
+        4
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 14.15,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 1432
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 14.15,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 1432
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_warg",
+      "mode": "time",
+      "counts": [
+        5,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.1,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 1652
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 15.85,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 1640
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_warg",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 21.15,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 1800
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 20.7,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 1788
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_warg",
+      "mode": "area-time-L3",
+      "counts": [
+        24,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 18.5,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 8160
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 18.35,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 8136
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_shaman",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 23.8,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 2394,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 23.8,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 2372,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_shaman",
+      "mode": "cost",
+      "counts": [
+        3,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 47.85,
+          "human": 3,
+          "orc": 0,
+          "humanHP": 352,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 51.05,
+          "human": 3,
+          "orc": 0,
+          "humanHP": 358,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_shaman",
+      "mode": "time",
+      "counts": [
+        5,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 28.25,
+          "human": 5,
+          "orc": 0,
+          "humanHP": 904,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 28.3,
+          "human": 5,
+          "orc": 0,
+          "humanHP": 860,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_shaman",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 23.35,
+          "human": 8,
+          "orc": 0,
+          "humanHP": 1582,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 23.3,
+          "human": 8,
+          "orc": 0,
+          "humanHP": 1608,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_shaman",
+      "mode": "area-time-L3",
+      "counts": [
+        24,
+        28
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 29.9,
+          "human": 24,
+          "orc": 0,
+          "humanHP": 4749,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 29.8,
+          "human": 24,
+          "orc": 0,
+          "humanHP": 4703,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_ram",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 78.95,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 11436
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 78.75,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 11472
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_ram",
+      "mode": "cost",
+      "counts": [
+        3,
+        3
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 73.85,
+          "human": 0,
+          "orc": 3,
+          "humanHP": 0,
+          "orcHP": 2760
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 73.75,
+          "human": 0,
+          "orc": 3,
+          "humanHP": 0,
+          "orcHP": 2760
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_ram",
+      "mode": "time",
+      "counts": [
+        5,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 73.85,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 4600
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 73.85,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 4600
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_ram",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 1,
+          "orc": 6,
+          "humanHP": 156,
+          "orcHP": 5106
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "timeout",
+          "seconds": 90,
+          "human": 1,
+          "orc": 6,
+          "humanHP": 148,
+          "orcHP": 5112
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_ram",
+      "mode": "area-time-L3",
+      "counts": [
+        24,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 79.05,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 23106
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 80.45,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 23100
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_troll",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.35,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 37524
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 17.95,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 37428
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_troll",
+      "mode": "cost",
+      "counts": [
+        3,
+        1
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 21.35,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 2912
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 21.35,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 2912
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_troll",
+      "mode": "time",
+      "counts": [
+        5,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 23.35,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5920
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 21.35,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5932
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_troll",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 29.35,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5524
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 27.35,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5572
+        }
+      ]
+    },
+    {
+      "human": "catapult",
+      "orc": "orc_troll",
+      "mode": "area-time-L3",
+      "counts": [
+        24,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 31.35,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 3808
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 27.35,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 3916
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_warrior",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.45,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 700,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.45,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 720,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_warrior",
+      "mode": "cost",
+      "counts": [
+        4,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.45,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 1658
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.2,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 1675
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_warrior",
+      "mode": "time",
+      "counts": [
+        5,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.1,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 490
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 13.15,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 403
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_warrior",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        9
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 14.85,
+          "human": 3,
+          "orc": 0,
+          "humanHP": 65,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 14.9,
+          "human": 3,
+          "orc": 0,
+          "humanHP": 85,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_warrior",
+      "mode": "area-time-L3",
+      "counts": [
+        8,
+        36
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.6,
+          "human": 0,
+          "orc": 32,
+          "humanHP": 0,
+          "orcHP": 5638
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 10.35,
+          "human": 0,
+          "orc": 32,
+          "humanHP": 0,
+          "orcHP": 5904
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_berserker",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 8.1,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 804,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 8.15,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 820,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_berserker",
+      "mode": "cost",
+      "counts": [
+        4,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 8.65,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 557
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 8.75,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 540
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_berserker",
+      "mode": "time",
+      "counts": [
+        5,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11,
+          "human": 0,
+          "orc": 3,
+          "humanHP": 0,
+          "orcHP": 166
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.05,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 125
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_berserker",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        10
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.05,
+          "human": 4,
+          "orc": 0,
+          "humanHP": 236,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.05,
+          "human": 4,
+          "orc": 0,
+          "humanHP": 236,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_berserker",
+      "mode": "area-time-L3",
+      "counts": [
+        8,
+        40
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9,
+          "human": 0,
+          "orc": 33,
+          "humanHP": 0,
+          "orcHP": 3847
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.05,
+          "human": 0,
+          "orc": 33,
+          "humanHP": 0,
+          "orcHP": 3830
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_goblin",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 3.95,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 900,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 3.95,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 900,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_goblin",
+      "mode": "cost",
+      "counts": [
+        4,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9,
+          "human": 4,
+          "orc": 0,
+          "humanHP": 192,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9,
+          "human": 4,
+          "orc": 0,
+          "humanHP": 192,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_goblin",
+      "mode": "time",
+      "counts": [
+        5,
+        17
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 7.3,
+          "human": 5,
+          "orc": 0,
+          "humanHP": 326,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 7.3,
+          "human": 5,
+          "orc": 0,
+          "humanHP": 351,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_goblin",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        30
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 5.6,
+          "human": 8,
+          "orc": 0,
+          "humanHP": 572,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 5.6,
+          "human": 8,
+          "orc": 0,
+          "humanHP": 572,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_goblin",
+      "mode": "area-time-L3",
+      "counts": [
+        8,
+        48
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9,
+          "human": 8,
+          "orc": 0,
+          "humanHP": 446,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9,
+          "human": 8,
+          "orc": 0,
+          "humanHP": 485,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_warg",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 8.1,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 2364
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 8.6,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 2047
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_warg",
+      "mode": "cost",
+      "counts": [
+        4,
+        4
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 6.15,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 1072
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 6.35,
+          "human": 0,
+          "orc": 4,
+          "humanHP": 0,
+          "orcHP": 1072
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_warg",
+      "mode": "time",
+      "counts": [
+        5,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 6.15,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 1290
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 6.15,
+          "human": 0,
+          "orc": 5,
+          "humanHP": 0,
+          "orcHP": 1290
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_warg",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.35,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 970
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 9.15,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 986
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_warg",
+      "mode": "area-time-L3",
+      "counts": [
+        8,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 5.45,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 7932
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 5.45,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 8158
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_shaman",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 7.9,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 831,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 7.9,
+          "human": 12,
+          "orc": 0,
+          "humanHP": 825,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_shaman",
+      "mode": "cost",
+      "counts": [
+        4,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9.6,
+          "human": 4,
+          "orc": 0,
+          "humanHP": 255,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9.6,
+          "human": 4,
+          "orc": 0,
+          "humanHP": 255,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_shaman",
+      "mode": "time",
+      "counts": [
+        5,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9.6,
+          "human": 5,
+          "orc": 0,
+          "humanHP": 324,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 9.6,
+          "human": 5,
+          "orc": 0,
+          "humanHP": 324,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_shaman",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        7
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 7.9,
+          "human": 8,
+          "orc": 0,
+          "humanHP": 555,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 7.9,
+          "human": 8,
+          "orc": 0,
+          "humanHP": 555,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_shaman",
+      "mode": "area-time-L3",
+      "counts": [
+        8,
+        28
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.9,
+          "human": 8,
+          "orc": 0,
+          "humanHP": 397,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 11.3,
+          "human": 8,
+          "orc": 0,
+          "humanHP": 412,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_ram",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 29.55,
+          "human": 11,
+          "orc": 0,
+          "humanHP": 361,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 31.75,
+          "human": 8,
+          "orc": 0,
+          "humanHP": 344,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_ram",
+      "mode": "cost",
+      "counts": [
+        4,
+        3
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 31.15,
+          "human": 3,
+          "orc": 0,
+          "humanHP": 89,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 41.85,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 272
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_ram",
+      "mode": "time",
+      "counts": [
+        5,
+        5
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 33.55,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 474
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 33.55,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 441
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_ram",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        6
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 31.15,
+          "human": 7,
+          "orc": 0,
+          "humanHP": 213,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "human",
+          "seconds": 29.45,
+          "human": 8,
+          "orc": 0,
+          "humanHP": 304,
+          "orcHP": 0
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_ram",
+      "mode": "area-time-L3",
+      "counts": [
+        8,
+        24
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19.55,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 14818
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 19.65,
+          "human": 0,
+          "orc": 24,
+          "humanHP": 0,
+          "orcHP": 15036
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_troll",
+      "mode": "count",
+      "counts": [
+        12,
+        12
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.55,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 34337
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.35,
+          "human": 0,
+          "orc": 12,
+          "humanHP": 0,
+          "orcHP": 34286
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_troll",
+      "mode": "cost",
+      "counts": [
+        4,
+        1
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.75,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 2840
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.75,
+          "human": 0,
+          "orc": 1,
+          "humanHP": 0,
+          "orcHP": 2840
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_troll",
+      "mode": "time",
+      "counts": [
+        5,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.75,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5747
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.75,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5747
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_troll",
+      "mode": "time-L3",
+      "counts": [
+        8,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.75,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5298
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.75,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5298
+        }
+      ]
+    },
+    {
+      "human": "mage",
+      "orc": "orc_troll",
+      "mode": "area-time-L3",
+      "counts": [
+        8,
+        2
+      ],
+      "results": [
+        {
+          "mirror": false,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.75,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5298
+        },
+        {
+          "mirror": true,
+          "seed": 42,
+          "winner": "orc",
+          "seconds": 11.75,
+          "human": 0,
+          "orc": 2,
+          "humanHP": 0,
+          "orcHP": 5298
+        }
+      ]
+    }
+  ],
+  "mixes": [
+    {
+      "name": "line",
+      "a": {
+        "entries": [
+          [
+            "swordsman",
+            12
+          ]
+        ]
+      },
+      "b": {
+        "entries": [
+          [
+            "orc_warrior",
+            8
+          ]
+        ]
+      },
+      "results": [
+        {
+          "mirror": false,
+          "seed": 11,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1416
+        },
+        {
+          "mirror": true,
+          "seed": 11,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1392
+        },
+        {
+          "mirror": false,
+          "seed": 29,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1416
+        },
+        {
+          "mirror": true,
+          "seed": 29,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1392
+        },
+        {
+          "mirror": false,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1416
+        },
+        {
+          "mirror": true,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1392
+        }
+      ]
+    },
+    {
+      "name": "line+human-healer",
+      "a": {
+        "entries": [
+          [
+            "swordsman",
+            9
+          ],
+          [
+            "priest",
+            1
+          ]
+        ]
+      },
+      "b": {
+        "entries": [
+          [
+            "orc_warrior",
+            8
+          ]
+        ]
+      },
+      "results": [
+        {
+          "mirror": false,
+          "seed": 11,
+          "winner": "orc",
+          "seconds": 16.55,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1656
+        },
+        {
+          "mirror": true,
+          "seed": 11,
+          "winner": "orc",
+          "seconds": 16.25,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1668
+        },
+        {
+          "mirror": false,
+          "seed": 29,
+          "winner": "orc",
+          "seconds": 16.55,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1656
+        },
+        {
+          "mirror": true,
+          "seed": 29,
+          "winner": "orc",
+          "seconds": 16.25,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1668
+        },
+        {
+          "mirror": false,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 16.55,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1656
+        },
+        {
+          "mirror": true,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 16.25,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1668
+        }
+      ]
+    },
+    {
+      "name": "line+orc-shaman",
+      "a": {
+        "entries": [
+          [
+            "swordsman",
+            12
+          ]
+        ]
+      },
+      "b": {
+        "entries": [
+          [
+            "orc_warrior",
+            6
+          ],
+          [
+            "orc_shaman",
+            1
+          ]
+        ]
+      },
+      "results": [
+        {
+          "mirror": false,
+          "seed": 11,
+          "winner": "orc",
+          "seconds": 19.2,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 804
+        },
+        {
+          "mirror": true,
+          "seed": 11,
+          "winner": "orc",
+          "seconds": 19.7,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 744
+        },
+        {
+          "mirror": false,
+          "seed": 29,
+          "winner": "orc",
+          "seconds": 19.2,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 802
+        },
+        {
+          "mirror": true,
+          "seed": 29,
+          "winner": "orc",
+          "seconds": 19.4,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 773
+        },
+        {
+          "mirror": false,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 19.5,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 816
+        },
+        {
+          "mirror": true,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 19.4,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 768
+        }
+      ]
+    },
+    {
+      "name": "bleed-1",
+      "a": {
+        "entries": [
+          [
+            "swordsman",
+            12
+          ]
+        ]
+      },
+      "b": {
+        "entries": [
+          [
+            "orc_warrior",
+            8
+          ]
+        ],
+        "normal": {
+          "orc_bleed": 1
+        }
+      },
+      "results": [
+        {
+          "mirror": false,
+          "seed": 11,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1416
+        },
+        {
+          "mirror": true,
+          "seed": 11,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1392
+        },
+        {
+          "mirror": false,
+          "seed": 29,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1416
+        },
+        {
+          "mirror": true,
+          "seed": 29,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1392
+        },
+        {
+          "mirror": false,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1416
+        },
+        {
+          "mirror": true,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1392
+        }
+      ]
+    },
+    {
+      "name": "human-unit-damage-1",
+      "a": {
+        "entries": [
+          [
+            "swordsman",
+            12
+          ]
+        ],
+        "normal": {
+          "swordsman_dmg": 1
+        }
+      },
+      "b": {
+        "entries": [
+          [
+            "orc_warrior",
+            8
+          ]
+        ]
+      },
+      "results": [
+        {
+          "mirror": false,
+          "seed": 11,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1308
+        },
+        {
+          "mirror": true,
+          "seed": 11,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1291
+        },
+        {
+          "mirror": false,
+          "seed": 29,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1308
+        },
+        {
+          "mirror": true,
+          "seed": 29,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1291
+        },
+        {
+          "mirror": false,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 7,
+          "humanHP": 0,
+          "orcHP": 1308
+        },
+        {
+          "mirror": true,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 1291
+        }
+      ]
+    },
+    {
+      "name": "human-execution",
+      "a": {
+        "entries": [
+          [
+            "swordsman",
+            12
+          ]
+        ],
+        "legends": [
+          "sword_execute"
+        ]
+      },
+      "b": {
+        "entries": [
+          [
+            "orc_warrior",
+            8
+          ]
+        ]
+      },
+      "results": [
+        {
+          "mirror": false,
+          "seed": 11,
+          "winner": "human",
+          "seconds": 18.05,
+          "human": 6,
+          "orc": 0,
+          "humanHP": 420,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 11,
+          "winner": "human",
+          "seconds": 21.5,
+          "human": 5,
+          "orc": 0,
+          "humanHP": 320,
+          "orcHP": 0
+        },
+        {
+          "mirror": false,
+          "seed": 29,
+          "winner": "human",
+          "seconds": 19.45,
+          "human": 5,
+          "orc": 0,
+          "humanHP": 300,
+          "orcHP": 0
+        },
+        {
+          "mirror": true,
+          "seed": 29,
+          "winner": "human",
+          "seconds": 21.55,
+          "human": 5,
+          "orc": 0,
+          "humanHP": 320,
+          "orcHP": 0
+        },
+        {
+          "mirror": false,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 18.3,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 1140
+        },
+        {
+          "mirror": true,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 17,
+          "human": 0,
+          "orc": 6,
+          "humanHP": 0,
+          "orcHP": 1128
+        }
+      ]
+    },
+    {
+      "name": "mixed",
+      "a": {
+        "entries": [
+          [
+            "swordsman",
+            6
+          ],
+          [
+            "spearman",
+            3
+          ],
+          [
+            "archer",
+            4
+          ],
+          [
+            "priest",
+            1
+          ],
+          [
+            "mage",
+            1
+          ]
+        ]
+      },
+      "b": {
+        "entries": [
+          [
+            "orc_warrior",
+            4
+          ],
+          [
+            "orc_berserker",
+            2
+          ],
+          [
+            "orc_goblin",
+            5
+          ],
+          [
+            "orc_shaman",
+            1
+          ],
+          [
+            "orc_warg",
+            1
+          ]
+        ]
+      },
+      "results": [
+        {
+          "mirror": false,
+          "seed": 11,
+          "winner": "orc",
+          "seconds": 17.65,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 883
+        },
+        {
+          "mirror": true,
+          "seed": 11,
+          "winner": "orc",
+          "seconds": 19.15,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 940
+        },
+        {
+          "mirror": false,
+          "seed": 29,
+          "winner": "orc",
+          "seconds": 17.65,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 884
+        },
+        {
+          "mirror": true,
+          "seed": 29,
+          "winner": "orc",
+          "seconds": 19.35,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 927
+        },
+        {
+          "mirror": false,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 17.2,
+          "human": 0,
+          "orc": 10,
+          "humanHP": 0,
+          "orcHP": 911
+        },
+        {
+          "mirror": true,
+          "seed": 73,
+          "winner": "orc",
+          "seconds": 19.35,
+          "human": 0,
+          "orc": 8,
+          "humanHP": 0,
+          "orcHP": 931
+        }
+      ]
+    }
+  ],
+  "assumptions": [
+    "No combat upgrades or building buffs unless explicitly listed; no towers or reinforcements.",
+    "90-second limit, 20 simulation steps/second; mirrored deployment and side order.",
+    "Cost budget sums wood/stone/food equally; this is not a real economic model.",
+    "Time samples use 60 seconds of one L1 or L3 producer. Area-time-L3 uses 9 military cells, unique-building limits and a 48-slot cap, without construction/economy costs.",
+    "Pure support duels are included for completeness, not a rating of their utility."
+  ],
+  "date": "2026-10-21"
+}

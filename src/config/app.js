@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.22.0',
-  label: 'V4.22.0 · ÉRTHETŐ KÁRTYÁK',
-  title: 'Roadlords – Érthető kártyák',
+  version: '4.23.0',
+  label: 'V4.23.0 · AI VÁROSÉPÍTÉS',
+  title: 'Roadlords – AI városépítés',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

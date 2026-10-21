@@ -80,6 +80,7 @@ export function initializeCoreFeatures2(runtime) {
     const AI4980_UNITS = ['swordsman', 'spearman', 'archer', 'knight', 'mage', 'priest', 'catapult'];
     const AI4980_FRONT = ['swordsman', 'spearman', 'knight'];
     const AI4980_RANGED = ['archer', 'mage'];
+    const AI4980_ORC_ROLES = { orc_warrior: 'swordsman', orc_berserker: 'swordsman', orc_goblin: 'archer', orc_warg: 'knight', orc_shaman: 'mage', orc_ram: 'catapult', orc_troll: 'knight' };
     const AI4980_SUPPORT = ['priest'];
     const AI4980_SIEGE = ['catapult'];
     const AI4980_PRODUCER = {
@@ -217,8 +218,8 @@ export function initializeCoreFeatures2(runtime) {
     function aiObservedMix4980() {
       const out = Object.fromEntries(AI4980_UNITS.map(k => [k, 0]));
       const add = x => {
-        const k = x?.key;
-        if (k in out) out[k]++;
+        const k = AI4980_ORC_ROLES[x?.key] || x?.key;
+        if (k in out) out[k] += x.key === 'orc_troll' ? 4 : 1;
       };
       for (const u of runtime.state.units) if (u.alive && u.side === 'player') add(u);
       for (const arr of [runtime.P.garrison, runtime.P.releaseQueue, runtime.P.rallyReserve || []]) for (const x of arr || []) add(x);
@@ -427,9 +428,9 @@ export function initializeCoreFeatures2(runtime) {
       return s;
     }
     runtime.findCell = function (c, type) {
-      if (c !== runtime.E) return aiOldFindCell4980(c, type);
+      if (c !== runtime.E || runtime.MP.enabled) return aiOldFindCell4980(c, type);
       if (!runtime.BUILDINGS[type]) return null;
-      return runtime.aiMemo('cell:' + type, () => {
+      return runtime.aiMemo('cell:' + type + ':' + c.buildings.map(b => b.id).join(','), () => {
         const occ = runtime.occupancy(c);
         const legal = (row, col, rot) => {
           for (const [dr, dc] of runtime.rotatedShape(type, rot)) {
@@ -440,6 +441,7 @@ export function initializeCoreFeatures2(runtime) {
           return type !== 'guardhouse' || runtime.v491GuardhousePlacementValid(c, row, col, rot);
         };
         const sp = runtime.spawnerBuildings(c);
+        const layout = runtime.aiLayoutPlan?.(c);
         const candidates = [],
           isProd = ['lumber', 'stonecutter', 'farm'].includes(type),
           smithRange = runtime.hasLeg(c, 'armor_extended_range') ? 2 : 1;
@@ -456,22 +458,25 @@ export function initializeCoreFeatures2(runtime) {
             bonus = runtime.producerHasBonus(c, type, fake);
           if (bonus) s += 1000;
           s += aiTerrainPenalty4980(c, type, fake, cells);
-          const near1 = b => runtime.inBuildingRange(fake, b, 1),
+          const near1 = b => runtime.aiBuildingsTouch ? runtime.aiBuildingsTouch(c, fake, b) : runtime.inBuildingRange(fake, b, 1),
             near2 = b => runtime.inBuildingRange(fake, b, 2);
+          const coverage = layout ? runtime.aiSupportCoverage(c, fake, layout) : null;
+          if (coverage === 0 && runtime.aiRequiresLocalTargets(c, fake)) continue;
+          if (layout) s += runtime.aiLayoutAdjustment(c, fake, layout);
           if (type === 'rally') {
-            s += sp.filter(near1).length * 75;
+            s += sp.filter(runtime.hasBranch(c, 'rally', 'war_rally') ? near2 : near1).length * 75;
             if (runtime.hasLeg(c, 'campaign_feast') && runtime.buildingOf(c, 'tavern').some(near1)) s += 220;
           }
           if (type === 'tavern') {
-            s += sp.filter(near1).length * 70;
+            if (runtime.hasBranch(c, 'tavern', 'regulars')) s += sp.filter(near1).length * 70;
             if (runtime.hasLeg(c, 'campaign_feast') && runtime.buildingOf(c, 'rally').some(near1)) s += 220;
           }
-          if (type === 'armorsmith') s += sp.filter(b => runtime.inBuildingRange(fake, b, smithRange)).length * 95;
+          if (type === 'armorsmith') s += sp.filter(smithRange === 1 ? near1 : near2).length * 95;
           if (type === 'alchemist') {
             const huts = runtime.buildingOf(c, 'alchemist');
             let covered = 0;
             for (const b of sp.filter(near1)) {
-              const already = huts.some(h => runtime.inBuildingRange(h, b, 1));
+              const already = huts.some(h => runtime.aiBuildingsTouch ? runtime.aiBuildingsTouch(c, h, b) : runtime.inBuildingRange(h, b, 1));
               covered += already && !runtime.hasLeg(c, 'alc_multi_hut') ? 0.25 : 1;
             }
             s += covered * 90;
@@ -487,17 +492,17 @@ export function initializeCoreFeatures2(runtime) {
           if (type === 'warehouse' && runtime.hasLeg(c, 'supply_hub')) s += sp.filter(near1).length * 110;
           const keep = runtime.buildingOf(c, 'keep')[0];
           if (keep && runtime.hasLeg(c, 'royal_district')) {
-            if (['lumber', 'stonecutter', 'farm'].includes(type) && runtime.inBuildingRange(fake, keep, 1)) s += 95;
-            if (runtime.BUILDINGS[type]?.unit && runtime.inBuildingRange(fake, keep, 1)) s += 90;
+            if (['lumber', 'stonecutter', 'farm'].includes(type) && near1(keep)) s += 95;
+            if (runtime.BUILDINGS[type]?.unit && near1(keep)) s += 90;
           }
           if (runtime.BUILDINGS[type]?.unit) {
             if (runtime.hasLeg(c, 'factory_network')) s += sp.filter(near1).length * 45;
-            if (runtime.buildingOf(c, 'rally').some(near1)) s += 18;
-            if (runtime.buildingOf(c, 'tavern').some(near1)) s += 18;
-            if (runtime.buildingOf(c, 'armorsmith').some(a => runtime.inBuildingRange(a, fake, smithRange))) s += 28;
-            if (runtime.buildingOf(c, 'alchemist').some(a => runtime.inBuildingRange(a, fake, 1))) s += 22;
+            if (runtime.buildingOf(c, 'rally').some(h => runtime.aiSupportAffects ? runtime.aiSupportAffects(c, h, fake) : near1(h))) s += 18;
+            if (runtime.hasBranch(c, 'tavern', 'regulars') && runtime.buildingOf(c, 'tavern').some(near1)) s += 18;
+            if (runtime.buildingOf(c, 'armorsmith').some(a => smithRange === 1 ? near1(a) : near2(a))) s += 28;
+            if (runtime.buildingOf(c, 'alchemist').some(near1)) s += 22;
             const ac = runtime.buildingOf(c, 'academy')[0];
-            if (ac && !runtime.hasBranch(c, 'academy', 'war_academy') && runtime.inBuildingRange(ac, fake, 1)) s += 25;
+            if (ac && !runtime.hasBranch(c, 'academy', 'war_academy') && near1(ac)) s += 25;
           }
           if (runtime.placementFoundationCells(c, type, row, col, rot).length) s += 32 + (runtime.BUILDINGS[type].cost.wood + runtime.BUILDINGS[type].cost.stone) * .07;
           s -= .45 * (Math.abs(row - runtime.CENTER.row) + Math.abs(col - runtime.CENTER.col));

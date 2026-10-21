@@ -46,7 +46,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    R.roadFocusFront();
    function scaleOf(u){const original=R.ctx.drawImage;let value;R.ctx.drawImage=function(...a){if(a[0].figureBounds){const t=this.getTransform();value=[Math.abs(t.a),t.d,a.slice(-4)];}return original.apply(this,a);};try{R.roadDrawUnit(u);}finally{R.ctx.drawImage=original;}return value;}
    const results=[];
-   for(const style of ['simple','painted']){
+   for(const style of ['simple','refined']){
     Q.state.figureStyle=style;const samples=[];
     for(const count of [240,241,240]){R.state.units=units.slice(0,count);Q.render(0);samples.push({low:Q.state.lowDetail,scale:units.slice(0,14).map(scaleOf)});}
     results.push({style,samples});

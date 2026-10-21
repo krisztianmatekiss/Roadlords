@@ -8,9 +8,9 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   const page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));
   await page.goto(URL);await page.waitForFunction(()=>!!window.__ROADLORDS_ROAD__);await page.evaluate(()=>__ROADLORDS_ROAD__.artReady);
   await page.locator('.menuBrand').click();await page.waitForTimeout(900);
-  check('Main menu exposes only TESZTEK while all three battle entries stay hidden',await page.locator('#roadTestsMenu').isVisible()&&await page.locator('.menuMain #roadTestMenu,.menuMain #roadStressMenu,.menuMain #roadArtMenu').count()===0&&!await page.locator('#roadArtMenu').isVisible());
+  check('Main menu groups the new experiments and removes the retired art entry',await page.locator('#roadArtMenu,#roadArtToggle').count()===0&&await page.locator('#roadTestsMenu').isVisible()&&await page.locator('.menuMain #roadTestMenu,.menuMain #roadStressMenu,.menuMain #roadFigureMenu').count()===0&&!await page.locator('#roadFigureMenu').isVisible());
   await page.locator('#roadTestsMenu').click();
-  check('TESZTEK opens all three experiments in a separate panel',await page.locator('#roadTestsPanel').isVisible()&&await page.locator('#roadArtMenu').isVisible()&&await page.locator('#roadTestMenu').isVisible()&&await page.locator('#roadStressMenu').isVisible());
+  check('TESZTEK opens all three experiments in a separate panel',await page.locator('#roadTestsPanel').isVisible()&&await page.locator('#roadFigureMenu').isVisible()&&await page.locator('#roadTestMenu').isVisible()&&await page.locator('#roadStressMenu').isVisible());
   await page.screenshot({path:'artifacts/test-submenu.png'});
   await page.keyboard.press('Escape');
   check('Escape returns to main menu and restores keyboard focus',!await page.locator('#roadTestsPanel').isVisible()&&await page.locator('#roadTestsMenu').evaluate(e=>document.activeElement===e));
@@ -19,47 +19,70 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   await page.locator('#mpOpenMulti').click();
   check('Multiplayer submenu remains reachable after closing tests',await page.locator('#mpCreateRoom').isVisible());
   await page.locator('#mpMenuBack').click();await page.locator('#roadTestsMenu').click();
-  await page.locator('#roadArtMenu').click();await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
-  const initial=await page.evaluate(()=>({snapshot:__ROADLORDS_ROAD__.snapshot(),roster:__ROADLORDS_ROAD__.state.testRoster,art:__ROADLORDS_ROAD__.state.detailedArt?.ready}));
-  check('Art sample loads 20/20 human swordsmen and orc warriors using the real cities and battle system',initial.art&&initial.roster==='art'&&initial.snapshot.counts.every(n=>n===20)&&initial.snapshot.initial.keys.join(',')==='swordsman,orc_warrior');
-  await page.screenshot({path:'artifacts/detailed-art-ready.png'});
+  await page.locator('#roadFigureMenu').click();await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
+  const initial=await page.evaluate(()=>({snapshot:__ROADLORDS_ROAD__.snapshot(),roster:__ROADLORDS_ROAD__.state.testRoster,art:__ROADLORDS_ROAD__.state.figureStyle==='refined'}));
+  check('New figure sample loads 5/5 human swordsmen and orc warriors using the real cities and battle system',initial.art&&initial.roster==='figures'&&initial.snapshot.counts.every(n=>n===5)&&initial.snapshot.initial.keys.join(',')==='swordsman,orc_warrior');
+  await page.screenshot({path:'artifacts/new-figures-ready.png'});
   await page.locator('#roadRestart').click();await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
-  check('Restart retains the art roster, count and city seed',await page.evaluate(seed=>__ROADLORDS_ROAD__.state.testRoster==='art'&&__ROADLORDS_ROAD__.snapshot().counts.every(n=>n===20)&&__ROADLORDS_ROAD__.state.seed===seed,initial.snapshot.seed));
+  check('Restart retains the new figure roster, count and city seed',await page.evaluate(seed=>__ROADLORDS_ROAD__.state.testRoster==='figures'&&__ROADLORDS_ROAD__.snapshot().counts.every(n=>n===5)&&__ROADLORDS_ROAD__.state.seed===seed,initial.snapshot.seed));
   const textures=await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,Q=__ROADLORDS_ROAD__,out={};
+   Q.state.figureStyle='refined';
    for(const key of ['swordsman','orc_warrior']){
-    const unit=R.state.units.find(u=>u.key===key),side=unit.side,city=side==='player'?R.P:R.E,savedColor=city.unitColor;
-    const variants={};
+    const unit=R.state.units.find(u=>u.key===key),city=unit.side==='player'?R.P:R.E,savedColor=city.unitColor,variants={};let skinReference,metalReference;
     for(const [color] of window.__ROADLORDS_UNIT_COLORS__.palette){
      city.unitColor=color;
-     for(const pose of ['idle','walk','attack','death']){
-      const actor={...unit,lane:Q.state.camera+300,offset:0,roadMoving:pose==='walk',roadAttack:pose==='attack'?{start:Q.state.clock-.1,launch:Q.state.clock+.14,hit:Q.state.clock+.14,end:Q.state.clock+.38}:null,death:Q.state.clock-.3};
-      R.roadDrawUnit(actor,pose==='death');
-     }
-     const hex=R.unitTeamFill(unit),sprite=[...Q.state.sprites].find(([name])=>name.startsWith('figure:'+key+':'+hex+':idle:0')&&name.endsWith(':painted'))?.[1];
-     if(!sprite)throw Error('Detailed sprite not rendered: '+key+' '+color);
-     const data=sprite.getContext('2d').getImageData(0,0,sprite.width,sprite.height).data;let painted=0,gold=0,green=0;
-     for(let i=0;i<data.length;i+=4){if(data[i+3]<80)continue;const r=data[i],g=data[i+1],b=data[i+2];if(color==='blue'?b>r*1.3&&b>g*1.1:r>g*1.3&&r>b*1.3)painted++;if(r>g&&g>b*1.5&&r>80)gold++;if(g>r*1.02&&g>b*1.4)green++;}
-     const base=Q.state.detailedArt.base.get(key).torso,dyed=Q.state.detailedArt.colored.get(key+hex).torso;
-     const source=base.getContext('2d').getImageData(0,0,base.width,base.height).data,changed=dyed.getContext('2d').getImageData(0,0,base.width,base.height).data;
-     let skin=0,preservedSkin=0;
-     if(key==='orc_warrior')for(let i=0;i<source.length;i+=4){const r=source[i],g=source[i+1],b=source[i+2];if(source[i+3]<200||r<60||g<60||r/g<.8||r/g>1.25||b>Math.min(r,g)*.75)continue;skin++;if(Math.abs(changed[i]-r)<=4&&Math.abs(changed[i+1]-g)<=4&&Math.abs(changed[i+2]-b)<=4)preservedSkin++;}
-     variants[color]={painted,gold,skin,preservedSkin,resolution:sprite.width};
+     const actor={...unit,lane:Q.state.camera+300,offset:0,roadMoving:false,roadAttack:null};R.roadDrawUnit(actor);
+     const hex=R.unitTeamFill(unit),sprite=Q.state.sprites.get(`figure:${key}:${hex}:idle:0:refined`);
+     if(!sprite)throw Error('New sprite missing: '+key+' '+color);
+     const data=sprite.getContext('2d').getImageData(0,0,sprite.width,sprite.height).data;let team=0,gold=0,green=0;
+     for(let i=0;i<data.length;i+=4){if(data[i+3]<80)continue;const r=data[i],g=data[i+1],b=data[i+2];if(color==='blue'?b>r*1.3&&b>g*1.1:r>g*1.3&&r>b*1.3)team++;if(r>g&&g>b*1.5&&r>80)gold++;if(g>r*1.02&&g>b*1.4)green++;}
+     const pixel=(x,y)=>{const i=(Math.floor((y+66)*2.4)*192+Math.floor((x+40)*2.4))*4;return [...data.slice(i,i+4)];};
+     const skin=[];for(let y=-38;y<-29;y+=.5)for(let x=-4;x<7;x+=.5)skin.push(...pixel(x,y));
+     const steel=pixel(-2,-36);
+     skinReference??=skin;metalReference??=steel;
+     variants[color]={team,gold,green,resolution:sprite.width,skinStable:JSON.stringify(skin)===JSON.stringify(skinReference),steelStable:JSON.stringify(steel)===JSON.stringify(metalReference)};
     }
     city.unitColor=savedColor;out[key]=variants;
    }
-   return {models:out,parts:[...Q.state.detailedArt.base.values()].map(p=>Object.keys(p).length),sprites:Q.state.sprites.size,colorCache:Q.state.detailedArt.colored.size};
+   return {models:out,sprites:Q.state.sprites.size,noAtlas:!Q.state.detailedArt&&!performance.getEntriesByType('resource').some(r=>r.name.includes('battle-parts-human-orc'))};
   });report.textures=textures;
-  check('Both sample characters have five separate art pieces and painted animation frames',textures.parts.length===2&&textures.parts.every(n=>n===5)&&Object.values(textures.models).every(v=>v.blue.resolution===192&&v.red.resolution===192));
-  check('Blue/red cloth remains identifiable while gold armor and green orc skin survive recoloring',Object.values(textures.models).every(v=>v.blue.painted>50&&v.red.painted>50)&&textures.models.swordsman.blue.gold>50&&textures.models.orc_warrior.red.skin>1000&&textures.models.orc_warrior.red.preservedSkin/textures.models.orc_warrior.red.skin>.98);
-  check('Detailed textures retain bounded sprite and color caches',textures.sprites<=768&&textures.colorCache===16);
+  check('Both new figures render crisp 192px cached sprites and the retired atlas is no longer loaded',textures.noAtlas&&Object.values(textures.models).every(v=>Object.values(v).every(c=>c.resolution===192)));
+  check('All eight team colors preserve orc skin and steel while blue/red cloth stays readable',Object.values(textures.models).every(v=>v.blue.team>50&&v.red.team>50)&&Object.values(textures.models.orc_warrior).every(v=>v.skinStable&&v.green>100)&&Object.values(textures.models.swordsman).every(v=>v.steelStable)&&textures.models.swordsman.blue.gold>50);
+  check('New graphics use the existing bounded sprite cache without a second recolored texture cache',textures.sprites<=768);
+  const rig=await page.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,Q=__ROADLORDS_ROAD__,results=[];
+   for(const key of ['swordsman','orc_warrior']){
+    const unit=R.state.units.find(u=>u.key===key);
+    for(const [state,count] of [['idle',1],['walk',8],['attack',12],['death',6]])for(let frame=0;frame<count;frame++){
+     Q.state.clock=10;
+     const u={...unit,lane:Q.state.camera+300,offset:0,roadFace:1,roadMoving:state==='walk',roadWalk:(frame+.1)/8*Math.PI*2-unit.id*.73,roadAttack:null,death:10-(frame+.1)/6*.6};
+     if(state==='attack'){
+      const a={start:9,launch:10,hit:10,end:10.4,recovery:.4,to:u.lane+20},windEnd=a.launch-.085;
+      Q.state.clock=frame<4?a.start+(frame+.1)/4*(windEnd-a.start):frame<7?windEnd+(frame-4+.1)/3*.085:a.launch+(frame-7+.1)/5*.4;
+      u.roadAttack=a;
+     }
+     const variants=[];
+     for(const style of ['simple','refined']){
+      Q.state.figureStyle=style;R.roadDrawUnit(u,state==='death');
+      const pose=R.battleFigurePose(u,Q.state.clock,state==='death');
+      const name=`figure:${key}:${R.unitTeamFill(u)}:${pose.state}:${pose.frame}${style==='refined'?':refined':''}`;
+      const sprite=Q.state.sprites.get(name);if(!sprite)throw Error('Pose not drawn: '+name);
+      variants.push({rig:sprite.figureRig,bounds:sprite.figureBounds,pose});
+     }
+     results.push({key,state,frame,same:JSON.stringify(variants[0])===JSON.stringify(variants[1]),actual:variants[1].pose.frame});
+    }
+   }
+   Q.state.figureStyle='refined';return results;
+  });report.rig=rig;
+  check('Every idle, walk, attack and death frame shares the established rig and physical scale',rig.length===54&&rig.every(v=>v.same&&v.frame===v.actual));
   const beforeStyle=await page.evaluate(()=>({time:__ROADLORDS_ROAD__.snapshot().time,units:__ROADLORDS__.state.units.map(u=>[u.id,u.hp,u.lane,u.offset])}));
-  await page.locator('#roadArtToggle').click();
-  check('Graphics comparison changes only rendering while the same paused battle is preserved',await page.evaluate(before=>{const Q=__ROADLORDS_ROAD__,R=__ROADLORDS_RUNTIME__;Q.render(0);return Q.state.figureStyle==='simple'&&Q.snapshot().time===before.time&&JSON.stringify(R.state.units.map(u=>[u.id,u.hp,u.lane,u.offset]))===JSON.stringify(before.units)&&[...Q.state.sprites].some(([k])=>k.startsWith('figure:swordsman:')&&!k.endsWith(':painted'));},beforeStyle));
-  await page.screenshot({path:'artifacts/art-comparison-simple.png'});
+  await page.locator('#roadFigureToggle').click();
+  check('Graphics comparison changes only rendering while the same paused battle is preserved',await page.evaluate(before=>{const Q=__ROADLORDS_ROAD__,R=__ROADLORDS_RUNTIME__;Q.render(0);return Q.state.figureStyle==='simple'&&Q.snapshot().time===before.time&&JSON.stringify(R.state.units.map(u=>[u.id,u.hp,u.lane,u.offset]))===JSON.stringify(before.units)&&[...Q.state.sprites].some(([k])=>k.startsWith('figure:swordsman:')&&!k.endsWith(':refined'));},beforeStyle));
+  await page.screenshot({path:'artifacts/figure-comparison-current.png'});
   await page.locator('#roadRestart').click();await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
   check('Restart preserves the selected comparison graphics',await page.evaluate(()=>__ROADLORDS_ROAD__.state.figureStyle==='simple'));
-  await page.locator('#roadArtToggle').click();
+  await page.locator('#roadFigureToggle').click();
   const facing=await page.evaluate(()=>{
     const R=__ROADLORDS_RUNTIME__,Q=__ROADLORDS_ROAD__,results=[];
     for(const t of R.towers)t.alive=false;R.roadRefreshFrontiers();
@@ -69,7 +92,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
       R.ctx.drawImage=function(...args){sign=Math.sign(this.getTransform().a);return draw.apply(this,args);};
       try{R.roadDrawUnit(u);}finally{R.ctx.drawImage=draw;}return sign;
     }
-    for(const style of ['simple','painted'])for(const side of ['player','enemy']){
+    for(const style of ['simple','refined'])for(const side of ['player','enemy']){
       Q.state.figureStyle=style;R.state.units=[];Q.state.pending=[];
       const dir=side==='player'?1:-1,u=R.releaseUnit(side==='player'?R.P:R.E,{key:'swordsman'});
       u.lane=Q.state.camera+300;u.offset=u.roadHomeOffset=0;u.cooldown=999;u.roadFace=-dir;
@@ -84,10 +107,10 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
       const attackDraw=drawSign(u);
       results.push({style,side,forward,forwardDraw,backward,turnDraw,attackDraw,dir});
     }
-    Q.state.figureStyle='painted';return results;
+    Q.state.figureStyle='refined';return results;
   });report.facing=facing;
-  check('Both renderers face actual forward travel despite a stale opposite target',facing.every(x=>x.forward*x.dir>0&&x.forwardDraw===x.dir));
-  check('Both renderers turn toward reverse travel on either team',facing.every(x=>x.backward*x.dir<0&&x.turnDraw===-x.dir));
+  check('Current and new graphics face actual forward travel despite a stale opposite target',facing.every(x=>x.forward*x.dir>0&&x.forwardDraw===x.dir));
+  check('Current and new graphics turn toward reverse travel on either team',facing.every(x=>x.backward*x.dir<0&&x.turnDraw===-x.dir));
   check('Active attacks face their impact target instead of stale movement',facing.every(x=>x.attackDraw===x.dir));
   const mobility=await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,Q=__ROADLORDS_ROAD__;
@@ -142,13 +165,13 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('Live towers block both teams across the center and both road edges, including ability movement',frontiers.checks.every(x=>x.pass));
   check('Directly placed units are corrected before combat and cannot chase through a live tower',frontiers.directPlacementCorrected&&frontiers.unreachable&&frontiers.predatorBlocked);
   check('A real delayed attack reaches an offset tower and opens only the next stage',frontiers.offsetTowerInRange&&frontiers.destroyed&&frontiers.opened&&frontiers.nextBlocks&&frontiers.capitalOpen);
-  await page.evaluate(()=>{__ROADLORDS_ROAD__.startTest(42,{count:20,roster:'art'});});await page.waitForTimeout(6000);await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
+  await page.evaluate(()=>{__ROADLORDS_ROAD__.startTest(42,{count:5,roster:'figures'});});await page.waitForTimeout(6000);await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
   const live=await page.evaluate(()=>__ROADLORDS_ROAD__.snapshot());
-  check('Painted sample battle advances and deals real damage',live.metrics.attacks>0&&live.metrics.damage>0&&live.time>3);
-  await page.screenshot({path:'artifacts/detailed-art-contact.png'});
+  check('New figure sample advances and deals real damage',live.metrics.attacks>0&&live.metrics.damage>0&&live.time>3);
+  await page.screenshot({path:'artifacts/new-figures-contact.png'});
   check('No application errors in the art, passage or tower scenarios',report.errors.length===0&&!live.error);
   await page.evaluate(()=>{__ROADLORDS_ROAD__.startTest(42,{count:50});__ROADLORDS_ROAD__.pause();});
-  check('Mixed battles use the established simple figures and hide the experimental toggle',await page.evaluate(()=>__ROADLORDS_ROAD__.state.figureStyle==='simple')&&!await page.locator('#roadArtToggle').isVisible());
+  check('Mixed battles keep the established figures and hide the experimental toggle',await page.evaluate(()=>__ROADLORDS_ROAD__.state.figureStyle==='simple')&&!await page.locator('#roadFigureToggle').isVisible());
   fs.writeFileSync('artifacts/passage-and-art-results.json',JSON.stringify(report,null,2));
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

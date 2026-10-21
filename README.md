@@ -1,4 +1,4 @@
-# Roadlords · V4.20.2
+# Roadlords · V4.21.0
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság, fejlesztések, egységstatisztikák és a multiplayer-protokoll megmaradt.
 
@@ -8,11 +8,13 @@ A meglévő játék moduláris változata, a kapott harcprototípushoz közelít
 
 A városok négyzetes kerettel és építési ráccsal az út felső és alsó szegélyéig érnek. Magasságuk és szélességük együtt igazodik a pályanézethez; a teljes görgethető világ szélesedik, a harci út távolságai megmaradnak. A sereg és a helyőrség élő számlálói és portréi az alsó zöld sávban vannak, külön panel nélkül; a Saját / Ellenfél kapcsolóval mindkét oldal megtekinthető. A multiplayer név a kapu fölött, a főváros életerőcsíkja középen, a város fölött jelenik meg. A városi ikonok mindig látszanak, a felesleges ikonkapcsoló megszűnt. Épületenként egy összefüggő, enyhén színezett felület és 3 képponttal beljebb húzott külső kategóriakeret jelenik meg, belső cellavonalak nélkül: gazdaság zöld, hadsereg piros, támogatás kék, védelem szürke. Az L alakú épületek üres sarka szabad marad.
 
-Az építési sáv jobb oldalán, annak teljes magasságában egyszerű, téglalap alakú minitérkép mutatja a két várost, az élő egységeket csapatszínű pontokkal és a még álló tornyokat téglalapokkal. Az egységpontok nagyobbak (4,2 képpontos átmérő), világos körvonalat és sötétebb térképhátteret kaptak. Kattintással vagy húzással mozgatható a nézet; fókuszban a nyílbillentyűk, Home és End is használhatók. A kártyasáv külön helyet hagy a térképnek. A jelenlegi figurák és animációk változatlanok.
+Az építési sáv jobb oldalán, annak teljes magasságában egyszerű, téglalap alakú minitérkép mutatja a két várost, az élő egységeket csapatszínű pontokkal és a még álló tornyokat téglalapokkal. Az egységpontok nagyobbak (4,2 képpontos átmérő), világos körvonalat és sötétebb térképhátteret kaptak. Kattintással vagy húzással mozgatható a nézet; fókuszban a nyílbillentyűk, Home és End is használhatók. A kártyasáv külön helyet hagy a térképnek. A normál játék figurái és animációi megmaradtak.
 
 A főmenüben egyetlen **TESZTEK** gomb nyitja az összes próbát. A külön almenüből a **VISSZA** vagy az **Escape** visz vissza; a szóló és multiplayer menüpontok külön maradnak.
 
-A **TESZTEK → GRAFIKAI PRÓBA · Kardos / Ork** egy 20 vs 20-as csatában mutatja a két részletes, eredeti illusztrációkból kiinduló mintakaraktert. A kardos és az ork harcos külön torso-, fegyverkar-, pajzskar- és két lábelemből animálódik; a ruhák/pajzsok a nyolc választható csapatszínt követik. A **Grafika: Részletes / Egyszerű** kapcsoló ugyanabban a csatában, a szimuláció újraindítása nélkül vált a két megjelenés között. Újraindításkor a választott grafika megmarad. A részletes minták animációja még merevebb; ezért csak ebben a próbában szerepelnek, a normál játék és a vegyes csaták a korábbi figurákat használják.
+A **TESZTEK → ÚJ GRAFIKAI PRÓBA · Kardos vs Ork** 5 kardost és 5 ork harcost indít a valódi harcrendszerben. Új, részletesebb anyag- és felszerelésrétegek épülnek a bevált figuramozgásra: a kardos acélpáncélt, sisakot és címeres pajzsot, az ork új arcot, agyarakat, szőrme/bőr felszerelést és kidolgozott fejszét kapott. A **Grafika: Új / Jelenlegi** gomb ugyanabban a csatában, újraindítás nélkül váltja a megjelenést. A járás, fordulás, ütés és halál ugyanazt az animációs vázat és időzítést használja; azonos marad a figura léptéke is. A nyolc csapatszín a ruhát és a pajzsot színezi, a bőr és fém anyagszínei megmaradnak. Újraindításkor a választott grafika megmarad.
+
+A korábbi atlaszos kardos–ork próba, annak külön rajzolója és PNG-atlasza eltávolítva. Az új grafika első körben kizárólag e két egység próbájában szerepel; a normál játék és a vegyes 50/500-as csaták a jelenlegi figurákat használják.
 
 A **TESZTEK → PRÓBAHARC · 50 vs 50** indítja a kisebb látványpróbát, a **TERHELÉS · 500 vs 500** a nagy seregek próbáját. Mindkettő két meglévő faj szabályos endgame városát és vegyes seregét használja, a valódi harcrendszerrel. A seregek maguktól megütköznek; újraindításkor ugyanazt a várost és seregösszeállítást kapják, a találatok véletlen kimenetele változhat.
 
@@ -77,7 +79,7 @@ A tesztek a kész buildet a GitHub Pages útvonalát követő `/Roadlords/` alk�
 | `archive/` | A korábbi önálló HTML, összehasonlításhoz |
 | `references/` | A kapott harcprototípus, fejlesztési referencia |
 
-A normál build kizárólag az `index.html`, az ES modulok és a `public/` forrásait használja. Nem olvassa az archivált HTML-t, és nem illeszt bele utólag kódfoltokat. A régi funkciók egy része még kompatibilitási burkolókat használ, közös explicit runtime állapottal; ezek fokozatos egyszerűsítése a következő refaktorálási lépés. Az első átvezetés térképe: `docs/migration-map.json`. Az új mozgás a `src/combat/movement.js`, a toronysorrend a `src/combat/frontiers.js`, a figurák a `src/rendering/battle-figures.js`, a részletes minták a `src/rendering/detailed-figures.js`, a terep a `src/rendering/battle-ground.js` fájlban található.
+A normál build kizárólag az `index.html`, az ES modulok és a `public/` forrásait használja. Nem olvassa az archivált HTML-t, és nem illeszt bele utólag kódfoltokat. A régi funkciók egy része még kompatibilitási burkolókat használ, közös explicit runtime állapottal; ezek fokozatos egyszerűsítése a következő refaktorálási lépés. Az első átvezetés térképe: `docs/migration-map.json`. Az új mozgás a `src/combat/movement.js`, a toronysorrend a `src/combat/frontiers.js`, a figurák a `src/rendering/battle-figures.js`, az új felszerelés- és anyagrétegek a `src/rendering/refined-figures.js`, a terep a `src/rendering/battle-ground.js` fájlban található.
 
 ## Zene és hálózat
 

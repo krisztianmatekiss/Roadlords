@@ -29,7 +29,7 @@ body.road-test .command{opacity:1}
 html body .roadWorld .gate{top:50%!important;transform:translateY(-50%)!important}
 
 #roadHud{width:max-content;max-width:96vw}
-#roadTestsPanel[hidden],#roadArtToggle[hidden]{display:none!important}
+#roadTestsPanel[hidden],#roadFigureToggle[hidden]{display:none!important}
 .roadTestsPanel{position:absolute;z-index:25;inset:0;display:none;place-items:center;padding:22px;background:#030805e8;backdrop-filter:blur(7px);font-family:system-ui}
 .roadTestsPanel.show{display:grid}
 @media(max-width:650px){.roadTestsPanel{padding:8px}}

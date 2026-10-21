@@ -1,4 +1,4 @@
-import { hasDetailedFigure, drawDetailedFigure } from './detailed-figures.js';
+import { REFINED_UNITS, refinedLegs, refinedBody, refinedHead, refinedShield, refinedArm, refinedWeapon } from './refined-figures.js';
 // Articulated battle figures follow the original roster's armor, equipment and colors.
 // Vector poses are rasterized on demand; regular frames draw cached sprites only.
 const TAU = Math.PI * 2;
@@ -76,8 +76,9 @@ function wheel(g, x, y, rotation, size = 5.5) {
   for (let i = 0; i < 4; i++) { const a = rotation + i * Math.PI / 2; line(g, x, y, x + Math.cos(a) * (size - 1), y + Math.sin(a) * (size - 1) * .85, '#4d3c2c', 1.2); }
   ellipse(g, x, y, 1.5, 1.4, '#c2b58a');
 }
-function weapon(g, kind, x, y, angle, color, p) {
+function weapon(g, kind, x, y, angle, color, p, refined = false) {
   g.save(); g.translate(x, y); g.rotate(angle);
+  if(refined){refinedWeapon(g,kind);g.restore();return;}
   if (kind === 'sword') {
     poly(g, [[-2,-1.5],[18,-1.1],[24,0],[18,1.4],[-2,1.6]], '#c3cec8', '#3d4945', .7);
     line(g, 0, -.5, 19, -.4, '#f6f2d8', .7); line(g, -2,-4,-2,4,'#c4a667',1.7); line(g,-7,0,-3,0,'#685039',2.4);
@@ -132,17 +133,20 @@ function mount(g, style, color, p) {
   if(wolf){for(let i=0;i<4;i++)poly(g,[[9+i*2,-28],[13+i*2,-33],[12+i*2,-25]],'#474f42',null);}
   else {line(g,14,-36,12,-26,'#3f3529',2.5);line(g,21,-31,27,-30,'#b89e6a',.8);}
 }
-function humanoid(g, style, color, p) {
+function humanoid(g, style, color, p, refined = false) {
   const skin=style.orc?'#859453':'#b8a07c', armor=style.orc?'#807b65':'#a4b0a7';
   const metal=material(g,armor),cloth=material(g,color),hide=material(g,skin);
   if(style.mount){mount(g,style,color,p);g.translate(-1,-23);g.scale(.88,.88);}
   const stride=p.walk*(style.mount?1.7:4);
+  if(refined)refinedLegs(g,style.orc,stride);else{
   line(g,-3,-12,-5-stride,-2,'#3d4238',4);line(g,4,-12,5+stride,0,style.orc?'#6d7651':'#626b5d',4);
   ellipse(g,-5-stride,-1,4,2.1,'#42382a');ellipse(g,6+stride,0,4.4,2.2,'#59452f');
   line(g,-6-stride,-3,-2-stride,-3,'#9b8458',.8);line(g,4+stride,-2,8+stride,-2,'#b19969',.8);
   if(style.armor){ellipse(g,-4,-9,2.6,3.2,metal);ellipse(g,5,-9,2.6,3.2,metal);}
+  }
   const bob=Math.abs(p.walk)*.85, thrust=(p.strike*4-p.wind*1.8)*(1-p.recovery);
   g.translate(thrust,-bob);
+  if(refined)refinedBody(g,style.orc,color,p);else{
   if(style.robe){poly(g,[[-6,-27],[5,-28],[10,-3],[2,-1],[-9,-3]],material(g,style.robe));line(g,-4,-19,-6,-5,tint(style.robe,.3),.8);line(g,3,-18,6,-4,tint(style.robe,-.4),1);}
   else poly(g,[[-7,-26],[5,-28],[9,-12],[4,-6],[-7,-7],[-9,-16]],style.bare?hide:style.orc?material(g,'#5e5139'):cloth);
   if(style.bare){line(g,-5,-20,5,-20,'#56603c',.8);line(g,0,-20,0,-12,'#617044',.7);}
@@ -152,6 +156,8 @@ function humanoid(g, style, color, p) {
   line(g,-7,-11,7,-11,'#493729',2);ellipse(g,1,-11,1.5,1.7,'#c7ab67');
   line(g,-4,-26,-9,-15,skin,4.5);
   if(style.armor){ellipse(g,-5,-26,4.6,3.1,metal);ellipse(g,6,-25,4.8,3.2,metal);line(g,-7,-28,-2,-28,'#d9d8b8',.8);if(style.orc)poly(g,[[6,-27],[8,-33],[10,-26]],'#cfbea0');}
+  }
+  if(refined)refinedHead(g,style.orc,color);else{
   ellipse(g,1,-33,6,6.5,hide);
   ellipse(g,3,-29,3.4,2,'#756b49');line(g,3,-34,6,-34,'#30362d',1);poly(g,[[6,-33],[9,-30],[5,-30]],skin,null);
   line(g,2,-28,5,-28,'#443f2e',.7);
@@ -162,26 +168,29 @@ function humanoid(g, style, color, p) {
   else if(style.skull){ellipse(g,1,-35,7,6,'#b9b38b');ellipse(g,-1,-35,1.5,1.5,'#313a2b');ellipse(g,4,-35,1.5,1.5,'#313a2b');poly(g,[[-5,-39],[-10,-44],[-8,-35]],'#c6bea1');poly(g,[[7,-39],[12,-44],[10,-34]],'#c6bea1');}
   else if(style.orc)poly(g,[[-5,-37],[-2,-42],[4,-40],[7,-36]],'#463d2c');
   else {line(g,-4,-38,4,-38,'#6c624c',2.5);line(g,1,-28,4,-26,'#c4ba9a',2);}
-  if(style.shield){g.save();g.translate(-8,-19);g.rotate(-.16-p.wind*.15*(1-p.strike));ellipse(g,0,0,7,10,style.orc?'#443a29':'#b59b61');ellipse(g,0,-.3,5.5,8.1,color);line(g,0,-6,0,6,'#dbc48c',1.1);line(g,-3,-1,3,-1,'#dbc48c',1.1);ellipse(g,0,-1,1.6,1.6,armor);g.restore();}
+  }
+  const shieldAngle=-.16-p.wind*.15*(1-p.strike);
+  if(style.shield){g.save();g.translate(-8,-19);g.rotate(shieldAngle);if(refined)refinedShield(g,style.orc,color);else{ellipse(g,0,0,7,10,style.orc?'#443a29':'#b59b61');ellipse(g,0,-.3,5.5,8.1,color);line(g,0,-6,0,6,'#dbc48c',1.1);line(g,-3,-1,3,-1,'#dbc48c',1.1);ellipse(g,0,-1,1.6,1.6,armor);}g.restore();}
   let angle=mix(-.75,-2.05,p.wind);angle=mix(angle,.42,p.strike);angle=mix(angle,-.75,p.recovery);
   if(['spear','bow','cross','staff','sling'].includes(style.weapon))angle=style.weapon==='spear'?-.12-p.wind*.16*(1-p.strike):-.15;
   if(style.weapon==='staff'||style.weapon==='cross')angle-=p.wind*.45*(1-p.strike);
   const handX=10+p.strike*3*(1-p.recovery),handY=-21-p.wind*3*(1-p.strike);
-  line(g,5,-25,handX-2,handY,style.bare?skin:color,4);line(g,handX-2,handY,handX,handY,armor,2.6);
-  weapon(g,style.weapon,handX,handY,angle,color,p);ellipse(g,handX-2,handY,1.8,1.8,skin);
+  if(refined)refinedArm(g,style.orc,color,handX,handY);else{line(g,5,-25,handX-2,handY,style.bare?skin:color,4);line(g,handX-2,handY,handX,handY,armor,2.6);}
+  weapon(g,style.weapon,handX,handY,angle,color,p,refined);ellipse(g,handX-2,handY,1.8,1.8,skin);
   if(style.dual)weapon(g,'axe',-9,-20,-2.5+ p.strike*.9,color,p);
+  return {stride,body:[thrust,-bob],shield:[-8,-19,shieldAngle],weapon:[handX,handY,angle]};
 }
 function sprite(R, u, pose) {
-  const color=R.unitTeamFill(u),detailed=R.ROAD.figureStyle==='painted'&&hasDetailedFigure(R,u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${detailed?":painted":""}`;
+  const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}`;
   let canvas=R.ROAD.sprites.get(key);if(canvas)return canvas;
   const style=FIGURES[u.key];if(!style)return null;
-  canvas=document.createElement('canvas');canvas.width=canvas.height=detailed?192:128;
-  const bounds=detailed?[-44,-74,88,88]:[-40,-66,80,80];canvas.figureBounds=bounds;
+  canvas=document.createElement('canvas');canvas.width=canvas.height=refined?192:128;
+  const bounds=[-40,-66,80,80];canvas.figureBounds=bounds;
   const g=canvas.getContext('2d'),p=phase(pose),resolution=canvas.width/bounds[2];g.translate(-bounds[0]*resolution,-bounds[1]*resolution);g.scale(resolution,resolution);
   ellipse(g,1,2,style.mount||style.machine?18:style.size>1?15:10,3.5,'#18251e66');
   if(p.death){g.translate(p.death*4,-(1-p.death)*23);g.scale(1,1-p.death*.55);g.rotate(p.death*1.48);g.translate(0,23);}
   g.save();g.scale(style.size||1,style.size||1);
-  if(detailed)drawDetailedFigure(g,R,u.key,color,p);else if(style.machine)machine(g,style,color,p);else humanoid(g,style,color,p);g.restore();
+  if(style.machine)machine(g,style,color,p);else canvas.figureRig=humanoid(g,style,color,p,refined);g.restore();
   if(R.ROAD.sprites.size>=768)R.ROAD.sprites.delete(R.ROAD.sprites.keys().next().value);
   R.ROAD.sprites.set(key,canvas);return canvas;
 }

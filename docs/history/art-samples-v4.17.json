@@ -1,4 +1,6 @@
 {
+  "retiredIn": "4.21.0",
+  "status": "Historical metadata; atlas removed from the current game",
   "asset": "public/art/battle-parts-human-orc.png",
   "sha256": "2fde0ec109a9273dae2b18ddbab1bd2e1d69211282e6769b9bef16b3f9c95df7",
   "bytes": 2128032,

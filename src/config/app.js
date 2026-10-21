@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.20.2',
-  label: 'V4.20.2 · MINITÉRKÉP ÉS ÉPÜLETMEZŐK',
-  title: 'Roadlords – Minitérkép és épületmezők',
+  version: '4.21.0',
+  label: 'V4.21.0 · ÚJ KARDOS ÉS ORK',
+  title: 'Roadlords – Új kardos és ork',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

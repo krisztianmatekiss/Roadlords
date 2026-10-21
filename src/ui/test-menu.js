@@ -23,7 +23,7 @@ export function installTestMenu(R) {
   for(const [id,label,description,options] of [
     ['roadTestMenu','PRÓBAHARC · 50 vs 50','Vegyes seregek, minden meglévő egységtípussal.',{count:50}],
     ['roadStressMenu','TERHELÉS · 500 vs 500','Ezer aktív egység, FPS- és létszámkijelzéssel.',{count:500}],
-    ['roadArtMenu','GRAFIKAI PRÓBA · Kardos / Ork','20 vs 20. Válts az egyszerű és a részletes figurák között csata közben.',{count:20,roster:'art'}],
+    ['roadFigureMenu','ÚJ GRAFIKAI PRÓBA · Kardos vs Ork','5 vs 5. Új felszerelés és részletek a bevált mozgással. Grafika: Új / Jelenlegi.',{count:5,roster:'figures'}],
   ]){
     const item=document.createElement('div'),button=document.createElement('button'),note=document.createElement('p');
     button.id=id;button.type='button';button.className='menuButton';button.textContent=label;

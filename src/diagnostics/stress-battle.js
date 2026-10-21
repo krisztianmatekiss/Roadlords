@@ -69,14 +69,14 @@ export function register(runtime) {
     };
   };
   runtime.roadStartTest = function roadStartTest(seed, {count = 500, roster = 'mixed', figureStyle} = {}) {
-    if (!(roster === 'art' && count === 20 || roster === 'mixed' && [50,500].includes(count))) throw new RangeError('Unsupported test roster or size');
+    if (!(roster === 'figures' && count === 5 || roster === 'mixed' && [50,500].includes(count))) throw new RangeError('Unsupported test roster or size');
     runtime.ROAD.testRoster = roster;
     runtime.ROAD.testCount = count;
-    runtime.ROAD.figureStyle=roster==='art'?(figureStyle==='simple'?'simple':'painted'):'simple';
-    runtime.$('#roadArtToggle').hidden=roster!=='art';
-    runtime.$('#roadArtToggle').textContent=runtime.ROAD.figureStyle==='painted'?'Grafika: Részletes':'Grafika: Egyszerű';
-    runtime.$('#roadArtToggle').setAttribute('aria-pressed',String(runtime.ROAD.figureStyle==='painted'));
-    runtime.ROAD.zoom = roster === 'art' ? 1.75 : count === 50 ? 1.25 : 1;
+    runtime.ROAD.figureStyle=roster==='figures'?(figureStyle==='simple'?'simple':'refined'):'simple';
+    runtime.$('#roadFigureToggle').hidden=roster!=='figures';
+    runtime.$('#roadFigureToggle').textContent=runtime.ROAD.figureStyle==='refined'?'Grafika: Új':'Grafika: Jelenlegi';
+    runtime.$('#roadFigureToggle').setAttribute('aria-pressed',String(runtime.ROAD.figureStyle==='refined'));
+    runtime.ROAD.zoom = roster === 'figures' ? 1.75 : count === 50 ? 1.25 : 1;
     runtime.$("#roadZoom").textContent = Math.round(runtime.ROAD.zoom * 100) + "%";
     seed = Number.isInteger(seed) ? seed : crypto.getRandomValues(new Uint32Array(1))[0];
     runtime.ROAD.seed = seed;
@@ -95,7 +95,7 @@ export function register(runtime) {
       runtime.MP.started = false;
       runtime.state.time = 0;
       runtime.state.running = false;
-      const races = roster === 'art' ? ['human','orc'] : runtime.shuffle(['human', 'orc']);
+      const races = roster === 'figures' ? ['human','orc'] : runtime.shuffle(['human', 'orc']);
       runtime.roadResetCity(runtime.P, races[0]);
       runtime.roadResetCity(runtime.E, races[1]);
       runtime.state.units = [];
@@ -132,7 +132,7 @@ export function register(runtime) {
       }
       runtime.roadRefreshFrontiers();
       for (const c of [runtime.P, runtime.E]) {
-        const keys = roster === 'art' ? [c.race === 'human' ? 'swordsman' : 'orc_warrior'] : Object.keys(runtime.UNITS).filter(k => c.race === 'orc' === k.startsWith('orc_'));
+        const keys = roster === 'figures' ? [c.race === 'human' ? 'swordsman' : 'orc_warrior'] : Object.keys(runtime.UNITS).filter(k => c.race === 'orc' === k.startsWith('orc_'));
         const entries = Array.from({
           length: count
         }, (_, i) => ({
@@ -146,10 +146,10 @@ export function register(runtime) {
           const u = runtime.releaseUnit(c, runtime.makeEntry(c, entries[i].key, {
             originBuildingId: origin?.id
           }));
-          const rows = roster === 'art' ? 5 : count === 50 ? 8 : 20, spacing = roster === 'art' ? 48 : count === 50 ? 36 : 24;
-          u.offset = (i % rows - (rows - 1) / 2) * spacing + (roster === 'art' ? 20 : 0);
+          const rows = roster === 'figures' ? 5 : count === 50 ? 8 : 20, spacing = roster === 'figures' ? 48 : count === 50 ? 36 : 24;
+          u.offset = (i % rows - (rows - 1) / 2) * spacing;
           u.roadHomeOffset = u.offset;
-          u.lane = runtime.PATH_LENGTH / 2 - dir * (100 + Math.floor(i / rows) * (roster === 'art' ? 48 : count === 50 ? 42 : 32));
+          u.lane = runtime.PATH_LENGTH / 2 - dir * (100 + Math.floor(i / rows) * (roster === 'figures' ? 48 : count === 50 ? 42 : 32));
           u.cooldown = .1 + i % 13 * .025;
         }
       }
@@ -174,7 +174,7 @@ export function register(runtime) {
       runtime.last = performance.now();
       runtime.roadFocusFront();
       runtime.$('#roadPause').textContent = 'Szünet';
-      runtime.roadTestSummary.textContent = `${count} × ${count} · ${runtime.P.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.E.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. ${roster === 'art' ? 'Részletes kardosok és ork harcosok' : 'Minden egységtípus'}, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Pályamozgatás: A / D vagy görgő, dupla leütés: pálya széle, F: harci front. Az ellenfél városát az idő melletti ikon rögzíti / oldja fel. Szünet: szóköz.`;
+      runtime.roadTestSummary.textContent = `${count} × ${count} · ${runtime.P.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.E.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. ${roster === 'figures' ? 'Új kardos és ork harcos, a jelenlegi animációkkal' : 'Minden egységtípus'}, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Pályamozgatás: A / D vagy görgő, dupla leütés: pálya széle, F: harci front. Az ellenfél városát az idő melletti ikon rögzíti / oldja fel. Szünet: szóköz.`;
     } finally {
       Math.random = savedRandom;
     }

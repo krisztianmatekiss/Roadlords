@@ -1,4 +1,3 @@
-import { loadDetailedFigures } from '../rendering/detailed-figures.js';
 import { installTowerFrontiers } from './frontiers.js';
 import { drawBattleGround } from '../rendering/battle-ground.js';
 import { installTestMenu } from '../ui/test-menu.js';
@@ -204,7 +203,7 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.roadBattle.style.setProperty('width', runtime.PATH_LENGTH + 'px', 'important');
   runtime.roadHud = document.createElement('div');
   runtime.roadHud.id = 'roadHud';
-  runtime.roadHud.innerHTML = '<span id="roadCounts"></span><span id="roadFps"></span><span id="roadStatus"></span><button data-camera="0">Saját város</button><button data-camera="1">Csata</button><button data-camera="2">Ellenfél</button><button id="roadZoomOut" aria-label="Kicsinyítés">−</button><span id="roadZoom">100%</span><button id="roadZoomIn" aria-label="Nagyítás">+</button><button id="roadArtToggle" hidden aria-pressed="true">Grafika: Részletes</button><button data-test id="roadPause">Szünet</button><button data-test id="roadRestart">Újraindítás</button><button data-test id="roadMenu">Főmenü</button>';
+  runtime.roadHud.innerHTML = '<span id="roadCounts"></span><span id="roadFps"></span><span id="roadStatus"></span><button data-camera="0">Saját város</button><button data-camera="1">Csata</button><button data-camera="2">Ellenfél</button><button id="roadZoomOut" aria-label="Kicsinyítés">−</button><span id="roadZoom">100%</span><button id="roadZoomIn" aria-label="Nagyítás">+</button><button id="roadFigureToggle" hidden aria-pressed="true">Grafika: Új</button><button data-test id="roadPause">Szünet</button><button data-test id="roadRestart">Újraindítás</button><button data-test id="roadMenu">Főmenü</button>';
   runtime.$('.command').appendChild(runtime.roadHud);
   installRoadCities(runtime);
   installBuildingFootprints(runtime);
@@ -230,7 +229,7 @@ export function initializeCombatRoadIntegration(runtime) {
     await image.decode();
     runtime.ROAD.art.set(key, image);
   }));
-  runtime.roadArtReady = Promise.all([originalArt, loadDetailedFigures(runtime)]);
+  runtime.roadArtReady = originalArt;
   runtime.renderBattle = function (raw) {
     const begin = performance.now();
     runtime.roadUpdateNavigation(raw);
@@ -318,10 +317,10 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.roadTestSummary.id = 'roadTestSummary';
   runtime.$('.command').appendChild(runtime.roadTestSummary);
   runtime.$('#roadPause').onclick = runtime.roadPause;
-  runtime.$('#roadArtToggle').onclick=()=>{
-    runtime.ROAD.figureStyle=runtime.ROAD.figureStyle==='painted'?'simple':'painted';
-    runtime.$('#roadArtToggle').textContent=runtime.ROAD.figureStyle==='painted'?'Grafika: Részletes':'Grafika: Egyszerű';
-    runtime.$('#roadArtToggle').setAttribute('aria-pressed',String(runtime.ROAD.figureStyle==='painted'));
+  runtime.$('#roadFigureToggle').onclick=()=>{
+    runtime.ROAD.figureStyle=runtime.ROAD.figureStyle==='refined'?'simple':'refined';
+    runtime.$('#roadFigureToggle').textContent=runtime.ROAD.figureStyle==='refined'?'Grafika: Új':'Grafika: Jelenlegi';
+    runtime.$('#roadFigureToggle').setAttribute('aria-pressed',String(runtime.ROAD.figureStyle==='refined'));
   };
   runtime.$('#roadRestart').onclick = () => runtime.roadStartTest(runtime.ROAD.seed, {count: runtime.ROAD.testCount, roster: runtime.ROAD.testRoster, figureStyle: runtime.ROAD.figureStyle});
   const setZoom = value => {runtime.ROAD.zoom = runtime.clamp(value, .75, 2); runtime.$('#roadZoom').textContent = Math.round(runtime.ROAD.zoom * 100) + '%';};

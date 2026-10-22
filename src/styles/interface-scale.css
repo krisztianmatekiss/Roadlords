@@ -1,0 +1,73 @@
+/* Percentage sizing has one owner. The road and minimap stay in world space. */
+:root { --ui-scale: 1; --ui-header-height: 64px; --ui-dock-height: 209px; }
+html body[data-ui-scale] #app {
+  grid-template-rows: var(--ui-header-height) minmax(0, 1fr) var(--ui-dock-height) !important;
+}
+html body[data-ui-scale] #app .topbar,
+html body[data-ui-scale] #app .command > .catalog { zoom: var(--ui-scale); }
+html body[data-ui-scale] #app .command > .catalog {
+  width: calc(100% - (var(--road-minimap-width) + 12px) / var(--ui-scale)) !important;
+  height: calc((var(--ui-dock-height) - 14px) / var(--ui-scale)) !important;
+}
+html body[data-ui-scale] #app .topbar {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
+  grid-template-rows: minmax(0, 1fr);
+  padding: 7px 16px !important;
+}
+html body[data-ui-scale] #app .topLeftCluster .resources { grid-template-columns: repeat(3, 160px) !important; }
+html body[data-ui-scale] #app .topLeftCluster .res { min-height: 46px !important; padding: 6px 9px !important; gap: 8px !important; }
+html body[data-ui-scale] #app .topLeftCluster .res b { font-size: 14px !important; }
+html body[data-ui-scale] #app .topLeftCluster .res small { font-size: 11px !important; gap: 7px !important; margin-top: 2px !important; }
+html body[data-ui-scale] #app .topLeftCluster .res .ri,
+html body[data-ui-scale] #app .topLeftCluster .res .resourceIcon { width: 26px !important; height: 26px !important; }
+html body[data-ui-scale] #app .topbar > .run { gap: 7px !important; }
+html body[data-ui-scale] #app .topbar > .run .btn { height: 36px; min-width: 40px; font-size: 13px; }
+html body[data-ui-scale] #app .topbar > .run .datum { padding: 0 8px; }
+html body[data-ui-scale] #app .topbar > .run small { font-size: 7px; }
+html body[data-ui-scale] #app .topbar > .run b { font-size: 12px; margin-top: 2px; }
+html body[data-ui-compact="true"] #app .topbar {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  grid-template-rows: 28px 26px !important;
+  padding: 2px 8px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+}
+html body[data-ui-compact="true"] #app .topLeftCluster .resources { grid-template-columns: repeat(3, minmax(90px, 112px)) !important; }
+html body[data-ui-compact="true"] #app .topLeftCluster .res { min-height: 26px !important; padding: 1px 4px !important; gap: 4px !important; }
+html body[data-ui-compact="true"] #app .topLeftCluster .res b,
+html body[data-ui-compact="true"] #app .topLeftCluster .res small { font-size: 10px !important; }
+html body[data-ui-compact="true"] #app .topLeftCluster .res .ri,
+html body[data-ui-compact="true"] #app .topLeftCluster .res .resourceIcon { width: 20px !important; height: 20px !important; }
+html body[data-ui-compact="true"] #app .topbar > .run .datum { padding: 0 4px; }
+html body[data-ui-compact="true"] #app .topbar > .run .btn { height: 26px !important; min-width: 28px !important; font-size: 11px !important; }
+html body[data-ui-compact="true"] #app #roadRoster { grid-template-rows: minmax(0, 1fr); }
+html body[data-ui-compact="true"] #app #roadRoster .roadRosterTeam { height: 26px; min-height: 0; }
+html body[data-ui-compact="true"] #app #roadRoster .roadRosterOwner { writing-mode: horizontal-tb; transform: none; }
+html body[data-ui-narrow="true"] #app .topbar { grid-template-columns: minmax(0, 1fr) !important; grid-template-rows: 28px 26px 26px !important; }
+html body[data-ui-narrow="true"] #app .topLeftCluster { grid-column: 1 !important; grid-row: 1 !important; }
+html body[data-ui-narrow="true"] #app .topbar > .run { grid-column: 1 !important; grid-row: 2 !important; }
+html body[data-ui-narrow="true"] #app #roadRoster { grid-column: 1 !important; grid-row: 3 !important; }
+html body[data-ui-scale] .rlMenuPanelCard {
+  zoom: var(--ui-scale);
+  max-width: calc(94vw / var(--ui-scale));
+  max-height: calc(92dvh / var(--ui-scale));
+}
+html body[data-ui-scale] .rlMenuPanelCard .rlPanelBody { max-height: calc(92dvh / var(--ui-scale) - 80px); }
+html body #rlSettingsPanel .uiScaleControl {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 8px !important;
+  padding: 10px !important;
+  margin: 0 !important;
+}
+html body #rlSettingsPanel .uiScaleBtn {
+  flex: 1 0 68px;
+  min-height: 36px;
+  padding: 6px 10px;
+  font-size: 12px !important;
+  cursor: pointer;
+}
+html body #rlSettingsPanel #uiViewportSize { display: block; margin-top: 12px; color: #eee0ae; font: 600 13px/1.5 system-ui; }
+html body #rlSettingsPanel .rlSettingsNote { font-size: 11px; }

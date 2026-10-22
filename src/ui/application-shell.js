@@ -43,46 +43,7 @@ export function installApplicationShell() {
     const styleV4970 = document.createElement('style');
     styleV4970.textContent = "@import url(\"" + (assetUrl("styles/shell/03.css") + "\");");
     document.head.appendChild(styleV4970);
-    const STORE = 'roadlords-ui-scale-v1';
-    const allowed = new Set(['normal', 'large', 'tv']);
-    function autoMode() {
-      if (window.innerWidth >= 1600) return 'large';
-      return 'normal';
-    }
-    function readSaved() {
-      try {
-        const x = localStorage.getItem(STORE);
-        return allowed.has(x) ? x : null;
-      } catch (_) {
-        return null;
-      }
-    }
-    function saveMode(x) {
-      try {
-        localStorage.setItem(STORE, x);
-      } catch (_) {}
-    }
-    function setMode(mode, persist = false) {
-      if (!allowed.has(mode)) mode = autoMode();
-      document.body.dataset.uiScale = mode;
-      if (persist) saveMode(mode);
-      document.querySelectorAll('.uiScaleBtn').forEach(b => b.classList.toggle('active', b.dataset.uiScale === mode));
-    }
-    setMode(readSaved() || autoMode(), false);
-    const lobby = typeof MP !== 'undefined' && MP?.lobby ? MP.lobby : document.querySelector('.mpLobby');
-    const menuMain = lobby?.querySelector('.menuMain');
-    if (menuMain && !lobby.querySelector('.uiScaleControl')) {
-      const ctrl = document.createElement('div');
-      ctrl.className = 'uiScaleControl';
-      ctrl.innerHTML = `<span>UI MÉRET</span><button class="uiScaleBtn" data-ui-scale="normal" type="button">NORMÁL</button><button class="uiScaleBtn" data-ui-scale="large" type="button">NAGY</button><button class="uiScaleBtn" data-ui-scale="tv" type="button">TV 4K</button>`;
-      menuMain.appendChild(ctrl);
-      ctrl.querySelectorAll('.uiScaleBtn').forEach(btn => btn.onclick = () => setMode(btn.dataset.uiScale, true));
-      setMode(document.body.dataset.uiScale, false);
-    }
-    window.__ROADLORDS_UI_SCALE__ = {
-      set: setMode,
-      get: () => document.body.dataset.uiScale || 'normal'
-    };
+    // Percentage sizing and persistence are owned by version-and-scaling.js.
     const brandSmall = document.querySelector('.brand small');
     if (brandSmall) brandSmall.textContent = 'V4.9.70 · P2P 1V1';
     const menuVerV4970 = document.querySelector('.menuVersion');
@@ -249,16 +210,7 @@ export function installApplicationShell() {
       openPanel(codex);
     };
     const settingsBody = settings.querySelector('.rlPanelBody');
-    settingsBody.innerHTML = `<section class="rlSection"><h3 class="rlSectionTitle">MEGJELENÍTÉS</h3><div class="rlScaleHome"></div><div class="rlSettingsNote">A választott UI-méretet a böngésző megjegyzi. A TV 4K mód a 3840×2160-as TV-k effektív böngészőnézetéhez igazodik.</div></section><section class="rlSection"><h3 class="rlSectionTitle">GYORSGOMBOK</h3><div class="rlHotkeys"></div></section>`;
-    const scaleHome = settingsBody.querySelector('.rlScaleHome');
-    const oldScale = lobby.querySelector('.uiScaleControl');
-    if (oldScale) scaleHome.appendChild(oldScale);else if (window.__ROADLORDS_UI_SCALE__) {
-      const ctrl = document.createElement('div');
-      ctrl.className = 'uiScaleControl';
-      ctrl.innerHTML = `<span>UI MÉRET</span><button class="uiScaleBtn" data-ui-scale="normal" type="button">NORMÁL</button><button class="uiScaleBtn" data-ui-scale="large" type="button">NAGY</button><button class="uiScaleBtn" data-ui-scale="tv" type="button">TV 4K</button>`;
-      scaleHome.appendChild(ctrl);
-      ctrl.querySelectorAll('.uiScaleBtn').forEach(btn => btn.onclick = () => window.__ROADLORDS_UI_SCALE__.set(btn.dataset.uiScale, true));
-    }
+    settingsBody.innerHTML = `<section class="rlSection"><h3 class="rlSectionTitle">MEGJELENÍTÉS</h3><div class="rlScaleHome"></div><div class="rlSettingsNote">A felületméret a gombok, szövegek és kártyák méretét állítja. A böngésző megjegyzi a választásodat. Az automatikus mód az ablak méretéhez igazodik.</div></section><section class="rlSection"><h3 class="rlSectionTitle">GYORSGOMBOK</h3><div class="rlHotkeys"></div></section>`;
     const hotkeys = [[['Q'], 'Mind építési fül'], [['W'], 'Gazdaság fül'], [['E'], 'Hadsereg fül'], [['R'], 'Támogatás fül'], [['1–9'], 'Az adott látható építőkártya kiválasztása'], [['SHIFT'], 'Folyamatos építés ugyanabból az épületből'], [['JOBB KLIKK'], 'Épület forgatása lerakás közben'], [['ESC'], 'Építés megszakítása / utolsó épületablak bezárása'], [['T'], 'Játéksebesség váltása. Multiban a gyorsításhoz mindkét játékos jóváhagyása kell.'], [['SPACE'], 'Szünet / folytatás, csak egyjátékos módban.']];
     settingsBody.querySelector('.rlHotkeys').innerHTML = hotkeys.map(([keys, desc]) => `<div class="rlHotkeyRow"><span class="rlHotkeyKeys">${keys.map(k => `<kbd class="rlKey">${k}</kbd>`).join('')}</span><span class="rlHotkeyText">${desc}</span></div>`).join('');
     const codexBody = codex.querySelector('.rlPanelBody');

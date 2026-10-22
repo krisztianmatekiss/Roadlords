@@ -1,0 +1,189 @@
+/* All choice geometry lives here; old normal/large/TV card heights are retired.
+   Specificity also beats the imported legacy style sheets after they load. */
+html body[data-ui-scale] #choiceOverlay {
+  position: fixed !important;
+  inset: 0 !important;
+  top: var(--ui-header-height) !important;
+  padding: 0 !important;
+  align-items: center !important;
+  justify-items: center !important;
+  overflow: hidden !important;
+}
+html body[data-ui-scale] #choiceOverlay .modal {
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) auto auto !important;
+  gap: var(--pick-gap, 14px) !important;
+  width: var(--pick-width, 94vw) !important;
+  max-width: calc(100vw - 2 * var(--pick-margin, 12px)) !important;
+  max-height: calc(100dvh - var(--ui-header-height) - 2 * var(--pick-margin, 12px)) !important;
+  min-height: 0 !important;
+  padding: var(--pick-padding, 18px) !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+html body[data-ui-scale] #choiceOverlay .choicehead {
+  padding: 0 calc(54px * var(--ui-scale)) 0 0 !important;
+  margin: 0 !important;
+  min-width: 0;
+}
+html body[data-ui-scale] #choiceOverlay #choiceKicker { font-size: calc(11px * var(--ui-scale)) !important; }
+html body[data-ui-scale] #choiceOverlay #choiceTitle {
+  font-size: calc(27px * var(--ui-scale)) !important;
+  line-height: 1.15 !important;
+  margin: calc(6px * var(--ui-scale)) 0 0 !important;
+}
+html body[data-ui-scale] #choiceOverlay #choiceDesc:empty,
+html body[data-ui-scale] #choiceOverlay #choiceBanHint:empty { display: none !important; }
+html body[data-ui-scale] #choiceOverlay #choiceBanHint {
+  font-size: calc(12px * var(--ui-scale)) !important;
+  line-height: 1.3;
+  margin: 0 !important;
+}
+html body[data-ui-scale] #choiceOverlay .choiceMinimize.eyeOnly {
+  top: var(--pick-padding, 18px) !important;
+  right: var(--pick-padding, 18px) !important;
+  width: calc(42px * var(--ui-scale)) !important;
+  height: calc(42px * var(--ui-scale)) !important;
+  min-height: 0 !important;
+  font-size: calc(24px * var(--ui-scale)) !important;
+}
+html body[data-ui-scale] #choiceOverlay #choiceList {
+  display: grid !important;
+  grid-template-columns: repeat(var(--pick-columns, 4), minmax(0, 1fr)) !important;
+  grid-auto-rows: var(--pick-height, 530px) !important;
+  justify-content: center !important;
+  align-content: start !important;
+  gap: var(--pick-gap, 14px) !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #af9651 #142018;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard {
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: calc(16px * var(--ui-scale)) var(--pick-title-height, 58px) var(--pick-art-height, 132px) minmax(0, 1fr) calc(28px * var(--ui-scale)) !important;
+  gap: calc(5px * var(--ui-scale)) !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  height: var(--pick-height, 530px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: var(--pick-card-padding, 12px) !important;
+  transform: none !important;
+  text-align: center !important;
+  font-size: calc(14px * var(--ui-scale)) !important;
+}
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard .ctype {
+  grid-row: 1 !important;
+  display: block !important;
+  align-self: center;
+  padding: 0 !important;
+  font-size: calc(9px * var(--ui-scale)) !important;
+  line-height: 1.1 !important;
+  white-space: normal !important;
+}
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard h3 {
+  grid-row: 2 !important;
+  align-self: center !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  font-size: calc(19px * var(--ui-scale)) !important;
+  line-height: 1.15 !important;
+  white-space: normal !important;
+  overflow: hidden !important;
+  overflow-wrap: anywhere;
+  text-overflow: clip !important;
+  -webkit-line-clamp: unset !important;
+}
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard .choiceArt.card-media {
+  grid-row: 3 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: var(--pick-art-height, 132px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: calc(5px * var(--ui-scale)) !important;
+  box-sizing: border-box !important;
+}
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard .choiceArt img {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+}
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard .choiceBody {
+  grid-row: 4 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: calc(4px * var(--ui-scale)) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-gutter: stable;
+  font-size: calc(14px * var(--ui-scale)) !important;
+  text-align: left !important;
+}
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard .choiceBody p,
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard .choiceBody .choicemeta {
+  font-size: calc(14px * var(--ui-scale)) !important;
+  line-height: 1.4 !important;
+  margin: 0 0 calc(6px * var(--ui-scale)) !important;
+  padding: 0 !important;
+}
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard .upgradeHeading { font-size: calc(10px * var(--ui-scale)) !important; }
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard .upgradeRow { font-size: calc(12px * var(--ui-scale)) !important; }
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard :is(.upgradeContext, .upgradeStacking, .upgradeSpecialization) { font-size: calc(11px * var(--ui-scale)) !important; }
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard .choiceFooter {
+  grid-row: 5 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: calc(4px * var(--ui-scale)) 0 0 !important;
+  font-size: calc(14px * var(--ui-scale)) !important;
+  align-self: stretch;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: calc(14px * var(--ui-scale));
+}
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard .choiceFooter > span { font-size: inherit !important; }
+html body[data-ui-scale] #choiceOverlay .choiceDockBar {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+  gap: calc(10px * var(--ui-scale)) !important;
+  margin: 0 !important;
+  padding: calc(10px * var(--ui-scale)) 0 0 !important;
+}
+html body[data-ui-scale] #choiceOverlay .choiceDockBar > button {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: auto !important;
+  height: calc(44px * var(--ui-scale)) !important;
+  padding: 0 calc(20px * var(--ui-scale)) !important;
+  font-size: calc(15px * var(--ui-scale)) !important;
+  border-radius: calc(10px * var(--ui-scale)) !important;
+  gap: calc(8px * var(--ui-scale)) !important;
+}
+html body[data-ui-scale] #choiceOverlay #rerollChoice { justify-self: start !important; }
+html body[data-ui-scale] #choiceOverlay #banChoice { justify-self: end !important; }
+html body[data-ui-scale] #choiceOverlay .choiceDockBar .dockCount,
+html body[data-ui-scale] #choiceOverlay .choiceDockBar .dockIcon { font-size: calc(22px * var(--ui-scale)) !important; }
+html body[data-ui-scale] #choiceOverlay .choiceDockBar .rerollSvg { width: calc(26px * var(--ui-scale)) !important; height: calc(26px * var(--ui-scale)) !important; }

@@ -1,6 +1,12 @@
-# Roadlords · V4.26.0
+# Roadlords · V4.27.0
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
+
+## Felületméret és választókártyák · 4.27.0
+
+A **BEÁLLÍTÁSOK → MEGJELENÍTÉS** alatt az **Automatikus / 75% / 100% / 125% / 150%** választás ténylegesen méretezi a felső kezelősávot, az építőkártyákat, a választólapokat és a beállításablakot. Az aktuális játékablak mérete képpontban is látható. A böngésző megjegyzi a százalékot; az automatikus mód a nagyobb ablakokhoz legfeljebb 200%-ig igazodik. A régi „Nagy / TV 4K” beállítások automatikus módra váltanak.
+
+Az új épület-, épületfejlesztés-, gyakori és legendás lapok azonos elrendezést használnak. A cím, kép, leírás és lábléc külön sorba kerül. A hosszú leírás a lapon belül görgethető; a választóablak egészének nincs görgetősávja. Ha a lapok több sorban sem férnek el, csak a laplista görgethető, a műveletgombok végig láthatók. A felső nyersanyag- és seregsáv szintén látható marad; szűk helyen több sorba rendeződik. A világ és a minitérkép saját koordinátái megmaradnak.
 
 ## Élőhalottak · 4.26.0
 

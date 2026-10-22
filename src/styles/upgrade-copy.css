@@ -1,20 +1,3 @@
-/* The choice overlay gets readable cards; application and construction-dock sizing stay intact. */
-html body #choiceOverlay #choiceList .choice.upgradeCopyCard {
-  height: 500px !important;
-  min-height: 500px !important;
-  grid-template-rows: 20px 42px 128px minmax(0, 1fr) 28px !important;
-}
-html body #choiceOverlay #choiceList .choice.upgradeCopyCard h3 {
-  white-space: normal !important;
-  font-size: 15px !important;
-  line-height: 19px !important;
-  align-self: center;
-}
-html body #choiceOverlay #choiceList .choice.upgradeCopyCard .choiceArt.card-media {
-  height: 128px !important;
-  min-height: 128px !important;
-  max-height: 128px !important;
-}
 html body #choiceOverlay #choiceList .choice .choiceBody {
   overflow-y: auto !important;
   overflow-x: hidden !important;

@@ -1,3 +1,11 @@
+# V4.27.0 – százalékos felületméret és egységes választólapok
+
+2026-10-22. Node.js 24, Chromium, kész production build `/Roadlords/` alatt. A célzott helyi böngészőpróba 800×900, 1366×768, 1920×1080, 2560×1440, a jelzett 3195×1380 és 3840×2160 ablakméreteken vizsgálja mind az öt méretezési módot. Vegyes élőhalott épület/fejlesztés lapokkal méri az egyforma magasságot, a cím–kép–szöveg–lábléc sorrendjét, a hozzáférhető szövegterületet, a kilógás és külső görgetősáv hiányát, a látható műveletgombokat, valamint a felső sáv és minitérkép melletti építősáv határait. A három nyersanyagos kijelzés külön ütközésellenőrzést kap; 4/5/6 gyakori és legendás lapnál az utolsó lap elérhetősége is szerepel.
+
+A beállításpróba valódi gombkattintást és újratöltést használ. A kártyacímek és az építőkártyák mért mérete igazolja a tényleges 75/100/125/150%-os arányt. A leírás/előnézet, városelrendezés, minitérkép és élőhalott felület meglévő próbái is megmaradnak. A CI a teljes tesztsort futtatja közzététel előtt.
+
+Korlát: kis ablakban, nagy százaléknál vagy sok lapnál a laplista görgetése szükséges; a cím és a műveletsáv rögzített marad. A százalék a kezelőfelület mérete, nem a monitor felbontásának vagy a harctéri egységek méretének beállítása. A helyi ellenőrzés Chromiumon történt; más böngészőn külön vizuális ellenőrzés nem történt.
+
 # V4.26.0 – játszható élőhalott frakció
 
 2026-10-22. Node.js 24, Chromium, kész production build `/Roadlords/` alkönyvtár alatt. A helyi funkcionális próbák külső HTTPS-kapcsolat nélkül futnak. A frakció az eredeti Excel kifejezett értékeit használja; a pótolt gazdasági számokat és az első kiadás korlátait külön [frakcióleírás](undead-faction.md) rögzíti.

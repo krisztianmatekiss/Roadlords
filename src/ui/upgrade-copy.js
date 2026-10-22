@@ -99,7 +99,8 @@ export function initializeUiUpgradeCopy(R) {
     R.$$('#choiceList .choice').forEach((card, i) => {
       const option = options[i], body = card.querySelector('.choiceBody');
       if (option.kind === 'building_upgrade' && body) {
-        body.querySelector('p').textContent = `Az összes jelenlegi és később épülő ${R.BUILDINGS[option.id].name} fejlődik.`;
+        const definition = R.buildingDefinition?.(R.P, option.id) || R.BUILDINGS[option.id];
+        body.querySelector('p').textContent = `Az összes jelenlegi és később épülő ${definition.name} fejlődik.`;
       }
       const preview = R.upgradeCopyPreview(R.P, option);
       if (!preview || !body) return;

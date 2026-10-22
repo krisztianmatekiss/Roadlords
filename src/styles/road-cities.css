@@ -31,36 +31,34 @@ html body #app #roadRoster .unitmix{display:flex;gap:3px;min-height:0;width:100%
 html body #app #roadRoster .unitmix::-webkit-scrollbar{display:none}
 html body #app #roadRoster .unitchip{width:22px;height:22px;flex-shrink:0}
 html body #app #roadRoster .unitchip b{height:12px;min-width:13px;padding:0 1px;font-size:9px!important;right:0;bottom:0}
-@media(min-width:2200px){html body #app #roadRoster .unitchip{width:clamp(24px,1.2vw,46px);height:clamp(24px,1.2vw,46px)}.roadRosterOwner{font-size:clamp(10px,.5vw,19px)}.roadRosterHeading>span{font-size:clamp(11px,.55vw,21px)}.roadRosterHeading>b{font-size:clamp(14px,.7vw,27px)}html body #app #roadRoster .unitchip b{font-size:clamp(9px,.45vw,17px)!important;min-width:clamp(13px,.7vw,26px);height:clamp(12px,.65vw,24px)}}
 @media(max-width:1500px) and (min-width:1351px){
  html body #app .topbar{gap:7px!important}
  html body #app .topLeftCluster .resources{grid-template-columns:repeat(3,124px)!important}
  .roadRosterTeam{column-gap:5px}html body #app #roadRoster{gap:8px}
  .roadRosterHeading{gap:3px}.roadRosterHeading>span{font-size:8px}.roadRosterHeading>b{font-size:11px}
 }
-@media(max-width:1350px){
- html body #app .topbar{grid-template-columns:minmax(0,1fr) auto!important;grid-template-rows:28px 26px;gap:2px 8px!important;padding:2px 8px!important;overflow:visible!important}
- html body #app .topLeftCluster{grid-column:1;grid-row:1;gap:6px!important}
- html body #app .topLeftCluster .resources{grid-template-columns:repeat(3,minmax(90px,112px))!important;gap:4px!important}
- html body #app .topLeftCluster .res{min-height:26px!important;padding:1px 4px!important;gap:4px!important}
- html body #app .topLeftCluster .res .ri,html body #app .topLeftCluster .res .resourceIcon{width:20px!important;height:20px!important}
- html body #app .topLeftCluster .res b,html body #app .topLeftCluster .res small{font-size:10px!important;line-height:1!important}
- html body #app .topLeftCluster .res small{margin-top:1px!important;gap:4px!important;flex-wrap:nowrap!important}
- html body #app .rlGameMenuButton{height:26px;min-width:76px;padding:0 6px;font-size:10px}
- html body #app .topbar>.run{grid-column:2;grid-row:1;gap:4px}
- html body #app .topbar>.run .btn{height:26px;min-width:28px;font-size:11px!important}
- html body #app .topbar>.run .datum{padding:0 4px}
- html body #app .topbar>.run .datum small{font-size:7px!important}
- html body #app .topbar>.run .datum b{font-size:11px!important;margin-top:0}
- html body #app #enemyCityPin{padding:3px}html body #app #enemyCityPin svg{width:18px;height:18px}
- html body #app #roadRoster{grid-column:1/-1;grid-row:2;gap:16px;height:26px}
- .roadRosterTeam{display:flex;align-items:center;gap:8px}
- .roadRosterOwner{font-size:8px;writing-mode:vertical-rl;transform:rotate(180deg)}
- .roadRosterGroup{flex-direction:row;gap:5px;flex:1;overflow:hidden}
- .roadRosterHeading{gap:3px}.roadRosterHeading>span{font-size:8px}.roadRosterHeading>b{font-size:11px}
- html body #app #roadRoster .unitmix{width:auto;flex:1;margin:0}
- html body #app #roadRoster .unitchip{width:20px;height:20px}
-}
+/* Compact layout follows available CSS width after percentage sizing. */
+ html body[data-ui-compact="true"] #app .topbar{grid-template-columns:minmax(0,1fr) auto!important;grid-template-rows:28px 26px;gap:2px 8px!important;padding:2px 8px!important;overflow:visible!important}
+ html body[data-ui-compact="true"] #app .topLeftCluster{grid-column:1;grid-row:1;gap:6px!important}
+ html body[data-ui-compact="true"] #app .topLeftCluster .resources{grid-template-columns:repeat(3,minmax(90px,112px))!important;gap:4px!important}
+ html body[data-ui-compact="true"] #app .topLeftCluster .res{min-height:26px!important;padding:1px 4px!important;gap:4px!important}
+ html body[data-ui-compact="true"] #app .topLeftCluster .res .ri,html body[data-ui-compact="true"] #app .topLeftCluster .res .resourceIcon{width:20px!important;height:20px!important}
+ html body[data-ui-compact="true"] #app .topLeftCluster .res b,html body[data-ui-compact="true"] #app .topLeftCluster .res small{font-size:10px!important;line-height:1!important}
+ html body[data-ui-compact="true"] #app .topLeftCluster .res small{margin-top:1px!important;gap:4px!important;flex-wrap:nowrap!important}
+ html body[data-ui-compact="true"] #app .rlGameMenuButton{height:26px;min-width:76px;padding:0 6px;font-size:10px}
+ html body[data-ui-compact="true"] #app .topbar>.run{grid-column:2;grid-row:1;gap:4px}
+ html body[data-ui-compact="true"] #app .topbar>.run .btn{height:26px;min-width:28px;font-size:11px!important}
+ html body[data-ui-compact="true"] #app .topbar>.run .datum{padding:0 4px}
+ html body[data-ui-compact="true"] #app .topbar>.run .datum small{font-size:7px!important}
+ html body[data-ui-compact="true"] #app .topbar>.run .datum b{font-size:11px!important;margin-top:0}
+ html body[data-ui-compact="true"] #app #enemyCityPin{padding:3px}html body[data-ui-compact="true"] #app #enemyCityPin svg{width:18px;height:18px}
+ html body[data-ui-compact="true"] #app #roadRoster{grid-column:1/-1;grid-row:2;gap:16px;height:26px}
+ html body[data-ui-compact="true"] .roadRosterTeam{display:flex;align-items:center;gap:8px}
+ html body[data-ui-compact="true"] .roadRosterOwner{font-size:8px;writing-mode:vertical-rl;transform:rotate(180deg)}
+ html body[data-ui-compact="true"] .roadRosterGroup{flex-direction:row;gap:5px;flex:1;overflow:hidden}
+ html body[data-ui-compact="true"] .roadRosterHeading{gap:3px}html body[data-ui-compact="true"] .roadRosterHeading>span{font-size:8px}html body[data-ui-compact="true"] .roadRosterHeading>b{font-size:11px}
+ html body[data-ui-compact="true"] #app #roadRoster .unitmix{width:auto;flex:1;margin:0}
+ html body[data-ui-compact="true"] #app #roadRoster .unitchip{width:20px;height:20px}
 html body #app .buildingFootprint,html body #app .buildingOutline{position:relative;z-index:3;display:block;width:100%;height:100%;min-width:0;min-height:0;pointer-events:none;overflow:visible}
 html body #app .buildingOutline{z-index:6}
 .buildingFootprint path{fill:var(--footprint-color);fill-opacity:.16;stroke:none;stroke-width:2}

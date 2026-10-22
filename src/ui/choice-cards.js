@@ -95,7 +95,7 @@ export function initializeUiChoiceCards(runtime) {
         unlock = o.kind === 'building',
         d = buildingKind ? runtime.BUILDINGS[o.id] : null,
         price = unlock ? runtime.buildPrice(runtime.P, o.id) : null;
-      const label = unlock ? '' : o.kind === 'building_branch' ? 'L4 SPECIALIZÁCIÓ' : o.kind === 'building_upgrade' ? 'ÉPÜLETFEJLESZTÉS' : o.kind === 'normal' ? 'HALMOZHATÓ FEJLESZTÉS' : 'LEGENDÁS EREKLYE';
+      const label = unlock ? 'ÚJ ÉPÜLET' : o.kind === 'building_branch' ? 'L4 SPECIALIZÁCIÓ' : o.kind === 'building_upgrade' ? 'ÉPÜLETFEJLESZTÉS' : o.kind === 'normal' ? 'HALMOZHATÓ FEJLESZTÉS' : 'LEGENDÁS EREKLYE';
       const art = buildingKind ? runtime.cardBuildingImageTag(o.id, 'choiceBuildingImage') : runtime.choiceUnitArt(o);
       const overlays = buildingKind ? `${v4997FootprintHTML(o.id)}${v41000CooldownHTML(runtime.P, o.id)}${v4997UnitCostHTML(runtime.P, o.id)}` : '';
       const footer = unlock ? `<span class="woodcost">${runtime.resourceIconTag('wood', true)}${Math.ceil(price.wood || 0) || '—'}</span><span class="stonecost">${runtime.resourceIconTag('stone', true)}${Math.ceil(price.stone || 0) || '—'}</span>` : o.kind === 'building_branch' ? '<span class="levelup branchTag">L3 → L4 · VÁLASZTOTT ÁG</span>' : o.kind === 'building_upgrade' ? `<span class="levelup">L${runtime.levelOf(runtime.P, o.id)} → L${runtime.upgradeTargetLevel(runtime.P, o.id)}</span>` : `<span class="picktag">${o.kind === 'legendary' ? 'LEGENDÁS' : 'PASSZÍV'}${o.kind === 'normal' && runtime.P.normal[o.id] ? ` · ×${runtime.P.normal[o.id]}` : ''}</span>`;

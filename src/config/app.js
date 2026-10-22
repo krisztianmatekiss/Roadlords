@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.26.0',
-  label: 'V4.26.0 · ÉLŐHALOTTAK',
-  title: 'Roadlords – Élőhalottak',
+  version: '4.27.0',
+  label: 'V4.27.0 · FELÜLETMÉRET',
+  title: 'Roadlords – Felületméret',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

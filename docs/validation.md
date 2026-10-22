@@ -1,16 +1,16 @@
-# V4.24.0 – három elfogadott balance-módosítás
+# V4.24.2 – Ork Harcos életerejének visszaállítása
 
-2026-10-21. Linux, Node.js 24, headless Chromium, 1440×960. Az ellenőrzések a kész production buildet futtatják `/Roadlords/` alatt; a helyi funkcionális tesztekben a külső HTTPS-forgalom tiltott.
+2026-10-22. Linux, Node.js 24, headless Chromium, 1440×960. Az ellenőrzések a kész production buildet futtatják `/Roadlords/` alatt; a helyi funkcionális tesztekben a külső HTTPS-forgalom tiltott.
 
 ## Elfogadott balance-változások
 
-A Troll normál másodlagos területsebzése 35; az elsődleges sebzés 110, a sugár 55 marad. A másodlagos arány 35/110, így a veterán, sebzésfejlesztés és Trolltenyészet a korábbi módon skáláz. A Földrengető harmadik ütése továbbra is teljes sebzésű a kibővített körben, kábítással. Az Ork Harcos alapéletereje 250. A Goblin íjászok sebzés- és épületsebzés-szorzója 1,5; a hatótávszorzó szintén 1,5 marad. A Harci lendület alap- és ideiglenes támadásisebesség-számítása is az új ereklyeszorzót használja. A játékbeli leírások frissültek.
+A Troll normál másodlagos területsebzése 35; az elsődleges sebzés 110, a sugár 55 marad. A másodlagos arány 35/110, így a veterán, sebzésfejlesztés és Trolltenyészet a korábbi módon skáláz. A Földrengető harmadik ütése továbbra is teljes sebzésű a kibővített körben, kábítással. Az Ork Harcos alapéletereje a V4.24.2-ben 250-ről visszaállt 300-ra; a veterán, egy általános és egy Harcos-életerőfejlesztéssel 517,5 HP-t kap. A Goblin íjászok sebzés- és épületsebzés-szorzója 1,5; a hatótávszorzó szintén 1,5 marad. A Harci lendület alap- és ideiglenes támadásisebesség-számítása is az új ereklyeszorzót használja. A játékbeli leírások frissültek.
 
 **10 új ellenőrzés:** Harcos HP és veterán/fejlesztés; Goblin ereklye sebzés/épületsebzés/hatótáv; Harci lendület mindkét számítása; sebzés kizárólag a tényleges találatkor, pontosan egyszer; 110/35 és távoli célpont; veterán/fejlesztett Troll 198/63; Trolltenyészet 55/17,5; Földrengető 110 és tágabb kör/kábítás; aktuális leírások; futási hibák. Jelentés: `artifacts/balance-changes.json`.
 
-A balance utáni három rögzített 50/50 próba 28,83–33,07 szimulált másodperc alatt eldőlt. Mindháromban mind a 100 egység mozgott vagy támadott; a mért tartósan tétlen közelharcosok maximuma 0 volt. Ezek működési ellenőrzések, nem a két faj teljes játékbeli egyensúlyának bizonyítékai.
+A V4.24.0 balance utáni három rögzített 50/50 próba 28,83–33,07 szimulált másodperc alatt eldőlt. Mindháromban mind a 100 egység mozgott vagy támadott; a mért tartósan tétlen közelharcosok maximuma 0 volt. Ezek korábbi működési ellenőrzések, nem a két faj teljes játékbeli egyensúlyának bizonyítékai.
 
-Az archivált referencia városai, fejlesztései, induló pozíciói és az érintetlen egységértékek továbbra is egyeznek. A Harcos HP 250/300-as, illetve a Goblin ereklye 1,5/2-es eltérését és annak Harci lendület-hatását a referenciaellenőrzés kifejezetten kiszámolja és ellenőrzi. Más statisztikai eltérés nem megengedett.
+Az archivált referencia városai, fejlesztései, induló pozíciói és az érintetlen egységértékek továbbra is egyeznek. A Harcos HP-ja ismét pontosan egyezik a referenciával. A Goblin ereklye 1,5/2-es eltérését és annak Harci lendület-hatását a referenciaellenőrzés kifejezetten kiszámolja és ellenőrzi. Más statisztikai eltérés nem megengedett.
 
 ## AI helyi épülethatások és tervezés
 

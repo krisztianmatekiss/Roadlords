@@ -1,4 +1,4 @@
-# Roadlords · V4.24.1
+# Roadlords · V4.24.2
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
 
@@ -51,6 +51,8 @@ Az AI helyi támogatói most valódi, közös oldalú szomszédságra épülnek;
 A [532 harcmintára és a kód áttekintésére épülő jelentés](docs/balance-audit.md) külön tárgyalja a balance-kockázatokat, az AI korlátait és az első finomhangolás javasolt értékeit. Újrafuttatás: `npm run build && npm run audit:balance`.
 
 ## Első balance · 4.24.0
+
+A **4.24.2** kiadásban az Ork Harcos alapéletereje visszaállt **300-ra** (250-ről). Az életerőfejlesztések és a veteránbónusz ismét ebből az alapból számolnak.
 
 A **4.24.1** kiadásban az ork **Kunyhó** indulástól építhető alapépület; külön feloldást nem igényel, az építési ára változatlan.
 

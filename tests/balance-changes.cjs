@@ -50,7 +50,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       return { warrior, veteran, plainGoblin, bow, momentum, invested, dynamicAS, plain, upgraded, breeding, quake, copy };
     }); report.result = result;
     const near = (a, b) => Math.abs(a - b) < 1e-6;
-    check('Orc Warrior starts at 250 HP and existing HP upgrades/veterancy scale from that base', result.warrior.hp === 250 && near(result.veteran.hp, 431.25));
+    check('Orc Warrior starts at 300 HP and existing HP upgrades/veterancy scale from that base', result.warrior.hp === 300 && near(result.veteran.hp, 517.5));
     check('Goblin Archers gives 50% damage and preserves its 50% range bonus', near(result.bow.dmg, result.plainGoblin.dmg * 1.5) && near(result.bow.buildingDamage, result.plainGoblin.buildingDamage * 1.5) && near(result.bow.range, result.plainGoblin.range * 1.5));
     check('Goblin momentum uses the reduced relic bonus in both base and temporary attack-speed calculations', near(result.momentum.cooldown, result.plainGoblin.cooldown / 1.25) && near(result.invested.cooldown, result.plainGoblin.cooldown / 1.4) && near(result.dynamicAS, 1.625 / 1.4));
     check('Troll damage still resolves once at the actual attack impact', result.plain.early && result.plain.once);

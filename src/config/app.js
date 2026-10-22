@@ -1,6 +1,6 @@
 export const APP = Object.freeze({
-  version: '4.25.0',
-  label: 'V4.25.0 · GAZDASÁG ÉS SEREGEK',
+  version: '4.25.1',
+  label: 'V4.25.1 · GAZDASÁG ÉS SEREGEK',
   title: 'Roadlords – Gazdaság és seregek',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',

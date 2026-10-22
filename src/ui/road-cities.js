@@ -24,14 +24,13 @@ export function installRoadCities(R) {
     roster.append(group);
 
     const name = document.createElement('div'); name.className = 'roadCityName';
-    const fallback = document.createElement('span'); fallback.className = 'roadSoloName'; fallback.textContent = own ? 'Saját város' : 'Ellenséges város';
-    name.append(fallback, R.$(own ? '#playerNameTag' : '#enemyNameTag'));
+    name.append(R.$(own ? '#playerNameTag' : '#enemyNameTag'));
     const bar = document.createElement('div'); bar.className = 'roadCapitalHealth';
     bar.setAttribute('role', 'progressbar'); bar.setAttribute('aria-label', own ? 'Saját főváros életereje' : 'Ellenséges főváros életereje'); bar.setAttribute('aria-valuemin', '0');
     bar.innerHTML = '<div class="roadCapitalTrack"><i></i></div><span class="roadCapitalLabel"></span>';
     const max = document.createElement('span'); max.className = 'roadCapitalMax';
     bar.querySelector('.roadCapitalLabel').append(R.$(own ? '#playerHp' : '#enemyHp'), ' / ', max, ' HP');
-    frame.append(name, bar); health.push({side, bar, max, fill: bar.querySelector('i')});
+    bar.prepend(name); frame.append(bar); health.push({side, bar, max, fill: bar.querySelector('i')});
   }
   R.$('.run').before(roster);
   // Keep visual hints enabled; render/reset paths may still invoke the old hook.

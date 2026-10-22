@@ -22,14 +22,14 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
     });
    });
   }));
-  check('Category colors match the original building accents on both sides without enemy-art filtering',await page.evaluate(()=>{
+  check('Category outlines stay above artwork on both sides while tint stays beneath it, with original category colors and no art filtering',await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__;
    return [['#playerGrid',R.P],['#enemyGrid',R.E]].every(([id,c])=>c.buildings.every(b=>{
-    const grid=R.$(id),el=grid.querySelector(`.buildingFootprint[data-id="${b.id}"]`),art=grid.querySelector(`.building[data-id="${b.id}"]`);
-    return getComputedStyle(el).getPropertyValue('--footprint-color').trim()===getComputedStyle(art).getPropertyValue('--accent').trim()&&getComputedStyle(el).filter==='none';
+    const grid=R.$(id),el=grid.querySelector(`.buildingFootprint[data-id="${b.id}"]`),border=grid.querySelector(`.buildingOutline[data-id="${b.id}"]`),art=grid.querySelector(`.building[data-id="${b.id}"]`);
+    return border&&getComputedStyle(border).getPropertyValue('--footprint-color').trim()===getComputedStyle(art).getPropertyValue('--accent').trim()&&getComputedStyle(border).filter==='none'&&getComputedStyle(border).pointerEvents==='none'&&Number(getComputedStyle(border).zIndex)>Number(getComputedStyle(art).zIndex)&&Number(getComputedStyle(el).zIndex)<Number(getComputedStyle(art).zIndex)&&getComputedStyle(border.firstChild).fill==='none'&&el.firstChild.getAttribute('d')===border.firstChild.getAttribute('d');
    }));
   }));
-  check('Repeated render paths do not accumulate footprint layers',await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,n=document.querySelectorAll('.buildingFootprint').length;for(let i=0;i<5;i++)R.renderStatic();return n===document.querySelectorAll('.buildingFootprint').length;}));
+  check('Repeated render paths do not accumulate footprint or outline layers',await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,n=document.querySelectorAll('.buildingFootprint').length;for(let i=0;i<5;i++)R.renderStatic();return n===document.querySelectorAll('.buildingFootprint').length&&n===document.querySelectorAll('.buildingOutline').length;}));
   check('Rotated L-shaped buildings leave their empty corner uncolored',await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,grid=document.createElement('div');grid.className='citygrid';
    grid.style.cssText='position:fixed;left:-1000px;top:0;width:400px;height:400px';document.body.append(grid);

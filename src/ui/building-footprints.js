@@ -1,4 +1,4 @@
-// Ground markings are separate from the art and its team/hover filters.
+// Ground tint stays below the artwork; the category outline stays above it.
 const SVG = 'http://www.w3.org/2000/svg';
 
 // Trace only exposed cell edges, then join collinear edges. Internal grid gaps
@@ -41,6 +41,7 @@ export function installBuildingFootprints(R) {
       const {w, h, contours} = mark.footprint;
       const width = cellW * w + gapX * (w - 1), height = cellH * h + gapY * (h - 1);
       mark.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      mark.outline.setAttribute('viewBox', `0 0 ${width} ${height}`);
       // Stroke center is 4px inward, leaving its outer edge 3px inside.
       const path = contours.map(points => points.map(([x, y], i) => {
         const prev = points[(i + points.length - 1) % points.length], next = points[(i + 1) % points.length];
@@ -51,6 +52,7 @@ export function installBuildingFootprints(R) {
         return `${i ? 'L' : 'M'}${x * (cellW + gapX) + (down ? -gapX - 4 : 4)} ${y * (cellH + gapY) + (right ? 4 : -gapY - 4)}`;
       }).join(' ') + ' Z').join(' ');
       mark.firstChild.setAttribute('d', path);
+      mark.outline.firstChild.setAttribute('d', path);
     }
   }
   const observer = new ResizeObserver(entries => entries.forEach(e => layout(e.target)));
@@ -61,7 +63,7 @@ export function installBuildingFootprints(R) {
     // Enemy-city rendering can be cached by the original renderer.
     if (first && rendered.get(container) === first) return out;
     rendered.set(container, first);
-    container.querySelectorAll('.buildingFootprint').forEach(el => el.remove());
+    container.querySelectorAll('.buildingFootprint,.buildingOutline').forEach(el => el.remove());
     const ground = document.createDocumentFragment();
     for (const b of city.buildings) {
       const bounds = R.shapeBounds(b.type, b.rotation || 0), mark = document.createElementNS(SVG, 'svg');
@@ -72,7 +74,11 @@ export function installBuildingFootprints(R) {
       mark.setAttribute('aria-hidden', 'true'); mark.setAttribute('focusable', 'false');
       mark.setAttribute('preserveAspectRatio', 'none');
       mark.footprint = {w: bounds.w, h: bounds.h, contours: outline(bounds.cells)};
-      mark.append(document.createElementNS(SVG, 'path')); ground.append(mark);
+      mark.append(document.createElementNS(SVG, 'path'));
+      const border = mark.cloneNode(true);
+      border.classList.replace('buildingFootprint', 'buildingOutline');
+      mark.outline = border;
+      ground.append(mark, border);
     }
     container.append(ground);
     layout(container);

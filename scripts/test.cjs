@@ -10,7 +10,7 @@ async function reachable(){try{const r=await fetch(baseURL);await r.body.cancel(
   for(let i=0;i<30&&!await reachable();i++)await new Promise(r=>setTimeout(r,100));
   if(!await reachable())throw Error('Production test server did not start; port 4173 may already be occupied.');
  }
- const tests=process.argv.slice(2);if(!tests.length)tests.push('tests/balance-changes.cjs','tests/ai-city-planning.cjs','tests/upgrade-copy.cjs','tests/minimap-and-footprints.cjs','tests/city-layout.cjs','tests/gate-and-scale.cjs','tests/road-navigation.cjs','tests/passage-and-art.cjs','tests/refactor-parity.cjs','tests/battle-flow.cjs','tests/browser.cjs','tests/multiplayer.cjs','tests/multiplayer-rtc.cjs');
+ const tests=process.argv.slice(2);if(!tests.length)tests.push('tests/resource-budget.cjs','tests/balance-changes.cjs','tests/ai-city-planning.cjs','tests/upgrade-copy.cjs','tests/minimap-and-footprints.cjs','tests/city-layout.cjs','tests/gate-and-scale.cjs','tests/road-navigation.cjs','tests/passage-and-art.cjs','tests/refactor-parity.cjs','tests/battle-flow.cjs','tests/browser.cjs','tests/multiplayer.cjs','tests/multiplayer-rtc.cjs');
  for(const file of tests){
   let tail='';
   const code=await new Promise((resolve,reject)=>{

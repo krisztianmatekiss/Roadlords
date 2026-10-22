@@ -1,4 +1,4 @@
-# Roadlords · V4.24.2
+# Roadlords · V4.25.0
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
 
@@ -6,7 +6,7 @@ A meglévő játék moduláris változata, a kapott harcprototípushoz közelít
 
 **https://krisztianmatekiss.github.io/Roadlords/**
 
-A városok négyzetes kerettel és építési ráccsal az út felső és alsó szegélyéig érnek. Magasságuk és szélességük együtt igazodik a pályanézethez; a teljes görgethető világ szélesedik, a harci út távolságai megmaradnak. A sereg és a helyőrség élő számlálói és portréi az alsó zöld sávban vannak, külön panel nélkül; a Saját / Ellenfél kapcsolóval mindkét oldal megtekinthető. A multiplayer név a kapu fölött, a főváros életerőcsíkja középen, a város fölött jelenik meg. A városi ikonok mindig látszanak, a felesleges ikonkapcsoló megszűnt. Épületenként egy összefüggő, enyhén színezett felület és 3 képponttal beljebb húzott külső kategóriakeret jelenik meg, belső cellavonalak nélkül: gazdaság zöld, hadsereg piros, támogatás kék, védelem szürke. Az L alakú épületek üres sarka szabad marad.
+A városok négyzetes kerettel és építési ráccsal az út felső és alsó szegélyéig érnek. Magasságuk és szélességük együtt igazodik a pályanézethez; a teljes görgethető világ szélesedik, a harci út távolságai megmaradnak. A felső sávban mindkét csapat helyőrsége és serege folyamatosan látszik, élő számlálókkal és portrékkal. Sorrendjük: saját helyőrség, saját sereg, ellenséges helyőrség, ellenséges sereg. Nincs csapatváltó kapcsoló. Az építési súgó és az értesítések a város alatti zöld sávba kerültek; a súgó szövege nem fogja el a kattintást, a forgatás gomb használható marad. A multiplayer név a kapu fölött, a főváros életerőcsíkja középen, a város fölött jelenik meg. A városi ikonok mindig látszanak, a felesleges ikonkapcsoló megszűnt. Épületenként egy összefüggő, enyhén színezett felület és 3 képponttal beljebb húzott külső kategóriakeret jelenik meg, belső cellavonalak nélkül: gazdaság zöld, hadsereg piros, támogatás kék, védelem szürke. Az L alakú épületek üres sarka szabad marad.
 
 Az építési sáv jobb oldalán, annak teljes magasságában egyszerű, téglalap alakú minitérkép mutatja a két várost, az élő egységeket csapatszínű pontokkal és a még álló tornyokat téglalapokkal. Az egységpontok nagyobbak (4,2 képpontos átmérő), világos körvonalat és sötétebb térképhátteret kaptak. Kattintással vagy húzással mozgatható a nézet; fókuszban a nyílbillentyűk, Home és End is használhatók. A kártyasáv külön helyet hagy a térképnek. A normál játék figurái és animációi megmaradtak.
 
@@ -33,6 +33,12 @@ A katonák külön láb-, test- és fegyvermozgást kapnak. A figurák felszerel
 A közelharcosok foglalt célpontok helyett szabadabb ellenfelet és megközelítési helyet keresnek. A saját egységeken át lehet haladni: az enyhe oldalirányú széthúzás nem akadályozza az előrejutást, ezért sűrű helyzetben baráti átfedés is lehet. Az ellenfelekkel továbbra is ütköznek.
 
 Az első élő ellenséges torony lezárja a teljes útszélesség mögötte lévő szakaszát. Az út szélén, üldözéssel, képességgel vagy ütközési eltolással sem lehet megkerülni. A torony elpusztítása a következő toronyig nyitja meg az utat, végül a fővárosig. A torony mögötti elérhetetlen ellenfél nem vonja el a mozgási célzást. A távolságiak lőtávon belül helyben is támadhatnak; ez rendes működés. A nagy csatában automatikus részletcsökkentés könnyíti a rajzolást, de a figurák mérete a tömegtől függetlenül állandó marad; a 60 FPS-es 500 vs 500 cél további optimalizálást igényel.
+
+## Tervezhető nyersanyagigény · 4.25.0
+
+A piros fogyasztási érték a jelenlegi beállítások teljes működéshez szükséges másodpercenkénti igénye. Nem az utolsó 30 másodperc tényleges költését átlagolja, ezért az üres raktár és a megtelt sereg/helyőrség nem csökkenti. Az összes katonai gyártósor, a párhuzamos laktanyagyártás, a valós képzési idő, költségkedvezmény, ellátóközpont és a Haditermelési lánc gyorsítása is szerepel benne. A beállított piaci útvonalak teljes kivitele és hozzá tartozó importja a pillanatnyi készlettől függetlenül látszik. A számon tartott automata zsoldosbérlés aktuális ajánlatának ára a szerződés ciklusidejére osztva számít.
+
+A piros szám fölött külön bontás olvasható katonagyártásra, automata zsoldosbérlésre és piaci kivitelre. Az egyszeri építkezés és fejlesztésvásárlás nem folyamatos költség. A kijelzés elméleti üzemi igény: leállás vagy elvesző lánc-előrehaladás mellett a tényleges költés kisebb lehet; a készlettől függő képzésgyorsítás valódi sebességváltozáskor módosítja a tervezett igényt. A tényleges nyersanyaglevonás szabályai megmaradtak, és a multiplayer vendég is a saját aktuális városából számolja a kijelzést. A nyersanyagok mellőli egységgyártási sebesség-kijelző és annak frissítő kódja eltávolítva.
 
 ## Kártyaleírások
 

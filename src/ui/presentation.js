@@ -261,7 +261,7 @@ export function register(runtime) {
   };
   runtime.marketTransfer = function marketTransfer(c, dt, stock = {
     ...c.resources
-  }) {
+  }, fullCapacity = false) {
     const gain = runtime.C(),
       use = runtime.C(),
       m = runtime.buildingOf(c, 'market')[0];
@@ -275,7 +275,7 @@ export function register(runtime) {
       eff = runtime.marketEfficiency(m.level);
     for (const route of (c.marketRoutes || []).slice(0, count)) {
       if (!route || route.from === route.to || !runtime.RES.includes(route.from) || !runtime.RES.includes(route.to)) continue;
-      const amount = Math.max(0, Math.min(stock[route.from], rate * dt, Math.max(0, c.caps[route.to] - stock[route.to]) / eff));
+      const amount = fullCapacity ? rate * dt : Math.max(0, Math.min(stock[route.from], rate * dt, Math.max(0, c.caps[route.to] - stock[route.to]) / eff));
       stock[route.from] -= amount;
       stock[route.to] += amount * eff;
       use[route.from] += amount / dt;
@@ -740,18 +740,18 @@ export function register(runtime) {
   };
   runtime.renderResourceFlow38 = function renderResourceFlow38() {
     document.body.classList.toggle('resource-rates-active39', !runtime.state.pregame && !runtime.state.ended && (runtime.state.running || runtime.state.time > 0) && (!runtime.MP.enabled || runtime.MP.started));
-    const gain = runtime.resourceFlowRates(runtime.P).gain,
-      use = runtime.measuredResourceUse38(runtime.P);
+    const { gain, use, sources } = runtime.resourceFlowRates(runtime.P),
+      format = value => value.toFixed(1).replace('.', ',');
     for (const r of runtime.RES) {
       const g = runtime.$(`#${r}Gain`),
         u = runtime.$(`#${r}Use`);
       if (g) {
-        g.textContent = `+${gain[r].toFixed(1)}/mp`;
-        g.title = 'Bruttó nyersanyagtermelés és várható piaci bevétel. Tele raktárnál a többlet nem tárolódik.';
+        g.textContent = `+${format(gain[r])}/mp`;
+        g.title = 'Bruttó nyersanyagtermelés és a beállított piaci import teljes működés mellett. Tele raktárnál a többlet nem tárolódik.';
       }
       if (u) {
-        u.textContent = `−${(use[r] || 0).toFixed(1)}/mp`;
-        u.title = 'Tényleges fogyasztás: katonagyártás, automata zsoldosbérlés és piaci kivitel. Az utolsó 30 játékmásodperc átlaga; a meccs elején a már eltelt idő átlaga. Az egyszeri építkezést és kézi vásárlást nem tartalmazza.';
+        u.textContent = `−${format(use[r] || 0)}/mp`;
+        u.title = `Teljes működés tervezett nyersanyagigénye, másodpercenként:\nKatonagyártás: ${format(sources.production[r])}\nAutomata zsoldosbérlés: ${format(sources.mercenaries[r])}\nPiaci kivitel: ${format(sources.market[r])}\nA nyersanyaghiány és a megtelt sereg/helyőrség nem csökkenti ezt az értéket. A kikapcsolt termelés nem számít bele. Az egyszeri építkezés és fejlesztésvásárlás nem része a folyamatos igénynek.`;
       }
     }
   };

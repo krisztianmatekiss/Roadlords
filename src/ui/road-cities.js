@@ -1,15 +1,17 @@
-// Cities and their status share the existing battlefield area, without new app rows.
+// Keep city health on the map and both army summaries in the existing top bar.
 export function installRoadCities(R) {
   const roster = document.createElement('section');
   roster.id = 'roadRoster';
   roster.setAttribute('aria-label', 'Helyőrség és sereg');
-  roster.innerHTML = '<nav class="roadRosterSides" aria-label="Megjelenített csapat"><button type="button" data-side="player" aria-pressed="true">Saját</button><button type="button" data-side="enemy" aria-pressed="false">Ellenfél</button></nav>';
   const health = [];
   for (const side of ['player', 'enemy']) {
     const own = side === 'player', city = R.$(own ? '#playerGrid' : '#enemyGrid').closest('.cityzone');
     const frame = city.querySelector('.cityframe');
     const group = document.createElement('div');
-    group.className = 'roadRosterTeam'; group.dataset.side = side; group.hidden = !own;
+    group.className = 'roadRosterTeam'; group.dataset.side = side;
+    group.setAttribute('aria-label', own ? 'Saját csapat' : 'Ellenfél');
+    const owner = document.createElement('span'); owner.className = 'roadRosterOwner';
+    owner.textContent = own ? 'SAJÁT' : 'ELLENFÉL'; group.append(owner);
     for (const [label, countId, mixId] of [
       ['HELYŐRSÉG', own ? 'garrisonCount' : 'enemyGarrison', own ? 'playerGarrisonMix' : 'enemyGarrisonMix'],
       ['SEREG', own ? 'playerArmy' : 'enemyArmy', own ? 'playerArmyMix' : 'enemyArmyMix']
@@ -31,11 +33,7 @@ export function installRoadCities(R) {
     bar.querySelector('.roadCapitalLabel').append(R.$(own ? '#playerHp' : '#enemyHp'), ' / ', max, ' HP');
     frame.append(name, bar); health.push({side, bar, max, fill: bar.querySelector('i')});
   }
-  R.$('#app').append(roster);
-  for (const button of roster.querySelectorAll('[data-side]')) if (button.tagName === 'BUTTON') button.onclick = () => {
-    for (const team of roster.querySelectorAll('.roadRosterTeam')) team.hidden = team.dataset.side !== button.dataset.side;
-    for (const tab of roster.querySelectorAll('button')) tab.setAttribute('aria-pressed', String(tab === button));
-  };
+  R.$('.run').before(roster);
   // Keep visual hints enabled; render/reset paths may still invoke the old hook.
   R.v490InstallToggle = () => {
     R.state.visualHints = true;
@@ -75,14 +73,10 @@ export function installRoadCities(R) {
     if (scroll > 1 && side !== old) R.roadWar.scrollLeft = oldEnd > 0 && scroll >= oldEnd - 2
       ? R.roadWorld.offsetWidth : scroll + side - old;
     R.roadPositionPinnedCity?.();
-    const bounds = R.roadWar.getBoundingClientRect(), green = R.ROAD.h * 49 / 600;
-    R.roadNoticeBottom = bounds.top + R.ROAD.h - green;
-    R.$('#app').style.setProperty('--road-notice-anchor', `${R.roadNoticeBottom - 10}px`);
-    roster.style.left = `${bounds.left + bounds.width / 2}px`;
-    const rosterHeight = Math.max(18, Math.min(82, green - 6));
-    roster.style.top = `${bounds.top + R.ROAD.h - green + (green - rosterHeight) / 2}px`;
-    roster.style.height = `${rosterHeight}px`;
-    roster.classList.toggle('roadRosterCompact', green < 44);
+    const bounds = R.roadWar.getBoundingClientRect();
+    R.roadNoticeBottom = bounds.top + R.ROAD.h - 4;
+    document.documentElement.style.setProperty('--road-notice-anchor', `${R.roadNoticeBottom}px`);
+    window.__ROADLORDS_V4972__?.positionToast();
     R.ROAD.gateExits = null;
   };
 }

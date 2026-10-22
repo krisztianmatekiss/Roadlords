@@ -58,22 +58,21 @@ export function register(runtime) {
     runtime.recordResourceSpend38(c, runtime.C(flow.use.wood * dt, flow.use.stone * dt, flow.use.food * dt));
   };
   runtime.resourceFlowRates = function resourceFlowRates(c) {
-    const gain = {
-        ...runtime.productionRates(c)
-      },
-      use = runtime.productionDemandRates(c),
-      stock = {
-        ...c.resources
-      };
-    for (const r of runtime.RES) stock[r] = Math.min(c.caps[r], stock[r] + gain[r]);
-    const market = runtime.marketTransfer(c, 1, stock);
+    // Budget for every configured production line, even while supplies or room
+    // are missing. Actual resource deductions still use the normal simulation.
+    const gain = { ...runtime.productionRates(c) },
+      production = runtime.productionBudgetRates(c),
+      mercenaries = runtime.mercenaryDemandRates?.(c) || runtime.C(),
+      market = runtime.marketTransfer(c, 1, undefined, true),
+      use = runtime.C();
     for (const r of runtime.RES) {
       gain[r] += market.gain[r];
-      use[r] += market.use[r];
+      use[r] = production[r] + mercenaries[r] + market.use[r];
     }
     return {
       gain,
-      use
+      use,
+      sources: { production, mercenaries, market: market.use }
     };
   };
   runtime.produceResources = function produceResources(c, dt) {
@@ -139,6 +138,29 @@ export function register(runtime) {
       if (!Number.isFinite(line.time) || line.time <= 0 || availableOnly && !runtime.productionLineReady(c, b, line)) continue;
       for (const r of runtime.RES) out[r] += (line.cost[r] || 0) / line.time;
     }
+    return out;
+  };
+  runtime.productionBudgetRates = function productionBudgetRates(c) {
+    const out = runtime.consumptionRates(c);
+    if (!runtime.hasLeg(c, 'factory_network')) return out;
+    // Each completed main line advances neighboring main lines by 15 points.
+    // Solve their steady full-capacity rates together, without running or
+    // modifying the simulation. Clipped progress can make actual use lower.
+    const lines = runtime.activeSpawners(c).map(b => ({ b, line: runtime.productionLines(c, b)[0] }))
+      .filter(({line}) => Number.isFinite(line.time) && line.time > 0);
+    const neighbors = lines.map(({b}) => {
+      const ids = new Set(runtime.adjacentBuildings(c, b).map(x => x.id));
+      return lines.map((x, i) => ids.has(x.b.id) ? i : -1).filter(i => i >= 0);
+    });
+    const base = lines.map(({line}) => 1 / line.time);
+    let rates = base;
+    for (let step = 0; step < 200; step++) {
+      const next = base.map((rate, i) => rate + .15 * neighbors[i].reduce((sum, j) => sum + rates[j], 0));
+      const delta = Math.max(0, ...next.map((rate, i) => Math.abs(rate - rates[i])));
+      rates = next;
+      if (delta < 1e-9) break;
+    }
+    for (let i = 0; i < lines.length; i++) for (const r of runtime.RES) out[r] += (lines[i].line.cost[r] || 0) * (rates[i] - base[i]);
     return out;
   };
   runtime.productionDestination = function productionDestination(c, b) {

@@ -209,17 +209,17 @@ export function initializeCityMercenaryNetwork(runtime) {
     }
     return true;
   }
-  function projectedUse(c) {
+  runtime.mercenaryDemandRates = function (c) {
     const out = runtime.C();
-    for (const b of ensureAll(c)) {
+    for (const b of tents(c)) {
       if (!b.mercAuto) continue;
-      const offer = currentOffer(c, b, b.mercAuto);
-      if (!offer || runtime.totalProductionRoom(c) < offer.size) continue;
+      const offer = b.mercOffers?.[offerIndex(b.mercAuto)];
+      if (!offer) continue;
       const cycle = Math.max(1, cooldownFor(c, nextLevel(b, b.mercAuto)));
       for (const r of runtime.RES) out[r] += (offer.price[r] || 0) / cycle;
     }
     return out;
-  }
+  };
   function aiDir(c, b) {
     const total = runtime.RES.reduce((sum, r) => sum + (Number(c.resources?.[r]) || 0), 0);
     if (total > 900 && affordable(c, currentOffer(c, b, 'up'))) return 'up';

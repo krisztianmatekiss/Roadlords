@@ -123,7 +123,8 @@ async function main(){
   }});
   assert(placement,'An empty build location must remain available');
   await page.locator(`#playerGrid .plot[data-r="${placement.r}"][data-c="${placement.c}"]`).click();
-  check('Normal build cards place a real building on the enlarged grid without notices covering the grass counters',await page.evaluate(before=>__ROADLORDS__.P.buildings.length===before+1&&document.querySelector('#toast').getBoundingClientRect().bottom<document.querySelector('#roadRoster').getBoundingClientRect().top,placement.before));
+  await page.waitForTimeout(100);
+  check('Normal build cards place a real building while build hints and notices remain below the city',await page.evaluate(before=>{const city=document.querySelector('.playerframe').getBoundingClientRect(),toast=document.querySelector('#toast').getBoundingClientRect(),hint=document.querySelector('#placementHint').getBoundingClientRect();return __ROADLORDS__.P.buildings.length===before+1&&toast.top>=city.bottom&&hint.top>=city.bottom&&getComputedStyle(document.querySelector('#placementHint')).pointerEvents==='none';},placement.before));
   report.solo=solo;
   await page.screenshot({path:'artifacts/solo.png'});
   check('No application page errors',report.errors.length===0);

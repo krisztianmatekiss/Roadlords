@@ -117,13 +117,19 @@ export function initializeUiChoiceText(runtime) {
   document.head.appendChild(toastStyle);
   function positionToastV4972() {
     if (!toastEl || !commandEl) return;
+    if (Number.isFinite(runtime.roadNoticeBottom)) {
+      // Follow the same live CSS anchor as the build hint, including resizes
+      // that change the battlefield without changing the dock's own height.
+      toastEl.style.setProperty('top', 'auto', 'important');
+      toastEl.style.setProperty('bottom', 'calc(100dvh - var(--road-notice-anchor) + 8px)', 'important');
+      return;
+    }
     const dock = commandEl.getBoundingClientRect(),
       topbar = document.querySelector('.topbar')?.getBoundingClientRect();
     const h = toastEl.offsetHeight || 32;
     const minTop = (topbar?.bottom || 0) + 8;
     const wanted = dock.top - h - 12;
-    const clearRoster = Number.isFinite(runtime.roadNoticeBottom) ? Math.min(wanted, runtime.roadNoticeBottom - h - 10) : wanted;
-    toastEl.style.setProperty('top', Math.round(Math.max(minTop, clearRoster)) + 'px', 'important');
+    toastEl.style.setProperty('top', Math.round(Math.max(minTop, wanted)) + 'px', 'important');
     toastEl.style.setProperty('bottom', 'auto', 'important');
   }
   const oldToastV4972 = runtime.toast;

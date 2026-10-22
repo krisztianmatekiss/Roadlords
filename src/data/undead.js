@@ -1,5 +1,6 @@
 import { UNDEAD_PLAN_BUILDINGS, UNDEAD_PLAN_UPGRADES } from './undead-plan.js';
 import { UNDEAD_TRAINING, trainingPrice } from './unit-balance.js';
+import { UNDEAD_BUILDING_COPY, UNDEAD_UPGRADE_COPY } from './undead-copy.js';
 export const UNDEAD_RACE = 'undead';
 export const UNDEAD_NAME = 'Élőhalottak';
 export const UNDEAD_START = ['und_well', 'und_crypt', 'und_graveyard'];
@@ -159,16 +160,6 @@ const branchIds = {
   und_lich_spawner: ['endless_hunger', 'wither_bond'],
   und_garden_of_dead: ['raise_vampire', 'raise_lich'],
 };
-const readable = (text) =>
-  text
-    .replace(/Méregstacket/g, 'méregpontot')
-    .replace(/Méregstack/g, 'méregpont')
-    .replace(/stack/g, 'méregpont')
-    .replace(/Legendaryval/g, 'ereklyével')
-    .replace(/Legendary/g, 'ereklye')
-    .replace(/Shielddé/g, 'pajzzsá')
-    .replace(/Shield/g, 'pajzs')
-    .replace(/Unique/g, 'egyedi');
 const names = {
   und_ghost_spawner: 'Fantomkapu',
   und_necro_spawner: 'Nekromanták szentélye',
@@ -186,9 +177,12 @@ export const UNDEAD_BUILDINGS = Object.fromEntries(
       : Array.from({ length: Number(row.D[2]) }, (_, r) =>
           Array.from({ length: Number(row.D[0]) }, (_, c) => [r, c]),
         ).flat();
-    const levels = [row.F, row.G, row.H, row.I].map(readable),
+    const copy = UNDEAD_BUILDING_COPY[key],
       [souls, upkeep] = economics[key],
       producer = producers[key];
+    const levels = producer
+        ? producer[1].map((time) => `${UNDEAD_UNITS[producer[0]].name} képzése ${String(time).replace('.', ',')} mp-enként.`)
+        : copy.levels;
     const branches = row.J
       ? branchIds[key].map((id, i) => ({
           id,
@@ -199,7 +193,7 @@ export const UNDEAD_BUILDINGS = Object.fromEntries(
                 : 'Vámpírkert'
               : (i ? row.J : row.I).split(':')[0],
           icon: '☠',
-          description: readable(i ? row.J : row.I),
+          description: copy.branches[i],
         }))
       : [];
     return [
@@ -232,9 +226,7 @@ export const UNDEAD_BUILDINGS = Object.fromEntries(
         levels,
         branches,
         atlas: index,
-        description:
-          levels.map((t, i) => `L${i + 1}: ${t}`).join(' ') +
-          (row.J ? ' Másik L4 ág: ' + readable(row.J) : ''),
+        description: copy.description,
         race: 'undead',
         sourceId: row.A,
       },
@@ -244,7 +236,7 @@ export const UNDEAD_BUILDINGS = Object.fromEntries(
 export const UNDEAD_UPGRADES = UNDEAD_PLAN_UPGRADES.map((row) => ({
   id: row.A,
   name: /^(HP|Sebzés) \+10%$/.test(row.D) ? row.C + ' · ' + row.D.replace('HP', 'Életerő') : row.D,
-  description: readable(row.E + (row.F ? ' ' + row.F + '.' : '')),
+  description: UNDEAD_UPGRADE_COPY[row.A] || `${row.C}: +10% ${row.A.endsWith('_hp') ? 'maximális életerő' : 'sebzés'}.`,
   scope: row.C,
   kind: row.B === 'Common' ? 'normal' : 'legendary',
   icon: '☠',

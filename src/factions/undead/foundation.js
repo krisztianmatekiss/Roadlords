@@ -115,7 +115,7 @@ export function initializeUndeadFoundation(R) {
             icon: branch.icon,
             name: branch.name,
             description: branch.description,
-            details: `${d.name} · L4 specializáció`,
+            details: `${d.name} · L4<br>${d.levels[3]}`,
           });
       else
         out.push({
@@ -133,13 +133,16 @@ export function initializeUndeadFoundation(R) {
   const oldDetails = R.buildingUpgradeDetails,
     oldChoice = R.buildingChoiceDetails,
     oldBranch = R.branchLabel;
-  R.buildingUpgradeDetails = (c, type) =>
-    isUndead(c) && D[type]
-      ? `Minden jelenlegi és későbbi ${D[type].name} L${Math.min(4, R.levelOf(c, type) + 1)} lesz.<br>${D[type].levels[Math.min(3, R.levelOf(c, type))]}`
-      : oldDetails(c, type);
+  R.buildingUpgradeDetails = (c, type) => {
+    if (!isUndead(c) || !D[type]) return oldDetails(c, type);
+    const d = D[type], lv = R.levelOf(c, type);
+    if (lv >= 4) return 'Elérte a legmagasabb szintet.';
+    if (lv === 3 && d.branches.length) return 'Válassz egy L4-es ágat.';
+    return `Jelenleg: ${d.levels[lv - 1]}<br>Fejlesztés után: ${d.levels[lv]}`;
+  };
   R.buildingChoiceDetails = (c, type) =>
     isUndead(c) && D[type]
-      ? `${D[type].levels[R.levelOf(c, type) - 1]}<br>Fenntartás alapértéke: ${D[type].upkeep} Lélek/mp.${D[type].unit ? '<br>Egység ára: ' + U[D[type].unit].souls + ' Lélek.' : ''}`
+      ? `${D[type].levels[R.levelOf(c, type) - 1]}<br>Alapfenntartás: ${D[type].upkeep.toLocaleString('hu-HU')} Lélek/mp.${D[type].unit ? '<br>Egység ára: ' + U[D[type].unit].souls + ' Lélek.' : ''}`
       : oldChoice(c, type);
   R.branchLabel = (c, type) =>
     isUndead(c) && D[type]

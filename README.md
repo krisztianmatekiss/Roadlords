@@ -1,8 +1,12 @@
-# Roadlords · V4.28.1
+# Roadlords · V4.28.2
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
 
 Az élőhalott városokban nincs erdő, kő vagy termőtalaj; az újrageneráláskor sem jelennek meg. A romok és az alapozás megmaradnak.
+
+## Rövidebb leírások · 4.28.2
+
+Mindhárom faj épületei, gyakori és legendás fejlesztései rövidebb leírásokat kaptak. A fontos feltételek, hátrányok és számok megmaradnak. Az élőhalott épületlapok külön mutatják a szerepet, az adott szint hatását és az L4-es ágakat; az épületfejlesztésnél a jelenlegi és következő érték olvasható. A lexikon és az építési sáv ugyanezekből a szövegekből dolgozik.
 
 ## Egységbalance · 4.28.0
 

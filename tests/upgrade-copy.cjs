@@ -31,7 +31,10 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       try { entries = all.map(o => R.upgradeCopyPreview(city, o)); } finally { Math.random = oldRandom; }
       return {
         coverage: [normal.length, legendary.length, entries.length], pure: before === snapshot() && randomCalls === 0,
-        rows: normal.every(o => preview(o.id).rows.length > 0), text: entries.every(p => p.description.length > 25 && !/\b(spawner|cooldown|stack|pick|Heavy|Magic|Shield|NaN|Infinity)\b/i.test(p.description)),
+        rows: normal.every(o => preview(o.id).rows.length > 0), text: entries.every(p => p.description.length > 10 && p.description.length <= 240 && !/\b(spawner|cooldown|stack|pick|Heavy|Magic|Shield|NaN|Infinity)\b/i.test(p.description)),
+        conciseBuildings: Object.values(R.BUILDINGS).every(d => d.description.length > 10 && d.description.length <= 240 && !/L1:|Másik L4 ág|spawner|stack|pool/i.test(d.description)),
+        conciseBranches: Object.values(R.V4_BRANCHES).flat().every(d => d.description.length > 10 && d.description.length <= 240 && !/spawner|stack|pool|Shield/i.test(d.description)),
+        undeadCopy: Object.values(__ROADLORDS_UNDEAD__.buildings).every(d => d.levels.length === 4 && d.levels.every(x => x.length > 5 && x.length <= 150)) && [...R.NORMAL, ...R.LEGENDARY].filter(o => o.race === 'undead').every(o => o.description.length > 10 && o.description.length <= 240 && !/spawner|stack|pool|Shield|Halmozható\./i.test(o.description)),
         sword: preview('swordsman_dmg'), priest: preview('priest_dmg'), speed: preview('sword_as'), orc: preview('orc_warrior_dmg'),
         bleed: [preview('orc_bleed'), preview('orc_bleed', 1)], leech: [preview('orc_leech'), preview('orc_leech', 1)],
         discount: preview('building_discount', 4), frugal: preview('frugal_training', 1), crit: preview('orc_crit', 25), blessing: preview('orc_blessing', 39),
@@ -42,6 +45,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       };
     }); report.audit = audit;
     check('All 58 common and 85 legendary descriptions have final, jargon-free copy', audit.coverage.join() === '58,85,143' && audit.text);
+    check('All faction building roles, branches and Undead levels use concise text without workbook dumps or internal jargon', audit.conciseBuildings && audit.conciseBranches && audit.undeadCopy);
     check('All common cards provide a numeric preview without changing cities, units, towers or RNG', audit.pure && audit.rows);
     check('Human damage and priest healing previews use actual unit stats', audit.sword.rows.some(r => r.before === '12' && r.after === '13,2') && audit.priest.rows.some(r => r.before === '30' && r.after === '33'));
     check('Attack-speed preview shows a shorter attack interval, not a false additive reduction', audit.speed.rows.some(r => r.before === '1 mp' && r.after === '0,87 mp'));

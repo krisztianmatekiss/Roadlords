@@ -119,8 +119,8 @@ export function initializeUndeadUi(R) {
       context: 'Az élőhalott frakció jelenlegi fejlesztéseivel.',
       stacking:
         o.kind === 'normal'
-          ? `Halmozható. Felvéve: ${n}× → ${next}×. A megadott felső korlátok érvényesek.`
-          : 'Egyszer felvehető legendás ereklye.',
+          ? `Halmozható · felvéve: ${n} → ${next}.`
+          : 'Egyszer választható.',
       specialization: '',
     };
   };
@@ -134,7 +134,7 @@ export function initializeUndeadUi(R) {
   const short = R.buildCardShortDescV41004;
   R.buildCardShortDescV41004 = (type) =>
     isUndead(R.P) && D[type]
-      ? D[type].levels[0] + ' Fenntartás: ' + D[type].upkeep + ' Lélek/mp.'
+      ? D[type].description + ` Fenntartás: ${D[type].upkeep.toLocaleString('hu-HU')} Lélek/mp.`
       : short(type);
   const branch = R.makeBuildingChoice;
   R.makeBuildingChoice = (c, type) =>

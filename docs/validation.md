@@ -1,3 +1,9 @@
+# V4.28.2 – tömörebb épület- és fejlesztésleírások
+
+2026-10-22. Mindhárom faj végleges épület-, gyakori/legendás fejlesztés- és L4-ágszövegeit átnéztük. Az élőhalott leírások külön adatfájlban vannak; a feltöltött munkafüzet archivált másolata változatlan. Az épület szerepe, négy szinthatása és ágai külön jelennek meg. A képzési idők a közös balance-adatokból készülnek. A kiválasztott L4-ág mellett az épületvizsgáló megtartja az alap szinthatást is.
+
+A production builden a leírás- és előnézetpróba mind a 180 fejlesztés szövegeit, a három faj épület- és ágleírásait és az élőhalott szinthatásokat vizsgálja. A számszerű előnézeteket továbbra is valódi fejlesztésfelvétellel veti össze, és ellenőrzi az állapot/RNG változatlanságát. A rövid szövegeknek nincs mesterséges 25 karakteres minimuma; az ellenőrzés érdemi tartalmat, felső hosszkorlátot és zsargonmentességet kér. Az élőhalott működés-, lexikon-, épületvizsgáló- és 500/500-as próbák sikeresek. A százalékos méretezés meglévő próbája 800 képponttól 4K-ig ellenőrzi a kártyák elérhetőségét és a kezelősávokat.
+
 # V4.28.1 – élőhalott terepgenerálás
 
 2026-10-22. Az élőhalott városok generálása kiszűri az erdőt, kőlelőhelyet és termőtalajt; a romok, ősi romok és alapozások megmaradnak. A kész production builden a szóló fajválasztás, az újrageneráló gomb, az ellenfél városának generálása és a tartalék elrendezés ellenőrzése sikeres. Az élőhalott frakció és multiplayer-protokoll meglévő próbái is lefutottak.

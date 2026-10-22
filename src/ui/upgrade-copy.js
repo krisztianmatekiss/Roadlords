@@ -1,4 +1,4 @@
-import { NORMAL_COPY, LEGENDARY_COPY, BUILDING_COPY } from '../data/upgrade-copy.js';
+import { NORMAL_COPY, LEGENDARY_COPY, BUILDING_COPY, BRANCH_COPY } from '../data/upgrade-copy.js';
 
 const NORMAL_LIMITS = { building_discount: 5, orc_double: 20, orc_blessing: 40, orc_refund: 5, orc_loot: 10 };
 const LEGEND_LIMITS = { sword_execute: 5, magic_order: 4, tavern_chain: Infinity, strategic_superiority: Infinity };
@@ -45,6 +45,9 @@ function unitFor(id) {
 
 export function initializeUiUpgradeCopy(R) {
   for (const [id, description] of Object.entries(BUILDING_COPY)) if (R.BUILDINGS[id]) R.BUILDINGS[id].description = description;
+  for (const [type, branches] of Object.entries(R.V4_BRANCHES))
+    for (const branch of branches)
+      if (BRANCH_COPY[`${type}/${branch.id}`]) branch.description = BRANCH_COPY[`${type}/${branch.id}`];
   for (const [defs, copy] of [[R.NORMAL, NORMAL_COPY], [R.LEGENDARY, LEGENDARY_COPY]]) {
     for (const def of defs) if (copy[def.id]) def.description = copy[def.id];
   }
@@ -61,7 +64,7 @@ export function initializeUiUpgradeCopy(R) {
     if (normal && MODIFIERS[id]) {
       const before = MODIFIERS[id](n), after = MODIFIERS[id](next);
       rows.push({ label: before.label, before: before.value, after: after.value });
-      context = 'Csak ennek a fejlesztésnek a hozzájárulása.';
+      context = 'A fejlesztés összesített bónusza.';
       if (id === 'orc_curse_duration' && R.hasBranch(c, 'orc_shaman', 'strong_curses')) context += ' Az erősebb átokág az erősséget módosítja.';
     } else if (normal) {
       const key = unitFor(id);
@@ -75,7 +78,7 @@ export function initializeUiUpgradeCopy(R) {
           if (!Number.isFinite(before[metric]) || !Number.isFinite(after[metric]) || Math.abs(before[metric] - after[metric]) < 1e-8) continue;
           rows.push({ label, before: format(before[metric]) + suffix, after: format(after[metric]) + suffix });
         }
-        context = `${R.UNITS[key].name} · nem veterán alapegység, a város jelenlegi fejlesztéseivel. Az egyedi és ideiglenes egységbónuszok nélkül.`;
+        context = `${R.UNITS[key].name} · városi fejlesztésekkel, veterán és ideiglenes bónuszok nélkül.`;
         if (id === 'all_damage') {
           const a = R.statsFor(beforeCity, { key: 'priest', veteran: false });
           const b = R.statsFor(afterCity, { key: 'priest', veteran: false });
@@ -89,7 +92,7 @@ export function initializeUiUpgradeCopy(R) {
     }
     const stacking = `${limit === 1 ? 'Egyszer választható.' : Number.isFinite(limit) ? `Legfeljebb ${limit}× választható.` : 'Korlátlanul halmozható.'} Felvéve: ${n}${Number.isFinite(limit) ? `/${limit}` : '×'}${n < limit ? ` → ${next}${Number.isFinite(limit) ? `/${limit}` : '×'}` : ' · maximum'}.`;
     const specialization = normal && n > 0 && R.hasLeg(c, 'specialization') && n < limit
-      ? 'Specializáció: 50% eséllyel még egy felvétel jár. A hatás felső korlátja megmarad; az értékek egy felvételt mutatnak.' : '';
+      ? 'Specializáció: 50% eséllyel kétszer kapod meg. Az előnézet egy felvételt mutat.' : '';
     return { description: (normal ? NORMAL_COPY : LEGENDARY_COPY)[id] || option.description || '', rows, context, stacking, specialization };
   };
 
@@ -99,8 +102,7 @@ export function initializeUiUpgradeCopy(R) {
     R.$$('#choiceList .choice').forEach((card, i) => {
       const option = options[i], body = card.querySelector('.choiceBody');
       if (option.kind === 'building_upgrade' && body) {
-        const definition = R.buildingDefinition?.(R.P, option.id) || R.BUILDINGS[option.id];
-        body.querySelector('p').textContent = `Az összes jelenlegi és később épülő ${definition.name} fejlődik.`;
+        body.querySelector('p').textContent = 'Minden ilyen épületed fejlődik, a később épülők is.';
       }
       const preview = R.upgradeCopyPreview(R.P, option);
       if (!preview || !body) return;

@@ -59,6 +59,8 @@ A 4.28.0-s alaperő: Csontváz 85 HP / 10 sebzés, Zombi 280 HP / 12 sebzés, Sz
 
 A tervben nyitott nevek helyére Fantomkapu, Nekromanták szentélye és Lichtorony került. A Holtak kertje két L4-ágának neve Vámpírkert és Lichkert.
 
+A 4.28.2-es felületen az épületek szerepe, szinthatásai és L4-es ágai külön, rövid leírást kapnak. A korábbi teljes fejlődésifa-szöveg nem kerül rá az épületlapokra. A gazdasági és harci értékeket ez a szövegfrissítés nem módosítja.
+
 ## Képességek és pontosítások
 
 - A Szellem kitérése a valódi találatkor dől el, területi találatokra is. Kitérés után a találathoz tartozó megjelölés, kábítás, égés és fagyasztás sem marad rajta. A Tükörkísértet másolata nem indít további másolatot, és fix 40% kitérést használ.

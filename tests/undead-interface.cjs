@@ -68,7 +68,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       await p
         .locator('#buildingInspectorLayer')
         .innerText()
-        .then((s) => s.includes('Nekropolisz') && s.includes('16000 HP') && !s.includes('20000 HP')),
+        .then((s) => s.includes('Nekropolisz') && s.includes('16000 életerő') && !s.includes('20000 HP')),
     );
     await p.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__;

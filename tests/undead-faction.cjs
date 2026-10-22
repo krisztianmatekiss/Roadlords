@@ -190,7 +190,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         units,
         normal: normals.length,
         legend: legends.length,
-        previews: previews.every((p) => p.description?.length > 20 && p.rows.length > 0),
+        previews: previews.every((p) => p.description?.length > 10 && p.rows.length > 0),
         noLeaks,
         capital,
         base,

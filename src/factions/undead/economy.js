@@ -269,7 +269,8 @@ export function initializeUndeadEconomy(R) {
     const d = D[b.type],
       branch = d.branches.find((x) => x.id === R.branchOf(c, b.type));
     const out = [
-      ['Hatás', b.level === 4 && branch ? branch.description : d.levels[b.level - 1]],
+      ['Hatás', d.levels[b.level - 1]],
+      ...(b.level === 4 && branch ? [['L4-es ág', branch.description]] : []),
       ['Fenntartás', `${(R.undEconomy(c).upkeep.get(b.id) || 0).toFixed(2)} Lélek/mp`],
     ];
     if (d.unit)

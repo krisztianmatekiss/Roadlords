@@ -14,6 +14,8 @@ Az ember–ork referenciaellenőrzés nem kap új tűrést: a teljes induló vá
 
 A helyi futásban a 17 tesztfájl funkcionális ellenőrzései hibamentesen teljesültek. A valódi WebRTC-adatcsatorna próbája ezen a gépen nem kapott ICE-jelöltet, ezért a meglévő szabály szerint **kihagyott** lett; az interneten át létrejövő új frakciós kapcsolatot ez a futás nem bizonyítja. A kétoldalas, tényleges protokollkezelőkkel futó ember–ork és élőhalott csomagpróbák sikeresek. A CI a teljes sorozatot külön is futtatja a közzététel előtt.
 
+A Pages-folyamat a futtatógép meglévő Chrome/Chromium böngészőjét választja, és csak annak hiányában telepít Playwright Chromiumot. A 4.26.0 első közzétételénél a külön böngésző- és rendszerfüggőség-telepítés több mint hét percig nem lépett tovább. A teljes tesztsor megmarad; egy újabb commit megszakítja a már elavult kiadási futást.
+
 ## Korábbi kiadások ellenőrzései
 
 # V4.25.1 – multiplayer nevek és látható épületkeretek

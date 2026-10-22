@@ -7,7 +7,7 @@ permissions:
   contents: read
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,9 +18,19 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci --no-audit --no-fund
-      - run: npx playwright install --with-deps chromium
-      - name: Select installed Chromium
-        run: node -e 'console.log("CHROMIUM_PATH=" + require("playwright").chromium.executablePath())' >> "$GITHUB_ENV"
+      - name: Select Chromium for browser tests
+        shell: bash
+        run: |
+          if command -v google-chrome >/dev/null 2>&1; then
+            roadlords_browser_path="$(command -v google-chrome)"
+          elif command -v chromium >/dev/null 2>&1; then
+            roadlords_browser_path="$(command -v chromium)"
+          else
+            npx playwright install --with-deps chromium
+            roadlords_browser_path="$(node -p 'require("playwright").chromium.executablePath()')"
+          fi
+          printf 'CHROMIUM_PATH=%s\n' "$roadlords_browser_path" >> "$GITHUB_ENV"
+          "$roadlords_browser_path" --version
       - run: npm run build
       - run: npm test
       - uses: actions/upload-artifact@v4

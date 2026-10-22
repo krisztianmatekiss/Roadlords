@@ -1,5 +1,6 @@
 import { assetUrl } from '../assets/urls.js';
 import { ORC_BALANCE } from '../data/combat-balance.js';
+import { ORC_TRAINING, trainingPrice } from '../data/unit-balance.js';
 export function initializeFactionsOrcFoundation(runtime) {
   const isOrc = c => c?.race === 'orc',
     orcKey = k => String(k).startsWith('orc_');
@@ -81,6 +82,7 @@ export function initializeFactionsOrcFoundation(runtime) {
   };
   for (const [key, d] of Object.entries(units)) runtime.UNITS[key] = {
     ...d,
+    cost: trainingPrice(d.cost),
     cat: 'infantry',
     damageType: 'physical',
     race: 'orc'
@@ -194,11 +196,7 @@ export function initializeFactionsOrcFoundation(runtime) {
   runtime.trainingTime = function (c, b) {
     if (!isOrc(c) || !orcKey(b.type)) return oldTime(c, b);
     if (b.inactive) return Infinity;
-    const times = {
-        orc_war: [8.5, 7.5, 6.5],
-        orc_bers: [8, 7, 6],
-        orc_gob: [3.5, 2.75, 2]
-      },
+    const times = ORC_TRAINING,
       lv = supportLevel(c, b, 'orc_overseer');
     return runtime.v4LevelValue(b.level, times[b.type] || [10]) * (lv ? 1 - runtime.v4LevelValue(lv, [.2, .3, .4, runtime.hasBranch(c, 'orc_overseer', 'ruthless') ? .8 : .4]) : 1);
   };

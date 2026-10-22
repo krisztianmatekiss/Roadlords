@@ -1,6 +1,6 @@
-# Élőhalottak · első játszható kiadás · 4.26.0
+# Élőhalottak · 4.26.0 alap, 4.28.0 egységbalance
 
-A forrás a felhasználó `Roadlords_Elothalott_Frakterv.xlsx` munkafüzete. A négy munkalap cellaértékei változatlanul megtalálhatók a [forrásadatokban](plans/undead-source.json). A terv 20 épületet tartalmaz a főépülettel együtt, 7 egységváltozatot, 24 gyakori és 13 legendás fejlesztést. Az Excelben meglévő egységértékeket, szintenkénti hatásokat és képességeket megőriztük; a hiányzó gazdasági számokat első balance-értékekkel töltöttük ki.
+A forrás a felhasználó `Roadlords_Elothalott_Frakterv.xlsx` munkafüzete. A négy munkalap cellaértékei változatlanul megtalálhatók a [forrásadatokban](plans/undead-source.json). A terv 20 épületet tartalmaz a főépülettel együtt, 7 egységváltozatot, 24 gyakori és 13 legendás fejlesztést. A 4.26.0 az Excel egységértékeit őrizte; a felhasználó által kért 4.28.0-s egységbalance módosítja az alább jelzett alapstatisztikákat, időket, árakat és fenntartást. A képességek és épületméretek megmaradtak. A forrásmunkafüzet archivált adatai változatlanok.
 
 Szólóban mindkét oldalon választható, multiplayerben is játszható. A főmenü **TESZTEK → ÉLŐHALOTT PRÓBA · 50 vs 50** pontja szabályos végső szintű várost és vegyes sereget indít emberek ellen. A nagy, 500/500-as élőhalott felállás a diagnosztikai API-ból is elérhető: `__ROADLORDS_RUNTIME__.roadStartTest(42, {count:500, roster:'undead'})`. A korábbi ember–ork próbák megmaradtak.
 
@@ -25,9 +25,9 @@ A Lélekkút 0,5-ös fenntartása adott volt a tervben. A többi alábbi ár és
 | Temető | 40 | 0,35 |
 | Hullaház | 65 | 0,55 |
 | Fantomkapu | 60 | 0,50 |
-| Nekromanták szentélye | 140 | 1,20 |
-| Vámpírkastély | 200 | 1,50 |
-| Lichtorony | 220 | 1,80 |
+| Nekromanták szentélye | 140 | 1,00 |
+| Vámpírkastély | 200 | 1,20 |
+| Lichtorony | 220 | 1,40 |
 | Sötét Őrtorony | 75 | 0,75 |
 | Lélekarató | 80 | 0,50 |
 | Lélekbank | 150 | 1,20 |
@@ -46,14 +46,16 @@ A toronyszám miatti új fenntartási szabály: minden Sötét Őrtorony alapfen
 
 | Egység | Lélek / ciklus | L1 idő | L2 idő | L3 / L4 idő |
 |---|---:|---:|---:|---:|
-| Csontváz / Csontváz Íjász | 8 | 5 mp | 4,25 mp | 3,5 mp |
-| Zombi | 16 | 9 mp | 8 mp | 7 mp |
-| Szellem | 13 | 7 mp | 6 mp | 5 mp |
-| Nekromanta | 50 | 25 mp | 22 mp | 19 mp |
-| Vámpír | 85 | 35 mp | 31 mp | 27 mp |
-| Lich | 110 | 40 mp | 35 mp | 30 mp |
+| Csontváz / Csontváz Íjász | 10 | 5 mp | 4 mp | 3 mp |
+| Zombi | 20 | 8 mp | 6,4 mp | 4,8 mp |
+| Szellem | 14 | 6 mp | 4,8 mp | 3,6 mp |
+| Nekromanta | 50 | 14 mp | 11,2 mp | 8,4 mp |
+| Vámpír | 56 | 16 mp | 12,8 mp | 9,6 mp |
+| Lich | 75 | 18 mp | 14,4 mp | 10,8 mp |
 
-A Kettős idézés két Csontvázat ad egyetlen 8-as alapáron. A Csontváz Íjászhoz előbb az azonos nevű ereklye kell. A hiányzó íjászértékek: 70 HP, 8 sebzés, 1,25 mp támadási idő, 40 mozgás, 130 hatótáv. A Csontváz fejlesztései és távolsági ellenállása az íjászra is hatnak. A Rontott Keltető legerősebb helyi bónusza érvényesül; a fél HP a tényleges kezdőéleterő, nem a maximum csökkentése.
+A Kettős idézés két Csontvázat ad egyetlen 10-es alapáron. A Csontváz Íjászhoz előbb az azonos nevű ereklye kell. A hiányzó íjászértékek: 85 HP, 8 sebzés, 1,25 mp támadási idő, 40 mozgás, 130 hatótáv. A Csontváz fejlesztései és távolsági ellenállása az íjászra is hatnak. A Rontott Keltető legerősebb helyi bónusza érvényesül; a fél HP a tényleges kezdőéleterő, nem a maximum csökkentése.
+
+A 4.28.0-s alaperő: Csontváz 85 HP / 10 sebzés, Zombi 280 HP / 12 sebzés, Szellem 75 HP / 8 sebzés, Nekromanta 100 HP. A Vámpír 300 HP / 45 sebzése és a Lich 180 HP / 5-ös sugáralapja változatlan. A végleges árak már tartalmazzák az egységbalance utáni, minden fajra érvényes +25%-ot. [Indoklás és ellenőrzések](unit-balance-4.28.md).
 
 A tervben nyitott nevek helyére Fantomkapu, Nekromanták szentélye és Lichtorony került. A Holtak kertje két L4-ágának neve Vámpírkert és Lichkert.
 

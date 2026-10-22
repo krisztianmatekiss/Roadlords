@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { trainingPrice } from './unit-balance.js';
 export function initializeDataUnitDefinitions(runtime) {
   runtime.UNITS = {
     swordsman: {
@@ -110,4 +111,5 @@ export function initializeDataUnitDefinitions(runtime) {
       aoe: 62
     }
   };
+  for (const unit of Object.values(runtime.UNITS)) unit.cost = trainingPrice(unit.cost);
 }

@@ -1,5 +1,6 @@
 import { assetUrl } from '../assets/urls.js';
 import { ORC_BALANCE } from '../data/combat-balance.js';
+import { ORC_TRAINING, trainingPrice } from '../data/unit-balance.js';
 export function initializeFactionsOrcRoster(runtime) {
   const O = window.__ROADLORDS_ORCS__,
     isOrc = O.isOrc;
@@ -10,9 +11,9 @@ export function initializeFactionsOrcRoster(runtime) {
   }, (_, c) => [r, c])).flat();
   const newBuildings = {
     orc_warg: ['Wargkarám', '🐺', 2, 1, runtime.C(70, 60), 'orc_warg', 'Warglovast gyárt 11/10/9 másodpercenként.'],
-    orc_shaman: ['Sámántábor', '☠', 2, 1, runtime.C(60, 65), 'orc_shaman', 'Sámánt gyárt 10/9/8 másodpercenként. Az L2: 9 mp és L3: 8 mp próbaérték.'],
+    orc_shaman: ['Sámántábor', '☠', 2, 1, runtime.C(60, 65), 'orc_shaman', 'Sámánt gyárt 9/7,2/5,4 másodpercenként.'],
     orc_ram: ['Faltörő műhely', '⚒', 2, 1, runtime.C(80, 100), 'orc_ram', 'Faltörő kost gyárt 12/11/10 másodpercenként.'],
-    orc_troll: ['Trollverem', '♟', 3, 3, runtime.C(120, 140), 'orc_troll', 'Trollt gyárt 30/27/24 másodpercenként. Egyedi: legfeljebb egy építhető.']
+    orc_troll: ['Trollverem', '♟', 3, 3, runtime.C(120, 140), 'orc_troll', 'Trollt gyárt 24/19,2/14,4 másodpercenként. Egyedi: legfeljebb egy építhető.']
   };
   for (const [key, [name, icon, w, h, cost, unit, description]] of Object.entries(newBuildings)) {
     O.defs[key] = newBuildings[key];
@@ -55,11 +56,11 @@ export function initializeFactionsOrcRoster(runtime) {
       cat: 'magic',
       tags: ['ranged'],
       hp: 100,
-      damage: 6,
-      cooldown: 4.2,
+      damage: 8,
+      cooldown: 2.5,
       speed: 38,
-      range: 120,
-      train: 10,
+      range: 150,
+      train: ORC_TRAINING.orc_shaman[0],
       cost: runtime.C(10, 8, 12),
       damageType: 'magic',
       description: 'Találatonként 1 véletlen átok 4 mp-re. Előnyben részesíti az átok nélküli ellenfelet. Gyengeség: −20% sebzés; Sorvadás: −20% Max HP; Kimerültség: −25% támadási sebesség; Sebezhetőség: +20% kapott sebzés; Vakság: 25% melléütés. Azonos átok nem erősödik, időtartama frissül. Sorvadás próbaszabálya: a jelenlegi HP legfeljebb az új maximumra csökken, lejáratkor nem gyógyít.'
@@ -92,7 +93,7 @@ export function initializeFactionsOrcRoster(runtime) {
       speed: 26,
       range: 30,
       aoe: 55,
-      train: 30,
+      train: ORC_TRAINING.orc_troll[0],
       cost: runtime.C(25, 60, 60),
       description: `110 alapsebzés a célpontra, ${ORC_BALANCE.trollSecondaryDamage} a körülötte álló ellenségekre. Területi sugár: 55 útegység a célpont körül. Épületsebzés: normál közelharci szorzó (torony: 27,5; főváros: 36,67). Az Ősök Totemének és az Áldozati oltárnak 4 pontot ér.`
     }
@@ -101,16 +102,12 @@ export function initializeFactionsOrcRoster(runtime) {
     runtime.UNITS[key] = {
       damageType: 'physical',
       ...d,
+      cost: trainingPrice(d.cost),
       race: 'orc'
     };
     runtime.UNIT_ORDER.push(key);
   }
-  const times = {
-    orc_warg: [11, 10, 9],
-    orc_shaman: [10, 9, 8],
-    orc_ram: [12, 11, 10],
-    orc_troll: [30, 27, 24]
-  };
+  const times = Object.fromEntries(['orc_warg', 'orc_shaman', 'orc_ram', 'orc_troll'].map(key => [key, ORC_TRAINING[key]]));
   const oldTime = runtime.trainingTime;
   runtime.trainingTime = function (c, b) {
     if (!times[b.type]) return oldTime(c, b);

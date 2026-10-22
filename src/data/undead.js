@@ -1,4 +1,5 @@
 import { UNDEAD_PLAN_BUILDINGS, UNDEAD_PLAN_UPGRADES } from './undead-plan.js';
+import { UNDEAD_TRAINING, trainingPrice } from './unit-balance.js';
 export const UNDEAD_RACE = 'undead';
 export const UNDEAD_NAME = 'Élőhalottak';
 export const UNDEAD_START = ['und_well', 'und_crypt', 'und_graveyard'];
@@ -14,8 +15,8 @@ const aiRoles = {
 export const UNDEAD_UNITS = {
   und_skeleton: {
     name: 'Csontváz',
-    hp: 70,
-    damage: 9,
+    hp: 85,
+    damage: 10,
     cooldown: 1,
     speed: 42,
     range: 30,
@@ -30,7 +31,7 @@ export const UNDEAD_UNITS = {
   und_skeleton_archer: {
     name: 'Csontváz Íjász',
     producerHint: 'Temető · Csontváz Íjász ereklyével',
-    hp: 70,
+    hp: 85,
     damage: 8,
     cooldown: 1.25,
     speed: 40,
@@ -45,12 +46,12 @@ export const UNDEAD_UNITS = {
   },
   und_zombie: {
     name: 'Zombi',
-    hp: 220,
-    damage: 8,
+    hp: 280,
+    damage: 12,
     cooldown: 1.8,
     speed: 26,
     range: 30,
-    train: 9,
+    train: 8,
     souls: 16,
     cat: 'infantry',
     tags: ['melee'],
@@ -59,13 +60,13 @@ export const UNDEAD_UNITS = {
   },
   und_ghost: {
     name: 'Szellem',
-    hp: 65,
-    damage: 5,
+    hp: 75,
+    damage: 8,
     cooldown: 1.4,
     speed: 46,
     range: 30,
-    train: 7,
-    souls: 13,
+    train: 6,
+    souls: 11,
     cat: 'infantry',
     tags: ['melee'],
     icon: '👻',
@@ -74,13 +75,13 @@ export const UNDEAD_UNITS = {
   },
   und_necromancer: {
     name: 'Nekromanta',
-    hp: 90,
+    hp: 100,
     damage: 5,
     cooldown: 2,
     speed: 36,
     range: 120,
-    train: 25,
-    souls: 50,
+    train: 14,
+    souls: 40,
     cat: 'magic',
     tags: ['ranged'],
     damageType: 'magic',
@@ -95,8 +96,8 @@ export const UNDEAD_UNITS = {
     cooldown: 1.25,
     speed: 50,
     range: 30,
-    train: 35,
-    souls: 85,
+    train: 16,
+    souls: 45,
     cat: 'infantry',
     tags: ['melee'],
     icon: '🧛',
@@ -110,8 +111,8 @@ export const UNDEAD_UNITS = {
     cooldown: 5,
     speed: 32,
     range: 140,
-    train: 40,
-    souls: 110,
+    train: 18,
+    souls: 60,
     cat: 'magic',
     tags: ['ranged'],
     damageType: 'magic',
@@ -120,7 +121,10 @@ export const UNDEAD_UNITS = {
       '5 másodpercenként új ellenségre kapcsolódó sugár: kezdetben 5 sebzés/mp, kapcsolatonként másodpercenként +2 sebzés/mp. A kapcsolat a célpont haláláig tart; a tényleges sebzés 100%-ából gyógyul.',
   },
 };
-for (const [key, u] of Object.entries(UNDEAD_UNITS)) u.aiRole = aiRoles[key.replace('und_', '')];
+for (const [key, u] of Object.entries(UNDEAD_UNITS)) {
+  u.aiRole = aiRoles[key.replace('und_', '')];
+  u.souls = trainingPrice({ wood: u.souls }).wood;
+}
 // Prices, upkeep and missing training times are initial balance values, not workbook values.
 const economics = {
   keep: [0, 0],
@@ -129,9 +133,9 @@ const economics = {
   und_graveyard: [40, 0.35],
   und_morgue: [65, 0.55],
   und_ghost_spawner: [60, 0.5],
-  und_necro_spawner: [140, 1.2],
-  und_vampire_castle: [200, 1.5],
-  und_lich_spawner: [220, 1.8],
+  und_necro_spawner: [140, 1],
+  und_vampire_castle: [200, 1.2],
+  und_lich_spawner: [220, 1.4],
   und_dark_tower: [75, 0.75],
   und_soul_harvester: [80, 0.5],
   und_soul_bank: [150, 1.2],
@@ -144,14 +148,7 @@ const economics = {
   und_rebirth_tomb: [180, 1.6],
   und_garden_of_dead: [200, 1.5],
 };
-const producers = {
-  und_graveyard: ['und_skeleton', [5, 4.25, 3.5, 3.5]],
-  und_morgue: ['und_zombie', [9, 8, 7, 7]],
-  und_ghost_spawner: ['und_ghost', [7, 6, 5, 5]],
-  und_necro_spawner: ['und_necromancer', [25, 22, 19, 19]],
-  und_vampire_castle: ['und_vampire', [35, 31, 27, 27]],
-  und_lich_spawner: ['und_lich', [40, 35, 30, 30]],
-};
+const producers = UNDEAD_TRAINING;
 const branchIds = {
   keep: ['death_squad', 'dead_realm'],
   und_graveyard: ['elite_skeletons', 'double_summon'],

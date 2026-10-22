@@ -1,6 +1,12 @@
-# Roadlords · V4.27.0
+# Roadlords · V4.28.0
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
+
+## Egységbalance · 4.28.0
+
+Az ork és élőhalott utánpótlás az emberi egységekhez, az épületek helyfoglalásához, egyedi korlátaihoz és költségeihez igazodik. Troll: 24 / 19,2 / 14,4 mp; Sámán: 9 / 7,2 / 5,4 mp. A Sámán 2,5 mp-enként támad, 8 alapsebzéssel és 150-es hatótávval. Az élőhalott egyediek L1-en 14 / 16 / 18 mp-enként készülnek a korábbi 25 / 35 / 40 helyett; az alapgyalogság és a fenntartás is módosult.
+
+Az egységbalance után **minden frakció mind a 21 egységváltozatának alap képzési ára +25%**, összár szerint egész nyersanyagokra kerekítve. A kedvezmények és a Trolltenyészet felezése ezután érvényesülnek; az ingyenes idézetekért nem von le pénzt a játék. Az épületárak és helyfoglalások megmaradnak. A végleges árak, szintek, indokok és a mérések korlátai: [Egységbalance](docs/unit-balance-4.28.md). Multiplayerben mindkét játékos frissítsen erre a verzióra.
 
 ## Felületméret és választókártyák · 4.27.0
 

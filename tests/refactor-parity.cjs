@@ -29,6 +29,9 @@ const BASE_URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/
    const expected={...results[0].units[i]},actual=results[1].units[i],city=results[0].cities[expected.side==='player'?0:1];
    const scale=(key,factor)=>{if(expected[key]!==undefined){assert(Math.abs(actual[key]-expected[key]*factor)<1e-5,`${expected.key} ${key}: approved balance delta`);expected[key]=actual[key];}};
    // Only the explicitly approved balance changes may differ from the archive.
+   if(expected.key==='orc_shaman'){
+    scale('damage',8/6);scale('buildingDamage',8/6);scale('cooldownTime',2.5/4.2);scale('range',150/120);
+   }
    if(expected.key==='orc_goblin'&&city.legends.includes('orc_gob_bow')){
     scale('damage',1.5/2);scale('buildingDamage',1.5/2);
     if(city.legends.includes('orc_momentum')){
@@ -40,6 +43,6 @@ const BASE_URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/
   }
   assert.deepEqual(results[1].counts,results[0].counts);
   console.log('PASS All 1000 initial units preserve positions and stats except the explicitly approved balance deltas');
-  fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/refactor-parity.json',JSON.stringify({passed:2,seed:42,units:1000,scope:"City and unit preservation with approved V4.24 balance deltas; movement and splash damage validated separately"},null,2));
+  fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/refactor-parity.json',JSON.stringify({passed:2,seed:42,units:1000,scope:"City and unit preservation with approved V4.24 and V4.28 balance deltas; movement and splash damage validated separately"},null,2));
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

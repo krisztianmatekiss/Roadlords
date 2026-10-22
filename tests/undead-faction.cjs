@@ -190,10 +190,10 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     );
     check(
       'Skeleton upgrades also affect archers, while Elite is a separate 50% multiplier',
-      Math.abs(data.base.hp - 84) < 1e-6 &&
-        Math.abs(data.archer.hp - 84) < 1e-6 &&
-        Math.abs(data.elite.hp - 126) < 1e-6 &&
-        Math.abs(data.base.dmg - 9.9) < 1e-6,
+      Math.abs(data.base.hp - 102) < 1e-6 &&
+        Math.abs(data.archer.hp - 102) < 1e-6 &&
+        Math.abs(data.elite.hp - 153) < 1e-6 &&
+        Math.abs(data.base.dmg - 11) < 1e-6,
     );
     const economy = await page.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__,
@@ -256,9 +256,9 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     check(
       'The HUD budgets full training demand while actual upkeep is charged separately',
       Math.abs(economy.flow.gain.wood - 4) < 1e-6 &&
-        Math.abs(economy.flow.use.wood - 2.45) < 1e-6 &&
+        Math.abs(economy.flow.use.wood - 2.85) < 1e-6 &&
         Math.abs(economy.net - 3.15) < 1e-6 &&
-        economy.cost === 8,
+        economy.cost === 10,
     );
     check(
       'Anchors apply the strongest local reduction without stacking',
@@ -693,7 +693,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     report.branches = branches;
     check(
       'Both Graveyard branches produce Elite or two-for-one recruits through actual training',
-      branches.elite && branches.double.join() === '2,8',
+      branches.elite && branches.double.join() === '2,10',
     );
     check(
       'Morgue branches provide periodic poison, upgraded death poison, or a skeleton at the corpse',

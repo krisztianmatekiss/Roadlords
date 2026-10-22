@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { ORC_TRAINING } from '../data/unit-balance.js';
 export function initializeFactionsOrcDescriptions(runtime) {
   const O = window.__ROADLORDS_ORCS__;
   const descriptions = {
@@ -32,15 +33,7 @@ export function initializeFactionsOrcDescriptions(runtime) {
     orc_totem: [['Szükséges elesett egység', [500, 450, 400, 200]]],
     orc_slave: [['Fa és kő / mp minden 20 ölésért', [.1, .2, .4]]]
   };
-  for (const [key, values] of Object.entries({
-    orc_war: [8.5, 7.5, 6.5],
-    orc_bers: [8, 7, 6],
-    orc_gob: [3.5, 2.75, 2],
-    orc_warg: [11, 10, 9],
-    orc_shaman: [10, 9, 8],
-    orc_ram: [12, 11, 10],
-    orc_troll: [30, 27, 24]
-  })) levels[key] = [['Képzési idő (mp)', values]];
+  for (const [key, values] of Object.entries(ORC_TRAINING)) levels[key] = [['Képzési idő (mp)', values]];
   const branchCopy = {
     orc_work: ['Másodpercenként 6 fát és 4 követ termel.', 'Másodpercenként 4 fát és 6 követ termel.'],
     orc_slave: ['Minden 20 ölésért +0,4 fa, +0,4 kő és +0,2 élelem másodpercenként.', 'Minden 20 ölésért továbbra is +0,4 fa és +0,4 kő másodpercenként. A szomszédos Munkatáborok és Vadászházak +50%-kal többet termelnek.']

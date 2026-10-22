@@ -1,3 +1,13 @@
+# V4.28.0 – egységbalance, utánpótlás és képzési árak
+
+2026-10-22. A production build `/Roadlords/` alatt, Node.js 24 + Chromium. A célzott ellenőrzések a 21 végleges egységárat, 40 valódi L1/L3 képzési ciklust, a levonás pontos egyszeriségét, az előnézetet és a teljes üzemi igényt vizsgálják. A globális +25% az új alapárakra, a városi kedvezmények előtt kerül; a Trolltenyészet felezése külön ellenőrzést kap. A Sámán 145 távolságú célpontja az animáció találati pontjáig nem sérül és nem kap átkot, majd a valós találatkor megkapja mindkettőt.
+
+A korábbi Troll/Goblin-ellenőrzések, teljes élőhalott-képességsor, gazdasági mérleg és 1000 egységes archivált összevetés is lefut. A referencia csak a Sámán nevesített sebzés-, hatótáv- és támadásiidő-változását engedi át az eddigi elfogadott delták mellett. A multiplayer továbbra is host által számolt egységeket és levonásokat használ; mindkét játékosnak a friss verzió kell.
+
+A helyi szóló-, 1000 egységes harci, AI-, ember–ork és élőhalott multiplayer-protokollpróbák hibamentesek. A valódi WebRTC-adatcsatorna próbája ezen a gépen nem kapott ICE-jelöltet, ezért kihagyott; a protokollpróbák nem bizonyítanak internetes kapcsolatfelépülést.
+
+A változás előtt és után külön 48–48 harci mintát vettünk 18 katonai mezőn, 60 mp-nyi kibocsátással, két véletlenmaggal, oldalanként tükrözve. Ez nem teljes gazdaság- és mérkőzésszimuláció, és nem egyenlő fajgyőzelmi arány bizonyítása. A tényleges építési/képzési ár, fenntartás, helyfoglalás és szükséges bevétel szerepel a [balance-leírásban](unit-balance-4.28.md) és a megőrzött mérési összesítőben.
+
 # V4.27.0 – százalékos felületméret és egységes választólapok
 
 2026-10-22. Node.js 24, Chromium, kész production build `/Roadlords/` alatt. A célzott helyi böngészőpróba 800×900, 1366×768, 1920×1080, 2560×1440, a jelzett 3195×1380 és 3840×2160 ablakméreteken vizsgálja mind az öt méretezési módot. Vegyes élőhalott épület/fejlesztés lapokkal méri az egyforma magasságot, a cím–kép–szöveg–lábléc sorrendjét, a hozzáférhető szövegterületet, a kilógás és külső görgetősáv hiányát, a látható műveletgombokat, valamint a felső sáv és minitérkép melletti építősáv határait. A három nyersanyagos kijelzés külön ütközésellenőrzést kap; 4/5/6 gyakori és legendás lapnál az utolsó lap elérhetősége is szerepel.

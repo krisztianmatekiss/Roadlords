@@ -1,0 +1,2300 @@
+{
+  "candidateVersion": "4.28.0",
+  "baseVersion": "4.27.0",
+  "baseCommit": "9f5fe41",
+  "scope": "Working-tree balance candidate; 48 mirrored samples before and 48 after, no claim of faction win rates.",
+  "limits": [
+    "18 military cells per side; 60 seconds of production, deployed together; no reinforcements or towers.",
+    "No upgrades, relics, construction times or economic buildings. L3 means producer levels only.",
+    "Income requirements include unit prices and Undead upkeep; currency totals are not treated as equivalent.",
+    "Two seeds, mirrored sides, 90 seconds per fight. These samples do not establish general faction win rates."
+  ],
+  "profiles": {
+    "before": [
+      {
+        "key": "swordsman",
+        "race": "human",
+        "name": "Kardos",
+        "type": "barracks",
+        "hp": 100,
+        "damage": 12,
+        "cooldown": 1,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 90,
+          "stone": 60,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 0,
+          "stone": 5,
+          "food": 6
+        },
+        "upkeep": 0,
+        "seconds": [
+          5,
+          4,
+          3
+        ]
+      },
+      {
+        "key": "spearman",
+        "race": "human",
+        "name": "Lándzsás",
+        "type": "spearhall",
+        "hp": 90,
+        "damage": 10,
+        "cooldown": 1.1,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 120,
+          "stone": 110,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 5,
+          "stone": 0,
+          "food": 6
+        },
+        "upkeep": 0,
+        "seconds": [
+          5,
+          4,
+          3
+        ]
+      },
+      {
+        "key": "archer",
+        "race": "human",
+        "name": "Íjász",
+        "type": "archery",
+        "hp": 55,
+        "damage": 8,
+        "cooldown": 1.2,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 140,
+          "stone": 90,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 7,
+          "stone": 0,
+          "food": 6
+        },
+        "upkeep": 0,
+        "seconds": [
+          6,
+          4.800000000000001,
+          3.5999999999999996
+        ]
+      },
+      {
+        "key": "knight",
+        "race": "human",
+        "name": "Lovag",
+        "type": "stable",
+        "hp": 240,
+        "damage": 30,
+        "cooldown": 1.25,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 180,
+          "stone": 180,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 0,
+          "stone": 16,
+          "food": 15
+        },
+        "upkeep": 0,
+        "seconds": [
+          9,
+          7.2,
+          5.3999999999999995
+        ]
+      },
+      {
+        "key": "priest",
+        "race": "human",
+        "name": "Pap",
+        "type": "temple",
+        "hp": 90,
+        "damage": 6,
+        "cooldown": 1.4,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 200,
+          "stone": 210,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 10,
+          "stone": 10,
+          "food": 12
+        },
+        "upkeep": 0,
+        "seconds": [
+          9,
+          7.2,
+          5.3999999999999995
+        ]
+      },
+      {
+        "key": "catapult",
+        "race": "human",
+        "name": "Katapult",
+        "type": "siegeworks",
+        "hp": 220,
+        "damage": 12,
+        "cooldown": 2.4,
+        "slots": 1,
+        "cells": 3,
+        "unique": false,
+        "buildCost": {
+          "wood": 240,
+          "stone": 300,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 26,
+          "stone": 21,
+          "food": 9
+        },
+        "upkeep": 0,
+        "seconds": [
+          12,
+          9.600000000000001,
+          7.199999999999999
+        ]
+      },
+      {
+        "key": "mage",
+        "race": "human",
+        "name": "Mágus",
+        "type": "magetower",
+        "hp": 75,
+        "damage": 24,
+        "cooldown": 1.7,
+        "slots": 1,
+        "cells": 4,
+        "unique": true,
+        "buildCost": {
+          "wood": 210,
+          "stone": 360,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 16,
+          "stone": 16,
+          "food": 12
+        },
+        "upkeep": 0,
+        "seconds": [
+          12,
+          9.600000000000001,
+          7.199999999999999
+        ]
+      },
+      {
+        "key": "orc_warrior",
+        "race": "orc",
+        "name": "Ork Harcos",
+        "type": "orc_war",
+        "hp": 300,
+        "damage": 20,
+        "cooldown": 1.25,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 90,
+          "stone": 60,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 0,
+          "stone": 7,
+          "food": 9
+        },
+        "upkeep": 0,
+        "seconds": [
+          8.5,
+          7.5,
+          6.5
+        ]
+      },
+      {
+        "key": "orc_berserker",
+        "race": "orc",
+        "name": "Dühöngő",
+        "type": "orc_bers",
+        "hp": 180,
+        "damage": 16,
+        "cooldown": 0.65,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 140,
+          "stone": 90,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 4,
+          "stone": 6,
+          "food": 8
+        },
+        "upkeep": 0,
+        "seconds": [
+          8,
+          7,
+          6
+        ]
+      },
+      {
+        "key": "orc_goblin",
+        "race": "orc",
+        "name": "Goblin",
+        "type": "orc_gob",
+        "hp": 30,
+        "damage": 3.5,
+        "cooldown": 0.55,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 110,
+          "stone": 60,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 3,
+          "stone": 1,
+          "food": 4
+        },
+        "upkeep": 0,
+        "seconds": [
+          3.5,
+          2.75,
+          2
+        ]
+      },
+      {
+        "key": "orc_warg",
+        "race": "orc",
+        "name": "Warglovas",
+        "type": "orc_warg",
+        "hp": 400,
+        "damage": 30,
+        "cooldown": 1.5,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 210,
+          "stone": 180,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 5,
+          "stone": 16,
+          "food": 18
+        },
+        "upkeep": 0,
+        "seconds": [
+          11,
+          10,
+          9
+        ]
+      },
+      {
+        "key": "orc_shaman",
+        "race": "orc",
+        "name": "Sámán",
+        "type": "orc_shaman",
+        "hp": 100,
+        "damage": 6,
+        "cooldown": 4.2,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 180,
+          "stone": 200,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 10,
+          "stone": 8,
+          "food": 12
+        },
+        "upkeep": 0,
+        "seconds": [
+          10,
+          9,
+          8
+        ]
+      },
+      {
+        "key": "orc_ram",
+        "race": "orc",
+        "name": "Faltörő kos",
+        "type": "orc_ram",
+        "hp": 1100,
+        "damage": 8,
+        "cooldown": 2,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 240,
+          "stone": 300,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 18,
+          "stone": 22,
+          "food": 10
+        },
+        "upkeep": 0,
+        "seconds": [
+          12,
+          11,
+          10
+        ]
+      },
+      {
+        "key": "orc_troll",
+        "race": "orc",
+        "name": "Troll",
+        "type": "orc_troll",
+        "hp": 3200,
+        "damage": 110,
+        "cooldown": 2,
+        "slots": 4,
+        "cells": 9,
+        "unique": true,
+        "buildCost": {
+          "wood": 360,
+          "stone": 420,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 25,
+          "stone": 60,
+          "food": 60
+        },
+        "upkeep": 0,
+        "seconds": [
+          30,
+          27,
+          24
+        ]
+      },
+      {
+        "key": "und_skeleton",
+        "race": "undead",
+        "name": "Csontváz",
+        "type": "und_graveyard",
+        "hp": 70,
+        "damage": 9,
+        "cooldown": 1,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 40,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 8,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 0.35,
+        "seconds": [
+          5,
+          4.25,
+          3.5
+        ]
+      },
+      {
+        "key": "und_skeleton_archer",
+        "race": "undead",
+        "name": "Csontváz Íjász",
+        "type": "und_graveyard",
+        "hp": 70,
+        "damage": 8,
+        "cooldown": 1.25,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 40,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 8,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 0.35,
+        "seconds": [
+          5,
+          4.25,
+          3.5
+        ]
+      },
+      {
+        "key": "und_zombie",
+        "race": "undead",
+        "name": "Zombi",
+        "type": "und_morgue",
+        "hp": 220,
+        "damage": 8,
+        "cooldown": 1.8,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 65,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 16,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 0.55,
+        "seconds": [
+          9,
+          8,
+          7
+        ]
+      },
+      {
+        "key": "und_ghost",
+        "race": "undead",
+        "name": "Szellem",
+        "type": "und_ghost_spawner",
+        "hp": 65,
+        "damage": 5,
+        "cooldown": 1.4,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 60,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 13,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 0.5,
+        "seconds": [
+          7,
+          6,
+          5
+        ]
+      },
+      {
+        "key": "und_necromancer",
+        "race": "undead",
+        "name": "Nekromanta",
+        "type": "und_necro_spawner",
+        "hp": 90,
+        "damage": 5,
+        "cooldown": 2,
+        "slots": 1,
+        "cells": 4,
+        "unique": true,
+        "buildCost": {
+          "wood": 140,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 50,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 1.2,
+        "seconds": [
+          25,
+          22,
+          19
+        ]
+      },
+      {
+        "key": "und_vampire",
+        "race": "undead",
+        "name": "Vámpír",
+        "type": "und_vampire_castle",
+        "hp": 300,
+        "damage": 45,
+        "cooldown": 1.25,
+        "slots": 1,
+        "cells": 4,
+        "unique": true,
+        "buildCost": {
+          "wood": 200,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 85,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 1.5,
+        "seconds": [
+          35,
+          31,
+          27
+        ]
+      },
+      {
+        "key": "und_lich",
+        "race": "undead",
+        "name": "Lich",
+        "type": "und_lich_spawner",
+        "hp": 180,
+        "damage": 5,
+        "cooldown": 5,
+        "slots": 1,
+        "cells": 4,
+        "unique": true,
+        "buildCost": {
+          "wood": 220,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 110,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 1.8,
+        "seconds": [
+          40,
+          35,
+          30
+        ]
+      }
+    ],
+    "after": [
+      {
+        "key": "swordsman",
+        "race": "human",
+        "name": "Kardos",
+        "type": "barracks",
+        "hp": 100,
+        "damage": 12,
+        "cooldown": 1,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 90,
+          "stone": 60,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 0,
+          "stone": 6,
+          "food": 8
+        },
+        "upkeep": 0,
+        "seconds": [
+          5,
+          4,
+          3
+        ]
+      },
+      {
+        "key": "spearman",
+        "race": "human",
+        "name": "Lándzsás",
+        "type": "spearhall",
+        "hp": 90,
+        "damage": 10,
+        "cooldown": 1.1,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 120,
+          "stone": 110,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 6,
+          "stone": 0,
+          "food": 8
+        },
+        "upkeep": 0,
+        "seconds": [
+          5,
+          4,
+          3
+        ]
+      },
+      {
+        "key": "archer",
+        "race": "human",
+        "name": "Íjász",
+        "type": "archery",
+        "hp": 55,
+        "damage": 8,
+        "cooldown": 1.2,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 140,
+          "stone": 90,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 9,
+          "stone": 0,
+          "food": 7
+        },
+        "upkeep": 0,
+        "seconds": [
+          6,
+          4.800000000000001,
+          3.5999999999999996
+        ]
+      },
+      {
+        "key": "knight",
+        "race": "human",
+        "name": "Lovag",
+        "type": "stable",
+        "hp": 240,
+        "damage": 30,
+        "cooldown": 1.25,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 180,
+          "stone": 180,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 0,
+          "stone": 20,
+          "food": 19
+        },
+        "upkeep": 0,
+        "seconds": [
+          9,
+          7.2,
+          5.3999999999999995
+        ]
+      },
+      {
+        "key": "priest",
+        "race": "human",
+        "name": "Pap",
+        "type": "temple",
+        "hp": 90,
+        "damage": 6,
+        "cooldown": 1.4,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 200,
+          "stone": 210,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 13,
+          "stone": 12,
+          "food": 15
+        },
+        "upkeep": 0,
+        "seconds": [
+          9,
+          7.2,
+          5.3999999999999995
+        ]
+      },
+      {
+        "key": "catapult",
+        "race": "human",
+        "name": "Katapult",
+        "type": "siegeworks",
+        "hp": 220,
+        "damage": 12,
+        "cooldown": 2.4,
+        "slots": 1,
+        "cells": 3,
+        "unique": false,
+        "buildCost": {
+          "wood": 240,
+          "stone": 300,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 33,
+          "stone": 26,
+          "food": 11
+        },
+        "upkeep": 0,
+        "seconds": [
+          12,
+          9.600000000000001,
+          7.199999999999999
+        ]
+      },
+      {
+        "key": "mage",
+        "race": "human",
+        "name": "Mágus",
+        "type": "magetower",
+        "hp": 75,
+        "damage": 24,
+        "cooldown": 1.7,
+        "slots": 1,
+        "cells": 4,
+        "unique": true,
+        "buildCost": {
+          "wood": 210,
+          "stone": 360,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 20,
+          "stone": 20,
+          "food": 15
+        },
+        "upkeep": 0,
+        "seconds": [
+          12,
+          9.600000000000001,
+          7.199999999999999
+        ]
+      },
+      {
+        "key": "orc_warrior",
+        "race": "orc",
+        "name": "Ork Harcos",
+        "type": "orc_war",
+        "hp": 300,
+        "damage": 20,
+        "cooldown": 1.25,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 90,
+          "stone": 60,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 0,
+          "stone": 9,
+          "food": 11
+        },
+        "upkeep": 0,
+        "seconds": [
+          8.5,
+          7.5,
+          6.5
+        ]
+      },
+      {
+        "key": "orc_berserker",
+        "race": "orc",
+        "name": "Dühöngő",
+        "type": "orc_bers",
+        "hp": 180,
+        "damage": 16,
+        "cooldown": 0.65,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 140,
+          "stone": 90,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 5,
+          "stone": 8,
+          "food": 10
+        },
+        "upkeep": 0,
+        "seconds": [
+          8,
+          7,
+          6
+        ]
+      },
+      {
+        "key": "orc_goblin",
+        "race": "orc",
+        "name": "Goblin",
+        "type": "orc_gob",
+        "hp": 30,
+        "damage": 3.5,
+        "cooldown": 0.55,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 110,
+          "stone": 60,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 4,
+          "stone": 1,
+          "food": 5
+        },
+        "upkeep": 0,
+        "seconds": [
+          3.5,
+          2.75,
+          2
+        ]
+      },
+      {
+        "key": "orc_warg",
+        "race": "orc",
+        "name": "Warglovas",
+        "type": "orc_warg",
+        "hp": 400,
+        "damage": 30,
+        "cooldown": 1.5,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 210,
+          "stone": 180,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 6,
+          "stone": 20,
+          "food": 23
+        },
+        "upkeep": 0,
+        "seconds": [
+          11,
+          10,
+          9
+        ]
+      },
+      {
+        "key": "orc_shaman",
+        "race": "orc",
+        "name": "Sámán",
+        "type": "orc_shaman",
+        "hp": 100,
+        "damage": 8,
+        "cooldown": 2.5,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 180,
+          "stone": 200,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 13,
+          "stone": 10,
+          "food": 15
+        },
+        "upkeep": 0,
+        "seconds": [
+          9,
+          7.2,
+          5.4
+        ]
+      },
+      {
+        "key": "orc_ram",
+        "race": "orc",
+        "name": "Faltörő kos",
+        "type": "orc_ram",
+        "hp": 1100,
+        "damage": 8,
+        "cooldown": 2,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 240,
+          "stone": 300,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 23,
+          "stone": 28,
+          "food": 12
+        },
+        "upkeep": 0,
+        "seconds": [
+          12,
+          11,
+          10
+        ]
+      },
+      {
+        "key": "orc_troll",
+        "race": "orc",
+        "name": "Troll",
+        "type": "orc_troll",
+        "hp": 3200,
+        "damage": 110,
+        "cooldown": 2,
+        "slots": 4,
+        "cells": 9,
+        "unique": true,
+        "buildCost": {
+          "wood": 360,
+          "stone": 420,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 31,
+          "stone": 75,
+          "food": 75
+        },
+        "upkeep": 0,
+        "seconds": [
+          24,
+          19.2,
+          14.4
+        ]
+      },
+      {
+        "key": "und_skeleton",
+        "race": "undead",
+        "name": "Csontváz",
+        "type": "und_graveyard",
+        "hp": 85,
+        "damage": 10,
+        "cooldown": 1,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 40,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 10,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 0.35,
+        "seconds": [
+          5,
+          4,
+          3
+        ]
+      },
+      {
+        "key": "und_skeleton_archer",
+        "race": "undead",
+        "name": "Csontváz Íjász",
+        "type": "und_graveyard",
+        "hp": 85,
+        "damage": 8,
+        "cooldown": 1.25,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 40,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 10,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 0.35,
+        "seconds": [
+          5,
+          4,
+          3
+        ]
+      },
+      {
+        "key": "und_zombie",
+        "race": "undead",
+        "name": "Zombi",
+        "type": "und_morgue",
+        "hp": 280,
+        "damage": 12,
+        "cooldown": 1.8,
+        "slots": 1,
+        "cells": 2,
+        "unique": false,
+        "buildCost": {
+          "wood": 65,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 20,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 0.55,
+        "seconds": [
+          8,
+          6.4,
+          4.8
+        ]
+      },
+      {
+        "key": "und_ghost",
+        "race": "undead",
+        "name": "Szellem",
+        "type": "und_ghost_spawner",
+        "hp": 75,
+        "damage": 8,
+        "cooldown": 1.4,
+        "slots": 1,
+        "cells": 1,
+        "unique": false,
+        "buildCost": {
+          "wood": 60,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 14,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 0.5,
+        "seconds": [
+          6,
+          4.8,
+          3.6
+        ]
+      },
+      {
+        "key": "und_necromancer",
+        "race": "undead",
+        "name": "Nekromanta",
+        "type": "und_necro_spawner",
+        "hp": 100,
+        "damage": 5,
+        "cooldown": 2,
+        "slots": 1,
+        "cells": 4,
+        "unique": true,
+        "buildCost": {
+          "wood": 140,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 50,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 1,
+        "seconds": [
+          14,
+          11.2,
+          8.4
+        ]
+      },
+      {
+        "key": "und_vampire",
+        "race": "undead",
+        "name": "Vámpír",
+        "type": "und_vampire_castle",
+        "hp": 300,
+        "damage": 45,
+        "cooldown": 1.25,
+        "slots": 1,
+        "cells": 4,
+        "unique": true,
+        "buildCost": {
+          "wood": 200,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 56,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 1.2,
+        "seconds": [
+          16,
+          12.8,
+          9.6
+        ]
+      },
+      {
+        "key": "und_lich",
+        "race": "undead",
+        "name": "Lich",
+        "type": "und_lich_spawner",
+        "hp": 180,
+        "damage": 5,
+        "cooldown": 5,
+        "slots": 1,
+        "cells": 4,
+        "unique": true,
+        "buildCost": {
+          "wood": 220,
+          "stone": 0,
+          "food": 0
+        },
+        "unitCost": {
+          "wood": 75,
+          "stone": 0,
+          "food": 0
+        },
+        "upkeep": 1.4,
+        "seconds": [
+          18,
+          14.4,
+          10.8
+        ]
+      }
+    ]
+  },
+  "samples": [
+    {
+      "name": "orc-troll",
+      "level": 1,
+      "before": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 15.25,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 97,
+            "cells": 18,
+            "cost": {
+              "wood": 340,
+              "stone": 632,
+              "food": 792
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 5.666666666666667,
+              "stone": 10.533333333333333,
+              "food": 13.2
+            }
+          },
+          {
+            "race": "orc",
+            "units": 73,
+            "cells": 18,
+            "cost": {
+              "wood": 263,
+              "stone": 317,
+              "food": 522
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 4.383333333333334,
+              "stone": 5.283333333333333,
+              "food": 8.7
+            }
+          }
+        ]
+      },
+      "after": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 26,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 97,
+            "cells": 18,
+            "cost": {
+              "wood": 436,
+              "stone": 772,
+              "food": 1007
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 7.266666666666667,
+              "stone": 12.866666666666667,
+              "food": 16.783333333333335
+            }
+          },
+          {
+            "race": "orc",
+            "units": 73,
+            "cells": 18,
+            "cost": {
+              "wood": 344,
+              "stone": 387,
+              "food": 649
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 5.733333333333333,
+              "stone": 6.45,
+              "food": 10.816666666666666
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "orc-troll",
+      "level": 3,
+      "before": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 90.5,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 164,
+            "cells": 18,
+            "cost": {
+              "wood": 572,
+              "stone": 1100,
+              "food": 1362
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 9.533333333333333,
+              "stone": 18.333333333333332,
+              "food": 22.7
+            }
+          },
+          {
+            "race": "orc",
+            "units": 117,
+            "cells": 18,
+            "cost": {
+              "wood": 390,
+              "stone": 392,
+              "food": 726
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 6.5,
+              "stone": 6.533333333333333,
+              "food": 12.1
+            }
+          }
+        ]
+      },
+      "after": {
+        "wins": {
+          "human": 0,
+          "orc": 4,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 0,
+        "meanOtherSurvivors": 11.75,
+        "starts": [
+          {
+            "race": "human",
+            "units": 164,
+            "cells": 18,
+            "cost": {
+              "wood": 734,
+              "stone": 1344,
+              "food": 1732
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 12.233333333333333,
+              "stone": 22.4,
+              "food": 28.866666666666667
+            }
+          },
+          {
+            "race": "orc",
+            "units": 123,
+            "cells": 18,
+            "cost": {
+              "wood": 627,
+              "stone": 662,
+              "food": 1113
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 10.45,
+              "stone": 11.033333333333333,
+              "food": 18.55
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "orc-shaman",
+      "level": 1,
+      "before": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 42.5,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 97,
+            "cells": 18,
+            "cost": {
+              "wood": 340,
+              "stone": 632,
+              "food": 792
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 5.666666666666667,
+              "stone": 10.533333333333333,
+              "food": 13.2
+            }
+          },
+          {
+            "race": "orc",
+            "units": 111,
+            "cells": 18,
+            "cost": {
+              "wood": 374,
+              "stone": 471,
+              "food": 785
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 6.233333333333333,
+              "stone": 7.85,
+              "food": 13.083333333333334
+            }
+          }
+        ]
+      },
+      "after": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 37,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 97,
+            "cells": 18,
+            "cost": {
+              "wood": 436,
+              "stone": 772,
+              "food": 1007
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 7.266666666666667,
+              "stone": 12.866666666666667,
+              "food": 16.783333333333335
+            }
+          },
+          {
+            "race": "orc",
+            "units": 111,
+            "cells": 18,
+            "cost": {
+              "wood": 488,
+              "stone": 577,
+              "food": 981
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 8.133333333333333,
+              "stone": 9.616666666666667,
+              "food": 16.35
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "orc-shaman",
+      "level": 3,
+      "before": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 92.75,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 164,
+            "cells": 18,
+            "cost": {
+              "wood": 572,
+              "stone": 1100,
+              "food": 1362
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 9.533333333333333,
+              "stone": 18.333333333333332,
+              "food": 22.7
+            }
+          },
+          {
+            "race": "orc",
+            "units": 173,
+            "cells": 18,
+            "cost": {
+              "wood": 560,
+              "stone": 613,
+              "food": 1107
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 9.333333333333334,
+              "stone": 10.216666666666667,
+              "food": 18.45
+            }
+          }
+        ]
+      },
+      "after": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 83.5,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 164,
+            "cells": 18,
+            "cost": {
+              "wood": 734,
+              "stone": 1344,
+              "food": 1732
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 12.233333333333333,
+              "stone": 22.4,
+              "food": 28.866666666666667
+            }
+          },
+          {
+            "race": "orc",
+            "units": 181,
+            "cells": 18,
+            "cost": {
+              "wood": 838,
+              "stone": 823,
+              "food": 1503
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 13.966666666666667,
+              "stone": 13.716666666666667,
+              "food": 25.05
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "und_necro_spawner",
+      "level": 1,
+      "before": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 95.25,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 97,
+            "cells": 18,
+            "cost": {
+              "wood": 340,
+              "stone": 632,
+              "food": 792
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 5.666666666666667,
+              "stone": 10.533333333333333,
+              "food": 13.2
+            }
+          },
+          {
+            "race": "undead",
+            "units": 108,
+            "cells": 18,
+            "cost": {
+              "wood": 1172,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 5.95,
+            "requiredIncomePerSecond": {
+              "wood": 25.483333333333334,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      },
+      "after": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 83.5,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 97,
+            "cells": 18,
+            "cost": {
+              "wood": 436,
+              "stone": 772,
+              "food": 1007
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 7.266666666666667,
+              "stone": 12.866666666666667,
+              "food": 16.783333333333335
+            }
+          },
+          {
+            "race": "undead",
+            "units": 117,
+            "cells": 18,
+            "cost": {
+              "wood": 1620,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 5.75,
+            "requiredIncomePerSecond": {
+              "wood": 32.75,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "und_necro_spawner",
+      "level": 3,
+      "before": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 155.5,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 164,
+            "cells": 18,
+            "cost": {
+              "wood": 572,
+              "stone": 1100,
+              "food": 1362
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 9.533333333333333,
+              "stone": 18.333333333333332,
+              "food": 22.7
+            }
+          },
+          {
+            "race": "undead",
+            "units": 153,
+            "cells": 18,
+            "cost": {
+              "wood": 1662,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 5.95,
+            "requiredIncomePerSecond": {
+              "wood": 33.65,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      },
+      "after": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 141.5,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 164,
+            "cells": 18,
+            "cost": {
+              "wood": 734,
+              "stone": 1344,
+              "food": 1732
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 12.233333333333333,
+              "stone": 22.4,
+              "food": 28.866666666666667
+            }
+          },
+          {
+            "race": "undead",
+            "units": 195,
+            "cells": 18,
+            "cost": {
+              "wood": 2718,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 5.75,
+            "requiredIncomePerSecond": {
+              "wood": 51.05,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "und_vampire_castle",
+      "level": 1,
+      "before": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 93,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 97,
+            "cells": 18,
+            "cost": {
+              "wood": 340,
+              "stone": 632,
+              "food": 792
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 5.666666666666667,
+              "stone": 10.533333333333333,
+              "food": 13.2
+            }
+          },
+          {
+            "race": "undead",
+            "units": 107,
+            "cells": 18,
+            "cost": {
+              "wood": 1157,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 6.25,
+            "requiredIncomePerSecond": {
+              "wood": 25.533333333333335,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      },
+      "after": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 83.5,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 97,
+            "cells": 18,
+            "cost": {
+              "wood": 436,
+              "stone": 772,
+              "food": 1007
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 7.266666666666667,
+              "stone": 12.866666666666667,
+              "food": 16.783333333333335
+            }
+          },
+          {
+            "race": "undead",
+            "units": 116,
+            "cells": 18,
+            "cost": {
+              "wood": 1588,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 5.95,
+            "requiredIncomePerSecond": {
+              "wood": 32.416666666666664,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "und_vampire_castle",
+      "level": 3,
+      "before": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 157.5,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 164,
+            "cells": 18,
+            "cost": {
+              "wood": 572,
+              "stone": 1100,
+              "food": 1362
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 9.533333333333333,
+              "stone": 18.333333333333332,
+              "food": 22.7
+            }
+          },
+          {
+            "race": "undead",
+            "units": 152,
+            "cells": 18,
+            "cost": {
+              "wood": 1682,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 6.25,
+            "requiredIncomePerSecond": {
+              "wood": 34.28333333333333,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      },
+      "after": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 138.25,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 164,
+            "cells": 18,
+            "cost": {
+              "wood": 734,
+              "stone": 1344,
+              "food": 1732
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 12.233333333333333,
+              "stone": 22.4,
+              "food": 28.866666666666667
+            }
+          },
+          {
+            "race": "undead",
+            "units": 194,
+            "cells": 18,
+            "cost": {
+              "wood": 2704,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 5.95,
+            "requiredIncomePerSecond": {
+              "wood": 51.01666666666667,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "und_lich_spawner",
+      "level": 1,
+      "before": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 93.25,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 97,
+            "cells": 18,
+            "cost": {
+              "wood": 340,
+              "stone": 632,
+              "food": 792
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 5.666666666666667,
+              "stone": 10.533333333333333,
+              "food": 13.2
+            }
+          },
+          {
+            "race": "undead",
+            "units": 107,
+            "cells": 18,
+            "cost": {
+              "wood": 1182,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 6.55,
+            "requiredIncomePerSecond": {
+              "wood": 26.25,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      },
+      "after": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 86.75,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 97,
+            "cells": 18,
+            "cost": {
+              "wood": 436,
+              "stone": 772,
+              "food": 1007
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 7.266666666666667,
+              "stone": 12.866666666666667,
+              "food": 16.783333333333335
+            }
+          },
+          {
+            "race": "undead",
+            "units": 116,
+            "cells": 18,
+            "cost": {
+              "wood": 1645,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 6.1499999999999995,
+            "requiredIncomePerSecond": {
+              "wood": 33.56666666666667,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "und_lich_spawner",
+      "level": 3,
+      "before": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 158,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 164,
+            "cells": 18,
+            "cost": {
+              "wood": 572,
+              "stone": 1100,
+              "food": 1362
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 9.533333333333333,
+              "stone": 18.333333333333332,
+              "food": 22.7
+            }
+          },
+          {
+            "race": "undead",
+            "units": 152,
+            "cells": 18,
+            "cost": {
+              "wood": 1732,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 6.55,
+            "requiredIncomePerSecond": {
+              "wood": 35.416666666666664,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      },
+      "after": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 141.5,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 164,
+            "cells": 18,
+            "cost": {
+              "wood": 734,
+              "stone": 1344,
+              "food": 1732
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 12.233333333333333,
+              "stone": 22.4,
+              "food": 28.866666666666667
+            }
+          },
+          {
+            "race": "undead",
+            "units": 193,
+            "cells": 18,
+            "cost": {
+              "wood": 2743,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 6.1499999999999995,
+            "requiredIncomePerSecond": {
+              "wood": 51.86666666666667,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "undead-elites",
+      "level": 1,
+      "before": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 96.5,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 97,
+            "cells": 18,
+            "cost": {
+              "wood": 340,
+              "stone": 632,
+              "food": 792
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 5.666666666666667,
+              "stone": 10.533333333333333,
+              "food": 13.2
+            }
+          },
+          {
+            "race": "undead",
+            "units": 58,
+            "cells": 18,
+            "cost": {
+              "wood": 775,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 6.45,
+            "requiredIncomePerSecond": {
+              "wood": 19.366666666666667,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      },
+      "after": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 94,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 97,
+            "cells": 18,
+            "cost": {
+              "wood": 436,
+              "stone": 772,
+              "food": 1007
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 7.266666666666667,
+              "stone": 12.866666666666667,
+              "food": 16.783333333333335
+            }
+          },
+          {
+            "race": "undead",
+            "units": 65,
+            "cells": 18,
+            "cost": {
+              "wood": 1213,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 5.55,
+            "requiredIncomePerSecond": {
+              "wood": 25.766666666666666,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "undead-elites",
+      "level": 3,
+      "before": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 161,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 164,
+            "cells": 18,
+            "cost": {
+              "wood": 572,
+              "stone": 1100,
+              "food": 1362
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 9.533333333333333,
+              "stone": 18.333333333333332,
+              "food": 22.7
+            }
+          },
+          {
+            "race": "undead",
+            "units": 83,
+            "cells": 18,
+            "cost": {
+              "wood": 1212,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 6.45,
+            "requiredIncomePerSecond": {
+              "wood": 26.65,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      },
+      "after": {
+        "wins": {
+          "human": 4,
+          "orc": 0,
+          "undead": 0,
+          "timeout": 0
+        },
+        "meanHumanSurvivors": 149,
+        "meanOtherSurvivors": 0,
+        "starts": [
+          {
+            "race": "human",
+            "units": 164,
+            "cells": 18,
+            "cost": {
+              "wood": 734,
+              "stone": 1344,
+              "food": 1732
+            },
+            "upkeep": 0,
+            "requiredIncomePerSecond": {
+              "wood": 12.233333333333333,
+              "stone": 22.4,
+              "food": 28.866666666666667
+            }
+          },
+          {
+            "race": "undead",
+            "units": 110,
+            "cells": 18,
+            "cost": {
+              "wood": 2101,
+              "stone": 0,
+              "food": 0
+            },
+            "upkeep": 5.55,
+            "requiredIncomePerSecond": {
+              "wood": 40.56666666666666,
+              "stone": 0,
+              "food": 0
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

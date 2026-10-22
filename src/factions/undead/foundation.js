@@ -25,6 +25,15 @@ export function initializeUndeadFoundation(R) {
         ? def.race === 'orc' || ['keep', 'warehouse'].includes(key)
         : !def.race || def.race === 'human';
   R.factionUnitMatches = (race, def) => (def.race || 'human') === (race || 'human');
+  const oldTerrain = R.generateTerrain;
+  R.generateTerrain = (c, ruinCount) => {
+    const out = oldTerrain(c, ruinCount);
+    if (isUndead(c))
+      c.terrain = c.terrain.map((t) =>
+        ['forest', 'quarry', 'fertile'].includes(t?.type) ? null : t,
+      );
+    return out;
+  };
   R.initializeFactionCity = (c) => {
     if (!isUndead(c)) {
       delete c.undeadState;

@@ -39,6 +39,35 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         );
       }),
     );
+    const resourceFree = () => page.evaluate(() =>
+      !__ROADLORDS_RUNTIME__.P.terrain.some((t) =>
+        ['forest', 'quarry', 'fertile'].includes(t?.type)),
+    );
+    check('Undead solo cities start without forest, quarry or fertile terrain', await resourceFree());
+    await page.locator('#pregameRefreshLeft').click();
+    check('Undead city rerolls also exclude resource terrain', await resourceFree());
+    check(
+      'Undead generation handles enemy cities and the fallback layout while preserving ruins',
+      await page.evaluate(() => {
+        const R = __ROADLORDS_RUNTIME__;
+        const city = { ...R.E, race: 'undead' };
+        const valid = () =>
+          !city.terrain.some((t) => ['forest', 'quarry', 'fertile'].includes(t?.type)) &&
+          city.terrain.filter((t) => t?.type === 'ruin').length === 10;
+        R.generateTerrain(city, 10);
+        const normal = valid();
+        const oldValid = R.terrainLayoutValid;
+        try {
+          R.terrainLayoutValid = () => false;
+          R.generateTerrain(city, 10);
+          return normal && valid() &&
+            city.terrain.some((t) => t?.type === 'foundation') &&
+            city.terrain.some((t) => t?.type === 'ancient');
+        } finally {
+          R.terrainLayoutValid = oldValid;
+        }
+      }),
+    );
     await page.locator('#pregameReady').click();
     for (let i = 0; i < 4; i++) {
       await page.waitForFunction(() => !!__ROADLORDS_RUNTIME__.state.choiceContext);

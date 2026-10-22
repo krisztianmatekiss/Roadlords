@@ -1,3 +1,7 @@
+# V4.28.1 – élőhalott terepgenerálás
+
+2026-10-22. Az élőhalott városok generálása kiszűri az erdőt, kőlelőhelyet és termőtalajt; a romok, ősi romok és alapozások megmaradnak. A kész production builden a szóló fajválasztás, az újrageneráló gomb, az ellenfél városának generálása és a tartalék elrendezés ellenőrzése sikeres. Az élőhalott frakció és multiplayer-protokoll meglévő próbái is lefutottak.
+
 # V4.28.0 – egységbalance, utánpótlás és képzési árak
 
 2026-10-22. A production build `/Roadlords/` alatt, Node.js 24 + Chromium. A célzott ellenőrzések a 21 végleges egységárat, 40 valódi L1/L3 képzési ciklust, a levonás pontos egyszeriségét, az előnézetet és a teljes üzemi igényt vizsgálják. A globális +25% az új alapárakra, a városi kedvezmények előtt kerül; a Trolltenyészet felezése külön ellenőrzést kap. A Sámán 145 távolságú célpontja az animáció találati pontjáig nem sérül és nem kap átkot, majd a valós találatkor megkapja mindkettőt.

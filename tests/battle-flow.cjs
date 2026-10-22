@@ -27,9 +27,13 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
     let random=seed;Math.random=()=>((random=(Math.imul(random,1664525)+1013904223)>>>0)/4294967296);
     R.state.running=true;
     const units=[...R.state.units],positions=new Map(units.map(u=>[u.id,[u.lane,u.offset]]));
-    let frames=0,maxIdle=0,aliveAt30=0,minDistance=Infinity;const times=[];
-    for(let i=0;i<1800;i++){
+    // Recruitment/combat balance can prolong a legitimate fight. Guard
+    // movement and continuing damage independently of the victory deadline.
+    let frames=0,maxIdle=0,aliveAt30=0,minDistance=Infinity,lastDamage=0,damageStall=0,maxDamageStall=0;const times=[];
+    for(let i=0;i<5400;i++){
      const t=performance.now();Q.state.paused=false;Q.step(1/30);Q.state.paused=true;times.push(performance.now()-t);frames++;
+     if(Q.state.metrics.damage>lastDamage){lastDamage=Q.state.metrics.damage;damageStall=0;}
+     else if(lastDamage>0){damageStall+=1/30;maxDamageStall=Math.max(maxDamageStall,damageStall);}
      if(i>60)maxIdle=Math.max(maxIdle,Q.state.metrics.idleMelee||0);
      if(i===299){for(const u of R.state.units)for(const v of R.state.units)if(v.id>u.id)minDistance=Math.min(minDistance,Q.distance(u,v));}
      if(i===899)aliveAt30=R.state.units.length;
@@ -41,10 +45,11 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
     const active=units.filter(u=>(u.roadTravel||0)>12||(u.roadAttacks||0)>0).length;
     const melee=units.filter(u=>u.tags.includes("melee"));
     const meleeMoved=melee.filter(u=>(u.roadTravel||0)>12||(u.roadAttacks||0)>0).length;
-    return {active,melee:melee.length,meleeMoved,seed,steps:frames,ended:R.state.ended,result:Q.state.result,counts:Q.snapshot().counts,attacks:Q.state.metrics.attacks,damage:Q.state.metrics.damage,moved,maxIdle,minDistance,aliveAt30,tickP95:times[Math.floor(times.length*.95)],pending:Q.state.pending.length,sprites:Q.state.sprites.size};
+    return {active,melee:melee.length,meleeMoved,seed,steps:frames,ended:R.state.ended,result:Q.state.result,counts:Q.snapshot().counts,attacks:Q.state.metrics.attacks,damage:Q.state.metrics.damage,moved,maxIdle,maxDamageStall,minDistance,aliveAt30,tickP95:times[Math.floor(times.length*.95)],pending:Q.state.pending.length,sprites:Q.state.sprites.size};
    },seed);report.runs.push(result);console.log('FLOW',JSON.stringify(result));
    check('50/50 seed '+seed+' advances rear melee ranks and engages ranged units from their proper range',result.active>=98&&result.meleeMoved>=result.melee-1&&result.attacks>50&&result.damage>0);
-   check('50/50 seed '+seed+' resolves without a stationary melee deadlock',result.ended&&result.steps<=1800&&result.maxIdle<=3);
+   check('50/50 seed '+seed+' keeps dealing damage after contact without a stationary melee deadlock',result.maxIdle<=3&&result.maxDamageStall<10);
+   check('50/50 seed '+seed+' reaches a real victory within 180 simulation seconds',result.ended&&result.steps<=5400);
    if(seed===42)await page.screenshot({path:'artifacts/battle-flow-victory.png'});
   }
   await page.evaluate(()=>{const R=__ROADLORDS__,Q=__ROADLORDS_ROAD__;Q.startTest(42,{count:50});Q.pause();for(let i=0;i<180;i++)R.updateBattle(1/30);Q.render(0);});

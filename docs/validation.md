@@ -6,6 +6,8 @@ A korábbi Troll/Goblin-ellenőrzések, teljes élőhalott-képességsor, gazdas
 
 A helyi szóló-, 1000 egységes harci, AI-, ember–ork és élőhalott multiplayer-protokollpróbák hibamentesek. A valódi WebRTC-adatcsatorna próbája ezen a gépen nem kapott ICE-jelöltet, ezért kihagyott; a protokollpróbák nem bizonyítanak internetes kapcsolatfelépülést.
 
+A csatafolyam-teszt korábbi, fix 60 mp-es győzelmi elvárása a 7-es magnál az aktív, 168,5 mp-es csatát tévesen megakadásnak tekintette. A friss ellenőrzés külön kéri a folyamatos sebzést (kontaktus után 10 mp-nél rövidebb leghosszabb sebzésszünet), a legfeljebb 3 tétlen közelharcost és a valódi győzelmet 180 szimulált mp-en belül. A mozgási megakadások külön próbái megmaradnak; a játék szabálya nem változik a teszt kedvéért.
+
 A változás előtt és után külön 48–48 harci mintát vettünk 18 katonai mezőn, 60 mp-nyi kibocsátással, két véletlenmaggal, oldalanként tükrözve. Ez nem teljes gazdaság- és mérkőzésszimuláció, és nem egyenlő fajgyőzelmi arány bizonyítása. A tényleges építési/képzési ár, fenntartás, helyfoglalás és szükséges bevétel szerepel a [balance-leírásban](unit-balance-4.28.md) és a megőrzött mérési összesítőben.
 
 # V4.27.0 – százalékos felületméret és egységes választólapok

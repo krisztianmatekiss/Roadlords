@@ -1,0 +1,52 @@
+/* The faction atlas is shared by map, build cards and the encyclopedia. */
+.undeadBuildingArt {
+  display: block !important;
+  width: 100%;
+  height: 100%;
+  background-size: 500% 500%;
+  background-repeat: no-repeat;
+  opacity: 0.95;
+  filter: drop-shadow(0 1px 2px #05100ed0) drop-shadow(0 0 2px #42de9a35);
+}
+.undMapPlane {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center;
+  overflow: hidden;
+}
+.undMapPlane > .undeadBuildingArt {
+  position: absolute;
+  inset: 0;
+}
+.card-media > .undeadBuildingArt {
+  width: auto;
+  height: 100%;
+  aspect-ratio: 1;
+  max-width: 100%;
+}
+.undead-player .resources > .res:nth-child(2),
+.undead-player .resources > .res:nth-child(3) {
+  display: none !important;
+}
+html body #app .undead-player .resources {
+  grid-template-columns: 1fr !important;
+}
+html body.undead-player #app .topLeftCluster .resources {
+  grid-template-columns: minmax(190px, 240px) !important;
+}
+.undead-player #buildList .stonecost {
+  display: none;
+}
+.undDebt {
+  color: #ee8c89 !important;
+}
+.undUnitMechanic {
+  line-height: 1.5;
+  color: #cadccf;
+}
+@media (max-width: 1350px) {
+  html body.undead-player #app .topLeftCluster .resources {
+    grid-template-columns: minmax(155px, 210px) !important;
+  }
+}

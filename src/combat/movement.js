@@ -49,6 +49,7 @@ export function installRoadMovement(R) {
     let vx = dx / distance, vy = dy / distance;
     let repelX = 0, repelY = 0, obstacle = 0, wall = false;
     R.roadVisit(u, 43, v => {
+      if(v.side!==u.side&&(R.unitPassesEnemies?.(u)||R.unitPassesEnemies?.(v)))return;
       const ox = v.lane - u.lane, oy = (v.offset || 0) - (u.offset || 0);
       const d = Math.hypot(ox, oy) || .01, gap = gapFor(u, v);
       if (v.side === u.side) {
@@ -84,7 +85,7 @@ export function installRoadMovement(R) {
     let fraction = 1;
     const length2 = dx*dx + dy*dy;
     if (length2 > 1e-8) R.roadVisit(u, Math.sqrt(length2)+28, v => {
-      if (v.side === u.side) return;
+      if (v.side === u.side||R.unitPassesEnemies?.(u)||R.unitPassesEnemies?.(v)) return;
       const ox = v.lane-u.lane, oy = (v.offset||0)-(u.offset||0), gap = gapFor(u,v);
       const dot = ox*dx+oy*dy, c = ox*ox+oy*oy-gap*gap;
       if (dot <= 0) return;
@@ -107,7 +108,7 @@ export function installRoadMovement(R) {
       for (const u of R.state.units) {
         if (!u.alive) continue;
         R.roadVisit(u, 28, v => {
-          if (v.id <= u.id) return;
+          if (v.id <= u.id||v.side!==u.side&&(R.unitPassesEnemies?.(u)||R.unitPassesEnemies?.(v))) return;
           let dx = v.lane - u.lane, dy = (v.offset || 0) - (u.offset || 0), d = Math.hypot(dx, dy);
           const friendly = u.side === v.side;
           const gap = friendly ? 17 : gapFor(u, v);

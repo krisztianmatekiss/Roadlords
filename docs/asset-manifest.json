@@ -916,5 +916,12 @@
     "type": "image/png",
     "bytes": 70088,
     "sha256": "26142187139677a65c36023a8b0aa72a7866d7d12e4b5dc84cc351a5ff26dedb"
+  },
+  {
+    "path": "art/undead/buildings-atlas.png",
+    "type": "image/png",
+    "bytes": 2799488,
+    "sha256": "2dfdfa530ed61e75961a19645e6f916dd55746e129176f8d2b895984b95facf1",
+    "origin": "Generated for Roadlords Undead faction, 2026-10-22; transparent 5x5 atlas, first 20 tiles follow src/data/undead-plan.js building order."
   }
 ]

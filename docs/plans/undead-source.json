@@ -1,0 +1,657 @@
+{
+  "Egységek": [
+    {
+      "A": "ID",
+      "B": "Egység",
+      "C": "HP",
+      "D": "Sebzés",
+      "E": "Támadás / új cél (mp)",
+      "F": "Sebesség",
+      "G": "Hatótáv",
+      "H": "Támadás típusa",
+      "I": "Alapmechanika"
+    },
+    {
+      "A": "und_skeleton",
+      "B": "Csontváz",
+      "C": "70",
+      "D": "9",
+      "E": "1",
+      "F": "42",
+      "G": "30",
+      "H": "Közelharc",
+      "I": "25% ellenállás távolsági fegyverek sebzése ellen."
+    },
+    {
+      "A": "und_skeleton_archer",
+      "B": "Csontváz Íjász",
+      "H": "Távolsági",
+      "I": "Csontváz Legendary: a Temető 50% eséllyel ezt gyártja a Csontváz helyett."
+    },
+    {
+      "A": "und_zombie",
+      "B": "Zombi",
+      "C": "220",
+      "D": "8",
+      "E": "1.8",
+      "F": "26",
+      "G": "30",
+      "H": "Közelharc",
+      "I": "Halálakor 30-as sugárban a környező egységek 4 Méregstacket kapnak."
+    },
+    {
+      "A": "und_ghost",
+      "B": "Szellem",
+      "C": "65",
+      "D": "5",
+      "E": "1.4",
+      "F": "46",
+      "G": "30",
+      "H": "Közelharc",
+      "I": "40% kitérési esély bármilyen támadás ellen, területi támadás ellen is; sikeres kitéréskor nincs állapothatás."
+    },
+    {
+      "A": "und_necromancer",
+      "B": "Nekromanta",
+      "C": "90",
+      "D": "5",
+      "E": "2",
+      "F": "36",
+      "G": "120",
+      "H": "Távolsági",
+      "I": "15 mp-enként 3 Csontvázat idéz 10 mp-re; az idézettek nem foglalnak sereghelyet."
+    },
+    {
+      "A": "und_vampire",
+      "B": "Vámpír",
+      "C": "300",
+      "D": "45",
+      "E": "1.25",
+      "F": "50",
+      "G": "30",
+      "H": "Közelharc",
+      "I": "30% életlopás az okozott sebzésből."
+    },
+    {
+      "A": "und_lich",
+      "B": "Lich",
+      "C": "180",
+      "D": "5",
+      "F": "32",
+      "G": "140",
+      "H": "Folyamatos sugár (DPS)",
+      "I": "Kezdeti sugár: 5 sebzés/mp; az egyes sugarak +2 sebzés/mp értékkel erősödnek minden eltelt mp után. 5 mp-enként új célpontra is rácsatlakozik, a régit haláláig nem engedi el. Az okozott sebzés 100%-ából gyógyul."
+    }
+  ],
+  "Épületek": [
+    {
+      "A": "ID",
+      "B": "Épület",
+      "C": "Kategória",
+      "D": "Méret",
+      "E": "Egyediség",
+      "F": "L1",
+      "G": "L2",
+      "H": "L3",
+      "I": "L4/A",
+      "J": "L4/B"
+    },
+    {
+      "A": "und_capital",
+      "B": "Nekropolisz",
+      "C": "Főépület",
+      "D": "2×2",
+      "E": "Főépület",
+      "F": "2000 HP; seregkapacitás 50; +3 Lélek/mp; kapu 5 egység/mp.",
+      "G": "4000 HP; seregkapacitás 100; +6 Lélek/mp; kapu 10 egység/mp.",
+      "H": "8000 HP; seregkapacitás 200; +12 Lélek/mp; kapu 20 egység/mp.",
+      "I": "Halálosztag: saját épület eltűnése vagy megsemmisülése után 10 véletlen, már feloldott típusú egység jelenik meg ingyen a kapunál. L4 alap: 16000 HP, kapacitás 400, +24 Lélek/mp, kapu 40 egység/mp.",
+      "J": "A holtak birodalma: minden 100 tárolt Lélek +1%-kal tolja ki a saját térfél határát az ellenfél felé (max. az ellenség kapujáig, 10000 Léleknél). Változó készlethez igazodik. L4 alap: 16000 HP, kapacitás 400, +24 Lélek/mp, kapu 40 egység/mp."
+    },
+    {
+      "A": "und_well",
+      "B": "Lélekkút",
+      "C": "Gazdaság",
+      "D": "1×1",
+      "E": "Nem",
+      "F": "+1 Lélek/mp termelés; −0,5 Lélek/mp fenntartás.",
+      "G": "+2 Lélek/mp termelés; −0,5 Lélek/mp fenntartás.",
+      "H": "+4 Lélek/mp termelés; −0,5 Lélek/mp fenntartás.",
+      "I": "+8 Lélek/mp termelés; −0,5 Lélek/mp fenntartás."
+    },
+    {
+      "A": "und_crypt",
+      "B": "Kripta",
+      "C": "Kapacitás",
+      "D": "2×1",
+      "E": "Nem",
+      "F": "+20 seregkapacitás",
+      "G": "+30 seregkapacitás",
+      "H": "+40 seregkapacitás",
+      "I": "+80 seregkapacitás"
+    },
+    {
+      "A": "und_graveyard",
+      "B": "Temető",
+      "C": "Katonai",
+      "D": "1×1",
+      "E": "Nem",
+      "F": "Csontvázakat gyárt.",
+      "G": "Gyorsabb Csontvázgyártás.",
+      "H": "Tovább gyorsított Csontvázgyártás.",
+      "I": "Elit csontvázak: ha legalább 3 másik Temetővel oldalszomszédos, az itt gyártott Csontvázak Elitek (+50% HP és sebzés).",
+      "J": "Kettős idézés: gyártási ciklusonként 2 Csontváz 1 áráért."
+    },
+    {
+      "A": "und_morgue",
+      "B": "Hullaház",
+      "C": "Katonai",
+      "D": "2×1",
+      "E": "Nem",
+      "F": "Zombikat gyárt.",
+      "G": "Gyorsabb Zombigyártás.",
+      "H": "Tovább gyorsított Zombigyártás.",
+      "I": "Járványgóc: a Zombi minden mp-ben +2 Méregstacket ad a 30-as környezetében lévő ellenségeknek; halálkori 4 Méreg megmarad.",
+      "J": "Hullabontás: minden elesett Zombi helyén 1 Csontváz keletkezik."
+    },
+    {
+      "A": "und_ghost_spawner",
+      "B": "Szellem idézőépülete (név nyitott)",
+      "C": "Katonai",
+      "D": "1×1",
+      "E": "Nem",
+      "F": "Szellemeket gyárt.",
+      "G": "Gyorsabb Szellemgyártás.",
+      "H": "Tovább gyorsított Szellemgyártás.",
+      "I": "Síkjáró: a Szellemek átmennek az ellenséges egységeken, és elsődlegesen a hátsó távolságiakat támadják.",
+      "J": "Bosszúálló kísértet: sikeres kitéréskor a kivédett támadás sebzésének 50%-át visszaadják a támadónak."
+    },
+    {
+      "A": "und_necro_spawner",
+      "B": "Nekromanta idézőépülete (név nyitott)",
+      "C": "Katonai",
+      "D": "2×2",
+      "E": "Unique",
+      "F": "Nekromantákat gyárt.",
+      "G": "Gyorsabb Nekromantagyártás.",
+      "H": "Tovább gyorsított Nekromantagyártás.",
+      "I": "Örök sereg: a Nekromanta idézett egységei nem járnak le; nem foglalnak sereghelyet. A Legendaryval idézett Szellemekre is érvényes.",
+      "J": "Csontvázraj: alkalmanként 3 helyett 5 egységet idéz (Legendary +1 bónusszal 6); a normál 10 mp időtartam megmarad."
+    },
+    {
+      "A": "und_vampire_castle",
+      "B": "Vámpírkastély",
+      "C": "Katonai",
+      "D": "2×2",
+      "E": "Unique",
+      "F": "Vámpírokat gyárt.",
+      "G": "Gyorsabb Vámpírgyártás.",
+      "H": "Tovább gyorsított Vámpírgyártás.",
+      "I": "Vértestvériség: életlopáskor a legközelebbi sérült szövetségest is gyógyítja az elszívott HP 50%-ával.",
+      "J": "Vérvadászat: ölés után azonnal másik célpontra ugrik legfeljebb 120 távolságban, és ingyen támad; láncolódhat."
+    },
+    {
+      "A": "und_lich_spawner",
+      "B": "Lich idézőépülete (név nyitott)",
+      "C": "Katonai",
+      "D": "2×2",
+      "E": "Unique",
+      "F": "Licheket gyárt.",
+      "G": "Gyorsabb Lichgyártás.",
+      "H": "Tovább gyorsított Lichgyártás.",
+      "I": "Örök éhség: ha a sugár célpontja meghal, a sugár azonnal új célpontra ugrik, megtartva a felhalmozott sebzését.",
+      "J": "Sorvadó kötelék: a sugárral összekötött célpont minden mp-ben további −5% mozgási és −5% támadási sebességet kap; a hatás a kapcsolat végén megszűnik."
+    },
+    {
+      "A": "und_dark_tower",
+      "B": "Sötét Őrtorony",
+      "C": "Védelem",
+      "D": "1×1",
+      "E": "Nem",
+      "F": "A saját térfélen legelőrébb járó ellenséget sebzi: célpont max HP-jának 1%-a/mp. Az újabb tornyok növelik a tornyok fenntartását.",
+      "G": "Célpont max HP-jának 1,5%-a/mp.",
+      "H": "Célpont max HP-jának 2%-a/mp.",
+      "I": "Célpont max HP-jának 3%-a/mp."
+    },
+    {
+      "A": "und_soul_harvester",
+      "B": "Lélekarató",
+      "C": "Gazdaság",
+      "D": "1×1",
+      "E": "Nem",
+      "F": "+1 Lélek minden ellenséges egység halálakor, bárhol a csatatéren.",
+      "G": "+2 Lélek minden ellenséges halálkor.",
+      "H": "+3 Lélek minden ellenséges halálkor.",
+      "I": "+4 Lélek minden ellenséges halálkor."
+    },
+    {
+      "A": "und_soul_bank",
+      "B": "Lélekbank",
+      "C": "Gazdaság",
+      "D": "2×2",
+      "E": "Unique",
+      "F": "Hitelkeret −200 Lélek; 60 mp-enként a pozitív Lélekkészlet 10%-a kamatként. Negatív Léleknél nincs kamat, és a katonai gyártás leáll.",
+      "G": "Hitelkeret −300; kamat 12% / 60 mp.",
+      "H": "Hitelkeret −400; kamat 15% / 60 mp.",
+      "I": "Hitelkeret −1000; kamat 20% / 60 mp."
+    },
+    {
+      "A": "und_soul_anchor",
+      "B": "Lélekhorgony",
+      "C": "Támogatás",
+      "D": "2×2",
+      "E": "Nem",
+      "F": "1 mezős hatótáv: −50% Lélekfenntartás a környező épületeknek. Több Lélekhorgony hatása nem halmozódik, csak a legerősebb érvényes.",
+      "G": "2 mezős hatótáv: −50% Lélekfenntartás.",
+      "H": "3 mezős hatótáv: −50% Lélekfenntartás.",
+      "I": "3 mezős hatótáv: −90% Lélekfenntartás."
+    },
+    {
+      "A": "und_soul_burner",
+      "B": "Lélekégető",
+      "C": "Gazdaság",
+      "D": "1×1",
+      "E": "Nem",
+      "F": "+2 Lélek/mp; minden mp-ben elveszíti a maximális HP-ja 1%-át.",
+      "G": "+3 Lélek/mp; −1% max HP/mp.",
+      "H": "+4 Lélek/mp; −1% max HP/mp.",
+      "I": "Túlhevülés: +8 Lélek/mp; −2% max HP/mp."
+    },
+    {
+      "A": "und_bone_forge",
+      "B": "Csontkohó",
+      "C": "Támogatás",
+      "D": "2×1",
+      "E": "Nem",
+      "F": "Minden 10. harcban elesett saját Csontváz után 1 ingyenes Zombi kerül a helyőrségbe. Az ellenség által harcban megölt idézett Csontvázak is számítanak, az időlejárat nem.",
+      "G": "Minden 8. megfelelő Csontvázhalál után 1 Zombi.",
+      "H": "Minden 6. megfelelő Csontvázhalál után 1 Zombi.",
+      "I": "Minden 4. megfelelő Csontvázhalál után 1 Zombi."
+    },
+    {
+      "A": "und_plague_chamber",
+      "B": "Pestiskamra",
+      "C": "Támogatás",
+      "D": "2×1",
+      "E": "Nem",
+      "F": "Minden saját egység támadása +1 Méregstack; minden Méregsebzés +10%. Több Pestiskamra halmozódik.",
+      "G": "+1 Méreg/támadás; +20% Méregsebzés.",
+      "H": "+1 Méreg/támadás; +30% Méregsebzés.",
+      "I": "+2 Méreg/támadás; +40% Méregsebzés."
+    },
+    {
+      "A": "und_soul_overdrive",
+      "B": "Lélektúlhajtó",
+      "C": "Támogatás",
+      "D": "2×2",
+      "E": "Unique",
+      "F": "Minden épület termelése +100% (Lélek és katonai); minden épület fenntartása +200% (3×). A Nekropoliszra semmilyen hatása nincs.",
+      "G": "Termelés +125%; fenntartás +200%; főépületre nem hat.",
+      "H": "Termelés +150%; fenntartás +200%; főépületre nem hat.",
+      "I": "Termelés +200%; fenntartás +200%; főépületre nem hat."
+    },
+    {
+      "A": "und_corrupted_hatchery",
+      "B": "Rontott Keltető",
+      "C": "Támogatás",
+      "D": "2×1",
+      "E": "Nem",
+      "F": "1 mezős körzet: katonai termelés +40%; az egységek 50% HP-val készülnek (max HP változatlan, gyógyítható).",
+      "G": "Katonai termelés +60%; egységek 50% HP-val.",
+      "H": "Katonai termelés +80%; egységek 50% HP-val.",
+      "I": "Katonai termelés +100%; egységek 50% HP-val."
+    },
+    {
+      "A": "und_rebirth_tomb",
+      "B": "Újjászületés sírja",
+      "C": "Támogatás",
+      "D": "2×2",
+      "E": "Unique",
+      "F": "Elhunyt saját egység 25% eséllyel feltámad az épületnél, 50% HP-val; egy egység ezen a hatáson át egyszer támadhat fel.",
+      "G": "30% feltámadási esély; 50% HP.",
+      "H": "40% feltámadási esély; 50% HP.",
+      "I": "50% feltámadási esély; 50% HP."
+    },
+    {
+      "A": "und_garden_of_dead",
+      "B": "Holtak kertje",
+      "C": "Támogatás",
+      "D": "L alak (3 mező)",
+      "E": "Unique",
+      "F": "Saját térfélen meghalt ellenség 10% eséllyel a halála helyén saját Csontvázként feltámad.",
+      "G": "10% eséllyel saját Szellemként támad fel.",
+      "H": "10% eséllyel saját Zombiként támad fel.",
+      "I": "10% eséllyel saját Vámpírként támad fel.",
+      "J": "10% eséllyel saját Lichként támad fel."
+    }
+  ],
+  "Fejlesztések": [
+    {
+      "A": "ID",
+      "B": "Ritkaság",
+      "C": "Hatókör",
+      "D": "Név",
+      "E": "Hatás",
+      "F": "Halmozás / korlát"
+    },
+    {
+      "A": "gen_soul_frugal",
+      "B": "Common",
+      "C": "Általános",
+      "D": "Lélektakarékosság",
+      "E": "Minden épület Lélekfenntartása −5%.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "gen_soul_abundance",
+      "B": "Common",
+      "C": "Általános",
+      "D": "Lélekbőség",
+      "E": "Minden forrásból származó Lélekbevétel +10%.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "gen_graveyard_capacity",
+      "B": "Common",
+      "C": "Általános",
+      "D": "Temetői tartalék",
+      "E": "Minden meglévő Temető után +1 helyőrségkapacitás.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "gen_military_speed",
+      "B": "Common",
+      "C": "Általános",
+      "D": "Sírgyorsítás",
+      "E": "Minden katonai épület +5% gyártási sebesség.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "gen_build_discount",
+      "B": "Common",
+      "C": "Általános",
+      "D": "Lélekbefektetés",
+      "E": "Épületek építési költsége −5%.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "garden_chance",
+      "B": "Common",
+      "C": "Holtak kertje",
+      "D": "Sírontás",
+      "E": "A Holtak kertje ellenségfeltámasztási esélye +2 százalékpont.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "skeleton_common_hp",
+      "B": "Common",
+      "C": "Csontváz",
+      "D": "HP +10%",
+      "E": "Csontváz: +10% maximális HP.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "skeleton_common_damage",
+      "B": "Common",
+      "C": "Csontváz",
+      "D": "Sebzés +10%",
+      "E": "Csontváz: +10% sebzés.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "zombie_common_hp",
+      "B": "Common",
+      "C": "Zombi",
+      "D": "HP +10%",
+      "E": "Zombi: +10% maximális HP.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "zombie_common_damage",
+      "B": "Common",
+      "C": "Zombi",
+      "D": "Sebzés +10%",
+      "E": "Zombi: +10% sebzés.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "ghost_common_hp",
+      "B": "Common",
+      "C": "Szellem",
+      "D": "HP +10%",
+      "E": "Szellem: +10% maximális HP.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "ghost_common_damage",
+      "B": "Common",
+      "C": "Szellem",
+      "D": "Sebzés +10%",
+      "E": "Szellem: +10% sebzés.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "necromancer_common_hp",
+      "B": "Common",
+      "C": "Nekromanta",
+      "D": "HP +10%",
+      "E": "Nekromanta: +10% maximális HP.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "necromancer_common_damage",
+      "B": "Common",
+      "C": "Nekromanta",
+      "D": "Sebzés +10%",
+      "E": "Nekromanta: +10% sebzés.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "vampire_common_hp",
+      "B": "Common",
+      "C": "Vámpír",
+      "D": "HP +10%",
+      "E": "Vámpír: +10% maximális HP.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "vampire_common_damage",
+      "B": "Common",
+      "C": "Vámpír",
+      "D": "Sebzés +10%",
+      "E": "Vámpír: +10% sebzés.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "lich_common_hp",
+      "B": "Common",
+      "C": "Lich",
+      "D": "HP +10%",
+      "E": "Lich: +10% maximális HP.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "lich_common_damage",
+      "B": "Common",
+      "C": "Lich",
+      "D": "Sebzés +10%",
+      "E": "Lich: +10% sebzés.",
+      "F": "Halmozható"
+    },
+    {
+      "A": "skeleton_common_ranged_res",
+      "B": "Common",
+      "C": "Csontváz",
+      "D": "Csontkeménység",
+      "E": "+5 százalékpont ellenállás távolsági fegyverekkel szemben.",
+      "F": "Alap 25%; maximum 90%"
+    },
+    {
+      "A": "zombie_common_poison",
+      "B": "Common",
+      "C": "Zombi",
+      "D": "Fertőző hulla",
+      "E": "A Zombi halálakor okozott Méreg +1 stack.",
+      "F": "Alap 4; halmozható"
+    },
+    {
+      "A": "ghost_common_dodge",
+      "B": "Common",
+      "C": "Szellem",
+      "D": "Kísérteties mozgás",
+      "E": "+5 százalékpont kitérési esély.",
+      "F": "Alap 40%; maximum 70%, Megfoghatatlannal 80%"
+    },
+    {
+      "A": "necro_common_summon_stats",
+      "B": "Common",
+      "C": "Nekromanta",
+      "D": "Erősített idézés",
+      "E": "A Nekromanta által idézett Csontvázak +10% HP-t és +10% sebzést kapnak felvételenként.",
+      "F": "Halmozható; csak idézett Csontvázak"
+    },
+    {
+      "A": "vampire_common_lifesteal",
+      "B": "Common",
+      "C": "Vámpír",
+      "D": "Vérszomj",
+      "E": "+5 százalékpont életlopás.",
+      "F": "Alap 30%; halmozható"
+    },
+    {
+      "A": "lich_common_respawn",
+      "B": "Common",
+      "C": "Lich",
+      "D": "Halhatatlanság",
+      "E": "Halálakor +3 százalékpont esély, hogy teljes HP-val újraéled a saját kapunál.",
+      "F": "Halmozható; korlátlan számú újraéledés"
+    },
+    {
+      "A": "skeleton_leg_archer",
+      "B": "Legendary",
+      "C": "Csontváz",
+      "D": "Csontváz Íjász",
+      "E": "A Temetők 50% eséllyel Csontváz Íjászt gyártanak sima Csontváz helyett."
+    },
+    {
+      "A": "skeleton_leg_guard",
+      "B": "Legendary",
+      "C": "Csontváz",
+      "D": "Csontpajzs",
+      "E": "A Csontvázak a 40-es körzetükben lévő szövetségesekre irányuló távolsági fegyveres támadásokat magukra vonják; a Csontváz ellenállása érvényesül."
+    },
+    {
+      "A": "zombie_leg_retribution",
+      "B": "Legendary",
+      "C": "Zombi",
+      "D": "Fertőző hús",
+      "E": "Ha a Zombit közelharci támadás éri, a támadó +2 Méregstacket kap."
+    },
+    {
+      "A": "zombie_leg_poisoned_hunt",
+      "B": "Legendary",
+      "C": "Zombi",
+      "D": "Mérgezett vérszomj",
+      "E": "Mérgezett ellenfelek ellen +100% sebzés és +100% támadási sebesség."
+    },
+    {
+      "A": "ghost_leg_intangible",
+      "B": "Legendary",
+      "C": "Szellem",
+      "D": "Megfoghatatlan",
+      "E": "+20 százalékpont kitérési esély.",
+      "F": "Maximum kitérés 80%"
+    },
+    {
+      "A": "ghost_leg_mirror",
+      "B": "Legendary",
+      "C": "Szellem",
+      "D": "Tükörkísértet",
+      "E": "Sikeres kitérés után 10 mp-re másolatot idéz, amely nem foglal sereghelyet.",
+      "F": "Másolat 40% kitérés; nem idézhet újabb másolatot"
+    },
+    {
+      "A": "necro_leg_siege",
+      "B": "Legendary",
+      "C": "Nekromanta",
+      "D": "Csontostrom",
+      "E": "A Nekromanta az aktuális célpontja köré idézi a Csontvázakat; idézésenként +1 Csontváz.",
+      "F": "Alap 3→4; Csontvázrajjal 5→6"
+    },
+    {
+      "A": "necro_leg_spirits",
+      "B": "Legendary",
+      "C": "Nekromanta",
+      "D": "Kísértetidézés",
+      "E": "Csontvázak helyett Szellemeket idéz; idézésenként +1 Szellem.",
+      "F": "Alap 3→4; Csontvázrajjal 5→6; Örök sereg az idézett Szellemeket is megtartja"
+    },
+    {
+      "A": "vampire_leg_shield",
+      "B": "Legendary",
+      "C": "Vámpír",
+      "D": "Vérpajzs",
+      "E": "Az életlopásból származó túlgyógyítás Shielddé alakul.",
+      "F": "Korlátlanul halmozódó Shield"
+    },
+    {
+      "A": "vampire_leg_dual",
+      "B": "Legendary",
+      "C": "Vámpír",
+      "D": "Kettős harapás",
+      "E": "+1 megtámadható célpont; mindkettő teljes sebzést kap, és mindkettőből életet lop."
+    },
+    {
+      "A": "vampire_leg_frenzy",
+      "B": "Legendary",
+      "C": "Vámpír",
+      "D": "Vérőrület",
+      "E": "Minden általa megölt ellenség után +10% támadási sebesség, amíg él.",
+      "F": "Korlátlanul halmozódik"
+    },
+    {
+      "A": "lich_leg_greedy",
+      "B": "Legendary",
+      "C": "Lich",
+      "D": "Mohó kötelék",
+      "E": "5 mp-enként 1 helyett 2 új célpontra kapcsolódik a sugara."
+    },
+    {
+      "A": "lich_leg_shield",
+      "B": "Legendary",
+      "C": "Lich",
+      "D": "Élő pajzs",
+      "E": "A Lichet érő sebzés 50%-át a sugarakkal összekötött ellenségek között osztja szét."
+    }
+  ],
+  "Alapszabályok": [
+    {
+      "A": "Szabály",
+      "B": "Leírás"
+    },
+    {
+      "A": "Nyersanyag",
+      "B": "Csak Lélek van; a pozitív készletnek nincs felső korlátja."
+    },
+    {
+      "A": "Fenntartás",
+      "B": "A Nekropoliszon kívül minden épület folyamatosan Lelket fogyaszt. Ha nem fizethető a fenntartás, 10 mp után az érintett épület eltűnik."
+    },
+    {
+      "A": "Méreg",
+      "B": "A Méreg stackjei másodpercenként a fennmaradó stackszámmal egyező sebzést okoznak, majd 1 stackkel csökkennek. A Méreg nem csökkenti a célpontot 1 HP alá. Mérgezett egység gyógyulása −30%."
+    },
+    {
+      "A": "Lélekbank adósság",
+      "B": "A hitelkeret erejéig negatív Lélekkészlet megengedett. Negatív készletnél nincs bankkamat és a katonai gyártás leáll."
+    },
+    {
+      "A": "Elit egység",
+      "B": "Az Elit státusz +50% maximális HP-t és +50% sebzést jelent."
+    },
+    {
+      "A": "Sereghely",
+      "B": "A seregkapacitás az útra kiengedett egységekre vonatkozik; a helyőrség külön kapacitás."
+    }
+  ]
+}

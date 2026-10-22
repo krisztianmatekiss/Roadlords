@@ -316,14 +316,14 @@ export function initializeFactionsOrcFoundation(runtime) {
   };
   function setRace(c, race) {
     if (runtime.state.time > 0 || runtime.MP.started) return false;
-    race = race === 'orc' ? 'orc' : 'human';
+    race = ['human','orc','undead'].includes(race) ? race : 'human';
     if (c.race === race) return true;
     c.orcSupport = null;
     c.orcSiegeRewards = 0;
     c.orcCurseSelection = null;
     c.orcHutMode = 'army';
     c.race = race;
-    c.unlocked = new Set(isOrc(c) ? basic : runtime.BASIC);
+    c.unlocked = new Set(runtime.factionBasics?.(race) || (isOrc(c) ? basic : runtime.BASIC));
     c.buildings = c.buildings.filter(b => b.type === 'keep');
     c.buildings[0].level = 1;
     c.levels = {
@@ -337,6 +337,7 @@ export function initializeFactionsOrcFoundation(runtime) {
     c.rallyReserve = [];
     c.resources = runtime.C(150, 75, 40);
     c.aiThink = 0;
+    runtime.initializeFactionCity?.(c);
     runtime.generateTerrain(c, 10 + Math.floor(Math.random() * 6));
     runtime.recomputeCity(c, false);
     return true;

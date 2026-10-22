@@ -1,6 +1,12 @@
-# Roadlords · V4.25.1
+# Roadlords · V4.26.0
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
+
+## Élőhalottak · 4.26.0
+
+A szóló és multiplayer fajválasztóban megjelentek az **Élőhalottak**. A feltöltött frakcióterv alapján 20 épület (a Nekropolisszal együtt), 7 egységváltozat, 24 gyakori és 13 legendás fejlesztés játszható. Csak Lelket használnak, korlátlan tárolással és folyamatos épületfenntartással. Az épületek zöldes, áttetsző nekromanta illusztrációkat kaptak; az egységek a működő figuravázra épülnek. A **TESZTEK → ÉLŐHALOTT PRÓBA · 50 vs 50** külön indítja az új frakciót.
+
+A hiányzó épület- és egységárak, fenntartások és képzési idők első balance-értékek. A terv kifejezett statisztikáit megtartottuk, így a Nekropolisz különösen sérülékeny: 2000 / 4000 / 8000 / 16000 HP. A szabályok, kitöltött értékek és technikai korlátok: [Élőhalott frakció](docs/undead-faction.md). Mindkét multiplayer játékosnak ezt a verziót kell betöltenie az új fajhoz.
 
 ## Játék
 

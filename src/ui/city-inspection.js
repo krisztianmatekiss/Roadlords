@@ -40,7 +40,7 @@ export function initializeUiCityInspection(runtime) {
     const b = runtime.getBuilding(runtime.E, runtime.state.selectedBuilding);
     if (!b) return runtime.v492RenderInspector();
     const el = runtime.$('#inspector'),
-      d = runtime.BUILDINGS[b.type],
+      d = runtime.buildingDefinition?.(runtime.E,b.type) || runtime.BUILDINGS[b.type],
       unitKey = d.unit ? runtime.effectiveUnitKey(runtime.E, b) : null,
       u = unitKey ? runtime.UNITS[unitKey] : null,
       rows = runtime.buildingEffectRows(runtime.E, b);

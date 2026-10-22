@@ -270,13 +270,13 @@ export function installApplicationShell() {
       codexRace = 'human';
     const raceBar = document.createElement('div');
     raceBar.className = 'orcRaceBar';
-    raceBar.innerHTML = '<label class="raceField">FAJ<select id="codexRace"><option value="human">Emberek</option><option value="orc">Orkok</option></select></label><span class="orcNote"></span>';
+    raceBar.innerHTML = '<label class="raceField">FAJ<select id="codexRace"><option value="human">Emberek</option><option value="orc">Orkok</option><option value="undead">Élőhalottak</option></select></label><span class="orcNote"></span>';
     codexBody.prepend(raceBar);
     raceBar.querySelector('select').onchange = e => {
       codexRace = e.target.value;
       renderCodex();
     };
-    const raceMatches = (d, k) => codexRace === 'orc' ? d.race === 'orc' || ['keep', 'warehouse'].includes(k) : d.race !== 'orc';
+    const raceMatches = (d, k) => window.__ROADLORDS_FACTIONS__.matches(codexRace,d,k);
     const esc = s => String(s ?? '').replace(/[&<>"']/g, ch => ({
       '&': '&amp;',
       '<': '&lt;',
@@ -323,6 +323,7 @@ export function installApplicationShell() {
     }
     function upgradeHTML(type) {
       if (type === 'alchemist') return '';
+      if(codexRace==='undead')return window.__ROADLORDS_UNDEAD__.lexiconLevels(type);
       if (codexRace === 'orc' && (type.startsWith('orc_') || type === 'keep')) return window.__ROADLORDS_ORCS__.lexiconLevels(type);
       const parts = [];
       for (const lv of [1, 2]) {
@@ -347,9 +348,11 @@ export function installApplicationShell() {
       return parts.length ? `<div class="rlUpgradeBlock"><strong>SZINTEK / L4</strong>${parts.join('')}</div>` : '';
     }
     function lexCost(cost) {
+      if(codexRace==='undead')return window.__ROADLORDS_UNDEAD__.soulCostHTML(cost);
       return ['wood', 'stone', 'food'].filter(r => cost[r] > 0).map(r => `<span class="lexResource">${resourceIconTag(r, true)}<b>${Math.ceil(cost[r])}</b></span>`).join(' ') || 'Ingyenes';
     }
     function buildingCard(type, d) {
+      if(codexRace==='undead'&&type==='keep')d=window.__ROADLORDS_UNDEAD__.buildings.keep;
       if (codexRace === 'orc' && type === 'keep') d = {
         ...d,
         name: 'Ork főépület',
@@ -362,7 +365,7 @@ export function installApplicationShell() {
       return `<article class="rlCodexCard"><header class="rlCodexCardHead"><span class="rlCodexIcon">${art}</span><div class="rlCodexTitle"><h3>${esc(d.name)} ${buildCardFootprintV41004(type)}</h3><small>${esc(categoryName(d.category))}</small></div></header><div class="rlCodexContent"><div class="rlCodexMeta"><span class="rlChip">${cost}</span>${d.unique ? '<span class="rlChip gold">EGYEDI</span>' : ''}</div><p>${d.description || ''}</p>${prod ? `<p><b>${esc(prod.icon)} ${esc(prod.name)}</b> · alap gyártás ${esc(String(prod.train))} mp · egységköltség ${lexCost(prod.cost)}</p>` : ''}${upgradeHTML(type)}</div></article>`;
     }
     function unitCard(key, u) {
-      const producer = Object.entries(BUILDINGS).find(([, d]) => d.unit === key)?.[1]?.name || 'Nincs közvetlen termelő';
+      const producer = u.producerHint || Object.entries(BUILDINGS).find(([, d]) => d.unit === key)?.[1]?.name || 'Nincs közvetlen termelő';
       const art = typeof unitImageTag === 'function' ? unitImageTag(key, 'lexUnitImg') : u.icon || '⚔️';
       const stats = [['HP', u.hp], ['Sebzés', u.damage], ['Támadási idő', `${u.cooldown} mp`], ['Hatótáv', u.range], ['Mozgás', u.speed], ['Gyártás', `${u.train} mp`]];
       if (u.heal != null) stats.push(['Gyógyítás', u.heal]);
@@ -388,14 +391,14 @@ export function installApplicationShell() {
       if (codexTab === 'statuses') {
         const defs = window.__ROADLORDS_STATUSES__.defs;
         grid.innerHTML = Object.entries(defs).filter(([k, d]) => matches(d[0], d[3])).map(([k, d]) => `<article class="rlCodexCard"><header class="rlCodexCardHead"><span class="rlCodexIcon" style="color:${d[2]}">${d[1]}</span><div class="rlCodexTitle"><h3>${d[0]}</h3></div></header><div class="rlCodexContent"><p>${d[3]}</p></div></article>`).join('');
-        countEl.textContent = 'Közös állapotok · mindkét faj';
+        countEl.textContent = 'Közös állapotok · minden faj';
         raceBar.querySelector('.orcNote').textContent = '';
         return;
       }
-      if (codexTab === 'buildings') rows = Object.entries(BUILDINGS).filter(([k, d]) => raceMatches(d, k)).filter(([k, d]) => matches(d.name, d.description, `${categoryName(d.category)} ${k}`)).map(([k, d]) => buildingCard(k, d));else if (codexTab === 'units') rows = Object.entries(UNITS).filter(([k, u]) => raceMatches(u, k)).filter(([k, u]) => matches(u.name, '', `${catName(u.cat)} ${(u.tags || []).join(' ')} ${k}`)).map(([k, u]) => unitCard(k, u));else if (codexTab === 'common') rows = NORMAL.filter(x => raceMatches(x, x.id)).filter(x => matches(x.name, x.description, x.id)).map(commonCard);else rows = LEGENDARY.filter(x => raceMatches(x, x.id)).filter(x => matches(x.name, x.description, x.id)).map(legendaryCard);
+      if (codexTab === 'buildings') rows = Object.entries(BUILDINGS).map(([k,d])=>[k,codexRace==='undead'&&k==='keep'?window.__ROADLORDS_UNDEAD__.buildings.keep:d]).filter(([k, d]) => raceMatches(d, k)).filter(([k, d]) => matches(d.name, d.description, `${categoryName(d.category)} ${k}`)).map(([k, d]) => buildingCard(k, d));else if (codexTab === 'units') rows = Object.entries(UNITS).filter(([k, u]) => raceMatches(u, k)).filter(([k, u]) => matches(u.name, '', `${catName(u.cat)} ${(u.tags || []).join(' ')} ${k}`)).map(([k, u]) => unitCard(k, u));else if (codexTab === 'common') rows = NORMAL.filter(x => raceMatches(x, x.id)).filter(x => matches(x.name, x.description, x.id)).map(commonCard);else rows = LEGENDARY.filter(x => raceMatches(x, x.id)).filter(x => matches(x.name, x.description, x.id)).map(legendaryCard);
       grid.innerHTML = rows.join('') || '<div class="rlCodexEmpty">Nincs találat.</div>';
       const total = (codexTab === 'buildings' ? Object.entries(BUILDINGS) : codexTab === 'units' ? Object.entries(UNITS) : (codexTab === 'common' ? NORMAL : LEGENDARY).map(x => [x.id, x])).filter(([k, d]) => raceMatches(d, k)).length;
-      raceBar.querySelector('.orcNote').textContent = codexRace === 'orc' ? '7 egység · 19 épület · 30 gyakori és 26 legendás fejlesztés' : '';
+      raceBar.querySelector('.orcNote').textContent = codexRace === 'undead' ? '7 egységváltozat · 20 épület · 24 gyakori és 13 legendás fejlesztés' : codexRace === 'orc' ? '7 egység · 19 épület · 30 gyakori és 26 legendás fejlesztés' : '';
       countEl.textContent = `${rows.length} / ${total} bejegyzés`;
     }
     codexBody.querySelectorAll('.rlCodexTab').forEach(btn => btn.onclick = () => {

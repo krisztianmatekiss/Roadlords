@@ -89,7 +89,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
     }
     const keys=[...Q.state.sprites.keys()];return {count:keys.length,valid:Object.keys(R.UNITS).every(k=>['idle','walk','attack','death'].every(state=>keys.some(id=>id.startsWith('figure:'+k+':')&&id.includes(':'+state+':'))))};
   });
-  check('All 14 unit models render idle, walking, attack and death poses with a bounded cache',figures.valid&&figures.count<=768);
+  check('All 21 unit models render idle, walking, attack and death poses with a bounded cache',figures.valid&&figures.count<=768);
   const poses=await page.evaluate(()=>{
    const Q=__ROADLORDS_ROAD__,u=__ROADLORDS__.state.units[0],a={start:10,launch:10.24,hit:10.24,end:10.48};
    const subject={...u,roadAttack:a,roadMoving:false};

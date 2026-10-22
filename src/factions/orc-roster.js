@@ -329,13 +329,16 @@ export function initializeFactionsOrcRoster(runtime) {
         ...data,
         units: data.units.map(row => {
           const u = byId.get(row[0]);
-          return [...row.slice(0, 13), u?.orcCurses ? Object.keys(u.orcCurses).filter(k => cursed(u, k)) : [], !!u?.orcSpearReady, u?.orcDefianceTime || 0, u?.orcCursePower || {}, {
+          const packed = [...row.slice(0, 13), u?.orcCurses ? Object.keys(u.orcCurses).filter(k => cursed(u, k)) : [], !!u?.orcSpearReady, u?.orcDefianceTime || 0, u?.orcCursePower || {}, {
             positive: u?.orcPositive || {},
             cargo: (u?.orcCargo || []).reduce((n, e) => n + runtime.orcArmyWeight(e, runtime.cityForSide(u.side)), 0),
             feasts: u?.orcFeasts || 0,
             passengers: u?.orcCargo?.length || 0,
             statuses: runtime.unitStatusBadges(u)
           }, u?.roadAttack || null, !!u?.roadMoving];
+          const faction = runtime.mpFactionUnitPayload?.(u);
+          if(faction)packed.push(faction);
+          return packed;
         })
       };
     }

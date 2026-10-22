@@ -9,8 +9,8 @@ export function register(runtime) {
     c.unitColor = c === runtime.P ? 'blue' : 'red';
   };
   runtime.roadEndgame = function roadEndgame(c) {
-    const orc = c.race === 'orc',
-      allowed = Object.keys(runtime.BUILDINGS).filter(k => k === 'keep' || (orc ? k.startsWith('orc_') || k === 'warehouse' : !k.startsWith('orc_')));
+    const orc = c.race === 'orc', undead=c.race==='undead',
+      allowed = Object.keys(runtime.BUILDINGS).filter(k => runtime.factionMatches(c.race,runtime.BUILDINGS[k],k));
     c.unlocked = new Set(allowed);
     c.resources = runtime.C(1e8, 1e8, 1e8);
     const types = allowed.filter(k => k !== 'keep').sort((a, b) => runtime.BUILDINGS[b].shape.length - runtime.BUILDINGS[a].shape.length);
@@ -24,8 +24,8 @@ export function register(runtime) {
     };
     for (const type of types.filter(t => runtime.BUILDINGS[t].unit)) put(type);
     for (const type of types.filter(t => !runtime.BUILDINGS[t].unit)) put(type);
-    for (let i = 0; i < 100; i++) if (!put(orc ? 'orc_hut' : 'house')) {
-      if (!put(orc ? 'orc_hunt' : 'farm')) break;
+    for (let i = 0; i < 100; i++) if (!put(undead?'und_crypt':orc ? 'orc_hut' : 'house')) {
+      if (!put(undead?'und_well':orc ? 'orc_hunt' : 'farm')) break;
     }
     for (let guard = 0; guard < 250; guard++) {
       const pool = runtime.buildingUpgradePool(c);
@@ -48,7 +48,7 @@ export function register(runtime) {
     for (let i = 0; i < 4; i++) {
       const pool = runtime.eligibleLegendary(c).filter(o => !spawnRelics.has(o.id));
       if (!pool.length) break;
-      const o = pool[Math.floor(Math.random() * pool.length)];
+      const o = undead&&i===0?pool.find(x=>x.id==='skeleton_leg_archer')||pool[0]:pool[Math.floor(Math.random() * pool.length)];
       runtime.applyChoice(c, {
         ...o,
         kind: 'legendary'
@@ -59,6 +59,7 @@ export function register(runtime) {
     c.resources = {
       ...c.caps
     };
+    if(undead)c.resources=runtime.C(10000,0,0);
     c.gateMode = 'open';
     c.roadBuild = {
       upgrades,
@@ -69,7 +70,7 @@ export function register(runtime) {
     };
   };
   runtime.roadStartTest = function roadStartTest(seed, {count = 500, roster = 'mixed', figureStyle} = {}) {
-    if (!(roster === 'figures' && count === 5 || roster === 'mixed' && [50,500].includes(count))) throw new RangeError('Unsupported test roster or size');
+    if (!(roster === 'figures' && count === 5 || ['mixed','undead'].includes(roster) && [50,500].includes(count))) throw new RangeError('Unsupported test roster or size');
     runtime.ROAD.testRoster = roster;
     runtime.ROAD.testCount = count;
     runtime.ROAD.figureStyle=roster==='figures'?(figureStyle==='simple'?'simple':'refined'):'simple';
@@ -95,7 +96,7 @@ export function register(runtime) {
       runtime.MP.started = false;
       runtime.state.time = 0;
       runtime.state.running = false;
-      const races = roster === 'figures' ? ['human','orc'] : runtime.shuffle(['human', 'orc']);
+      const races = roster === 'figures' ? ['human','orc'] : roster==='undead'?['undead','human']:runtime.shuffle(['human', 'orc']);
       runtime.roadResetCity(runtime.P, races[0]);
       runtime.roadResetCity(runtime.E, races[1]);
       runtime.state.units = [];
@@ -132,7 +133,7 @@ export function register(runtime) {
       }
       runtime.roadRefreshFrontiers();
       for (const c of [runtime.P, runtime.E]) {
-        const keys = roster === 'figures' ? [c.race === 'human' ? 'swordsman' : 'orc_warrior'] : Object.keys(runtime.UNITS).filter(k => c.race === 'orc' === k.startsWith('orc_'));
+        const keys = roster === 'figures' ? [c.race === 'human' ? 'swordsman' : 'orc_warrior'] : Object.keys(runtime.UNITS).filter(k => runtime.factionUnitMatches(c.race,runtime.UNITS[k]));
         const entries = Array.from({
           length: count
         }, (_, i) => ({
@@ -174,7 +175,7 @@ export function register(runtime) {
       runtime.last = performance.now();
       runtime.roadFocusFront();
       runtime.$('#roadPause').textContent = 'Szünet';
-      runtime.roadTestSummary.textContent = `${count} × ${count} · ${runtime.P.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.E.race === 'orc' ? 'Orkok' : 'Emberek'}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. ${roster === 'figures' ? 'Új kardos és ork harcos, a jelenlegi animációkkal' : 'Minden egységtípus'}, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Pályamozgatás: A / D vagy görgő, dupla leütés: pálya széle, F: harci front. Az ellenfél városát az idő melletti ikon rögzíti / oldja fel. Szünet: szóköz.`;
+      runtime.roadTestSummary.textContent = `${count} × ${count} · ${runtime.factionName(runtime.P.race)}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.factionName(runtime.E.race)}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. ${roster === 'figures' ? 'Új kardos és ork harcos, a jelenlegi animációkkal' : 'Minden egységtípus'}, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Pályamozgatás: A / D vagy görgő, dupla leütés: pálya széle, F: harci front. Az ellenfél városát az idő melletti ikon rögzíti / oldja fel. Szünet: szóköz.`;
     } finally {
       Math.random = savedRandom;
     }

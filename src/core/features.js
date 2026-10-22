@@ -218,7 +218,7 @@ export function initializeCoreFeatures2(runtime) {
     function aiObservedMix4980() {
       const out = Object.fromEntries(AI4980_UNITS.map(k => [k, 0]));
       const add = x => {
-        const k = AI4980_ORC_ROLES[x?.key] || x?.key;
+        const k = runtime.UNITS[x?.key]?.aiRole || AI4980_ORC_ROLES[x?.key] || x?.key;
         if (k in out) out[k] += x.key === 'orc_troll' ? 4 : 1;
       };
       for (const u of runtime.state.units) if (u.alive && u.side === 'player') add(u);

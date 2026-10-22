@@ -21,7 +21,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    }
    return results;
   });report.releases=releases;
-  check('Every normal roster type on both sides emerges only inside its real gate opening',releases.length===70&&releases.every(u=>(u.lane===6||u.lane===4794)&&u.top>=u.gateTop-.1&&u.bottom<=u.gateBottom+.1));
+  check('All 21 registered unit types emerge only inside the correct gate opening',releases.length===105&&releases.every(u=>(u.lane===6||u.lane===4794)&&u.top>=u.gateTop-.1&&u.bottom<=u.gateBottom+.1));
   check('Gate release preserves a wider destination formation without spawning on that formation',releases.some(u=>Math.abs(u.home)>200)&&releases.every(u=>Math.abs(u.offset)<100));
   const queue=await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,Q=__ROADLORDS_ROAD__;Q.state.test=false;R.state.units=[];Q.state.pending=[];for(const c of [R.P,R.E]){c.releaseQueue=[];c.garrison=[];c.releaseAcc=0;c.gateMode='closed';c.autoReleasing=false;}
@@ -48,13 +48,13 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    const results=[];
    for(const style of ['simple','refined']){
     Q.state.figureStyle=style;const samples=[];
-    for(const count of [240,241,240]){R.state.units=units.slice(0,count);Q.render(0);samples.push({low:Q.state.lowDetail,scale:units.slice(0,14).map(scaleOf)});}
+    for(const count of [240,241,240]){R.state.units=units.slice(0,count);Q.render(0);samples.push({low:Q.state.lowDetail,scale:units.slice(0,21).map(scaleOf)});}
     results.push({style,samples});
    }
    const before=scaleOf(units[0])[0],time=R.state.time;Q.state.zoom=1.25;Q.render(0);const after=scaleOf(units[0])[0];
    return {results,zoomRatio:after/before,sameTime:R.state.time===time};
   });report.scales=scales;
-  check('All 14 models retain their drawn size across 240/241/240 visible troops in both graphics modes',scales.results.every(r=>JSON.stringify(r.samples.map(s=>s.low))==='[false,true,false]'&&JSON.stringify(r.samples[0].scale)===JSON.stringify(r.samples[1].scale)&&JSON.stringify(r.samples[0].scale)===JSON.stringify(r.samples[2].scale)));
+  check('All 21 models retain their drawn size across 240/241/240 visible troops in both graphics modes',scales.results.every(r=>JSON.stringify(r.samples.map(s=>s.low))==='[false,true,false]'&&JSON.stringify(r.samples[0].scale)===JSON.stringify(r.samples[1].scale)&&JSON.stringify(r.samples[0].scale)===JSON.stringify(r.samples[2].scale)));
   check('Intentional zoom still enlarges figures independently of the detail threshold and simulation',Math.abs(scales.zoomRatio-1.25)<.001&&scales.sameTime);
   await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,Q=__ROADLORDS_ROAD__;Q.state.zoom=1;R.state.units=[];Q.state.pending=[];Q.state.dead=[];for(let i=0;i<10;i++)R.releaseUnit(R.P,{key:'swordsman'});R.roadWar.scrollLeft=0;});await page.waitForTimeout(100);
   await page.screenshot({path:'artifacts/gate-exit.png'});

@@ -1,3 +1,9 @@
+import { initializeUndeadFoundation } from '../factions/undead/foundation.js';
+import { initializeUndeadEconomy } from '../factions/undead/economy.js';
+import { initializeUndeadAi } from '../factions/undead/ai.js';
+import { initializeUndeadArt } from '../factions/undead/art.js';
+import { initializeUndeadUi } from '../factions/undead/ui.js';
+import { initializeUndeadCombat } from '../factions/undead/combat.js';
 import { assetUrl } from '../assets/urls.js';
 import { initializeUiUpgradeCopy } from '../ui/upgrade-copy.js';
 import { initializeAiCityPlanning } from '../ai/city-planning.js';
@@ -259,6 +265,12 @@ export function createGame() {
   initializeUiBattleStatus(runtime);
   initializeUiChoiceCards(runtime);
   initializeUiUpgradeCopy(runtime);
+  initializeUndeadFoundation(runtime);
+  initializeUndeadEconomy(runtime);
+  initializeUndeadAi(runtime);
+  initializeUndeadArt(runtime);
   initializeCombatRoadIntegration(runtime);
+  initializeUndeadCombat(runtime);
+  initializeUndeadUi(runtime);
   return runtime;
 }

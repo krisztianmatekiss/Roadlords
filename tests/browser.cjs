@@ -16,7 +16,7 @@ async function main(){
   page.on('console',m=>{if(m.type()==='error'&&m.text().includes('Roadlords V4.9.65'))report.errors.push(m.text())});
   await page.goto(BASE_URL,{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>!!window.__ROADLORDS_ROAD__);await page.evaluate(()=>__ROADLORDS_ROAD__.artReady);
-  check('Production modules load all 14 unit sprites without an external CDN',await page.evaluate(()=>__ROADLORDS_ROAD__.state.art.size===14&&typeof Peer==='function'));
+  check('Production modules load all 21 registered unit sprites without an external CDN',await page.evaluate(()=>__ROADLORDS_ROAD__.state.art.size===21&&typeof Peer==='function'));
   await page.locator('.menuBrand').click();await page.waitForTimeout(1000);
   await page.screenshot({path:'artifacts/menu.png'});
   check('TESZTEK groups battle tests behind one main menu entry',await page.locator('.menuMain #roadTestsMenu').isVisible()&&!await page.locator('#roadTestMenu').isVisible());

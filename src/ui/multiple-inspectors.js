@@ -86,7 +86,7 @@ export function initializeUiMultipleInspectors(runtime) {
     return html;
   }
   function buildingInspectorCardHTML(b) {
-    const d = runtime.BUILDINGS[b.type],
+    const d = runtime.buildingDefinition?.(runtime.P,b.type) || runtime.BUILDINGS[b.type],
       unitKey = d.unit ? runtime.effectiveUnitKey(runtime.P, b) : null,
       u = unitKey ? runtime.UNITS[unitKey] : null,
       rows = runtime.buildingEffectRows(runtime.P, b);

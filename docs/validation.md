@@ -1,3 +1,21 @@
+# V4.26.0 – játszható élőhalott frakció
+
+2026-10-22. Node.js 24, Chromium, kész production build `/Roadlords/` alkönyvtár alatt. A helyi funkcionális próbák külső HTTPS-kapcsolat nélkül futnak. A frakció az eredeti Excel kifejezett értékeit használja; a pótolt gazdasági számokat és az első kiadás korlátait külön [frakcióleírás](undead-faction.md) rögzíti.
+
+Három új ellenőrzési csoport vizsgálja a valódi szólóindítást, a négy kezdőválasztást, mind a négy Nekropolisz-szintet, a fajonként elkülönített lapokat, az előnézeteket, a Lélek-tárolást és a tényleges elhelyezési árat. A gazdasági próbák fenntartást, képzést, adósságot, kamatot, horgonyt, keltetőt, túlhajtót és időzített épületvesztést is végigfuttatnak.
+
+A harci próbák a valódi, késleltetett találatfeldolgozást használják: Csontváz ellenállás/átvétel, Szellem kitérés/klón/visszasebzés/állapothatás-védelem, Vámpír két találata/életlopása/pajzsa, Nekromanta lejáró és állandó idézése, Lich több sugara/folyamatos sebzése/gyógyítása/célpontváltása/pajzsa/lassítása. Emellett Méreg, Csontkohó, sírfeltámadás, kert, térfélhatár, mindkét Temető-ág, Hullaház-ágak, Síkjáró toronykorlátja és a Sötét Őrtorony célzása is szerepel.
+
+A külön felületi próba ellenőrzi a lexikon teljes 20/7/24/13-as tartalmát, a Nekropolisz kereshetőségét és saját inspector-szövegét, az átlátszó helyi atlaszt és a négyzetes kártyaképarányt. Valódi 500/500-as csatát is szimulál, véges állapotot és tényleges sebzést ellenőrizve. A mért P95 a teljes szimulációs függvényre vonatkozik, nem FPS-ígéret.
+
+Az élőhalott multiplayer-próba két önálló oldallal, a tényleges JSON-csomagoláson és protokollkezelőkön keresztül fut: ellenőrzi az örökölt 20 és az új 21 oszlopos egységcsomagokat, kétirányú tükrözést, sugárkapcsolatokat, idézetjelöléseket, adósságot és a host épületállapotának megőrzését. Az örökölt 1000 egységes multiplayer- és külön WebRTC-próba megmaradt.
+
+Az ember–ork referenciaellenőrzés nem kap új tűrést: a teljes induló városok, szabályos fejlesztések és az 1000 egység eredeti, korábban jóváhagyott értékei továbbra is egyeznek az archivált változattal. A régi leírásaudit külön őrzi az 58/85 lapját, az új gyakori lapok előnézeteit az élőhalott teszt vizsgálja. A spritebetöltés a teljes, immár 21 elemű névsort ellenőrzi.
+
+A helyi futásban a 17 tesztfájl funkcionális ellenőrzései hibamentesen teljesültek. A valódi WebRTC-adatcsatorna próbája ezen a gépen nem kapott ICE-jelöltet, ezért a meglévő szabály szerint **kihagyott** lett; az interneten át létrejövő új frakciós kapcsolatot ez a futás nem bizonyítja. A kétoldalas, tényleges protokollkezelőkkel futó ember–ork és élőhalott csomagpróbák sikeresek. A CI a teljes sorozatot külön is futtatja a közzététel előtt.
+
+## Korábbi kiadások ellenőrzései
+
 # V4.25.1 – multiplayer nevek és látható épületkeretek
 
 2026-10-22. Linux, Node.js 24, headless Chromium, 1440×960. Az ellenőrzések a kész production buildet futtatják `/Roadlords/` alatt; a helyi funkcionális tesztekben a külső HTTPS-forgalom tiltott.

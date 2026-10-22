@@ -15,7 +15,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     const audit = await page.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__, city = { ...R.P, race: 'human', normal: {}, legends: new Set(), legendaryStacks: {}, levels: {}, l4Branches: {} };
       const preview = (id, n = 0, kind = 'normal') => R.upgradeCopyPreview({ ...city, race: id.startsWith('orc_') ? 'orc' : 'human', normal: { [id]: n }, legendaryStacks: { [id]: n }, legends: new Set(n && kind === 'legendary' ? [id] : []) }, { id, kind });
-      const all = [...R.NORMAL.map(x => ({ ...x, kind: 'normal' })), ...R.LEGENDARY.map(x => ({ ...x, kind: 'legendary' }))];
+      const normal = R.NORMAL.filter(o => o.race !== 'undead'), legendary = R.LEGENDARY.filter(o => o.race !== 'undead');
+      const all = [...normal.map(x => ({ ...x, kind: 'normal' })), ...legendary.map(x => ({ ...x, kind: 'legendary' }))];
       const snapshot = () => {
         const seen = new WeakSet();
         return JSON.stringify({ p: R.P, e: R.E, units: R.state.units, towers: R.towers, pending: R.state.pendingChoices }, (_k, v) => {
@@ -29,8 +30,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       let entries;
       try { entries = all.map(o => R.upgradeCopyPreview(city, o)); } finally { Math.random = oldRandom; }
       return {
-        coverage: [R.NORMAL.length, R.LEGENDARY.length, entries.length], pure: before === snapshot() && randomCalls === 0,
-        rows: R.NORMAL.every(o => preview(o.id).rows.length > 0), text: entries.every(p => p.description.length > 25 && !/\b(spawner|cooldown|stack|pick|Heavy|Magic|Shield|NaN|Infinity)\b/i.test(p.description)),
+        coverage: [normal.length, legendary.length, entries.length], pure: before === snapshot() && randomCalls === 0,
+        rows: normal.every(o => preview(o.id).rows.length > 0), text: entries.every(p => p.description.length > 25 && !/\b(spawner|cooldown|stack|pick|Heavy|Magic|Shield|NaN|Infinity)\b/i.test(p.description)),
         sword: preview('swordsman_dmg'), priest: preview('priest_dmg'), speed: preview('sword_as'), orc: preview('orc_warrior_dmg'),
         bleed: [preview('orc_bleed'), preview('orc_bleed', 1)], leech: [preview('orc_leech'), preview('orc_leech', 1)],
         discount: preview('building_discount', 4), frugal: preview('frugal_training', 1), crit: preview('orc_crit', 25), blessing: preview('orc_blessing', 39),

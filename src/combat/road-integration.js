@@ -308,7 +308,7 @@ export function initializeCombatRoadIntegration(runtime) {
       for (const u of runtime.state.units) if (u.alive) u.side === 'player' ? p++ : e++;
       runtime.$('#roadCounts').textContent = `SAJÁT ${p} / ELLENFÉL ${e}`;
       runtime.$('#roadFps').textContent = `${runtime.ROAD.metrics.fps.toFixed(0)} FPS`;
-      runtime.$('#roadStatus').textContent = runtime.ROAD.test ? runtime.ROAD.result || `${runtime.P.race === 'orc' ? 'Orkok' : 'Emberek'} vs ${runtime.E.race === 'orc' ? 'Orkok' : 'Emberek'} · ${runtime.ROAD.paused ? 'SZÜNET' : runtime.fmt(runtime.state.time)}` : 'HOSSZÚ ÚT';
+      runtime.$('#roadStatus').textContent = runtime.ROAD.test ? runtime.ROAD.result || `${runtime.factionName(runtime.P.race)} vs ${runtime.factionName(runtime.E.race)} · ${runtime.ROAD.paused ? 'SZÜNET' : runtime.fmt(runtime.state.time)}` : 'HOSSZÚ ÚT';
     }
   };
   runtime.ROAD.templates = [structuredClone(runtime.P), structuredClone(runtime.E)];

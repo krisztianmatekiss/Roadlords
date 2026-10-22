@@ -19,6 +19,13 @@ export const FIGURES = Object.freeze({
   orc_warg: { weapon: 'spear', orc: true, mount: 'warg' },
   orc_troll: { weapon: 'club', orc: true, size: 1.32, bare: true },
   orc_ram: { machine: 'ram', orc: true },
+  und_skeleton: { undead:'skeleton', weapon:'sword', size:.95 },
+  und_skeleton_archer: { undead:'skeleton', weapon:'bow', size:.95 },
+  und_zombie: { undead:'zombie', weapon:'fist', size:1.05 },
+  und_ghost: { undead:'ghost', weapon:'claw', robe:'#447f75' },
+  und_necromancer: { undead:'necro', weapon:'staff', robe:'#3f4b51' },
+  und_vampire: { undead:'vampire', weapon:'sword', robe:'#6c3449' },
+  und_lich: { undead:'lich', weapon:'staff', robe:'#414865' },
 });
 
 export function figurePose(u, clock, dead = false) {
@@ -133,7 +140,36 @@ function mount(g, style, color, p) {
   if(wolf){for(let i=0;i<4;i++)poly(g,[[9+i*2,-28],[13+i*2,-33],[12+i*2,-25]],'#474f42',null);}
   else {line(g,14,-36,12,-26,'#3f3529',2.5);line(g,21,-31,27,-30,'#b89e6a',.8);}
 }
+function undeadFigure(g,style,color,p) {
+  const bone=style.undead==='skeleton',ghost=style.undead==='ghost',vampire=style.undead==='vampire',caster=['necro','lich'].includes(style.undead);
+  const skin=bone||style.undead==='lich'?'#d4d6bd':vampire?'#bdc6b6':ghost?'#88d9bd':'#81936e',stride=p.walk*4,thrust=(p.strike*4-p.wind*2)*(1-p.recovery);
+  g.save();if(ghost)g.globalAlpha=.72;
+  g.translate(thrust,-Math.abs(p.walk)*.7);
+  if(!ghost){
+    for(const [x,dx] of [[-4,-stride],[4,stride]]){line(g,x,-13,x+dx,-6,skin,bone?2:4);line(g,x+dx,-6,x+dx*1.4,0,skin,bone?2:4);ellipse(g,x+dx,-6,1.5,1.5,'#b7c3a7');line(g,x+dx*1.4,0,x+dx*1.4+4,0,bone?'#dedac3':'#384535',2.4);}
+  }
+  if(style.robe){
+    poly(g,[[-6,-29],[6,-29],[11,-3],[5,0],[1,-4],[-4,0],[-10,-3]],material(g,style.robe));
+    poly(g,[[-2,-28],[3,-28],[5,-4],[0,-6]],material(g,color));
+    if(ghost){line(g,-7,-10,-12,1,'#89d9ba',1);line(g,5,-9,11,0,'#b5f4d6',1);}
+  }else if(bone){
+    line(g,0,-27,0,-11,skin,2.6);for(let i=0;i<4;i++){line(g,-5+i*.3,-25+i*3,4-i*.2,-24+i*3,skin,1.7);}poly(g,[[-5,-14],[4,-14],[6,-9],[-1,-7],[-6,-10]],skin);
+    poly(g,[[-6,-28],[5,-27],[3,-21],[-7,-23]],color);line(g,-7,-22,-9,-16,color,2);
+  }else{poly(g,[[-7,-28],[6,-28],[9,-11],[-6,-9]],material(g,'#5b6b4e'));poly(g,[[-6,-25],[4,-26],[6,-18],[-5,-17]],material(g,color));line(g,-4,-15,5,-12,'#9ca087',1);}
+  const armX=11+p.strike*4*(1-p.recovery),armY=-21-p.wind*3;
+  line(g,-5,-26,-10,-16,skin,bone?2:3.3);line(g,5,-26,armX,armY,skin,bone?2:3.5);
+  if(vampire){poly(g,[[-6,-29],[-14,-33],[-12,-3],[-4,-9]],material(g,'#6b3045'));poly(g,[[6,-29],[14,-34],[11,-4],[5,-10]],material(g,color));}
+  ellipse(g,0,-34,5.5,6.2,material(g,skin));
+  if(caster){poly(g,[[-7,-32],[-6,-40],[0,-44],[7,-39],[7,-31],[3,-35],[0,-39],[-3,-35]],style.robe);if(style.undead==='lich'){poly(g,[[-6,-39],[-8,-46],[-3,-42],[0,-48],[3,-42],[8,-46],[6,-39]],'#a6a378');}}
+  ellipse(g,-1,-34,1.6,1.5,'#182c25');ellipse(g,3,-34,1.5,1.5,'#182c25');line(g,-2,-34,0,-34,'#a6ffd0',.9);line(g,2,-34,4,-34,'#a6ffd0',.9);
+  if(bone||style.undead==='lich'){poly(g,[[0,-32],[-1,-29],[2,-29]],'#455b48');line(g,-3,-28,4,-28,'#65735b',1);for(let i=0;i<3;i++)line(g,-1+i*2,-30,-1+i*2,-27,'#d8d6b9',.8);}
+  if(vampire){poly(g,[[-2,-29],[-1,-25],[0,-29]],'#f2e9d6');poly(g,[[2,-29],[3,-25],[4,-29]],'#f2e9d6');line(g,-4,-38,4,-38,'#343a35',2);}
+  if(style.weapon==='fist'||style.weapon==='claw'){ellipse(g,armX+2,armY,2.5,2.7,skin);if(ghost)for(let i=0;i<3;i++)line(g,armX+2,armY-2+i*2,armX+7,armY-3+i*2,'#c4ffe4',.8);}
+  else weapon(g,style.weapon,armX,armY,style.weapon==='sword'?mix(-1.8,.5,p.strike):-.1,style.weapon==='staff'?'#77f2b2':color,p);
+  g.restore();return {stride,body:[thrust,0],weapon:[armX,armY,0]};
+}
 function humanoid(g, style, color, p, refined = false) {
+  if(style.undead)return undeadFigure(g,style,color,p);
   const skin=style.orc?'#859453':'#b8a07c', armor=style.orc?'#807b65':'#a4b0a7';
   const metal=material(g,armor),cloth=material(g,color),hide=material(g,skin);
   if(style.mount){mount(g,style,color,p);g.translate(-1,-23);g.scale(.88,.88);}

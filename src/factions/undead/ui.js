@@ -134,7 +134,9 @@ export function initializeUndeadUi(R) {
   const short = R.buildCardShortDescV41004;
   R.buildCardShortDescV41004 = (type) =>
     isUndead(R.P) && D[type]
-      ? D[type].description + ` Fenntartás: ${D[type].upkeep.toLocaleString('hu-HU')} Lélek/mp.`
+      ? D[type].description +
+        (D[type].unit ? '' : ` ${D[type].levels[R.levelOf(R.P, type) - 1]}`) +
+        ` Fenntartás: ${D[type].upkeep.toLocaleString('hu-HU')} Lélek/mp.`
       : short(type);
   const branch = R.makeBuildingChoice;
   R.makeBuildingChoice = (c, type) =>

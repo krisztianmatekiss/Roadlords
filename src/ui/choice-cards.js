@@ -38,6 +38,7 @@ export function initializeUiChoiceCards(runtime) {
   function v4997ChoiceDetails(c, type) {
     const d = runtime.BUILDINGS[type];
     if (!d) return '';
+    if (c.race === 'undead') return runtime.buildingChoiceDetails(c, type);
     if (d.unit) {
       const u = runtime.UNITS[d.unit];
       return '';

@@ -55,6 +55,19 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     await p.keyboard.press('Escape');
     await p.locator('#roadTestsMenu').click();
     await p.locator('#roadUndeadMenu').click();
+    check(
+      'Building unlock cards show current numeric effects and upkeep beside the short role',
+      await p.evaluate(() => {
+        const R = __ROADLORDS_RUNTIME__;
+        R.roadPause();
+        R.renderChoice(['und_well', 'und_crypt', 'und_soul_anchor'].map(type => R.makeBuildingChoice(R.P, type)), 'ÉPÜLETEK', 'Élőhalottak', '', false);
+        const cards = [...document.querySelectorAll('#choiceList .choiceBody')].map(c => c.textContent);
+        R.$('#choiceOverlay').classList.add('hidden');
+        return cards[0].includes('+8 Lélek/mp') && cards[0].includes('0,5 Lélek/mp') &&
+          cards[1].includes('+80 sereghely') && cards[2].includes('−90%') &&
+          cards.every(s => !s.includes('L1:') && !s.includes('Másik L4'));
+      }),
+    );
     await p.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__;
       R.roadPause();

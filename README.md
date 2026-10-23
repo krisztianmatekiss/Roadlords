@@ -1,8 +1,14 @@
-# Roadlords · V4.29.1
+# Roadlords · V4.29.2
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
 
 Az élőhalott városokban nincs erdő, kő vagy termőtalaj; az újrageneráláskor sem jelennek meg. A romok és az alapozás megmaradnak.
+
+## Képzési adatok és Trollkiengedés · 4.29.2
+
+A katonai épületlapokon a képzési idő, az egységár és a területjelzés a szövegdobozban van, a kisebb építőkártyákon is. Az alap-egységképességek és a Troll négyes férőhely-/áldozatértéke csak a lexikon egységoldalán szerepelnek. A kész Troll elsőbbséget kap; legalább egy szabad férőhelynél legfeljebb hárommal túllépheti a helyőrségi vagy sereglimitet. A betelt keretbe nem érkezik új egység, amíg a létszám ismét a korlát alá nem kerül. Ugyanez érvényes a kapura és a Rohamalagútra; a nyersanyagár és képzési idő változatlan.
+
+Az élőhalott kártyasorozat első képe a Nekromanták szentélyéhez készült. Helyi, felirat nélküli kép; a játék illeszti bele a címet és az aktuális adatokat. A városi épületgrafika és a többi élőhalott lap egyelőre a meglévő készletet használja.
 
 ## Egyszerű kártyaszövegek · 4.29.1
 

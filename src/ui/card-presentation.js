@@ -1,4 +1,5 @@
 import manifest from '../data/orc-card-manifest.json';
+import undeadManifest from '../data/undead-card-manifest.json';
 import { assetUrl } from '../assets/urls.js';
 import { createBuildingCardCopy } from './building-card-copy.js';
 import cardRules from '../data/card-rules.json';
@@ -7,6 +8,11 @@ export const escapeText = (s) => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 export function cardFrameUrl(id, kind, race) {
+  if (race === 'undead') {
+    const building = ['building','building_upgrade','building_branch'].includes(kind);
+    const file = undeadManifest.cards[`${building ? 'building' : 'upgrade'}:${id}`];
+    return file ? assetUrl('cards/undead/' + file) : '';
+  }
   if (race !== 'orc') return '';
   const building = ['building', 'building_upgrade', 'building_branch'].includes(kind);
   let key = id;
@@ -23,6 +29,24 @@ export function cardFrameUrl(id, kind, race) {
 }
 export const frameImage = (src) => src
   ? `<img class="cardFrameImage" src="${src}" alt="" loading="lazy" decoding="async" draggable="false">` : '';
+
+export function productionFacts(R, c, type, level, {before = null, compact = false} = {}) {
+  const d = R.buildingDefinition(c, type), key = d.unit;
+  if (!key) return '';
+  const fmt = n => Number.isFinite(n) ? n.toLocaleString('hu-HU', {maximumFractionDigits: 2}) : '—';
+  const time = R.previewTrainingTime(c, type, level);
+  const previous = before === null ? '' : `${fmt(R.previewTrainingTime(c, type, before))} → `;
+  const cost = R.cardBuildingCopy.costText(R.unitCost(c, key), c.race).replace(/, /g, ' · ');
+  return `<div class="productionFacts${compact ? ' compact' : ''}"><div><span>${compact ? 'Képzés' : escapeText(R.UNITS[key].name)}</span> <b>◷ ${escapeText(previous + fmt(time))} mp</b></div><div><span>Egységár</span> <b>${escapeText(cost)}</b></div></div>`;
+}
+
+export function productionFootprint(R, c, type) {
+  const cells=R.cityBuildingCells(c,{type,row:0,col:0,rotation:0});
+  const rows=Math.max(...cells.map(([r])=>r))+1,cols=Math.max(...cells.map(([,col])=>col))+1;
+  const occupied=new Set(cells.map(([r,col])=>`${r}:${col}`));
+  const icons=Array.from({length:rows},(_,r)=>Array.from({length:cols},(_,col)=>`<i class="${occupied.has(`${r}:${col}`)?'on':'off'}"></i>`).join('')).join('');
+  return `<span class="pickFootprint" role="img" aria-label="${cells.length} mező" style="--fp-cols:${cols};--fp-rows:${rows}">${icons}</span>`;
+}
 
 const mechanics = /mérg\w*|méreg\w*|tűz\w*|égés\w*|égési\w*|fagy\w*|lassít\w*|vérz\w*|átok\w*|átk\w*|pajzs\w*|gyógy\w*|regener\w*/giu;
 const theme = (word) => /mérg|méreg/i.test(word) ? 'poison' : /tűz|égés|égési/i.test(word) ? 'fire'
@@ -95,28 +119,32 @@ export function installCardPresentation(R) {
     R.$$('#choiceList .choice').forEach((card, i) => {
       const o = options[i], src = cardFrameUrl(o.id, o.kind, R.P.race);
       const body = card.querySelector('.choiceBody');
+      const producer = ['building','building_upgrade','building_branch'].includes(o.kind) && R.BUILDINGS[o.id]?.unit;
+      let producerCity=R.P;
       if (['building', 'building_upgrade'].includes(o.kind)) {
         const level = o.kind === 'building_upgrade' ? R.upgradeTargetLevel(R.P, o.id) : R.levelOf(R.P, o.id);
         const model = R.cardBuildingCopy.metrics(R.P.race, o.id, level);
-        body.innerHTML = `<p>${effectText(model.description)}</p>`;
-        // The art already displays the training price and time; no repeated rows below it.
-        if (o.kind === 'building_upgrade' && R.BUILDINGS[o.id]?.unit) {
-          const before = R.previewTrainingTime(R.P, o.id, R.levelOf(R.P, o.id));
-          const after = R.previewTrainingTime(R.P, o.id, level);
-          const fmt = n => n.toLocaleString('hu-HU', {maximumFractionDigits: 2});
-          body.insertAdjacentHTML('beforeend', `<span class="trainingChange">Képzés: ${escapeText(fmt(before))} → <b class="effectValue effect-positive">${escapeText(fmt(after))} mp</b></span>`);
-          const badge = card.querySelector('.pickCD b');
-          if (badge) badge.textContent = `${fmt(after)} mp`;
-        }
+        body.innerHTML = producer ? productionFacts(R, R.P, o.id, level, {before: o.kind === 'building_upgrade' ? R.levelOf(R.P,o.id) : null}) : `<p>${effectText(model.description)}</p>`;
       }
       if (o.kind === 'building_branch') {
         const branches = R.P.race === 'undead' ? window.__ROADLORDS_UNDEAD__.buildings[o.id]?.branches
           : R.P.race === 'orc' && o.id === 'keep' ? window.__ROADLORDS_ORCS__.keepBranches : R.V4_BRANCHES[o.id];
         body.innerHTML = `<p>${effectText(branches?.find(b => b.id === o.branch)?.description || o.description)}</p>`;
+        if (producer) {
+          const preview = {...R.P, levels:{...R.P.levels,[o.id]:4}, l4Branches:{...R.P.l4Branches,[o.id]:o.branch}};
+          producerCity=preview;
+          body.insertAdjacentHTML('beforeend', productionFacts(R, preview, o.id, 4, {compact:true}));
+        }
       }
       if (R.P.race === 'undead' && ['building','building_upgrade','building_branch'].includes(o.kind) && o.id !== 'keep') {
         const upkeep = window.__ROADLORDS_UNDEAD__.buildings[o.id].upkeep.toLocaleString('hu-HU');
-        card.querySelector('.choiceArt').insertAdjacentHTML('beforeend', `<span class="pickUpkeep" title="Alapfenntartás">${effectText('−' + upkeep + ' Lélek/mp')}</span>`);
+        (producer ? body : card.querySelector('.choiceArt')).insertAdjacentHTML('beforeend', `<span class="pickUpkeep${producer ? ' inText' : ''}" title="Alapfenntartás">${effectText('−' + upkeep + ' Lélek/mp')}</span>`);
+      }
+      if (producer) {
+        const art = card.querySelector('.choiceArt');
+        art.querySelectorAll('.pickCD,.pickUnitCost').forEach(el => el.remove());
+        const footprint = art.querySelector('.pickFootprint');
+        if (footprint) {footprint.remove();body.insertAdjacentHTML('beforeend',`<div class="productionMeta">Terület: ${productionFootprint(R,producerCity,o.id)}</div>`);}
       }
       if (cardRules[o.id]) card.title += `\n${cardRules[o.id]}`;
       card.classList.add('illustratedCard');
@@ -141,10 +169,20 @@ export function installCardPresentation(R) {
       const src = cardFrameUrl(card.dataset.k, 'building', R.P.race);
       card.classList.add('illustratedBuildCard', 'illustratedCard');
       card.querySelector('.cardinfo')?.remove();
+      if (R.BUILDINGS[card.dataset.k]?.unit) {
+        card.classList.add('producerBuildCard');
+        const mini=document.createElement('span');mini.className='productionMini';
+        card.querySelectorAll('.cardart .pickCD,.cardart .pickUnitCost').forEach(el=>mini.append(el));
+        const price=R.unitCost(R.P,R.BUILDINGS[card.dataset.k].unit),amounts=R.RES.filter(r=>price[r]>0).map(r=>price[r]);
+        mini.querySelectorAll('.pickUnitCost b').forEach((el,i)=>{el.textContent=amounts[i].toLocaleString('hu-HU',{maximumFractionDigits:2});});
+        const footprint=card.querySelector('.cardart .pickFootprint');
+        if(footprint)card.querySelector('.cardcosts').append(footprint);
+        card.append(mini);
+      }
       if (src) {
         card.classList.add('hasCardFrame');
         card.insertAdjacentHTML('afterbegin', frameImage(src));
-        card.querySelector('.cardart')?.querySelectorAll(':scope > img').forEach(el => el.remove());
+        card.querySelector('.cardart')?.querySelectorAll(':scope > img,:scope > .undeadBuildingArt').forEach(el => el.remove());
       }
     });
     return out;

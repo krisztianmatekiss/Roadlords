@@ -1,3 +1,9 @@
+# V4.29.2 – képzési adatok a szövegdobozban, Trollkapacitás
+
+2026-10-23. A Troll kapacitáspróbája mindkét oldalon valódi képzést, egyszeri fizetést, kész Troll elsőbbségét, a túllépés utáni zárolást és a veszteség utáni újraindulást vizsgálja. Külön eset az automata kapu, a Rohamalagút, a nulla kapacitás, a Goblinok félférőhelyes maradéka és a vendégoldali tiltás. A négyes egységsúly, ár és képzési idő megmarad. A túllépés felső határa három, a kedvezmény csak legalább egy szabad férőhelynél használható.
+
+A kártyapróba mindhárom faj képzőépületein ellenőrzi, hogy az idő, ár és terület a szövegdobozban van; az egységek alap-képességei nem ismétlődnek. A Nekromanták szentélyének 1024 × 1536 pixeles helyi képét dekódolás és SHA-256 ellenőrzi. A 246 lexikonlap szövege 800, 1366 és 1920 px ablakban is elfér. A meglévő egységbalance-, fejlesztés-, élőhalott felület- és százalékos méretezési próbák is megmaradnak. A CI közzététel előtt a teljes tesztsort futtatja.
+
 # V4.29.1 – rövid, közös kártyaszövegek
 
 2026-10-23. A célzott böngészőpróba mindhárom faj 66 épületét és 180 gyakori/legendás fejlesztését végignézi 800, 1366 és 1920 pixeles ablakszélességnél. A lexikon mind a 246 leírása elfér a kártya szövegdobozában, belső görgetés nélkül. A Hajcsártábor L1–L3 kijelzése 25% / 42,9% / 66,7% gyorsabb képzést és 80% kezdő HP-t mutat; az előny zöld, a hátrány piros. Az árcsökkentés zöld, a hosszabb képzés és magasabb fenntartás piros. 198 kiválasztott épületszint szövegét és 394 valódi választólapot ellenőriz a próba, az L4-ágakkal együtt.

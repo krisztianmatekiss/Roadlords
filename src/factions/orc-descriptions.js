@@ -69,7 +69,7 @@ export function initializeFactionsOrcDescriptions(runtime) {
     orc_warg: 'Első támadásként 60 sebzésű lándzsát dob 115 hatótávból, utána közelharcban küzd. Épületek ellen a lándzsa kevesebbet sebez, és nem lehet kritikus.',
     orc_shaman: 'Találatonként egy véletlen átkot tesz a célpontra 4 másodpercre. Elsősorban az átok nélküli ellenfeleket támadja.\nGyengeség: −20% sebzés.\nSorvadás: −20% maximális életerő; lejáratkor nem gyógyít.\nKimerültség: −25% támadási sebesség.\nSebezhetőség: +20% elszenvedett sebzés.\nVakság: 25% eséllyel elhibázza a támadást.\nUgyanaz az átok frissül, nem erősödik.',
     orc_ram: 'Épületek ellen 130-at, egységek ellen 8-at sebez. A fizikai támadásokból 50%-kal kevesebb sebzést kap.',
-    orc_troll: 'A célpontnak 110-et, a körülötte álló ellenségeknek 35-öt sebez.'
+    orc_troll: 'A célpontnak 110-et, a körülötte álló ellenségeknek 35-öt sebez. 4 sereghelyet és 4 helyőrségi férőhelyet foglal. Az Oltárnál és Totemnél 4 pontot ér. Legalább 1 szabad férőhelynél a limitet legfeljebb 3-mal átlépheti; ezután a keretbe nem érkezik új egység, amíg a létszám a limit alá nem csökken.'
   };
   for (const [key, text] of Object.entries(unitCopy)) runtime.UNITS[key].description = text;
   const picks = {

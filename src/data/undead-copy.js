@@ -19,42 +19,42 @@ export const UNDEAD_BUILDING_COPY = {
     levels: [20, 30, 40, 80].map((n) => `+${n} sereghely.`),
   },
   und_graveyard: {
-    description: 'Csontvázakat képez. A Csontváz Íjász ereklyével íjászokat is adhat.',
+    description: 'Csontvázakat képez.',
     branches: [
-      'Legalább 3 szomszédos Temető mellett elit Csontvázakat képez: +50% életerő és sebzés.',
+      'Legalább 3 szomszédos Temető mellett elit Csontvázakat képez.',
       'Képzésenként 2 Csontváz készül, 1 áráért.',
     ],
   },
   und_morgue: {
-    description: 'Zombikat képez. Halálukkor megmérgezik a közeli ellenségeket.',
+    description: 'Zombikat képez.',
     branches: [
       'A Zombik másodpercenként 2 méregpontot adnak a 30 hatótávon belüli ellenségeknek. A halálukkor okozott méreg megmarad.',
       'Minden harcban elesett Zombi helyén 1 saját Csontváz jelenik meg.',
     ],
   },
   und_ghost_spawner: {
-    description: 'Szellemeket képez. Kitérésükkel elkerülhetik a támadásokat.',
+    description: 'Szellemeket képez.',
     branches: [
       'A Szellemek áthaladnak az ellenséges egységeken, és a hátsó távolságiakat támadják. A tornyokat nem kerülik meg.',
       'Kitéréskor a Szellem a kivédett sebzés 50%-át visszaadja a támadónak.',
     ],
   },
   und_necro_spawner: {
-    description: 'Nekromantákat képez. Idézett egységeik nem foglalnak sereghelyet.',
+    description: 'Nekromantákat képez.',
     branches: [
       'A Nekromanták idézett egységei nem tűnnek el idővel. Az idézett Szellemekre is hat.',
       'A Nekromanták 3 helyett 5 egységet idéznek, továbbra is 10 mp-re. Az idézést erősítő ereklyével 6-ot.',
     ],
   },
   und_vampire_castle: {
-    description: 'Vámpírokat képez. Sebzésük egy részéből visszagyógyulnak.',
+    description: 'Vámpírokat képez.',
     branches: [
       'A Vámpír életlopása a legközelebbi sérült szövetségest is gyógyítja, az elszívott életerő 50%-ával.',
       'Ölés után a Vámpír egy 120 hatótávon belüli ellenségre ugrik, és ingyen támad. Újabb öléssel folytathatja.',
     ],
   },
   und_lich_spawner: {
-    description: 'Licheket képez. Sugaruk idővel egyre erősebben sebez, és gyógyítja őket.',
+    description: 'Licheket képez.',
     branches: [
       'Ha a sugár megöli célpontját, új, hatótávon belüli ellenségre ugrik. Megtartja a felhalmozott sebzését.',
       'A sugár másodpercenként további 5%-kal lassítja a célpont mozgását és támadását. A lassítás a kapcsolat végén megszűnik.',
@@ -117,11 +117,11 @@ export const UNDEAD_UPGRADE_COPY = {
   gen_military_speed: '+5% képzési sebesség minden katonai épületnek.',
   gen_build_discount: 'Az építkezés 5%-kal olcsóbb.',
   garden_chance: 'Holtak kertje: +2 százalékpont feltámasztási esély, legfeljebb 100%.',
-  skeleton_common_ranged_res: 'Csontváz: +5 százalékpont távolsági ellenállás. Alap: 25%, maximum: 90%.',
-  zombie_common_poison: 'Zombi: halálakor +1 méregpontot okoz. Alap: 4 méregpont.',
-  ghost_common_dodge: 'Szellem: +5 százalékpont kitérési esély. Alap: 40%, maximum: 70%; Megfoghatatlannal 80%.',
+  skeleton_common_ranged_res: 'Csontváz: +5 százalékpont távolsági ellenállás. Maximum: 90%.',
+  zombie_common_poison: 'Zombi: halálakor +1 méregpontot okoz.',
+  ghost_common_dodge: 'Szellem: +5 százalékpont kitérési esély. Maximum: 70%; Megfoghatatlannal 80%.',
   necro_common_summon_stats: 'A Nekromanták idézett Csontvázai +10% életerőt és sebzést kapnak.',
-  vampire_common_lifesteal: 'Vámpír: +5 százalékpont életlopás. Alap: 30%.',
+  vampire_common_lifesteal: 'Vámpír: +5 százalékpont életlopás.',
   lich_common_respawn: 'Lich: halálakor +3 százalékpont eséllyel újjáéled a saját kapunál, teljes életerővel.',
   skeleton_leg_archer: 'A Temetők 50% eséllyel Csontváz Íjászt képeznek Csontváz helyett.',
   skeleton_leg_guard: 'A Csontvázak magukra vonják a 40 távolságon belüli szövetségeseket célzó távolsági fegyveres támadásokat.',
@@ -134,6 +134,6 @@ export const UNDEAD_UPGRADE_COPY = {
   vampire_leg_shield: 'A Vámpír életlopásából megmaradó túlgyógyítás korlátlan pajzzsá alakul.',
   vampire_leg_dual: 'A Vámpír egyszerre 2 célpontot támad teljes sebzéssel. Mindkettőből életet lop.',
   vampire_leg_frenzy: 'A Vámpír ölésenként +10% támadási sebességet kap haláláig, korlátlanul.',
-  lich_leg_greedy: 'A Lich 5 mp-enként 1 helyett 2 új célpontra kapcsol sugarat.',
+  lich_leg_greedy: 'A Lich egyszerre 2 új célpontra kapcsol sugarat.',
   lich_leg_shield: 'A Lichet érő sebzés felét a sugaraival összekötött ellenségek kapják.',
 };

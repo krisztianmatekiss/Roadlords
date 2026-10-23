@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { fitsUnitRoom } from '../economy/unit-capacity.js';
 export function register(runtime) {
   runtime.keepCellSet = function keepCellSet() {
     const set = new Set();
@@ -562,7 +563,7 @@ export function register(runtime) {
     const wave = [];
     for (let i = 0; i < entries.length;) {
       const weight = runtime.orcArmyWeight(entries[i]);
-      if (weight <= room) {
+      if (fitsUnitRoom(entries[i], room, weight)) {
         room -= weight;
         wave.push(...entries.splice(i, 1));
       } else if (fifo) break;else i++;

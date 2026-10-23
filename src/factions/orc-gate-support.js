@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { fitsUnitRoom, unitRoomCount } from '../economy/unit-capacity.js';
 export function initializeFactionsOrcGateSupport(runtime) {
   const O = window.__ROADLORDS_ORCS__,
     active = (c, k) => O.isOrc(c) ? runtime.buildingOf(c, k).find(b => !b.inactive) : null;
@@ -89,12 +90,12 @@ export function initializeFactionsOrcGateSupport(runtime) {
       reserveWeight = runtime.orcReserveWeight({
         key
       }, c),
-      reserve = reserveWeight ? Math.floor(Math.max(0, c.garrisonCap - runtime.reserveCount(c)) / reserveWeight) : Infinity;
-    if (destination(c, b)) return Math.floor(tunnelRoom(c) / weight);
+      reserve = unitRoomCount({key}, c.garrisonCap - runtime.reserveCount(c), reserveWeight);
+    if (destination(c, b)) return unitRoomCount({key}, tunnelRoom(c), weight);
     if (altarFor(c, b)) return oldRoom(c, b);
     if (runtime.gateActuallyOpen(c) && c.garrison.length) return reserve;
     if (weight === 1 && reserveWeight === 1) return oldRoom(c, b);
-    return runtime.gateActuallyOpen(c) ? Math.max(Math.floor(runtime.fieldQueueRoom(c) / weight), reserve) : reserve;
+    return runtime.gateActuallyOpen(c) ? Math.max(unitRoomCount({key}, runtime.fieldQueueRoom(c), weight), reserve) : reserve;
   };
   const oldQueue = runtime.queueProduced;
   let production = null;
@@ -120,7 +121,7 @@ export function initializeFactionsOrcGateSupport(runtime) {
     const t = !e.hospitalSaved && destination(c, b);
     let ok;
     if (t) {
-      if (tunnelRoom(c) < runtime.orcArmyWeight(e, c)) return false;
+      if (!fitsUnitRoom(e, tunnelRoom(c), runtime.orcArmyWeight(e, c))) return false;
       const u = runtime.releaseUnit(c, e);
       u.lane = t.lane;
       u.cooldown = Math.max(u.cooldown, .2);

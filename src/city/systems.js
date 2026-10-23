@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { fitsUnitRoom } from '../economy/unit-capacity.js';
 export function register(runtime) {
   runtime.cardBuildingImageTag = function cardBuildingImageTag(type, cls = 'cardBuildingImage') {
     const src = runtime.CARD_IMAGES[type] || runtime.BUILDING_IMAGES[type];
@@ -417,7 +418,7 @@ export function register(runtime) {
       }
       if (c.garrison.length && runtime.fieldQueueRoom(c) > 0) runtime.openWave(c);
       if (!c.releaseQueue.length || runtime.fieldUnitCount(c) >= c.armyCap) c.releaseAcc = 0;else c.releaseAcc = (c.releaseAcc || 0) + dt * runtime.gateReleaseRate(c);
-      while (c.releaseAcc >= 1 && c.releaseQueue.length && runtime.fieldUnitCount(c) + runtime.orcArmyWeight(c.releaseQueue[0]) <= c.armyCap) {
+      while (c.releaseAcc >= 1 && c.releaseQueue.length && fitsUnitRoom(c.releaseQueue[0], c.armyCap - runtime.fieldUnitCount(c), runtime.orcArmyWeight(c.releaseQueue[0], c))) {
         c.releaseAcc -= 1;
         runtime.releaseUnit(c, c.releaseQueue.shift());
       }
@@ -545,7 +546,9 @@ export function register(runtime) {
   runtime.updateSpawners = function updateSpawners(c, dt) {
     runtime.updateGarrisonTraining(c, dt);
     runtime.updateCivilianMilitia(c, dt);
-    for (const b of runtime.activeSpawners(c)) {
+    const spawners = runtime.activeSpawners(c);
+    if (c.race === 'orc') spawners.sort((a, b) => Number(b.type === 'orc_troll' && b.progress >= 1) - Number(a.type === 'orc_troll' && a.progress >= 1));
+    for (const b of spawners) {
       const t = runtime.trainingTime(c, b);
       if (Number.isFinite(t)) {
         b.progress = Math.min(1, (b.progress || 0) + dt / t);

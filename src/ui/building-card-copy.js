@@ -59,16 +59,17 @@ export function createBuildingCardCopy(R) {
     const value = { rows, cost: R.buildPrice(c, type), description: describe(race, type, level, d, rows) }; cache.set(key, value); return value;
   }
   function costText(cost, race) {
-    if (race === 'undead') return `${Math.ceil(cost.wood)} Lélek`;
+    const price = n => n.toLocaleString('hu-HU', {maximumFractionDigits:2});
+    if (race === 'undead') return `${price(cost.wood)} Lélek`;
     return [['wood', 'fa'], ['stone', 'kő'], ['food', 'élelem']].filter(([k]) => cost[k] > 0)
-      .map(([k, name]) => `${Math.ceil(cost[k])} ${name}`).join(', ') || 'Ingyenes';
+      .map(([k, name]) => `${price(cost[k])} ${name}`).join(', ') || 'Ingyenes';
   }
   const fmt = n => Number(n).toLocaleString('hu-HU', {maximumFractionDigits: 1, useGrouping: false});
   function describe(race, type, level, d, rows) {
     const value = name => rows.find(([label]) => label === name)?.[1] || '';
     const number = name => Number(value(name).match(/[+−-]?\d+(?:[,.]\d+)?/)?.[0]?.replace(',', '.').replace('−', '-'));
     if (type === 'keep') return `${value('Életerő')} HP; ${value('Termelés').replace(' nyersanyagonként', ' fa, kő és élelem')}; ${race === 'undead' ? '' : value('Tároló') + ' tároló; '}${value('Sereghely')} sereghely; kapu: ${value('Kapu')}.`;
-    if (d.unit) return d.description;
+    if (d.unit) return `${R.UNITS[d.unit].name} képzése.`;
     if (race === 'undead') return d.levels[level - 1];
     if (['lumber','stonecutter','farm'].includes(type)) {
       const resource = {lumber:'fa',stonecutter:'kő',farm:'élelem'}[type];
@@ -94,10 +95,10 @@ export function createBuildingCardCopy(R) {
       orc_work: () => `+${value('Fa és kő/mp')} fa és kő/mp. Erdő mellett dupla fa, kőlelőhely mellett dupla kő.`,
       orc_hunt: () => `+${value('Élelem/mp')} élelem/mp. Fal mellett +50%, nyitott kapunál további +50% termelés.`,
       orc_hut: () => `+${value('Sereglimit')} sereghely és +${value('Helyőrséglimit')} helyőrségi férőhely.`,
-      orc_arena: () => `A szomszédos táborok ${value('Veterán esély (%)')}% eséllyel veteránokat képeznek: +50% életerő és sebzés. Nem halmozódik.`,
+      orc_arena: () => `A szomszédos táborok ${value('Veterán esély (%)')}% eséllyel veteránokat képeznek.`,
       orc_overseer: () => `A szomszédos táborok ${fmt(100 / (1 - number('Képzési idő csökkentése (%)') / 100) - 100)}%-kal gyorsabban képeznek, de az egységek ${value('Induló életerő (%)')}% HP-val indulnak.`,
-      orc_altar: () => `Feláldozza a szomszédos táborok egységeit. ${value('Szükséges áldozat')} pont után sereged 12 mp-re 25% életlopást kap. Troll: 4 pont.`,
-      orc_totem: () => `${value('Szükséges elesett egység')} halálpont után 1 legendás lapot választhatsz. Elesett vagy feláldozott saját egység: 1 pont, Troll: 4.`,
+      orc_altar: () => `Feláldozza a szomszédos táborok egységeit. ${value('Szükséges áldozat')} pont után sereged 12 mp-re 25% életlopást kap.`,
+      orc_totem: () => `${value('Szükséges elesett egység')} halálpont után 1 legendás lapot választhatsz.`,
       orc_slave: () => `Minden 20 legyőzött ellenség után tartósan +${value('Fa és kő / mp minden 20 ölésért')} fa és kő/mp.`,
       orc_raider: () => `Nyitott kapunál minden elkészült egység ${value('Erősítés esélye (%)')}% eséllyel ingyen erősítést hív.`,
       orc_tunnel: () => `A ${value('Hatótáv (mező)')} mezőn belüli táborok a legelöl álló saját toronynál vetik be egységeiket, zárt kapunál is.`,

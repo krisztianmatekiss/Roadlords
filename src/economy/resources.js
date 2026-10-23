@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { fitsUnitRoom } from './unit-capacity.js';
 export function register(runtime) {
   runtime.resourceIconTag = function resourceIconTag(type, mini = false) {
     return `<img class="costIcon${mini ? ' mini' : ''}" src="${runtime.RESOURCE_IMAGES[type]}" alt="${runtime.RESOURCE_NAMES[type]}">`;
@@ -186,12 +187,12 @@ export function register(runtime) {
       return true;
     }
     if (b) runtime.applyTavernOriginBuff(c, b, entry);
-    if (runtime.gateActuallyOpen(c) && runtime.fieldQueueRoom(c) >= runtime.orcArmyWeight(entry) && (c.race !== 'orc' || !c.garrison.length)) {
+    if (runtime.gateActuallyOpen(c) && fitsUnitRoom(entry, runtime.fieldQueueRoom(c), runtime.orcArmyWeight(entry, c)) && (c.race !== 'orc' || !c.garrison.length)) {
       runtime.waveBuffs(c, [entry]);
       c.releaseQueue.push(entry);
       return true;
     }
-    if (runtime.reserveCount(c) + runtime.orcReserveWeight(entry, c) > c.garrisonCap) return false;
+    if (!fitsUnitRoom(entry, c.garrisonCap - runtime.reserveCount(c), runtime.orcReserveWeight(entry, c))) return false;
     c.garrison.push(entry);
     return true;
   };

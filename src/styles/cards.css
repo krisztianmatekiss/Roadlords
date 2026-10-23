@@ -69,6 +69,32 @@ html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustrated
 }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard :is(.pickCD,.pickUnitCost) { font-size: 3.4cqw !important; }
 .pickUpkeep { position:absolute; top:3%; left:3%; padding:3px 5px; border:1px solid #a38b5277; border-radius:5px; background:#10130ee8; font-size:3.4cqw; }
+.productionFacts > div { display:flex; align-items:baseline; justify-content:space-between; gap:6px; }
+.productionFacts b { font-weight:700; text-align:right; }
+.productionFacts.compact { margin-top:3px; }
+.productionMeta { display:flex; flex-wrap:wrap; align-items:center; gap:4px; margin-top:3px; font-size:clamp(10px,3cqw,12px); }
+html body .productionMeta .pickFootprint { display:inline-grid !important; grid-template-columns:repeat(var(--fp-cols),4px) !important; grid-template-rows:repeat(var(--fp-rows),4px) !important; gap:1px !important; box-shadow:none !important; }
+html body .productionMeta .pickFootprint i { display:block !important; width:4px !important; height:4px !important; border:0 !important; border-radius:1px !important; }
+html body .productionMeta .pickFootprint i.on { background:#e7c364 !important; }
+html body .productionMeta .pickFootprint i.off { background:#384338 !important; opacity:.3; }
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody .productionMeta .pickFootprint {
+  position:static !important; margin:0 !important; padding:0 !important; border:0 !important; background:none !important;
+}
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody .pickUpkeep.inText {
+  position:static; display:inline-block; padding:0; margin-top:3px; border:0; background:none;
+}
+html body .cardFace .productionMeta .rlChip { padding:0; border:0; background:none; font-size:inherit; }
+html body .cardFace .productionMeta .pickFootprint { position:static !important; margin:0; padding:0; border:0; background:none; }
+html body #buildList .producerBuildCard .cardcosts { top:80.5% !important; bottom:auto !important; height:7% !important; min-height:0 !important; padding:0 !important; border:0 !important; align-items:center !important; font-size:8px !important; line-height:1 !important; }
+html body #buildList .productionMini { position:absolute !important; left:8% !important; top:88% !important; width:84% !important; height:7% !important; min-height:0 !important; padding:0 !important; display:flex !important; flex-direction:row !important; align-items:center !important; justify-content:space-between; gap:1px; z-index:1; }
+html body #buildList .productionMini :is(.pickCD,.pickUnitCost),
+html body #buildList .producerBuildCard .cardcosts .pickFootprint { position:static !important; inset:auto !important; margin:0 !important; padding:0 !important; border:0 !important; background:none !important; min-width:0 !important; }
+html body #buildList .productionMini :is(.pickCD,.pickUnitCost,.pickCD b,.pickUnitCost b) { font-size:6.75px !important; line-height:1 !important; }
+html body #buildList .productionMini :is(.pickCD,.pickUnitCost) { display:inline-flex !important; flex-direction:row !important; flex-wrap:nowrap !important; align-items:center !important; gap:1px !important; width:auto !important; max-width:none !important; height:9px !important; min-height:0 !important; transform:none !important; box-shadow:none !important; white-space:nowrap !important; }
+html body #buildList .productionMini .pickUnitCost>span { display:inline-flex !important; flex-direction:row !important; align-items:center !important; gap:1px !important; padding:0 !important; }
+html body #buildList .productionMini :is(.costIcon,.cdClock,.cdClock svg) { width:7px !important; height:7px !important; min-width:7px !important; min-height:7px !important; }
+html body #buildList .producerBuildCard .cardcosts .pickFootprint { flex:0 0 auto; display:grid !important; grid-template-columns:repeat(var(--fp-cols),3px) !important; grid-template-rows:repeat(var(--fp-rows),3px) !important; gap:1px !important; box-shadow:none !important; }
+html body #buildList .producerBuildCard .cardcosts .pickFootprint i { width:3px !important; height:3px !important; border:0 !important; border-radius:1px; }
 
 /* The codex shows one selected level, with optional L4 rules below the face. */
 html body .rlCodexGrid {

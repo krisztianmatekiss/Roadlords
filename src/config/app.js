@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.29.2',
-  label: 'V4.29.2 · KÁRTYÁK ÉS TROLLKIENGEDÉS',
-  title: 'Roadlords – Kártyák és Trollkiengedés',
+  version: '4.29.3',
+  label: 'V4.29.3 · OLVASHATÓBB KÁRTYÁK',
+  title: 'Roadlords – Olvashatóbb kártyák',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

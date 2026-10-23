@@ -87,6 +87,12 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       const rect = selector => c.querySelector(selector).getBoundingClientRect();
       return rect('h3').bottom <= rect('.choiceArt').top + 1 && rect('.choiceArt').bottom <= rect('.choiceBody').top + 1 && rect('.choiceBody').bottom <= rect('.choiceFooter').top + 1;
     })));
+    await show(['orc_as', 'orc_hp', 'all_damage']);
+    check('Army-wide upgrades show their percentage effect without an arbitrary unit stat or interval', await page.evaluate(() => [...document.querySelectorAll('#choiceList .choiceBody')].every(b => b.textContent.includes('+5%') && !b.querySelector('.upgradeComparison') && !/→|\bmp\b/.test(b.textContent))));
+    await page.evaluate(() => document.fonts.ready);
+    check('Fantasy titles load locally with Hungarian accents, and single-unit comparisons have visible labels', await page.evaluate(() => document.fonts.check('16px "Roadlords Display"', 'ÁÉÍÓÖŐÚÜŰ')));
+    await show(['sword_as']);
+    check('Single-unit attack intervals retain their explicit visible metric label', await page.locator('.upgradeMetric').evaluate(e => e.textContent === 'Két támadás között' && !e.classList.contains('sr-only') && e.clientHeight > 0));
     await show(['orc_blessing', 'orc_bleed', 'orc_leech', 'orc_crit']);
     check('Long descriptions remain complete and scroll to the final comparison', await page.evaluate(() => [...document.querySelectorAll('#choiceList .choiceBody')].every(b => {
       const p = b.querySelector('p'), s = getComputedStyle(p); b.scrollTop = b.scrollHeight;

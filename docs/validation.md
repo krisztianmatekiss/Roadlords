@@ -1,3 +1,9 @@
+# V4.29.3 – olvashatóbb kártyák, egyértelmű építési ár
+
+2026-10-23. A célzott böngészőpróbák mind a 246 lexikonlap szövegét ellenőrzik 800, 1366 és 1920 px mellett; a nagyobb betűk és szövegmezők nem igényelnek belső görgetést. A százalékos felületméretezés és a rögzített kezelősávok 800–3840 px között működnek. A kártyák 2:3 arányúak maradtak; az építési ár a leírás fölött van, a képzési ár és idő a leírásban. A helyi Metamorphous font magyar ékezetekkel, külső hálózat nélkül töltődik; OFL-licence a font mellett található.
+
+Külön ellenőrzés védi az Ork harci tempó, az ork globális életerő és az általános sebzés lapját: nem mutatnak egyetlen kiragadott egység másodperces/abszolút értékét. A konkrét egység támadásközének előnézete feliratot kap. A tiszta, állapotot és RNG-t nem módosító statisztika-előnézet és a tényleges fejlesztésfelvétellel történő összevetés megmarad. A harcrendszer, multiplayer, képzési költségek és balance nem változnak. A közzétételt a CI teljes tesztsora előzi meg.
+
 # V4.29.2 – képzési adatok a szövegdobozban, Trollkapacitás
 
 2026-10-23. A Troll kapacitáspróbája mindkét oldalon valódi képzést, egyszeri fizetést, kész Troll elsőbbségét, a túllépés utáni zárolást és a veszteség utáni újraindulást vizsgálja. Külön eset az automata kapu, a Rohamalagút, a nulla kapacitás, a Goblinok félférőhelyes maradéka és a vendégoldali tiltás. A négyes egységsúly, ár és képzési idő megmarad. A túllépés felső határa három, a kedvezmény csak legalább egy szabad férőhelynél használható.

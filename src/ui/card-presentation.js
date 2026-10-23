@@ -28,7 +28,13 @@ export function cardFrameUrl(id, kind, race) {
   return file ? assetUrl('cards/orc/' + file) : '';
 }
 export const frameImage = (src) => src
-  ? `<img class="cardFrameImage" src="${src}" alt="" loading="lazy" decoding="async" draggable="false">` : '';
+  ? `<img class="cardFrameImage" src="${src}" alt="" loading="lazy" decoding="async" draggable="false"><img class="cardIllustration" src="${src}" alt="" loading="lazy" decoding="async" draggable="false">` : '';
+
+export const cardTextBackdrop = '<span class="cardTextBackdrop" aria-hidden="true"></span>';
+
+export function constructionPrice(R, cost, race) {
+  return `<span class="constructionPrice"><span>Építés</span><b>${escapeText(R.cardBuildingCopy.costText(cost, race).replace(/, /g, ' · '))}</b></span>`;
+}
 
 export function productionFacts(R, c, type, level, {before = null, compact = false} = {}) {
   const d = R.buildingDefinition(c, type), key = d.unit;
@@ -112,6 +118,13 @@ export function decorateEffects(root) {
 
 export function installCardPresentation(R) {
   R.cardBuildingCopy = createBuildingCardCopy(R);
+  // The filter affects a clipped copy of the illustration, preserving the original frame.
+  const treatment = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  treatment.setAttribute('aria-hidden', 'true');
+  treatment.setAttribute('width', '0'); treatment.setAttribute('height', '0');
+  treatment.style.position = 'absolute';
+  treatment.innerHTML = `<defs><filter id="card-painterly" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation=".45"/><feColorMatrix type="saturate" values=".82"/><feComponentTransfer>${['R','G','B'].map(c=>`<feFunc${c} type="discrete" tableValues="${Array.from({length:20},(_,i)=>(.025+i*.95/19).toFixed(3)).join(' ')}"/>`).join('')}</feComponentTransfer></filter></defs>`;
+  document.body.append(treatment);
   const choices = R.renderChoice;
   R.renderChoice = (options, ...args) => {
     R.hideTerrainTooltip();
@@ -148,6 +161,11 @@ export function installCardPresentation(R) {
       }
       if (cardRules[o.id]) card.title += `\n${cardRules[o.id]}`;
       card.classList.add('illustratedCard');
+      card.insertAdjacentHTML('afterbegin', cardTextBackdrop);
+      if (o.kind === 'building') {
+        card.insertAdjacentHTML('beforeend', constructionPrice(R, R.buildPrice(R.P, o.id), R.P.race));
+        card.querySelector('.choiceFooter').textContent = R.BUILDINGS[o.id]?.unique ? 'EGYEDI ÉPÜLET' : 'ÉPÜLET';
+      }
       card.querySelector('.ctype')?.remove();
       const tag=card.querySelector('.picktag');
       if(tag&&o.kind==='normal')tag.textContent=R.P.normal[o.id] ? `GYAKORI · ×${R.P.normal[o.id]}` : 'GYAKORI';

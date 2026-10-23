@@ -1,3 +1,8 @@
+@font-face {
+  font-family: Roadlords Display;
+  src: url('../../public/fonts/metamorphous/Metamorphous-Regular.woff') format('woff');
+  font-style: normal; font-weight: 400; font-display: swap;
+}
 .effectValue { font-weight: 750; color: #f4dea0; }
 .effect-fire { color: #ff815d !important; }
 .effect-poison { color: #a4ed65 !important; }
@@ -27,9 +32,29 @@
 .illustratedCard[data-frame="economy"] { --card-border: #8eac65; }
 .illustratedCard[data-frame="legendary"] { --card-border: #e8b949; }
 .illustratedCard.hasCardFrame { border: 0 !important; box-shadow: none !important; background: #17140f !important; }
-.illustratedCard > :not(.cardFrameImage) { z-index: 1; }
+.illustratedCard > :not(.cardFrameImage,.cardIllustration) { z-index: 1; }
+.cardIllustration {
+  position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important;
+  max-height: none !important; object-fit: fill !important; pointer-events: none; z-index: 0;
+  clip-path: inset(13.28125% 4.6875% 31% 4.6875%); filter: url(#card-painterly);
+}
+.cardTextBackdrop {
+  position: absolute; left: 5%; right: 5%; top: 68.5%; bottom: 4%; pointer-events: none;
+  background: linear-gradient(125deg,#30271cf5,#211b16 65%,#34291e);
+  border-top: 2px solid #9e7f48; box-shadow: 0 -4px 12px #100d09aa,inset 0 1px #d6b67655;
+  border-radius: 3px 3px 10px 10px;
+}
+.constructionPrice {
+  position: absolute; left: 8%; top: 69.4%; width: 84%; height: 4.5%;
+  display: flex; align-items: center; justify-content: space-between; gap: 4px;
+  font: 600 3.8cqw/1.1 system-ui,sans-serif; color: #f6dda1;
+  border-bottom: 1px solid #ad8c4955;
+}
+.constructionPrice > span { color: #c1b59e; font-size: .85em; }
+.constructionPrice > b { text-align: right; }
 
-/* Both the CSS fallback and the supplied art use the manifest's empty boxes. */
+
+/* Preserve the 2:3 frames, reserving a larger opaque area for live text. */
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard {
   display: block !important; padding: 0 !important;
 }
@@ -38,27 +63,27 @@ html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustrated
   font-size: 2.3cqw !important; line-height: 1 !important;
 }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard h3 {
-  position: absolute !important; top: 4.03% !important; left: 7.8125% !important;
-  width: 84.375% !important; height: 7.552% !important;
+  position: absolute !important; top: 3.2% !important; left: 7.8125% !important;
+  width: 84.375% !important; height: 9.3% !important;
   display: grid !important; place-items: center !important;
-  font-size: 5.2cqw !important; line-height: 1.1 !important;
+  font-family: "Roadlords Display", Georgia, serif !important; font-weight: 400 !important; font-size: 6cqw !important; line-height: 1.1 !important; color: #ffe9aa !important; margin: 0 !important; padding: 0 !important;
   text-shadow: 0 2px 3px #000; border: none !important;
 }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceArt.card-media {
   position: absolute !important; top: 13.28125% !important; left: 4.6875% !important;
-  width: 90.625% !important; height: 64.0625% !important;
+  width: 90.625% !important; height: 55.6% !important;
   padding: 4% !important; border: 1px solid #ac8c4d66; background: #07120a33;
 }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard.hasCardFrame .choiceArt.card-media { background: none !important; border: 0 !important; }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody {
-  position: absolute !important; top: 80.078125% !important; left: 7.8125% !important;
-  width: 84.375% !important; height: 14.3229% !important;
+  position: absolute !important; top: 74.5% !important; left: 7.8125% !important;
+  width: 84.375% !important; height: 19.9% !important;
   padding: 0 !important; box-sizing: border-box; scrollbar-gutter: auto;
-  font-size: clamp(10px,3.5cqw,18px) !important; line-height: 1.2 !important;
+  font-size: clamp(11px,4.35cqw,22px) !important; line-height: 1.2 !important;
   color: #f1ead8 !important; background: none !important;
 }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody :is(p,.choicemeta,.upgradeRow) {
-  font-size: clamp(10px,3.5cqw,18px) !important; line-height: 1.2 !important; margin: 0 0 3px !important;
+  font-size: clamp(11px,4.35cqw,22px) !important; line-height: 1.2 !important; margin: 0 0 3px !important;
 }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody .upgradeComparison { margin-top: 3px; }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody .upgradeSpecialization { font-size: 2.9cqw !important; }
@@ -104,19 +129,19 @@ html body .rlCodexCard { background: none; border: 0; box-shadow: none; overflow
 .cardFace { width: 100%; aspect-ratio: 2/3; box-sizing: border-box; }
 html body .cardFace .rlCodexCardHead { padding: 0; min-height: 0; border: 0; background: none; }
 html body .cardFace .rlCodexTitle {
-  position: absolute; left: 7.8125%; top: 4.03%; width: 84.375%; height: 7.552%;
+  position: absolute; left: 7.8125%; top: 3.2%; width: 84.375%; height: 9.3%;
   display: grid; place-items: center; text-align: center;
 }
-html body .cardFace .rlCodexTitle h3 { margin: 0; font: 700 5.2cqw/1.1 Georgia,serif; text-shadow: 0 2px 3px #000; }
+html body .cardFace .rlCodexTitle h3 { margin: 0; overflow-wrap: anywhere; font: 400 6cqw/1.1 "Roadlords Display",Georgia,serif; color: #ffe9aa; text-shadow: 0 2px 3px #000; }
 html body .cardFace .rlCodexIcon {
-  position: absolute; left: 4.6875%; top: 13.28125%; width: 90.625%; height: 64.0625%;
+  position: absolute; left: 4.6875%; top: 13.28125%; width: 90.625%; height: 55.6%;
   padding: 5%; box-sizing: border-box; background: #07120a33; border: 1px solid #ac8c4d66;
 }
 html body .hasCardFrame .rlCodexIcon { border: 0; background: none; }
 html body .cardFace .rlCodexIcon img { object-fit: contain; }
 html body .cardFace .rlCodexContent {
-  position: absolute; left: 7.8125%; top: 80.078125%; width: 84.375%; height: 14.3229%;
-  overflow: auto; padding: 0; box-sizing: border-box; font-size: clamp(11px,3.3cqw,16px); line-height: 1.18; color: #e9e5d7;
+  position: absolute; left: 7.8125%; top: 74.5%; width: 84.375%; height: 19.9%;
+  overflow: auto; padding: 0; box-sizing: border-box; font-size: clamp(12px,4.35cqw,19px); line-height: 1.2; color: #e9e5d7;
 }
 html body .cardFace .rlCodexContent p { margin: 0 0 3px; }
 html body .cardFace .rlCodexMeta {
@@ -145,7 +170,7 @@ html body #buildList .illustratedBuildCard {
 }
 html body #buildList .illustratedBuildCard .cardname {
   position: absolute !important; top: 4%; left: 8%; width: 84%; height: 8%; display: grid; place-items: center;
-  margin: 0 !important; padding: 0 !important; border: 0 !important; z-index: 1; font-size: 12px !important; line-height: 1.1 !important;
+  margin: 0 !important; padding: 0 !important; border: 0 !important; z-index: 1; font-family: "Roadlords Display",Georgia,serif !important; font-weight: 400 !important; color: #ffe9aa; font-size: 12px !important; line-height: 1.1 !important;
 }
 html body #buildList .illustratedBuildCard .cardart { position: absolute !important; top: 13%; left: 5%; width: 90%; height: 64%; background: none !important; border: 0 !important; z-index: 1; }
 html body #buildList .illustratedBuildCard .cardinfo { position: absolute !important; top: 80%; left: 8%; width: 84%; height: 14%; padding: 0 !important; margin: 0 !important; z-index: 1; overflow: hidden; }

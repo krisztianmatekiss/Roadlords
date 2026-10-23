@@ -2,6 +2,8 @@ import { NORMAL_COPY, LEGENDARY_COPY, BUILDING_COPY, BRANCH_COPY } from '../data
 
 const NORMAL_LIMITS = { building_discount: 5, orc_double: 20, orc_blessing: 40, orc_refund: 5, orc_loot: 10 };
 const LEGEND_LIMITS = { sword_execute: 5, magic_order: 4, tavern_chain: Infinity, strategic_superiority: Infinity };
+// Army-wide upgrades have no single unit's HP, damage or attack interval.
+const ARMY_WIDE_STATS = new Set(['orc_as', 'orc_hp', 'all_damage']);
 const UNIT_PREFIXES = { sword: 'swordsman', swordsman: 'swordsman', spear: 'spearman', archer: 'archer', knight: 'knight', priest: 'priest', catapult: 'catapult', cat: 'catapult', mage: 'mage' };
 const METRICS = {
   hp: ['Életerő', ''], dmg: ['Sebzés', ''], heal: ['Gyógyítás', ''], cooldown: ['Két támadás között', ' mp'],
@@ -116,7 +118,7 @@ export function initializeUiUpgradeCopy(R) {
         return el;
       };
       append('p', 'upgradeDescription', preview.description);
-      if (preview.rows.length) {
+      if (preview.rows.length && !ARMY_WIDE_STATS.has(option.id)) {
         const rows = append('span', 'upgradeComparison', '');
         rows.title = preview.context;
         for (const row of preview.rows) {
@@ -124,7 +126,7 @@ export function initializeUiUpgradeCopy(R) {
           line.title = row.label;
           line.setAttribute('aria-label', `${row.label}: ${row.before} → ${row.after}`);
           const label = row.label.replace(/^A lap /, '').replace('képzésisebesség-bónusza','Képzési bónusz').replace('termelési bónusza','Termelési bónusz').replace('toronybónusza','Toronybónusz').replace('Ár e lap kedvezményével','Fizetendő ár').replace('Életlopás e lapból','Életlopás').replace('Kritikus esély e lapból','Kritikus esély').replace('Bónusz / stack','Bónusz');
-          append('span', `upgradeMetric${preview.rows.length === 1 && !MODIFIERS[option.id] ? ' sr-only' : ''}`, label, line);
+          append('span', 'upgradeMetric', label, line);
           const values = append('b', 'upgradeValues', '', line);
           append('span', 'upgradeBefore', row.before, values).dataset.effectTone = 'value';
           values.append(document.createTextNode(' → '));

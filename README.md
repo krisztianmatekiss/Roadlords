@@ -1,8 +1,12 @@
-# Roadlords · V4.29.2
+# Roadlords · V4.29.3
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
 
 Az élőhalott városokban nincs erdő, kő vagy termőtalaj; az újrageneráláskor sem jelennek meg. A romok és az alapozás megmaradnak.
+
+## Olvashatóbb kártyák · 4.29.3
+
+Az építési ár külön, feliratos sávba került a nagy kártyák leírása fölé, a képzési ár továbbra is külön adat. A nagyobb címet helyi Metamorphous fantasy betűtípus rajzolja, magyar ékezetekkel; a nagyobb leírás tágasabb, sötét hátteret kapott. A teljes képes lapok illusztrációjára enyhe festményszerű effekt kerül, a keret változatlan. Az egész seregre ható életerő-, sebzés- és támadásisebesség-lapokon nincs kiragadott egységérték vagy másodperces előnézet. A konkrét egység fejlesztésénél a számpár látható megnevezést kap.
 
 ## Képzési adatok és Trollkiengedés · 4.29.2
 

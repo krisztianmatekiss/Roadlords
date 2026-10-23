@@ -30,7 +30,7 @@ export function installBuildCardDeck(R) {
   }
   function show(type, {keyboard: fromKeyboard = false} = {}) {
     const card = cardFor(type);
-    if (!card || R.state.modal || document.body.classList.contains('roadlords-menu-open')) return;
+    if (!card || R.state.selectedBuild || R.state.modal || document.body.classList.contains('roadlords-menu-open')) return;
     clearTimeout(hideTimer);
     if (key === type && preview) { keyboard ||= fromKeyboard; return; }
     close(); key = type; keyboard = fromKeyboard;
@@ -81,7 +81,8 @@ export function installBuildCardDeck(R) {
     const scroll = list.scrollLeft, active = key, wasKeyboard = keyboard;
     const out = render(...args);
     list.scrollLeft = scroll;
-    if (active) {
+    if (R.state.selectedBuild) close();
+    else if (active) {
       close();
       if (cardFor(active) && (!wasKeyboard || R.state.selectedBuild === active)) show(active, {keyboard:wasKeyboard});
     }
@@ -104,6 +105,7 @@ export function installBuildCardDeck(R) {
     const zoom = Number(getComputedStyle(R.$('.catalog')).zoom) || 1;
     if (rect.left < bounds.left) list.scrollLeft -= (bounds.left - rect.left) / zoom;
     if (rect.right > bounds.right) list.scrollLeft += (rect.right - bounds.right) / zoom;
+    if (options?.selection) { close(); return; }
     show(type, options);
   };
   Object.assign(window.__ROADLORDS__, {renderBuildList:R.renderBuildList});

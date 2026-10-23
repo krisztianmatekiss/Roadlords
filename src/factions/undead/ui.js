@@ -41,7 +41,7 @@ export function initializeUndeadUi(R) {
       format = (v) => v.toLocaleString('hu-HU', { minimumFractionDigits: 1, maximumFractionDigits: 1 }),
       flow = R.resourceFlowRates(c),
       credit = R.undCredit(c);
-    R.$('#woodStock').textContent = `${Math.floor(c.resources.wood).toLocaleString('hu-HU')} Lélek`;
+    R.$('#woodStock').textContent = Math.floor(c.resources.wood).toLocaleString('hu-HU');
     R.$('#woodStock').classList.toggle('undDebt', c.resources.wood < 0);
     R.$('#woodStock').title =
       `Korlátlan tárolás.${credit ? ' Hitelkeret: −' + credit + ' Lélek. Negatív készletnél a katonai képzés szünetel.' : ''}`;

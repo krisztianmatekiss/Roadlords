@@ -1,8 +1,14 @@
-# Roadlords · V4.30.1
+# Roadlords · V4.31.0
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
 
 Az élőhalott városokban nincs erdő, kő vagy termőtalaj; az újrageneráláskor sem jelennek meg. A romok és az alapozás megmaradnak.
+
+## Játékbarát felület · 4.31.0
+
+Épületkiválasztáskor a nagy lap azonnal bezárul, és építés közben az egérre, fókuszra vagy gyorsgombra sem nyílnak fel kártyák. Az építési sávban a kiválasztott kis lap látható marad. Hideg indításkor a statikus játékfelület rejtve marad a főmenü elkészültéig, így nincs kezdő bevillanás.
+
+A nyersanyagnevek helyén ikonok jelennek meg a kártyákon, lexikonban és épületablakokban. Az ork élelem húsikon, az élőhalott nyersanyag lélekikon; a keresés és a segítő címkék megtartják a neveket. A főépület adatai külön gazdasági és védelmi sorokban látszanak. A lélekfenntartás nagyobb, önálló sorban szerepel. Az ork élelemtermelési fejlesztés megkapta a meglévő Vadászház kártyaképét; a fa- és kőtermelési lap is a hozzá illő gazdasági illusztrációt használja. A Nekromanták szentélyének csontkerete vörös katonai díszítést kapott; a zöld mágia megmaradt. [Kártyaképek közös szabályai](docs/card-art-style.md).
 
 ## Kisméretű építési lapok · 4.30.1
 

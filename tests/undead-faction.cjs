@@ -86,7 +86,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         return (
           R.state.startChoices === 0 &&
           document.body.classList.contains('undead-player') &&
-          document.querySelector('#woodStock').textContent.includes('Lélek') &&
+          document.querySelector('#woodStock').closest('.res').querySelector('.resourceIcon').alt==='Lélek' &&
           !document.querySelector('#woodStock').textContent.includes('/')
         );
       }),
@@ -789,7 +789,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         return (
           R.ROAD.counts.join() === '50,50' &&
           new Set(R.state.units.filter((u) => u.side === 'player').map((u) => u.key)).size === 7 &&
-          document.querySelector('#woodStock').textContent.includes('Lélek')
+          document.querySelector('#woodStock').closest('.res').querySelector('.resourceIcon').alt==='Lélek'
         );
       }),
     );

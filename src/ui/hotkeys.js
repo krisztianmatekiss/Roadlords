@@ -105,7 +105,7 @@ export function initializeUiHotkeys(runtime) {
       return;
     }
     card.click();
-    runtime.revealBuildCard?.(card.dataset.k, {keyboard:true});
+    runtime.revealBuildCard?.(card.dataset.k, {selection:true});
   }
   function cycleSpeed() {
     runtime.$('#speedBtn')?.click();

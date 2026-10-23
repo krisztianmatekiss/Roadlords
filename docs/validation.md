@@ -1,3 +1,9 @@
+# V4.31.0 – nyugodt építés, nyersanyagikonok és nagy fenntartási jelzés
+
+2026-10-23. A lassított, tiszta indítási próba a JavaScript betöltése előtt ellenőrzi a rejtett statikus játékot, majd a kész főmenü mögött is rejtve maradó táblát. Az építési próba egérrel és gyorsgombbal kiválasztott épületnél is tiltja a nagy lap újranyílását; Esc után ismét böngészhetők a lapok. A kis kártya és az építési kijelölés működése megmarad.
+
+Az új felületpróba mindhárom faj nyersanyagikonjait, az ork húsjelet, a pótolt élelemtermelési kártyaképet, a főépület két adatcsoportját és a testbetűvel azonos méretű lélekfenntartást vizsgálja. A 246 lexikonlap szövege továbbra is elfér; a tényleges képzési árakat és L4-területváltozásokat vizsgáló próbák megmaradnak. A katonai keret piros, a nekromanta épület belső zöld mágiája változatlan témájú. Az új képfájl méretét és SHA-256 ellenőrzőösszegét a manifest rögzíti. A játékszabályok és balance-értékek változatlanok; a CI a teljes tesztsort futtatja a közzététel előtt.
+
 # V4.30.1 – teljes egészében elférő építési bélyegképek
 
 2026-10-23. A pakli mérete a sáv tényleges belső magasságából számolódik, a gyorsgomb- és darabszámjelzések helyével együtt. A böngészőpróba a teljes kártya és ára bennmaradását ellenőrzi 800/1366/1920 px szélességnél, 75/100/150%-on. A számbillentyűs, egérre felugró, Esc és kattintásos működés megmarad; a nagy lap a felületméret szerint nő, de a képernyőn belül marad. A meglévő 800–3840 px felületpróba is sikeres. A felületméret és a nyersanyagárak változatlanok.

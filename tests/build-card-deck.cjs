@@ -16,11 +16,15 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   await p.mouse.move(20,150);await p.waitForTimeout(160);check('Leaving the card folds the preview away',await p.locator('.buildCardPreview').count()===0);
   await p.setViewportSize({width:800,height:900});await p.waitForTimeout(80);
   await p.keyboard.press('9');await p.waitForTimeout(120);
-  check('An offscreen number shortcut selects its building, raises the card and scrolls the deck horizontally',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return R.state.selectedBuild==='orc_warg'&&document.querySelector('.buildCardPreview')?.dataset.k==='orc_warg'&&document.querySelector('#buildList').scrollLeft>0&&document.querySelector('.buildCardPreview').getBoundingClientRect().right<=innerWidth}));
+  check('A number shortcut selects and reveals its thumbnail without opening a preview',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return R.state.selectedBuild==='orc_warg'&&!document.querySelector('.buildCardPreview')&&document.querySelector('#buildList').scrollLeft>0}));
   await p.keyboard.press('Escape');check('Escape dismisses the keyboard preview',await p.locator('.buildCardPreview').count()===0);
   await p.setViewportSize({width:1600,height:1000});await p.waitForTimeout(80);
-  await p.keyboard.press('1');await p.waitForTimeout(120);await p.locator('.buildCardPreview .previewHitbox').click();
-  check('Clicking the raised card preserves the original one-click selection toggle',await p.evaluate(()=>__ROADLORDS_RUNTIME__.state.selectedBuild===null));
+  await p.keyboard.press('1');await p.waitForTimeout(120);
+  check('Selecting a building closes the preview and keeps placement unobstructed',await p.evaluate(()=>__ROADLORDS_RUNTIME__.state.selectedBuild==='orc_troll'&&!document.querySelector('.buildCardPreview')));
+  const other=await p.locator('#buildList .buildcard').nth(1).boundingBox();await p.mouse.move(other.x+20,other.y+20);await p.waitForTimeout(120);
+  check('Hovering other cards during placement never raises a preview',await p.locator('.buildCardPreview').count()===0);
+  await p.keyboard.press('Escape');await p.mouse.move(20,150);const first=await p.locator('#buildList .buildcard').first().boundingBox();await p.mouse.move(first.x+20,first.y+20);await p.waitForTimeout(180);await p.locator('.buildCardPreview .previewHitbox').click();
+  check('Clicking the raised card selects the building and immediately folds the preview away',await p.evaluate(()=>__ROADLORDS_RUNTIME__.state.selectedBuild==='orc_troll'&&!document.querySelector('.buildCardPreview')));
   await p.mouse.move(20,150);await p.keyboard.press('Escape');
   for(const[width,height]of[[800,900],[1366,768],[1920,1080]])for(const mode of['75','100','150']){
    await p.setViewportSize({width,height});await p.evaluate(mode=>{__ROADLORDS_UI_SCALE__.set(mode);const R=__ROADLORDS_RUNTIME__;R.renderBuildList();document.querySelector('#buildList').scrollLeft=0},mode);await p.waitForTimeout(80);

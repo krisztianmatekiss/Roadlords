@@ -1,8 +1,9 @@
 import { assetUrl } from '../assets/urls.js';
 import { fitsUnitRoom } from './unit-capacity.js';
+import { resourceIcon } from '../ui/resource-symbols.js';
 export function register(runtime) {
   runtime.resourceIconTag = function resourceIconTag(type, mini = false) {
-    return `<img class="costIcon${mini ? ' mini' : ''}" src="${runtime.RESOURCE_IMAGES[type]}" alt="${runtime.RESOURCE_NAMES[type]}">`;
+    return resourceIcon(runtime,type,runtime.P?.race,mini);
   };
   runtime.resourceCostHTML = function resourceCostHTML(cost, mini = false, zeroDash = false) {
     return runtime.RES.map(r => {

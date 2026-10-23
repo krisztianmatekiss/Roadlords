@@ -4,6 +4,7 @@ import { assetUrl } from '../assets/urls.js';
 import { createBuildingCardCopy } from './building-card-copy.js';
 import cardRules from '../data/card-rules.json';
 import { fitCardText } from './card-text-fit.js';
+import { resourceIcon, symbolizeResources } from './resource-symbols.js';
 
 export const escapeText = (s) => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -18,6 +19,7 @@ export function cardFrameUrl(id, kind, race) {
   const building = ['building', 'building_upgrade', 'building_branch'].includes(kind);
   let key = id;
   if (!building) {
+    if (['orc_wood','orc_stone','orc_food'].includes(id)) return cardFrameUrl(id === 'orc_food' ? 'orc_hunt' : 'orc_work','building',race);
     const family = id.match(/^(orc_(?:berserker|goblin|warg|shaman|ram|troll))_(?:hp|dmg)$/)?.[1];
     if (family) key = family + '_common';
     else key = ({ orc_warrior_hp: 'orc_hp', orc_warrior_dmg: 'orc_hp', orc_bleed: 'orc_hp',
@@ -36,8 +38,8 @@ export const cardTextBackdrop = '<span class="cardTextBackdrop" aria-hidden="tru
 export function constructionPrice(R, cost, race) {
   const resources = race === 'undead' ? ['wood'] : ['wood', 'stone'];
   const rows = resources.map(key => {
-    const amount = Math.ceil(cost[key] || 0), soul = race === 'undead';
-    const icon = `<img class="costIcon" src="${soul ? R.SOUL_IMAGE : R.RESOURCE_IMAGES[key]}" alt="${soul ? 'Lélek' : R.RESOURCE_NAMES[key]}">`;
+    const amount = Math.ceil(cost[key] || 0);
+    const icon = resourceIcon(R,key,race);
     return `<span class="costRow" data-cost-resource="${key}" data-cost-amount="${amount}"><b>${amount.toLocaleString('hu-HU')}</b>${icon}</span>`;
   }).join('');
   return `<span class="constructionPrice" aria-label="Építési költség: ${escapeText(R.cardBuildingCopy.costText(cost, race))}">${rows}</span>`;
@@ -51,6 +53,21 @@ export function productionFacts(R, c, type, level, {before = null, compact = fal
   const previous = before === null ? '' : `${fmt(R.previewTrainingTime(c, type, before))} → `;
   const cost = R.cardBuildingCopy.costText(R.unitCost(c, key), c.race).replace(/, /g, ' · ');
   return `<div class="productionFacts${compact ? ' compact' : ''}"><div><span>${compact ? 'Képzés' : escapeText(R.UNITS[key].name)}</span> <b>◷ ${escapeText(previous + fmt(time))} mp</b></div><div><span>Egységár</span> <b>${escapeText(cost)}</b></div></div>`;
+}
+
+export function buildingUpkeep(R,type) {
+  const amount=window.__ROADLORDS_UNDEAD__.buildings[type]?.upkeep;
+  return type==='keep' || amount === undefined ? '' : `<div class="pickUpkeep inText upkeepFact"><span>Fenntartás</span><b class="effect-negative">−${amount.toLocaleString('hu-HU')} ${resourceIcon(R,'soul','undead')}/mp</b></div>`;
+}
+
+export function capitalFacts(R,race,level) {
+  const values=new Map(R.cardBuildingCopy.metrics(race,'keep',level).rows);
+  const row=(label,value)=>`<div class="capitalFact"><span>${label}</span><b>${value}</b></div>`;
+  const resources=race==='undead'?['wood']:['wood','stone','food'];
+  const rate=values.get('Termelés').match(/[+−-]?\d+(?:[,.]\d+)?/u)?.[0]||'0';
+  const production=`${rate} ${resources.map(key=>resourceIcon(R,key,race)).join(' ')}`;
+  const storage=race==='undead'?'':row('Tároló',`${values.get('Tároló').split(' /')[0]} ${resources.map(key=>resourceIcon(R,key,race)).join(' ')}`);
+  return `<div class="capitalFacts"><div class="capitalGroup">${row('Életerő',values.get('Életerő'))}${row('Sereghely',values.get('Sereghely'))}${row('Kapu',values.get('Kapu'))}</div><div class="capitalGroup">${row('Termelés /mp',production)}${storage}</div></div>`;
 }
 
 export function productionFootprint(R, c, type) {
@@ -144,7 +161,7 @@ export function installCardPresentation(R) {
       if (['building', 'building_upgrade'].includes(o.kind)) {
         const level = o.kind === 'building_upgrade' ? R.upgradeTargetLevel(R.P, o.id) : R.levelOf(R.P, o.id);
         const model = R.cardBuildingCopy.metrics(R.P.race, o.id, level);
-        body.innerHTML = producer ? productionFacts(R, R.P, o.id, level, {before: o.kind === 'building_upgrade' ? R.levelOf(R.P,o.id) : null}) : `<p>${effectText(model.description)}</p>`;
+        body.innerHTML = producer ? productionFacts(R, R.P, o.id, level, {before: o.kind === 'building_upgrade' ? R.levelOf(R.P,o.id) : null}) : o.id==='keep' ? capitalFacts(R,R.P.race,level) : `<p>${effectText(model.description)}</p>`;
       }
       if (o.kind === 'building_branch') {
         const branches = R.P.race === 'undead' ? window.__ROADLORDS_UNDEAD__.buildings[o.id]?.branches
@@ -157,16 +174,17 @@ export function installCardPresentation(R) {
         }
       }
       if (R.P.race === 'undead' && ['building','building_upgrade','building_branch'].includes(o.kind) && o.id !== 'keep') {
-        const upkeep = window.__ROADLORDS_UNDEAD__.buildings[o.id].upkeep.toLocaleString('hu-HU');
-        (producer ? body : card.querySelector('.choiceArt')).insertAdjacentHTML('beforeend', `<span class="pickUpkeep${producer ? ' inText' : ''}" title="Alapfenntartás">${effectText('−' + upkeep + ' Lélek/mp')}</span>`);
+        body.insertAdjacentHTML('beforeend', buildingUpkeep(R,o.id));
       }
       if (['building','building_upgrade','building_branch'].includes(o.kind)) {
+        card.dataset.frame=R.buildingDefinition(producerCity,o.id).category || 'support';
         const art = card.querySelector('.choiceArt');
         art.querySelectorAll('.pickCD,.pickUnitCost,.pickFootprint').forEach(el => el.remove());
         art.insertAdjacentHTML('beforeend', productionFootprint(R,producerCity,o.id));
       }
       if (cardRules[o.id]) card.title += `\n${cardRules[o.id]}`;
       card.classList.add('illustratedCard');
+      card.dataset.race=R.P.race;
       card.insertAdjacentHTML('afterbegin', cardTextBackdrop);
       if (o.kind === 'building') {
         card.insertAdjacentHTML('beforeend', constructionPrice(R, R.buildPrice(R.P, o.id), R.P.race));
@@ -183,6 +201,7 @@ export function installCardPresentation(R) {
         card.querySelector('.choiceArt')?.querySelectorAll(':scope > img, :scope > .undeadBuildingArt').forEach(el => el.remove());
       }
       decorateEffects(body);
+      symbolizeResources(card,R,R.P.race);
       fitCardText(card);
     });
     return out;
@@ -195,12 +214,14 @@ export function installCardPresentation(R) {
       const d = R.BUILDINGS[type], level = R.levelOf(R.P, type);
       const model = R.cardBuildingCopy.metrics(R.P.race, type, level);
       card.classList.add('illustratedBuildCard', 'illustratedCard');
+      card.dataset.race=R.P.race;
       if (src) card.classList.add('hasCardFrame');
-      const upkeep = R.P.race === 'undead' ? `<span class="pickUpkeep inText">${effectText('−' + window.__ROADLORDS_UNDEAD__.buildings[type].upkeep.toLocaleString('hu-HU') + ' Lélek/mp')}</span>` : '';
+      const upkeep = R.P.race === 'undead' ? buildingUpkeep(R,type) : '';
       card.innerHTML = `${frameImage(src)}${cardTextBackdrop}<h3 class="cardname">${escapeText(d.name)}</h3><span class="cardart card-media">${src ? '' : R.cardBuildingImageTag(type, 'cardBuildingImage')}${productionFootprint(R,R.P,type)}</span>${constructionPrice(R,R.buildPrice(R.P,type),R.P.race)}<span class="cardinfo">${d.unit ? productionFacts(R,R.P,type,level) : `<p>${effectText(model.description)}</p>`}${upkeep}</span><span class="cardFooter">${R.isUniqueBuilding(R.P,type) ? 'EGYEDI ÉPÜLET' : 'ÉPÜLET'} · L${level}</span>`;
       card.setAttribute('aria-label', d.name);
       card.removeAttribute('title');
       decorateEffects(card.querySelector('.cardinfo'));
+      symbolizeResources(card,R,R.P.race);
       fitCardText(card);
     });
     R.updateBuildAffordabilityV497();

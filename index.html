@@ -1,14 +1,19 @@
 <!doctype html>
-<html lang="hu">
+<html lang="hu" class="booting">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Roadlords</title>
+<style>
+html.booting { background:#0b1510; }
+html.booting body { visibility:hidden !important; opacity:0 !important; }
+body.roadlords-menu-open #app { visibility:hidden !important; opacity:0 !important; pointer-events:none !important; }
+</style>
 <link rel="stylesheet" href="/styles/base/01.css">
 <link rel="stylesheet" href="/styles/base/02.css">
 <link rel="stylesheet" href="/styles/base/03.css">
 <link rel="stylesheet" href="/styles/base/04.css"></head>
-<body>
+<body class="roadlords-menu-open">
 <main id="app">
   <header class="topbar">
     <div class="brand"><span class="crest">R</span><div><h1>ROADLORDS</h1><small>HUMAN · 1V1 · BUILDING BALANCE</small></div></div>

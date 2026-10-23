@@ -15,13 +15,17 @@ import { initializeResponsiveChoices } from './ui/responsive-choices.js';
 import { installCardPresentation } from './ui/card-presentation.js';
 import { installBuildCardDeck } from './ui/build-card-deck.js';
 import { initializeCardTextFit } from './ui/card-text-fit.js';
+import { initializeResourceSymbols } from './ui/resource-symbols.js';
 window.Peer = Peer;
 const game = createGame();
 installCardPresentation(game);
 installBuildCardDeck(game);
 installApplicationShell(game);
+initializeResourceSymbols(game);
 initializeVersionAndScaling();
 initializeResponsiveChoices();
 initializeCardTextFit();
 applyAppIdentity();
 window.__ROADLORDS_RUNTIME__ = game;
+// The static legacy board must not paint before the menu and its styles exist.
+requestAnimationFrame(() => document.documentElement.classList.remove('booting'));

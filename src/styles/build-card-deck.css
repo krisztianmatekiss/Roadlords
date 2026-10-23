@@ -15,7 +15,7 @@ html body :is(#buildList .buildcard,.buildCardPreview) {
 }
 html body :is(#buildList .buildcard,.buildCardPreview) .cardname {
   position:absolute !important; left:7.8125% !important; top:3.2% !important; width:84.375% !important; height:9.3% !important;
-  display:grid !important; place-items:center !important; padding:0 !important; margin:0 !important;
+  display:block !important; align-content:center !important; text-align:center !important; padding:0 !important; margin:0 !important;
   font:400 var(--card-title-size,7.2cqw)/1.1 "Roadlords Display",Georgia,serif !important;
   color:#ffe9aa !important; text-shadow:0 2px 3px #000; text-align:center; white-space:normal !important;
   overflow:visible !important; overflow-wrap:anywhere; border:0 !important;

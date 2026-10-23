@@ -1,4 +1,8 @@
 /* The faction atlas is shared by map, build cards and the encyclopedia. */
+.undeadUnitPortrait { display:block; overflow:hidden; border-radius:inherit; }
+.rlCodexIcon > .undeadUnitPortrait,
+.choiceArt > .undeadUnitPortrait,
+.unitPortraitFrame > .undeadUnitPortrait { width:100%; height:100%; }
 .undeadBuildingArt {
   display: block !important;
   width: 100%;

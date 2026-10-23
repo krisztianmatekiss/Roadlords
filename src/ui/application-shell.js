@@ -4,6 +4,7 @@ import { assetUrl } from '../assets/urls.js';
 import { createCodexCards } from './codex-cards.js';
 import { fitCardText } from './card-text-fit.js';
 import { symbolizeResources } from './resource-symbols.js';
+import { UNIT_COPY } from './unit-copy.js';
 export function installApplicationShell(game) {
   (() => {
     const styleV4968 = document.createElement('style');
@@ -277,7 +278,7 @@ export function installApplicationShell(game) {
         raceBar.querySelector('.orcNote').textContent = '';
         return;
       }
-      if (codexTab === 'buildings') rows = Object.entries(BUILDINGS).map(([k,d])=>[k,codexRace==='undead'&&k==='keep'?window.__ROADLORDS_UNDEAD__.buildings.keep:d]).filter(([k, d]) => raceMatches(d, k)).filter(([k, d]) => matches(d.name, d.description, `${categoryName(d.category)} ${k}`)).map(([k, d]) => buildingCard(k, d));else if (codexTab === 'units') rows = Object.entries(UNITS).filter(([k, u]) => raceMatches(u, k)).filter(([k, u]) => matches(u.name, '', `${catName(u.cat)} ${(u.tags || []).join(' ')} ${k}`)).map(([k, u]) => unitCard(k, u));else if (codexTab === 'common') rows = NORMAL.filter(x => raceMatches(x, x.id)).filter(x => matches(x.name, x.description, x.id)).map(commonCard);else rows = LEGENDARY.filter(x => raceMatches(x, x.id)).filter(x => matches(x.name, x.description, x.id)).map(legendaryCard);
+      if (codexTab === 'buildings') rows = Object.entries(BUILDINGS).map(([k,d])=>[k,codexRace==='undead'&&k==='keep'?window.__ROADLORDS_UNDEAD__.buildings.keep:d]).filter(([k, d]) => raceMatches(d, k)).filter(([k, d]) => matches(d.name, d.description, `${categoryName(d.category)} ${k}`)).map(([k, d]) => buildingCard(k, d));else if (codexTab === 'units') rows = Object.entries(UNITS).filter(([k, u]) => raceMatches(u, k)).filter(([k, u]) => matches(u.name, [UNIT_COPY[k]?.role,UNIT_COPY[k]?.ability,...(UNIT_COPY[k]?.details || [])].join(' '), `${catName(u.cat)} ${(u.tags || []).join(' ')} ${k}`)).map(([k, u]) => unitCard(k, u));else if (codexTab === 'common') rows = NORMAL.filter(x => raceMatches(x, x.id)).filter(x => matches(x.name, x.description, x.id)).map(commonCard);else rows = LEGENDARY.filter(x => raceMatches(x, x.id)).filter(x => matches(x.name, x.description, x.id)).map(legendaryCard);
       grid.innerHTML = rows.join('') || '<div class="rlCodexEmpty">Nincs találat.</div>';
       symbolizeResources(grid,game,codexRace);
       grid.querySelectorAll('.illustratedCard').forEach(fitCardText);

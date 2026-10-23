@@ -23,6 +23,16 @@ export function initializeUndeadArt(R) {
       `<circle cx="64" cy="64" r="61" fill="url(#bg)" stroke="#5eb795" stroke-width="2"/><path d="M21 119 31 83 49 71h30l18 12 12 36Z" fill="${cloak}" stroke="#161e22" stroke-width="3"/><path d="M43 85 64 108 85 85 79 120H48Z" fill="#63b89a" opacity=".6"/><path d="M40 28 50 17h28l13 14-5 34-14 14H55L40 64Z" fill="${head}" stroke="#263d35" stroke-width="3"/><path d="m46 42 15 1-4 10-10-2m22-7 15-2-1 10-10 2" fill="#0a2d24"/><path d="m49 45 7 1-3 4m20-3 7-2-2 5" stroke="#a2ffce" stroke-width="3"/><path d="m63 53-5 9h12Z" fill="#234639"/><path d="M52 68h24m-19-4v10m7-10v10m7-10v10" stroke="#526353" stroke-width="2"/>${mage ? '<path d="m33 30 6-17 26-9 25 14 7 20-16-10-17-9-18 8Z" fill="#253b3c" stroke="#77b396" stroke-width="2"/><path d="M99 61v62" stroke="#7d7561" stroke-width="6"/><circle cx="99" cy="58" r="9" fill="#74f0be"/>' : ''}${vampire ? '<path d="m52 66 5 12 2-11m13 0 3 11 3-12" fill="#faf7df"/><path d="m27 90 6-28 17 22m29 0 18-22 5 29" fill="#8b3b5d"/>' : ''}${ghost ? '<path d="M25 101q-14 23 3 20m66-17q27 10 11 19" fill="none" stroke="#8efbcb" stroke-width="3" opacity=".7"/>' : ''}${key === 'und_skeleton_archer' ? '<path d="M105 80q25 18 0 41l6-20Z" fill="none" stroke="#c3a771" stroke-width="4"/>' : ''}`,
     );
   }
+  const portraits = assetUrl('art/undead/units-atlas.png');
+  const unitImage = R.unitImageTag;
+  const portraitKeys=Object.keys(U);
+  R.unitImageTag=(key,cls='unitPortrait')=>{
+    const index=portraitKeys.indexOf(key);
+    if(index<0)return unitImage(key,cls);
+    // Viewports share one decoded atlas. The generated original stays intact.
+    const x=index%4*384,y=Math.floor(index/4)*512;
+    return `<svg class="${cls} undeadUnitPortrait" data-unit-portrait="${key}" viewBox="${x} ${y} 384 512" preserveAspectRatio="xMidYMin slice" role="img" aria-label="${U[key].name}"><image href="${portraits}" width="1536" height="1024"/></svg>`;
+  };
   const image = (type, cls) => {
     const d = D[type],
       i = d.atlas;

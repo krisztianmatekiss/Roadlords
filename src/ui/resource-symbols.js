@@ -3,6 +3,7 @@ import { assetUrl } from '../assets/urls.js';
 const MEAT = assetUrl('art/resources/meat.svg');
 const words = /(?<!\p{L})(?:(?:fa|kő|élelem|lélek)(?=termel|bevétel|költség|fogyaszt|fenntart)|(?:fából|fát|fa|követ|kőből|kő|élelmiszert|élelmet|élelem|kaját|kaja|húst|hús|lelkeket|lelkek|lélekből|lelket|lélek)(?!\p{L}))/giu;
 const keyFor = word => /^f/iu.test(word) ? 'wood' : /^kő|^köv/iu.test(word) ? 'stone' : /^l/iu.test(word) ? 'soul' : 'food';
+const excluded = '.resourceToken,script,style,textarea,input,svg,h1,h2,h3,h4,.cardname,.rlCodexTitle';
 
 export function resourceImage(R, key, race = R.P?.race) {
   const soul = key === 'soul' || key === 'wood' && race === 'undead';
@@ -17,13 +18,13 @@ export function resourceIcon(R, key, race = R.P?.race, mini = false) {
 
 // Keep original names for accessibility and search, replacing their visual text only.
 export function symbolizeResources(root, R, race = R.P?.race) {
-  if (root.nodeType === 1 && root.closest('.resourceToken,script,style,textarea,input,svg')) return;
+  if (root.nodeType === 1 && root.closest(excluded)) return;
   const walker = document.createTreeWalker(root,NodeFilter.SHOW_TEXT), nodes=[];
   while (walker.nextNode()) nodes.push(walker.currentNode);
   if (root.nodeType === Node.TEXT_NODE) nodes.push(root);
   for (const text of nodes) {
     const parent=text.parentElement;
-    if (!parent || parent.closest('.resourceToken,script,style,textarea,input,svg')) continue;
+    if (!parent || parent.closest(excluded)) continue;
     const matches=[...text.textContent.matchAll(words)];
     if (!matches.length) continue;
     const faction=parent.closest('[data-race]')?.dataset.race || race;

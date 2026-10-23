@@ -1,11 +1,65 @@
 {
   "source": "Roadlords AI-generated artwork, 2026-10-23",
   "cards": {
-    "building:und_necro_spawner": "buildings/und_necro_spawner.png"
+    "building:und_necro_spawner": "buildings/und_necro_spawner.png",
+    "building:und_graveyard": "buildings/und_graveyard.png",
+    "building:und_morgue": "buildings/und_morgue.png",
+    "building:und_ghost_spawner": "buildings/und_ghost_spawner.png",
+    "building:und_vampire_castle": "buildings/und_vampire_castle.png",
+    "building:und_lich_spawner": "buildings/und_lich_spawner.png"
   },
   "sha256": "d0ffb06055e0204c4b0e768a58d0b9330066cbf6fad248d68f3c5fa99218d8da",
   "width": 1024,
   "height": 1536,
   "category": "military",
-  "frame_color": "crimson"
+  "frame_color": "crimson",
+  "artwork": {
+    "building:und_necro_spawner": {
+      "sha256": "d0ffb06055e0204c4b0e768a58d0b9330066cbf6fad248d68f3c5fa99218d8da",
+      "width": 1024,
+      "height": 1536
+    },
+    "building:und_graveyard": {
+      "sha256": "e9b4afb2919cde9218c896863bde6e07949d8e51c800edc1cc173efccaf2450e",
+      "width": 1024,
+      "height": 1536
+    },
+    "building:und_morgue": {
+      "sha256": "61df104527cd9aa32c3b61b88ca348fc70de8e46b9cfed08923dace83fdf2498",
+      "width": 1024,
+      "height": 1536
+    },
+    "building:und_ghost_spawner": {
+      "sha256": "d92d1f8b9e32fbfe509a948c533f415298cec1b906abbd969210a45c2f80815c",
+      "width": 1024,
+      "height": 1536
+    },
+    "building:und_vampire_castle": {
+      "sha256": "6687ec2310e741aa2fbf3d29bc06b0557232902f98600dfd6ab825dc81ae10f6",
+      "width": 1024,
+      "height": 1536
+    },
+    "building:und_lich_spawner": {
+      "sha256": "e360e5f341378c52802d0a645f28b322523854527ec41d89374872b11c904f14",
+      "width": 1024,
+      "height": 1536
+    }
+  },
+  "unit_portraits": {
+    "file": "art/undead/units-atlas.png",
+    "width": 1536,
+    "height": 1024,
+    "columns": 4,
+    "rows": 2,
+    "order": [
+      "und_skeleton",
+      "und_skeleton_archer",
+      "und_zombie",
+      "und_ghost",
+      "und_necromancer",
+      "und_vampire",
+      "und_lich"
+    ],
+    "sha256": "c5a0599a7be97fd668199ae10ca97174649196ee7d70a779f2063eb5e43fb796"
+  }
 }

@@ -1,5 +1,9 @@
 # V4.31.0 – nyugodt építés, nyersanyagikonok és nagy fenntartási jelzés
 
+## V4.32.0
+
+A `card-identity.cjs` az összes 82 gyakori lap ismételt felvételi előnézetét, mindhárom faj lexikonlapjait, a címek szövegét, az egyediség változását és a hét portré atlasznézetét ellenőrzi. A hat katonai kártya képméreteit és SHA-256 értékeit a manifest rögzíti. Az új globális összehasonlítások a lap összesített százalékát mutatják; egységenként eltérő támadásközt nem állítanak közös értéknek. A korábbi szövegilleszkedési, építésikártya- és működési tesztek továbbra is futnak.
+
 2026-10-23. A lassított, tiszta indítási próba a JavaScript betöltése előtt ellenőrzi a rejtett statikus játékot, majd a kész főmenü mögött is rejtve maradó táblát. Az építési próba egérrel és gyorsgombbal kiválasztott épületnél is tiltja a nagy lap újranyílását; Esc után ismét böngészhetők a lapok. A kis kártya és az építési kijelölés működése megmarad.
 
 Az új felületpróba mindhárom faj nyersanyagikonjait, az ork húsjelet, a pótolt élelemtermelési kártyaképet, a főépület két adatcsoportját és a testbetűvel azonos méretű lélekfenntartást vizsgálja. A 246 lexikonlap szövege továbbra is elfér; a tényleges képzési árakat és L4-területváltozásokat vizsgáló próbák megmaradnak. A katonai keret piros, a nekromanta épület belső zöld mágiája változatlan témájú. Az új képfájl méretét és SHA-256 ellenőrzőösszegét a manifest rögzíti. A játékszabályok és balance-értékek változatlanok; a CI a teljes tesztsort futtatja a közzététel előtt.

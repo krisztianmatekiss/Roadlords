@@ -74,6 +74,12 @@ html body .illustratedCard .upkeepFact > b { font-size:1.08em !important; white-
 .constructionPrice .costRow b { font:inherit !important; color:inherit; overflow:visible !important; }
 .constructionPrice .costIcon { width:5.5cqw !important; height:5.5cqw !important; min-width:0 !important; margin:0 !important; }
 .constructionPrice .unaffordable { color:#ff9690; }
+.uniqueBuildingMark {
+  position:absolute; top:15%; right:8%; width:9cqw; height:9cqw;
+  display:grid; place-items:center; color:#ffe6a0; background:#19170df2;
+  border:1px solid #e4bc60; border-radius:24%; box-shadow:0 2px 6px #000b;
+}
+.uniqueBuildingMark svg { width:84%; height:84%; }
 html body .illustratedCard .card-media .pickFootprint,
 html body .cardFace .rlCodexIcon .pickFootprint {
   position:absolute !important; left:3% !important; bottom:3% !important; top:auto !important; right:auto !important;
@@ -123,7 +129,14 @@ html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustrated
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody :is(p,.choicemeta,.upgradeRow) {
   font-size: inherit !important; line-height: 1.12 !important; margin: 0 0 3px !important;
 }
-html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody .upgradeComparison { margin-top: 3px; }
+html body .illustratedCard .upgradeComparison,
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody .upgradeComparison {
+  display:grid; gap:.25em; margin-top:.65em; padding-top:.4em; border-top:1px solid #a18b5f66;
+}
+.illustratedCard .upgradeRow { display:flex; flex-wrap:wrap; justify-content:space-between; gap:.1em .4em; }
+.illustratedCard .upgradeMetric { font-style:italic; color:#c9c3b4; }
+.illustratedCard .upgradeValues { white-space:normal; font-variant-numeric:tabular-nums; }
+.illustratedCard .upgradeBefore { color:#dfd5bd; }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody .upgradeSpecialization { font-size: 2.9cqw !important; }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceFooter {
   position: absolute !important; inset: auto 8% 1.5% !important;
@@ -181,9 +194,12 @@ html body .cardFace .rlChip:empty { display: none; }
 .lexBranches .rlBranch { font-size: 11px; }
 .lexBranches .rlBranch p { margin: 4px 0 0; }
 .lexUnitStats { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; }
-.lexUnitStats span, .lexUnitStats b { display: block; }
-.lexUnitStats span { color: #b1b8a3; font-size: 2.7cqw; }
-.lexUnitStats b { font-size: 4cqw; }
+.lexUnitStats > div > span, .lexUnitStats > div > b { display: block; }
+.lexUnitStats > div > span { color: #b1b8a3; font-size: .68em; }
+.lexUnitStats > div > b { font-size: .9em; }
+.lexUnitStats { margin-top:.4em; padding-top:.35em; border-top:1px solid #8d7b4e66; }
+.lexUnitDetails ul { margin:0; padding:8px 10px 8px 24px; background:#101a13; font:500 15px/1.4 "Roadlords Copy",Georgia,serif; }
+.lexUnitDetails li + li { margin-top:.35em; }
 
 html body .hasCardFrame::before, html body .hasCardFrame::after { display:none !important; }
 html body[data-ui-scale] #choiceOverlay #choiceList { grid-template-columns:repeat(var(--pick-columns,4),var(--pick-card-width,310px)) !important; }

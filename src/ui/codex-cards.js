@@ -1,5 +1,7 @@
-import { cardFrameUrl, frameImage, cardTextBackdrop, constructionPrice, productionFacts, productionFootprint, capitalFacts, buildingUpkeep, effectText, escapeText as esc } from './card-presentation.js';
+import { cardFrameUrl, frameImage, cardTextBackdrop, constructionPrice, productionFacts, productionFootprint, capitalFacts, buildingUpkeep, uniqueBuildingMark, effectText, escapeText as esc } from './card-presentation.js';
 import { symbolizeResourceHtml } from './resource-symbols.js';
+import { UNIT_COPY } from './unit-copy.js';
+import { upgradeMetricLabel } from './upgrade-copy.js';
 import cardRules from '../data/card-rules.json';
 
 const BUILDING_RULES = {
@@ -27,11 +29,11 @@ export function createCodexCards(R) {
   const definitions = (race, type) => race === 'undead' ? undead().buildings[type] : R.BUILDINGS[type];
   const branches = (race, type) => race === 'undead' ? definitions(race, type).branches
     : race === 'orc' && type === 'keep' ? window.__ROADLORDS_ORCS__.keepBranches : R.V4_BRANCHES[type] || [];
-  function face({ id, kind, race, name, category, art, body, meta = '', price = '', footprint = '', metaInBody = false }) {
+  function face({ id, kind, race, name, category, art, body, meta = '', price = '', footprint = '', mark = '', metaInBody = false }) {
     const src = cardFrameUrl(id, kind, race);
     return symbolizeResourceHtml(`<div class="cardFace illustratedCard ${src ? 'hasCardFrame' : ''}" data-race="${race}" data-frame="${category || 'support'}">${frameImage(src)}${cardTextBackdrop}
       <header class="rlCodexCardHead"><span class="rlCodexIcon">${src ? '' : art}${footprint}</span><div class="rlCodexTitle"><h3>${esc(name)}</h3></div></header>
-      ${price}${metaInBody ? '' : `<div class="rlCodexMeta">${meta}</div>`}<div class="rlCodexContent">${body}${metaInBody ? `<div class="productionMeta">${meta}</div>` : ''}</div></div>`,R,race);
+      ${price}${mark}${metaInBody ? '' : `<div class="rlCodexMeta">${meta}</div>`}<div class="rlCodexContent">${body}${metaInBody ? `<div class="productionMeta">${meta}</div>` : ''}</div></div>`,R,race);
   }
   function extraRules(type,race,level) {
     if(!['warcenter','academy','alchemist','merc_tent'].includes(type))return ruleDetails(BUILDING_RULES[type]);
@@ -53,9 +55,9 @@ export function createCodexCards(R) {
     const text = description, art = R.cardBuildingImageTag(type, 'lexBuildingImg', race);
     const reference=cityFor(race,type,level)[0];
     const body = (d.unit ? productionFacts(R, reference, type, level) : type === 'keep' ? capitalFacts(R,race,level) : `<p>${effectText(text)}</p>`)+(race==='undead'?buildingUpkeep(R,type):'');
-    const meta = d.unique ? '<span class="rlChip gold">Egyedi</span>' : '';
+    const meta = '';
     const price = type === 'keep' ? '' : constructionPrice(R, cost, race);
-    return `<article class="rlCodexCard" data-codex-building="${type}" data-race="${race}">${face({id:type,kind:'building',race,name:race === 'orc' && type === 'keep' ? 'Ork főépület' : d.name,category:d.category,art,body,meta,price,footprint:productionFootprint(R,reference,type),metaInBody:!!d.unit})}
+    return `<article class="rlCodexCard" data-codex-building="${type}" data-race="${race}">${face({id:type,kind:'building',race,name:race === 'orc' && type === 'keep' ? 'Ork főépület' : d.name,category:d.category,art,body,meta,price,mark:uniqueBuildingMark(R,reference,type),footprint:productionFootprint(R,reference,type),metaInBody:!!d.unit})}
       <nav class="lexLevels" aria-label="${esc(d.name)} szintje">${Array.from({length:max}, (_, i) => `<button type="button" data-codex-level="${i+1}" aria-pressed="${level === i+1}">L${i+1}</button>`).join('')}</nav>
       ${bs.length ? `<details class="lexBranches"><summary>L4 ágak</summary>${bs.map(b => `<div class="rlBranch"><b>${esc(b.name)}</b><p>${effectText(b.description)}</p>${ruleDetails(cardRules[type+'/'+b.id])}</div>`).join('')}</details>` : ''}
       ${extraRules(type,race,level)}</article>`;
@@ -63,12 +65,17 @@ export function createCodexCards(R) {
   function upgrade(item, kind, race) {
     const key = R.PICK_UNIT_IMAGES[item.id], src = R.PICK_IMAGES[item.id];
     const art = key && R.UNITS[key] ? R.unitImageTag(key, 'lexUnitImg') : src ? `<img src="${src}" alt="" loading="lazy">` : esc(item.icon || '✦');
-    return `<article class="rlCodexCard ${kind === 'legendary' ? 'rlLegendCard' : ''}">${face({id:item.id,kind,race,name:item.name,category:kind === 'legendary' ? 'legendary' : 'common',art,body:`<p>${effectText(item.description)}</p>`})}${ruleDetails(cardRules[item.id])}</article>`;
+    const reference=cityFor(race,'keep',1)[0];
+    const preview=R.upgradeCopyPreview(reference,{...item,kind});
+    const changes=preview?.rows.length ? `<div class="upgradeComparison" aria-label="Első felvétel változása">${preview.rows.map(row=>`<span class="upgradeRow"><span class="upgradeMetric">${esc(upgradeMetricLabel(row.label))}</span><b class="upgradeValues"><span class="upgradeBefore">${esc(row.before)}</span> → <span class="upgradeAfter effect-positive">${esc(row.after)}</span></b></span>`).join('')}</div>` : '';
+    return `<article class="rlCodexCard ${kind === 'legendary' ? 'rlLegendCard' : ''}" data-codex-upgrade="${item.id}">${face({id:item.id,kind,race,name:item.name,category:kind === 'legendary' ? 'legendary' : 'common',art,body:`<p>${effectText(item.description)}</p>${changes}`})}${ruleDetails(cardRules[item.id])}</article>`;
   }
   function unit(key, u, race) {
-    const stats = [['Életerő', u.hp], ['Sebzés', u.damage], ['Támadás', `${u.cooldown} mp`], ['Hatótáv', u.range], ['Mozgás', u.speed], ...(u.heal ? [['Gyógyítás', u.heal]] : [])];
-    const body = `<div class="lexUnitStats">${stats.map(([name,value]) => `<div><span>${esc(name)}</span><b>${effectText(value)}</b></div>`).join('')}</div>`;
-    return `<article class="rlCodexCard">${face({id:key,kind:'unit',race,name:u.name,category:'military',art:R.unitImageTag(key,'lexUnitImg'),body,meta:`<span class="rlChip">${esc(costText(u.cost, race))}</span>`})}${u.description ? `<details class="lexBranches"><summary>Képesség</summary><p>${effectText(u.description)}</p></details>` : ''}</article>`;
+    const copy=UNIT_COPY[key] || {role:'Harci egység',ability:u.description || ''};
+    const stats = [['Életerő', u.hp], [key==='und_lich'?'Sugár / mp':'Sebzés', u.damage], [key==='und_lich'?'Új sugár':'Támadásköz', `${u.cooldown.toLocaleString('hu-HU')} mp`], ['Hatótáv', u.range], ['Mozgás', u.speed], ...(u.heal ? [['Gyógyítás', u.heal]] : u.buildingDamage ? [['Épületsebzés',u.buildingDamage]] : [])];
+    const body = `<p class="lexUnitAbility">${effectText(copy.ability)}</p><div class="lexUnitStats">${stats.map(([name,value]) => `<div><span>${esc(name)}</span><b>${effectText(value)}</b></div>`).join('')}</div>`;
+    const details=copy.details?.length ? `<details class="lexBranches lexUnitDetails"><summary>Részletek</summary><ul>${copy.details.map(line=>`<li>${effectText(line)}</li>`).join('')}</ul></details>` : '';
+    return `<article class="rlCodexCard lexUnitCard" data-codex-unit="${key}" data-race="${race}">${face({id:key,kind:'unit',race,name:u.name,category:'military',art:R.unitImageTag(key,'lexUnitImg'),body,meta:`<span class="rlChip">${esc(copy.role)}</span><span class="rlChip">${esc(costText(u.cost, race))}</span>`})}${details}</article>`;
   }
   function selectLevel(article, level) {
     levels.set(`${article.dataset.race}:${article.dataset.codexBuilding}`, Number(level));

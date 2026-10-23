@@ -2,8 +2,6 @@ import { NORMAL_COPY, LEGENDARY_COPY, BUILDING_COPY, BRANCH_COPY } from '../data
 
 const NORMAL_LIMITS = { building_discount: 5, orc_double: 20, orc_blessing: 40, orc_refund: 5, orc_loot: 10 };
 const LEGEND_LIMITS = { sword_execute: 5, magic_order: 4, tavern_chain: Infinity, strategic_superiority: Infinity };
-// Army-wide upgrades have no single unit's HP, damage or attack interval.
-const ARMY_WIDE_STATS = new Set(['orc_as', 'orc_hp', 'all_damage']);
 const UNIT_PREFIXES = { sword: 'swordsman', swordsman: 'swordsman', spear: 'spearman', archer: 'archer', knight: 'knight', priest: 'priest', catapult: 'catapult', cat: 'catapult', mage: 'mage' };
 const METRICS = {
   hp: ['Életerő', ''], dmg: ['Sebzés', ''], heal: ['Gyógyítás', ''], cooldown: ['Két támadás között', ' mp'],
@@ -15,6 +13,9 @@ const bonus = n => `+${percent(n)}`;
 const scalar = (label, value, unit = '') => n => ({ label, value: `${format(value(n))}${unit}` });
 // These rows show the contribution of this card alone, never a fabricated city total.
 const MODIFIERS = {
+  all_damage: n => ({ label: 'Sebzés és Pap-gyógyítás', value: bonus(5 * n) }),
+  orc_as: n => ({ label: 'Támadási sebesség', value: bonus(5 * n) }),
+  orc_hp: n => ({ label: 'Maximális életerő', value: bonus(5 * n) }),
   spawn_speed: n => ({ label: 'A lap képzésisebesség-bónusza', value: bonus(10 * n) }),
   production: n => ({ label: 'A lap termelési bónusza', value: bonus(10 * n) }),
   frugal_training: n => ({ label: 'Ár e lap kedvezményével', value: percent(100 * .95 ** n) }),
@@ -44,6 +45,8 @@ function unitFor(id) {
   if (id.startsWith('orc_') && /_(hp|dmg)$/.test(id)) return id.replace(/_(hp|dmg)$/, '');
   return UNIT_PREFIXES[id.split('_')[0]];
 }
+
+export const upgradeMetricLabel = label => label.replace(/^A lap /, '').replace('képzésisebesség-bónusza','Képzési bónusz').replace('termelési bónusza','Termelési bónusz').replace('toronybónusza','Toronybónusz').replace('Ár e lap kedvezményével','Fizetendő ár').replace('Életlopás e lapból','Életlopás').replace('Kritikus esély e lapból','Kritikus esély').replace('Bónusz / stack','Bónusz');
 
 export function initializeUiUpgradeCopy(R) {
   for (const [id, description] of Object.entries(BUILDING_COPY)) if (R.BUILDINGS[id]) R.BUILDINGS[id].description = description;
@@ -91,6 +94,9 @@ export function initializeUiUpgradeCopy(R) {
       rows.push({ label: id === 'sword_execute' ? 'Kivégzés esélye' : 'Mágusképzés esélye', before: percent(n * (id === 'sword_execute' ? 4 : 25)), after: percent(next * (id === 'sword_execute' ? 4 : 25)) });
     } else if (id === 'tavern_chain') {
       rows.push({ label: 'Építhető Kocsmák', before: format(1 + n), after: format(1 + next) });
+    } else if (id === 'strategic_superiority') {
+      rows.push({ label: 'Összes extra választás', before: format(3 * n), after: format(3 * next) });
+      rows.push({ label: 'Újrasorsolás / kitiltás', before: `${5 * n} / ${3 * n}`, after: `${5 * next} / ${3 * next}` });
     }
     const stacking = `${limit === 1 ? 'Egyszer választható.' : Number.isFinite(limit) ? `Legfeljebb ${limit}× választható.` : 'Korlátlanul halmozható.'} Felvéve: ${n}${Number.isFinite(limit) ? `/${limit}` : '×'}${n < limit ? ` → ${next}${Number.isFinite(limit) ? `/${limit}` : '×'}` : ' · maximum'}.`;
     const specialization = normal && n > 0 && R.hasLeg(c, 'specialization') && n < limit
@@ -118,14 +124,14 @@ export function initializeUiUpgradeCopy(R) {
         return el;
       };
       append('p', 'upgradeDescription', preview.description);
-      if (preview.rows.length && !ARMY_WIDE_STATS.has(option.id)) {
+      if (preview.rows.length) {
         const rows = append('span', 'upgradeComparison', '');
         rows.title = preview.context;
         for (const row of preview.rows) {
           const line = append('span', 'upgradeRow', '', rows);
           line.title = row.label;
           line.setAttribute('aria-label', `${row.label}: ${row.before} → ${row.after}`);
-          const label = row.label.replace(/^A lap /, '').replace('képzésisebesség-bónusza','Képzési bónusz').replace('termelési bónusza','Termelési bónusz').replace('toronybónusza','Toronybónusz').replace('Ár e lap kedvezményével','Fizetendő ár').replace('Életlopás e lapból','Életlopás').replace('Kritikus esély e lapból','Kritikus esély').replace('Bónusz / stack','Bónusz');
+          const label = upgradeMetricLabel(row.label);
           append('span', 'upgradeMetric', label, line);
           const values = append('b', 'upgradeValues', '', line);
           append('span', 'upgradeBefore', row.before, values).dataset.effectTone = 'value';

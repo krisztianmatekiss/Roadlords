@@ -35,6 +35,11 @@ export const frameImage = (src) => src
 
 export const cardTextBackdrop = '<span class="cardTextBackdrop" aria-hidden="true"></span>';
 
+export function uniqueBuildingMark(R,c,type) {
+  if (!R.isUniqueBuilding(c,type)) return '';
+  return '<span class="uniqueBuildingMark" role="img" aria-label="Egyedi épület" title="Egyedi épület · egyszerre egy építhető"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="m5 10 5 5 6-9 6 9 5-5-3 14H8Z" fill="currentColor"/><path d="M8 27h16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>';
+}
+
 export function constructionPrice(R, cost, race) {
   const resources = race === 'undead' ? ['wood'] : ['wood', 'stone'];
   const rows = resources.map(key => {
@@ -181,6 +186,7 @@ export function installCardPresentation(R) {
         const art = card.querySelector('.choiceArt');
         art.querySelectorAll('.pickCD,.pickUnitCost,.pickFootprint').forEach(el => el.remove());
         art.insertAdjacentHTML('beforeend', productionFootprint(R,producerCity,o.id));
+        card.insertAdjacentHTML('beforeend', uniqueBuildingMark(R,producerCity,o.id));
       }
       if (cardRules[o.id]) card.title += `\n${cardRules[o.id]}`;
       card.classList.add('illustratedCard');
@@ -188,7 +194,7 @@ export function installCardPresentation(R) {
       card.insertAdjacentHTML('afterbegin', cardTextBackdrop);
       if (o.kind === 'building') {
         card.insertAdjacentHTML('beforeend', constructionPrice(R, R.buildPrice(R.P, o.id), R.P.race));
-        card.querySelector('.choiceFooter').textContent = R.BUILDINGS[o.id]?.unique ? 'EGYEDI ÉPÜLET' : 'ÉPÜLET';
+        card.querySelector('.choiceFooter').textContent = R.isUniqueBuilding(producerCity,o.id) ? 'EGYEDI ÉPÜLET' : 'ÉPÜLET';
       }
       card.querySelector('.ctype')?.remove();
       const tag=card.querySelector('.picktag');
@@ -217,7 +223,7 @@ export function installCardPresentation(R) {
       card.dataset.race=R.P.race;
       if (src) card.classList.add('hasCardFrame');
       const upkeep = R.P.race === 'undead' ? buildingUpkeep(R,type) : '';
-      card.innerHTML = `${frameImage(src)}${cardTextBackdrop}<h3 class="cardname">${escapeText(d.name)}</h3><span class="cardart card-media">${src ? '' : R.cardBuildingImageTag(type, 'cardBuildingImage')}${productionFootprint(R,R.P,type)}</span>${constructionPrice(R,R.buildPrice(R.P,type),R.P.race)}<span class="cardinfo">${d.unit ? productionFacts(R,R.P,type,level) : `<p>${effectText(model.description)}</p>`}${upkeep}</span><span class="cardFooter">${R.isUniqueBuilding(R.P,type) ? 'EGYEDI ÉPÜLET' : 'ÉPÜLET'} · L${level}</span>`;
+      card.innerHTML = `${frameImage(src)}${cardTextBackdrop}${uniqueBuildingMark(R,R.P,type)}<h3 class="cardname">${escapeText(d.name)}</h3><span class="cardart card-media">${src ? '' : R.cardBuildingImageTag(type, 'cardBuildingImage')}${productionFootprint(R,R.P,type)}</span>${constructionPrice(R,R.buildPrice(R.P,type),R.P.race)}<span class="cardinfo">${d.unit ? productionFacts(R,R.P,type,level) : `<p>${effectText(model.description)}</p>`}${upkeep}</span><span class="cardFooter">${R.isUniqueBuilding(R.P,type) ? 'EGYEDI ÉPÜLET' : 'ÉPÜLET'} · L${level}</span>`;
       card.setAttribute('aria-label', d.name);
       card.removeAttribute('title');
       decorateEffects(card.querySelector('.cardinfo'));

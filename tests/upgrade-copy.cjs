@@ -59,7 +59,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     // Compare preview against the real choice application, including existing upgrades and relics.
     check('Previewed values match actual choices for upgraded, specialized human and orc cities', await page.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__, original = R.P;
-      const cases = [['swordsman_dmg', 'swordsman', 'dmg', 'human'], ['priest_dmg', 'priest', 'heal', 'human'], ['sword_as', 'swordsman', 'cooldown', 'human'], ['cat_build', 'catapult', 'buildingDamage', 'human'], ['orc_warrior_hp', 'orc_warrior', 'hp', 'orc'], ['orc_warrior_dmg', 'orc_warrior', 'dmg', 'orc'], ['orc_as', 'orc_warrior', 'cooldown', 'orc']];
+      const cases = [['swordsman_dmg', 'swordsman', 'dmg', 'human'], ['priest_dmg', 'priest', 'heal', 'human'], ['sword_as', 'swordsman', 'cooldown', 'human'], ['cat_build', 'catapult', 'buildingDamage', 'human'], ['orc_warrior_hp', 'orc_warrior', 'hp', 'orc'], ['orc_warrior_dmg', 'orc_warrior', 'dmg', 'orc']];
       const format = x => new Intl.NumberFormat('hu-HU', { maximumFractionDigits: 2 }).format(x);
       try {
         return cases.every(([id, key, metric, race]) => {
@@ -87,8 +87,9 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       const rect = selector => c.querySelector(selector).getBoundingClientRect();
       return rect('h3').bottom <= rect('.choiceArt').top + 1 && rect('.choiceArt').bottom <= rect('.choiceBody').top + 1 && rect('.choiceBody').bottom <= rect('.choiceFooter').top + 1;
     })));
+    await page.evaluate(()=>{for(const id of ['orc_as','orc_hp','all_damage'])__ROADLORDS_RUNTIME__.P.normal[id]=0});
     await show(['orc_as', 'orc_hp', 'all_damage']);
-    check('Army-wide upgrades show their percentage effect without an arbitrary unit stat or interval', await page.evaluate(() => [...document.querySelectorAll('#choiceList .choiceBody')].every(b => b.textContent.includes('+5%') && !b.querySelector('.upgradeComparison') && !/→|\bmp\b/.test(b.textContent))));
+    check('Army-wide upgrades compare cumulative percentages without an arbitrary unit stat or interval', await page.evaluate(() => [...document.querySelectorAll('#choiceList .choiceBody')].every(b => b.querySelector('.upgradeBefore')?.textContent==='+0%' && b.querySelector('.upgradeAfter')?.textContent==='+5%' && !/\bmp\b/.test(b.textContent))));
     await page.evaluate(() => document.fonts.ready);
     check('Fantasy titles load locally with Hungarian accents, and single-unit comparisons have visible labels', await page.evaluate(() => document.fonts.check('16px "Roadlords Display"', 'ÁÉÍÓÖŐÚÜŰ')));
     await show(['sword_as']);

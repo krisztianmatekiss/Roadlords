@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.31.0',
-  label: 'V4.31.0 · JÁTÉKBARÁT FELÜLET',
-  title: 'Roadlords – Játékbarát felület',
+  version: '4.32.0',
+  label: 'V4.32.0 · KÁRTYÁK ÉS ÉLŐHALOTT PORTRÉK',
+  title: 'Roadlords – Kártyák és élőhalott portrék',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

@@ -1,4 +1,10 @@
-# Roadlords · V4.31.0
+# Roadlords · V4.32.0
+
+## V4.32.0 – Kártyajelzések és élőhalott képek
+
+Az egyedi épületeket a kép jobb felső sarkában korona jelöli; az egyediséget megszüntető fejlesztéseket is követi. Minden halmozható lap külön, dőlt feliratú blokkban mutatja a változást. Az egész seregre ható lapok összesített százalékot mutatnak, a lexikon az első felvételt. A címekben megmaradnak a nyersanyagok nevei.
+
+Az öt további élőhalott képzőépület a szentélyhez illő vörös katonai keretet kapott. Mind a hét élőhalott egységnek saját portréja van, közös helyi atlaszból. Mindhárom faj egységlapjain rövid képességleírás, áttekinthető statisztikák és lenyitható részletszabályok vannak. Harci statisztikák és egyensúlyértékek változatlanok.
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
 

@@ -43,6 +43,9 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       await page.waitForTimeout(80);
     }
     async function measure() {
+      // ResizeObservers and the road's frame layout run after percentage changes.
+      // Measure a rendered layout, rather than relying on an 80 ms wall-clock delay.
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
       return page.evaluate(() => {
         const rect = e => e.getBoundingClientRect(), modal = document.querySelector('#choiceOverlay .modal');
         const m = rect(modal), list = document.querySelector('#choiceList'), cards = [...list.children];
@@ -59,6 +62,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
           text: cards.every(c => bodyOK(c) && orderOK(c)), deckWidth: list.scrollWidth - list.clientWidth,
           header: roster.top >= bar.top && roster.bottom <= bar.bottom + 1 && roster.right <= innerWidth + 1 && menu.top >= bar.top && menu.bottom <= bar.bottom + 1,
           dock: catalog.right <= map.left + 1 && catalog.bottom <= command.bottom + 1 && Math.abs(command.bottom - innerHeight) < 1,
+          bounds: {bar:bar.toJSON(),roster:roster.toJSON(),menu:menu.toJSON(),catalog:catalog.toJSON(),map:map.toJSON(),command:command.toJSON()},
           font: parseFloat(getComputedStyle(cards[0].querySelector('h3')).fontSize), cardWidth: rect(document.querySelector('.buildcard')).width,
           windowLabel: document.querySelector('#uiViewportSize').textContent };
       });
@@ -69,6 +73,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         await page.evaluate(mode => __ROADLORDS_UI_SCALE__.set(mode), mode);
         await show('mixed'); const layout = await measure(); report.layouts.push(layout);
         check(`Mixed cards and fixed actions fit ${width}×${height} at ${mode}`, layout.fits && layout.equal && layout.text && layout.outerScroll <= 1 && layout.deckWidth <= 1);
+        if (!layout.header || !layout.dock) console.error('Layout bounds:', JSON.stringify(layout));
         check(`Header and dock remain contained at ${width}×${height}, ${mode}`, layout.header && layout.dock && layout.windowLabel.includes(`${width} × ${height}`));
         if ((width === 3195 && mode === 'auto') || (width === 1366 && mode === '150')) await page.screenshot({ path: `artifacts/interface-${width}-${mode}.png` });
       }

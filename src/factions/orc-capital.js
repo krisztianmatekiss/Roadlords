@@ -6,12 +6,12 @@ export function initializeFactionsOrcCapital(runtime) {
     id: 'orc_conquest',
     name: 'Örök hódítás',
     icon: '⚔',
-    description: 'A kapu végleg nyitva marad. Kétszeres katonai képzési sebesség és élelemtermelés.'
+    description: 'A kapu végleg nyitva marad. +100% katonai képzési sebesség és élelemtermelés.'
   }, {
     id: 'orc_command',
     name: 'Hadúr parancsa',
     icon: '♜',
-    description: 'Zárt kapunál is jár a Vadászház és a Fosztogatók táborának nyitottkapu-bónusza. A helyőrség kapacitása megduplázódik.'
+    description: 'Zárt kapunál is jár a Vadászház és a Fosztogatótábor kapubónusza. +100% helyőrségi férőhely.'
   }];
   O.keepBranches = keepBranches;
   const oldLexicon = O.lexiconLevels;

@@ -121,8 +121,14 @@ export function initializeUiUpgradeCopy(R) {
         rows.title = preview.context;
         for (const row of preview.rows) {
           const line = append('span', 'upgradeRow', '', rows);
-          append('span', 'upgradeMetric', row.label, line);
-          append('b', 'upgradeValues', `${row.before} → ${row.after}`, line);
+          line.title = row.label;
+          line.setAttribute('aria-label', `${row.label}: ${row.before} → ${row.after}`);
+          const label = row.label.replace(/^A lap /, '').replace('képzésisebesség-bónusza','Képzési bónusz').replace('termelési bónusza','Termelési bónusz').replace('toronybónusza','Toronybónusz').replace('Ár e lap kedvezményével','Fizetendő ár').replace('Életlopás e lapból','Életlopás').replace('Kritikus esély e lapból','Kritikus esély').replace('Bónusz / stack','Bónusz');
+          append('span', `upgradeMetric${preview.rows.length === 1 && !MODIFIERS[option.id] ? ' sr-only' : ''}`, label, line);
+          const values = append('b', 'upgradeValues', '', line);
+          append('span', 'upgradeBefore', row.before, values).dataset.effectTone = 'value';
+          values.append(document.createTextNode(' → '));
+          append('span', 'upgradeAfter', row.after, values).dataset.effectTone = 'positive';
         }
       }
       card.title = preview.stacking;

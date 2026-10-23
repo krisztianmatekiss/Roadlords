@@ -6,6 +6,10 @@
 .effect-curse { color: #ce9cff !important; }
 .effect-heal { color: #7de7b2 !important; }
 .effect-buff { color: #f7d77b !important; }
+.effect-positive { color: #7de7a0 !important; }
+.effect-negative { color: #ff8181 !important; }
+.effect-value { color: #f4dea0 !important; }
+.sr-only { position:absolute !important; width:1px !important; height:1px !important; padding:0 !important; margin:-1px !important; overflow:hidden !important; clip-path:inset(50%); white-space:nowrap !important; }
 .cardFrameImage {
   position: absolute !important; inset: 0 !important;
   width: 100% !important; height: 100% !important; max-height: none !important;
@@ -64,12 +68,13 @@ html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustrated
   height: 3.5% !important; font-size: 2.8cqw !important;
 }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard :is(.pickCD,.pickUnitCost) { font-size: 3.4cqw !important; }
+.pickUpkeep { position:absolute; top:3%; left:3%; padding:3px 5px; border:1px solid #a38b5277; border-radius:5px; background:#10130ee8; font-size:3.4cqw; }
 
 /* The codex shows one selected level, with optional L4 rules below the face. */
 html body .rlCodexGrid {
   grid-template-columns: repeat(auto-fill,minmax(min(270px,100%),1fr)); align-items: start; gap: 16px;
 }
-html body .rlCodexCard { background: none; border: 0; box-shadow: none; overflow: visible; min-width: 0; max-width: clamp(200px,calc((92dvh / var(--ui-scale) - 270px) * .666667),350px); }
+html body .rlCodexCard { background: none; border: 0; box-shadow: none; overflow: visible; min-width: 0; max-width: 350px; }
 .cardFace { width: 100%; aspect-ratio: 2/3; box-sizing: border-box; }
 html body .cardFace .rlCodexCardHead { padding: 0; min-height: 0; border: 0; background: none; }
 html body .cardFace .rlCodexTitle {
@@ -89,7 +94,7 @@ html body .cardFace .rlCodexContent {
 }
 html body .cardFace .rlCodexContent p { margin: 0 0 3px; }
 html body .cardFace .rlCodexMeta {
-  position: absolute; top: 14.5%; left: 7%; right: 7%; display: flex; align-items: center; gap: 4px;
+  position: absolute; top: 14.5%; left: 7%; right: 7%; display: flex; flex-wrap:wrap; align-items: center; gap: 4px;
 }
 html body .cardFace .rlChip { min-height: 0; background: #10130ee8; border-color: #a38b5277; font-size: 2.7cqw; padding: 3px 5px; color: #fff2c8; }
 html body .cardFace .rlChip:empty { display: none; }

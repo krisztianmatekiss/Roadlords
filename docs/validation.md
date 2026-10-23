@@ -1,3 +1,9 @@
+# V4.29.1 – rövid, közös kártyaszövegek
+
+2026-10-23. A célzott böngészőpróba mindhárom faj 66 épületét és 180 gyakori/legendás fejlesztését végignézi 800, 1366 és 1920 pixeles ablakszélességnél. A lexikon mind a 246 leírása elfér a kártya szövegdobozában, belső görgetés nélkül. A Hajcsártábor L1–L3 kijelzése 25% / 42,9% / 66,7% gyorsabb képzést és 80% kezdő HP-t mutat; az előny zöld, a hátrány piros. Az árcsökkentés zöld, a hosszabb képzés és magasabb fenntartás piros. 198 kiválasztott épületszint szövegét és 394 valódi választólapot ellenőriz a próba, az L4-ágakkal együtt.
+
+A meglévő fejlesztés-előnézeti próba továbbra is valódi fejlesztésfelvétellel veti össze a számokat. A felületméretezés 800–3840 px között, mind az öt beállítással működik. Az élőhalott fenntartás külön jelzésként marad látható. A kártyák/effektek korábbi böngészőpróbája is sikeres; a közzététel előtt a CI a teljes tesztsort futtatja. A harci és gazdasági értékeket ez a kiadás nem módosítja.
+
 # V4.29.0 – kártyaelrendezés, állapotok és elit jelzés
 
 2026-10-23. A teljes helyi, 20 tesztfájlos sorozat hibamentes, a környezet ICE-jelöltjeinek hiányában a külön valódi WebRTC-próba kihagyott. Az új kártya/effekt ellenőrzés 51 érvényes forráskép hashét és helyi dekódolását, a teljes képarányt, a manifest címdobozát és leírásdobozát méri. A négy upstream üres fájl helyén nem tölt hibás képet a játék. A lexikon csak egy szintet mutat, a főépületben nincs ismétlődő szintváltási bekezdés. A szintváltás a valódi 20 000 → 80 000 életerőt mutatja. A százalékos méretezés és kezelősávok korábbi próbái megmaradnak; a kártyák képarányához és a szövegmezőhöz igazodó ellenőrzésekkel.

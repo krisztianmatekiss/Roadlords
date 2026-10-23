@@ -1,8 +1,12 @@
-# Roadlords · V4.29.0
+# Roadlords · V4.29.1
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
 
 Az élőhalott városokban nincs erdő, kő vagy termőtalaj; az újrageneráláskor sem jelennek meg. A romok és az alapozás megmaradnak.
+
+## Egyszerű kártyaszövegek · 4.29.1
+
+Mindhárom faj 66 épületét, 180 gyakori/legendás fejlesztését és L4-ágait átnéztük. A kártyán rövid hatásleírás marad, a kivételek a lexikonban lenyithatók. Az adott szint értékei közösek a lexikonban és a választásnál. Az előnyös értékek zöldek, a hátrányok pirosak; az árcsökkentés is zöld. A Hajcsártábor L1-en 25%-kal gyorsabb képzést és 80% kezdő HP-t ír ki, az eredeti 20%-os időcsökkentés alapján. A harci és gazdasági szabályok változatlanok.
 
 ## Egységes kártyák és harci jelzések · 4.29.0
 

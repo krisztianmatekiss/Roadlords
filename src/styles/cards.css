@@ -1,4 +1,9 @@
 @font-face {
+  font-family: Roadlords Copy;
+  src: url('../../public/fonts/alegreya/Alegreya-Medium.woff') format('woff');
+  font-style: normal; font-weight: 500; font-display: swap;
+}
+@font-face {
   font-family: Roadlords Display;
   src: url('../../public/fonts/metamorphous/Metamorphous-Regular.woff') format('woff');
   font-style: normal; font-weight: 400; font-display: swap;
@@ -45,14 +50,33 @@
   border-radius: 3px 3px 10px 10px;
 }
 .constructionPrice {
-  position: absolute; left: 8%; top: 69.4%; width: 84%; height: 4.5%;
-  display: flex; align-items: center; justify-content: space-between; gap: 4px;
-  font: 600 3.8cqw/1.1 system-ui,sans-serif; color: #f6dda1;
-  border-bottom: 1px solid #ad8c4955;
+  position:absolute; right:8%; bottom:32.5%; width:max-content; max-width:50%; height:auto;
+  display:grid; gap:.5cqw; padding:1.5cqw 2cqw; margin:0;
+  font:700 5.5cqw/1.05 "Roadlords Copy",Georgia,serif; color:#ffe5a4;
+  background:#11150fed; border:1px solid #b49757; border-radius:1.8cqw;
+  box-shadow:0 2px 5px #0008; pointer-events:none;
 }
-.constructionPrice > span { color: #c1b59e; font-size: .85em; }
-.constructionPrice > b { text-align: right; }
-
+.constructionPrice .costRow { display:flex; justify-content:flex-end; align-items:center; gap:1.3cqw; white-space:nowrap; }
+.constructionPrice .costRow b { font:inherit !important; color:inherit; overflow:visible !important; }
+.constructionPrice .costIcon { width:5.5cqw !important; height:5.5cqw !important; min-width:0 !important; margin:0 !important; }
+.constructionPrice .unaffordable { color:#ff9690; }
+html body .illustratedCard .card-media .pickFootprint,
+html body .cardFace .rlCodexIcon .pickFootprint {
+  position:absolute !important; left:3% !important; bottom:3% !important; top:auto !important; right:auto !important;
+  display:grid !important; grid-template-columns:repeat(var(--fp-cols),4.5cqw) !important;
+  grid-template-rows:repeat(var(--fp-rows),4.5cqw) !important; gap:.8cqw !important;
+  padding:1.6cqw !important; margin:0 !important; background:#131c16ee !important;
+  border:1px solid #af924c !important; border-radius:1.5cqw !important; box-shadow:0 2px 6px #0009 !important;
+  width:auto !important; height:auto !important;
+}
+html body .illustratedCard .card-media .pickFootprint i,
+html body .cardFace .rlCodexIcon .pickFootprint i {
+  display:block !important; width:4.5cqw !important; height:4.5cqw !important; border-radius:.7cqw !important;
+  border:1px solid #ffe69c !important; background:linear-gradient(#f6d47a,#b38b28) !important;
+  box-shadow:inset 0 1px 2px #fff6 !important;
+}
+html body .illustratedCard .card-media .pickFootprint i.off,
+html body .cardFace .rlCodexIcon .pickFootprint i.off { opacity:.12; border-color:transparent !important; }
 
 /* Preserve the 2:3 frames, reserving a larger opaque area for live text. */
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard {
@@ -66,7 +90,7 @@ html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustrated
   position: absolute !important; top: 3.2% !important; left: 7.8125% !important;
   width: 84.375% !important; height: 9.3% !important;
   display: grid !important; place-items: center !important;
-  font-family: "Roadlords Display", Georgia, serif !important; font-weight: 400 !important; font-size: 6cqw !important; line-height: 1.1 !important; color: #ffe9aa !important; margin: 0 !important; padding: 0 !important;
+  font-family: "Roadlords Display", Georgia, serif !important; font-weight: 400 !important; font-size: var(--card-title-size,7.2cqw) !important; line-height: 1.1 !important; color: #ffe9aa !important; margin: 0 !important; padding: 0 !important;
   text-shadow: 0 2px 3px #000; border: none !important;
 }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceArt.card-media {
@@ -76,14 +100,14 @@ html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustrated
 }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard.hasCardFrame .choiceArt.card-media { background: none !important; border: 0 !important; }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody {
-  position: absolute !important; top: 74.5% !important; left: 7.8125% !important;
-  width: 84.375% !important; height: 19.9% !important;
+  position: absolute !important; top: 71% !important; left: 7.8125% !important;
+  width: 84.375% !important; height: 23.4% !important;
   padding: 0 !important; box-sizing: border-box; scrollbar-gutter: auto;
-  font-size: clamp(11px,4.35cqw,22px) !important; line-height: 1.2 !important;
+  font-family: "Roadlords Copy",Georgia,serif !important; font-weight: 500 !important; font-size: var(--card-copy-size,6.6cqw) !important; line-height: 1.12 !important;
   color: #f1ead8 !important; background: none !important;
 }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody :is(p,.choicemeta,.upgradeRow) {
-  font-size: clamp(11px,4.35cqw,22px) !important; line-height: 1.2 !important; margin: 0 0 3px !important;
+  font-size: inherit !important; line-height: 1.12 !important; margin: 0 0 3px !important;
 }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody .upgradeComparison { margin-top: 3px; }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody .upgradeSpecialization { font-size: 2.9cqw !important; }
@@ -94,33 +118,15 @@ html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustrated
 }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard :is(.pickCD,.pickUnitCost) { font-size: 3.4cqw !important; }
 .pickUpkeep { position:absolute; top:3%; left:3%; padding:3px 5px; border:1px solid #a38b5277; border-radius:5px; background:#10130ee8; font-size:3.4cqw; }
-.productionFacts > div { display:flex; align-items:baseline; justify-content:space-between; gap:6px; }
-.productionFacts b { font-weight:700; text-align:right; }
+.productionFacts > div { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:6px; }
+.productionFacts b { font-weight:700; text-align:right; margin-left:auto; }
+.productionFacts > div + div { margin-top:2px; }
 .productionFacts.compact { margin-top:3px; }
 .productionMeta { display:flex; flex-wrap:wrap; align-items:center; gap:4px; margin-top:3px; font-size:clamp(10px,3cqw,12px); }
-html body .productionMeta .pickFootprint { display:inline-grid !important; grid-template-columns:repeat(var(--fp-cols),4px) !important; grid-template-rows:repeat(var(--fp-rows),4px) !important; gap:1px !important; box-shadow:none !important; }
-html body .productionMeta .pickFootprint i { display:block !important; width:4px !important; height:4px !important; border:0 !important; border-radius:1px !important; }
-html body .productionMeta .pickFootprint i.on { background:#e7c364 !important; }
-html body .productionMeta .pickFootprint i.off { background:#384338 !important; opacity:.3; }
-html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody .productionMeta .pickFootprint {
-  position:static !important; margin:0 !important; padding:0 !important; border:0 !important; background:none !important;
-}
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .choiceBody .pickUpkeep.inText {
   position:static; display:inline-block; padding:0; margin-top:3px; border:0; background:none;
 }
 html body .cardFace .productionMeta .rlChip { padding:0; border:0; background:none; font-size:inherit; }
-html body .cardFace .productionMeta .pickFootprint { position:static !important; margin:0; padding:0; border:0; background:none; }
-html body #buildList .producerBuildCard .cardcosts { top:80.5% !important; bottom:auto !important; height:7% !important; min-height:0 !important; padding:0 !important; border:0 !important; align-items:center !important; font-size:8px !important; line-height:1 !important; }
-html body #buildList .productionMini { position:absolute !important; left:8% !important; top:88% !important; width:84% !important; height:7% !important; min-height:0 !important; padding:0 !important; display:flex !important; flex-direction:row !important; align-items:center !important; justify-content:space-between; gap:1px; z-index:1; }
-html body #buildList .productionMini :is(.pickCD,.pickUnitCost),
-html body #buildList .producerBuildCard .cardcosts .pickFootprint { position:static !important; inset:auto !important; margin:0 !important; padding:0 !important; border:0 !important; background:none !important; min-width:0 !important; }
-html body #buildList .productionMini :is(.pickCD,.pickUnitCost,.pickCD b,.pickUnitCost b) { font-size:6.75px !important; line-height:1 !important; }
-html body #buildList .productionMini :is(.pickCD,.pickUnitCost) { display:inline-flex !important; flex-direction:row !important; flex-wrap:nowrap !important; align-items:center !important; gap:1px !important; width:auto !important; max-width:none !important; height:9px !important; min-height:0 !important; transform:none !important; box-shadow:none !important; white-space:nowrap !important; }
-html body #buildList .productionMini .pickUnitCost>span { display:inline-flex !important; flex-direction:row !important; align-items:center !important; gap:1px !important; padding:0 !important; }
-html body #buildList .productionMini :is(.costIcon,.cdClock,.cdClock svg) { width:7px !important; height:7px !important; min-width:7px !important; min-height:7px !important; }
-html body #buildList .producerBuildCard .cardcosts .pickFootprint { flex:0 0 auto; display:grid !important; grid-template-columns:repeat(var(--fp-cols),3px) !important; grid-template-rows:repeat(var(--fp-rows),3px) !important; gap:1px !important; box-shadow:none !important; }
-html body #buildList .producerBuildCard .cardcosts .pickFootprint i { width:3px !important; height:3px !important; border:0 !important; border-radius:1px; }
-
 /* The codex shows one selected level, with optional L4 rules below the face. */
 html body .rlCodexGrid {
   grid-template-columns: repeat(auto-fill,minmax(min(270px,100%),1fr)); align-items: start; gap: 16px;
@@ -132,7 +138,7 @@ html body .cardFace .rlCodexTitle {
   position: absolute; left: 7.8125%; top: 3.2%; width: 84.375%; height: 9.3%;
   display: grid; place-items: center; text-align: center;
 }
-html body .cardFace .rlCodexTitle h3 { margin: 0; overflow-wrap: anywhere; font: 400 6cqw/1.1 "Roadlords Display",Georgia,serif; color: #ffe9aa; text-shadow: 0 2px 3px #000; }
+html body .cardFace .rlCodexTitle h3 { margin: 0; overflow-wrap: anywhere; font: 400 var(--card-title-size,7.2cqw)/1.1 "Roadlords Display",Georgia,serif; color: #ffe9aa; text-shadow: 0 2px 3px #000; }
 html body .cardFace .rlCodexIcon {
   position: absolute; left: 4.6875%; top: 13.28125%; width: 90.625%; height: 55.6%;
   padding: 5%; box-sizing: border-box; background: #07120a33; border: 1px solid #ac8c4d66;
@@ -140,8 +146,8 @@ html body .cardFace .rlCodexIcon {
 html body .hasCardFrame .rlCodexIcon { border: 0; background: none; }
 html body .cardFace .rlCodexIcon img { object-fit: contain; }
 html body .cardFace .rlCodexContent {
-  position: absolute; left: 7.8125%; top: 74.5%; width: 84.375%; height: 19.9%;
-  overflow: auto; padding: 0; box-sizing: border-box; font-size: clamp(12px,4.35cqw,19px); line-height: 1.2; color: #e9e5d7;
+  position: absolute; left: 7.8125%; top: 71%; width: 84.375%; height: 23.4%;
+  overflow: auto; padding: 0; box-sizing: border-box; font: 500 var(--card-copy-size,6.6cqw)/1.12 "Roadlords Copy",Georgia,serif; color: #e9e5d7;
 }
 html body .cardFace .rlCodexContent p { margin: 0 0 3px; }
 html body .cardFace .rlCodexMeta {
@@ -165,27 +171,5 @@ html body .cardFace .rlChip:empty { display: none; }
 .lexUnitStats span { color: #b1b8a3; font-size: 2.7cqw; }
 .lexUnitStats b { font-size: 4cqw; }
 
-html body #buildList .illustratedBuildCard {
-  position: relative; isolation: isolate; padding: 0 !important; display: block !important; overflow: hidden;
-}
-html body #buildList .illustratedBuildCard .cardname {
-  position: absolute !important; top: 4%; left: 8%; width: 84%; height: 8%; display: grid; place-items: center;
-  margin: 0 !important; padding: 0 !important; border: 0 !important; z-index: 1; font-family: "Roadlords Display",Georgia,serif !important; font-weight: 400 !important; color: #ffe9aa; font-size: 12px !important; line-height: 1.1 !important;
-}
-html body #buildList .illustratedBuildCard .cardart { position: absolute !important; top: 13%; left: 5%; width: 90%; height: 64%; background: none !important; border: 0 !important; z-index: 1; }
-html body #buildList .illustratedBuildCard .cardinfo { position: absolute !important; top: 80%; left: 8%; width: 84%; height: 14%; padding: 0 !important; margin: 0 !important; z-index: 1; overflow: hidden; }
-html body #buildList .illustratedBuildCard .carddesc { font-size: 9px !important; line-height: 1.1 !important; margin: 0 !important; }
-html body #buildList .illustratedBuildCard .cardcosts { position: absolute !important; bottom: 0; left: 8%; width: 84%; height: 5%; padding: 0 !important; z-index: 1; font-size: 10px !important; }
 html body .hasCardFrame::before, html body .hasCardFrame::after { display:none !important; }
-html body #buildList .buildSlot { flex-basis:114px !important; width:114px !important; height:180px !important; min-height:180px !important; grid-template-rows:18px 162px !important; }
-html body #buildList .buildSlotBadges { width:108px !important; }
-html body #buildList .buildSlot>.buildcard.gamecard.compactPickCard { width:108px !important; height:162px !important; min-height:162px !important; }
-html body #buildList .illustratedBuildCard .cardname { top:3.8% !important; height:8% !important; font-size:7.5px !important; line-height:1 !important; }
-html body #buildList .illustratedBuildCard .cardcosts { top:81%; bottom:auto; height:12% !important; display:flex; gap:5px; justify-content:center; }
-html body #buildList .illustratedBuildCard .cardcosts img { width:10px !important; height:10px !important; }
-html body #buildList .illustratedBuildCard .uniquechip { display:none !important; }
-html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .pickFootprint { bottom:3% !important; left:3% !important; }
-html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .pickUnitCost { bottom:3% !important; right:3% !important; max-width:70%; }
-html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard .pickUnitCost .costIcon { width:14px !important; height:14px !important; min-width:14px !important; min-height:14px !important; }
-
 html body[data-ui-scale] #choiceOverlay #choiceList { grid-template-columns:repeat(var(--pick-columns,4),var(--pick-card-width,310px)) !important; }

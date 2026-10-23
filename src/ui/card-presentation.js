@@ -3,6 +3,7 @@ import undeadManifest from '../data/undead-card-manifest.json';
 import { assetUrl } from '../assets/urls.js';
 import { createBuildingCardCopy } from './building-card-copy.js';
 import cardRules from '../data/card-rules.json';
+import { fitCardText } from './card-text-fit.js';
 
 export const escapeText = (s) => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -33,7 +34,13 @@ export const frameImage = (src) => src
 export const cardTextBackdrop = '<span class="cardTextBackdrop" aria-hidden="true"></span>';
 
 export function constructionPrice(R, cost, race) {
-  return `<span class="constructionPrice"><span>Építés</span><b>${escapeText(R.cardBuildingCopy.costText(cost, race).replace(/, /g, ' · '))}</b></span>`;
+  const resources = race === 'undead' ? ['wood'] : ['wood', 'stone'];
+  const rows = resources.map(key => {
+    const amount = Math.ceil(cost[key] || 0), soul = race === 'undead';
+    const icon = `<img class="costIcon" src="${soul ? R.SOUL_IMAGE : R.RESOURCE_IMAGES[key]}" alt="${soul ? 'Lélek' : R.RESOURCE_NAMES[key]}">`;
+    return `<span class="costRow" data-cost-resource="${key}" data-cost-amount="${amount}"><b>${amount.toLocaleString('hu-HU')}</b>${icon}</span>`;
+  }).join('');
+  return `<span class="constructionPrice" aria-label="Építési költség: ${escapeText(R.cardBuildingCopy.costText(cost, race))}">${rows}</span>`;
 }
 
 export function productionFacts(R, c, type, level, {before = null, compact = false} = {}) {
@@ -153,11 +160,10 @@ export function installCardPresentation(R) {
         const upkeep = window.__ROADLORDS_UNDEAD__.buildings[o.id].upkeep.toLocaleString('hu-HU');
         (producer ? body : card.querySelector('.choiceArt')).insertAdjacentHTML('beforeend', `<span class="pickUpkeep${producer ? ' inText' : ''}" title="Alapfenntartás">${effectText('−' + upkeep + ' Lélek/mp')}</span>`);
       }
-      if (producer) {
+      if (['building','building_upgrade','building_branch'].includes(o.kind)) {
         const art = card.querySelector('.choiceArt');
-        art.querySelectorAll('.pickCD,.pickUnitCost').forEach(el => el.remove());
-        const footprint = art.querySelector('.pickFootprint');
-        if (footprint) {footprint.remove();body.insertAdjacentHTML('beforeend',`<div class="productionMeta">Terület: ${productionFootprint(R,producerCity,o.id)}</div>`);}
+        art.querySelectorAll('.pickCD,.pickUnitCost,.pickFootprint').forEach(el => el.remove());
+        art.insertAdjacentHTML('beforeend', productionFootprint(R,producerCity,o.id));
       }
       if (cardRules[o.id]) card.title += `\n${cardRules[o.id]}`;
       card.classList.add('illustratedCard');
@@ -177,6 +183,7 @@ export function installCardPresentation(R) {
         card.querySelector('.choiceArt')?.querySelectorAll(':scope > img, :scope > .undeadBuildingArt').forEach(el => el.remove());
       }
       decorateEffects(body);
+      fitCardText(card);
     });
     return out;
   };
@@ -184,25 +191,19 @@ export function installCardPresentation(R) {
   R.renderBuildList = (...args) => {
     const out = builds(...args);
     R.$$('#buildList .buildcard').forEach(card => {
-      const src = cardFrameUrl(card.dataset.k, 'building', R.P.race);
+      const type = card.dataset.k, src = cardFrameUrl(type, 'building', R.P.race);
+      const d = R.BUILDINGS[type], level = R.levelOf(R.P, type);
+      const model = R.cardBuildingCopy.metrics(R.P.race, type, level);
       card.classList.add('illustratedBuildCard', 'illustratedCard');
-      card.querySelector('.cardinfo')?.remove();
-      if (R.BUILDINGS[card.dataset.k]?.unit) {
-        card.classList.add('producerBuildCard');
-        const mini=document.createElement('span');mini.className='productionMini';
-        card.querySelectorAll('.cardart .pickCD,.cardart .pickUnitCost').forEach(el=>mini.append(el));
-        const price=R.unitCost(R.P,R.BUILDINGS[card.dataset.k].unit),amounts=R.RES.filter(r=>price[r]>0).map(r=>price[r]);
-        mini.querySelectorAll('.pickUnitCost b').forEach((el,i)=>{el.textContent=amounts[i].toLocaleString('hu-HU',{maximumFractionDigits:2});});
-        const footprint=card.querySelector('.cardart .pickFootprint');
-        if(footprint)card.querySelector('.cardcosts').append(footprint);
-        card.append(mini);
-      }
-      if (src) {
-        card.classList.add('hasCardFrame');
-        card.insertAdjacentHTML('afterbegin', frameImage(src));
-        card.querySelector('.cardart')?.querySelectorAll(':scope > img,:scope > .undeadBuildingArt').forEach(el => el.remove());
-      }
+      if (src) card.classList.add('hasCardFrame');
+      const upkeep = R.P.race === 'undead' ? `<span class="pickUpkeep inText">${effectText('−' + window.__ROADLORDS_UNDEAD__.buildings[type].upkeep.toLocaleString('hu-HU') + ' Lélek/mp')}</span>` : '';
+      card.innerHTML = `${frameImage(src)}${cardTextBackdrop}<h3 class="cardname">${escapeText(d.name)}</h3><span class="cardart card-media">${src ? '' : R.cardBuildingImageTag(type, 'cardBuildingImage')}${productionFootprint(R,R.P,type)}</span>${constructionPrice(R,R.buildPrice(R.P,type),R.P.race)}<span class="cardinfo">${d.unit ? productionFacts(R,R.P,type,level) : `<p>${effectText(model.description)}</p>`}${upkeep}</span><span class="cardFooter">${R.isUniqueBuilding(R.P,type) ? 'EGYEDI ÉPÜLET' : 'ÉPÜLET'} · L${level}</span>`;
+      card.setAttribute('aria-label', d.name);
+      card.removeAttribute('title');
+      decorateEffects(card.querySelector('.cardinfo'));
+      fitCardText(card);
     });
+    R.updateBuildAffordabilityV497();
     return out;
   };
   Object.assign(window.__ROADLORDS__, { renderChoice: R.renderChoice, renderBuildList: R.renderBuildList });

@@ -2,6 +2,7 @@ import { installGameMusic } from "../audio/game-player.js";
 import { installMenuMusic } from "../audio/menu-player.js";
 import { assetUrl } from '../assets/urls.js';
 import { createCodexCards } from './codex-cards.js';
+import { fitCardText } from './card-text-fit.js';
 export function installApplicationShell(game) {
   (() => {
     const styleV4968 = document.createElement('style');
@@ -277,6 +278,7 @@ export function installApplicationShell(game) {
       }
       if (codexTab === 'buildings') rows = Object.entries(BUILDINGS).map(([k,d])=>[k,codexRace==='undead'&&k==='keep'?window.__ROADLORDS_UNDEAD__.buildings.keep:d]).filter(([k, d]) => raceMatches(d, k)).filter(([k, d]) => matches(d.name, d.description, `${categoryName(d.category)} ${k}`)).map(([k, d]) => buildingCard(k, d));else if (codexTab === 'units') rows = Object.entries(UNITS).filter(([k, u]) => raceMatches(u, k)).filter(([k, u]) => matches(u.name, '', `${catName(u.cat)} ${(u.tags || []).join(' ')} ${k}`)).map(([k, u]) => unitCard(k, u));else if (codexTab === 'common') rows = NORMAL.filter(x => raceMatches(x, x.id)).filter(x => matches(x.name, x.description, x.id)).map(commonCard);else rows = LEGENDARY.filter(x => raceMatches(x, x.id)).filter(x => matches(x.name, x.description, x.id)).map(legendaryCard);
       grid.innerHTML = rows.join('') || '<div class="rlCodexEmpty">Nincs találat.</div>';
+      grid.querySelectorAll('.illustratedCard').forEach(fitCardText);
       const total = (codexTab === 'buildings' ? Object.entries(BUILDINGS) : codexTab === 'units' ? Object.entries(UNITS) : (codexTab === 'common' ? NORMAL : LEGENDARY).map(x => [x.id, x])).filter(([k, d]) => raceMatches(d, k)).length;
       raceBar.querySelector('.orcNote').textContent = codexRace === 'undead' ? '7 egységváltozat · 20 épület · 24 gyakori és 13 legendás fejlesztés' : codexRace === 'orc' ? '7 egység · 19 épület · 30 gyakori és 26 legendás fejlesztés' : '';
       countEl.textContent = `${rows.length} / ${total} bejegyzés`;

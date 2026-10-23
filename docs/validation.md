@@ -1,3 +1,9 @@
+# V4.30.0 – teljes méretű építési lapok és automatikus betűméret
+
+2026-10-23. Az új böngészőpróba egérrel, számbillentyűvel, a látómezőn kívüli kilencedik hellyel, felugró lapra kattintással és Esc bezárással ellenőrzi az építést. A nagy lap és az alap pakli ugyanazt a valódi választókezelőt használja; a kamera, a harctér magassága és a minitérkép nem mozdul el. A mindig látható ár és a teljes lap 800, 1366 és 1920 px szélességnél, 75/100/150%-on is a rendelkezésre álló helyen marad. Az élőhalott árjelzés csak Lélek ikont használ. Mindkét saját betűtípus magyar ékezetekkel, külső hálózat nélkül töltődik.
+
+A meglévő lexikon-, kártya-, fejlesztés-, százalékos méretezés-, minitérkép- és építéspróbák megmaradnak, az új megjelenítési helyekhez igazítva. A leírások nem csonkolódnak; a szövegmező tényleges méretéhez igazodó betűméretet a betöltött fonttal mérjük. A képzési és építési árak, egységek, harci és multiplayer-szabályok változatlanok. Közzététel előtt a CI a teljes tesztsort futtatja.
+
 # V4.29.3 – olvashatóbb kártyák, egyértelmű építési ár
 
 2026-10-23. A célzott böngészőpróbák mind a 246 lexikonlap szövegét ellenőrzik 800, 1366 és 1920 px mellett; a nagyobb betűk és szövegmezők nem igényelnek belső görgetést. A százalékos felületméretezés és a rögzített kezelősávok 800–3840 px között működnek. A kártyák 2:3 arányúak maradtak; az építési ár a leírás fölött van, a képzési ár és idő a leírásban. A helyi Metamorphous font magyar ékezetekkel, külső hálózat nélkül töltődik; OFL-licence a font mellett található.

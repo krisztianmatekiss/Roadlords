@@ -26,10 +26,10 @@ export function createCodexCards(R) {
   const definitions = (race, type) => race === 'undead' ? undead().buildings[type] : R.BUILDINGS[type];
   const branches = (race, type) => race === 'undead' ? definitions(race, type).branches
     : race === 'orc' && type === 'keep' ? window.__ROADLORDS_ORCS__.keepBranches : R.V4_BRANCHES[type] || [];
-  function face({ id, kind, race, name, category, art, body, meta = '', price = '', metaInBody = false }) {
+  function face({ id, kind, race, name, category, art, body, meta = '', price = '', footprint = '', metaInBody = false }) {
     const src = cardFrameUrl(id, kind, race);
     return `<div class="cardFace illustratedCard ${src ? 'hasCardFrame' : ''}" data-frame="${category || 'support'}">${frameImage(src)}${cardTextBackdrop}
-      <header class="rlCodexCardHead"><span class="rlCodexIcon">${src ? '' : art}</span><div class="rlCodexTitle"><h3>${esc(name)}</h3></div></header>
+      <header class="rlCodexCardHead"><span class="rlCodexIcon">${src ? '' : art}${footprint}</span><div class="rlCodexTitle"><h3>${esc(name)}</h3></div></header>
       ${price}${metaInBody ? '' : `<div class="rlCodexMeta">${meta}</div>`}<div class="rlCodexContent">${body}${metaInBody ? `<div class="productionMeta">${meta}</div>` : ''}</div></div>`;
   }
   function extraRules(type,race,level) {
@@ -51,11 +51,11 @@ export function createCodexCards(R) {
     const max = bs.length ? 3 : race === 'undead' || R.V4_SIMPLE_L4.has(type) ? 4 : 3;
     const text = description, art = R.cardBuildingImageTag(type, 'lexBuildingImg', race);
     const stats = rows.map(([name, val]) => `<div class="lexEffectRow">${name ? `<span>${esc(name)}</span>` : ''}<b>${effectText(val)}</b></div>`).join('');
-    const reference=d.unit?cityFor(race,type,level)[0]:null;
+    const reference=cityFor(race,type,level)[0];
     const body = d.unit ? productionFacts(R, reference, type, level) : type === 'keep' ? `<div class="lexEffectRows">${stats}</div>` : `<p>${effectText(text)}</p>`;
-    const meta = `${d.unit?productionFootprint(R,reference,type):R.buildCardFootprintV41004(type)}${d.unique ? '<span class="rlChip gold">Egyedi</span>' : ''}${race === 'undead' && type !== 'keep' ? `<span class="rlChip" title="Fenntartás">${effectText('−' + d.upkeep.toLocaleString('hu-HU') + ' Lélek/mp')}</span>` : ''}`;
+    const meta = `${d.unique ? '<span class="rlChip gold">Egyedi</span>' : ''}${race === 'undead' && type !== 'keep' ? `<span class="rlChip" title="Fenntartás">${effectText('−' + d.upkeep.toLocaleString('hu-HU') + ' Lélek/mp')}</span>` : ''}`;
     const price = type === 'keep' ? '' : constructionPrice(R, cost, race);
-    return `<article class="rlCodexCard" data-codex-building="${type}" data-race="${race}">${face({id:type,kind:'building',race,name:race === 'orc' && type === 'keep' ? 'Ork főépület' : d.name,category:d.category,art,body,meta,price,metaInBody:!!d.unit})}
+    return `<article class="rlCodexCard" data-codex-building="${type}" data-race="${race}">${face({id:type,kind:'building',race,name:race === 'orc' && type === 'keep' ? 'Ork főépület' : d.name,category:d.category,art,body,meta,price,footprint:productionFootprint(R,reference,type),metaInBody:!!d.unit})}
       <nav class="lexLevels" aria-label="${esc(d.name)} szintje">${Array.from({length:max}, (_, i) => `<button type="button" data-codex-level="${i+1}" aria-pressed="${level === i+1}">L${i+1}</button>`).join('')}</nav>
       ${bs.length ? `<details class="lexBranches"><summary>L4 ágak</summary>${bs.map(b => `<div class="rlBranch"><b>${esc(b.name)}</b><p>${effectText(b.description)}</p>${ruleDetails(cardRules[type+'/'+b.id])}</div>`).join('')}</details>` : ''}
       ${extraRules(type,race,level)}</article>`;

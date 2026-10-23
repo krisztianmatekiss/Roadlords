@@ -28,10 +28,11 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       (await p.locator('#rlCodexPanel .rlCodexCard').count()) === 20 &&
         (await p.locator('#rlCodexPanel .undeadBuildingArt').count()) === 19 &&
         (await p.locator('[data-codex-building="und_necro_spawner"] .cardFrameImage').count()) === 1 &&
+        (await p.locator('#rlCodexPanel .constructionPrice[aria-label*="35 Lélek"] img[alt="Lélek"]').count()) > 0 &&
         (await p
           .locator('#rlCodexPanel')
           .innerText()
-          .then((s) => s.includes('35 Lélek') && s.includes('Nekropolisz'))),
+          .then((s) => s.includes('Nekropolisz'))),
     );
     await p.locator('#rlCodexPanel .rlCodexSearch').fill('Nekropolisz');
     check(

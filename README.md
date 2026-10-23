@@ -1,8 +1,14 @@
-# Roadlords · V4.29.3
+# Roadlords · V4.30.0
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
 
 Az élőhalott városokban nincs erdő, kő vagy termőtalaj; az újrageneráláskor sem jelennek meg. A romok és az alapozás megmaradnak.
+
+## Felugró építési kártyák · 4.30.0
+
+Az építési sávban teljes, 2:3 arányú kártyák látszanak, alsó részük a képernyő alá lóg. Az építési ár mindig a látható képrészen marad. Egérrel, billentyűzettel fókuszálva vagy az 1–9 gyorsgombokkal a teljes lap feljön, a pálya és a minitérkép átrendezése nélkül. A gyorsgomb továbbra is kiválasztja az épületet, az Esc bezárja a lapot és megszakítja az építést; a tiltott egyedi épület leírása is elolvasható.
+
+A területjelzés minden nagy lapon az illusztráció bal alsó sarkában van; a tényleges alakot és az L4-ágak eltéréseit mutatja. A jobb alsó sarokban az építési ár szám–ikon sorokban jelenik meg, élőhalottaknál csak Lélekkel. A nagyobb cím és az új, helyi Alegreya leírásbetű automatikusan kisebbre vált, ha a szöveg hosszabb. A meglévő képeffekt megmarad.
 
 ## Olvashatóbb kártyák · 4.29.3
 

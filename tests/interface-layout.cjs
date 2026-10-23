@@ -79,7 +79,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       }
     }
     const desktop = report.layouts.filter(l => l.viewport[0] === 1920 && l.mode !== 'auto');
-    check('Percentages resize construction cards while choice text fits the fixed-ratio card boxes', desktop.every(l => l.font >= 10 && Math.abs(l.font - l.choiceWidth * .06) < 1 && Math.abs(l.cardWidth - 108 * Number(l.mode) / 100) < 1));
+    check('Percentages resize construction cards while choice text fits the fixed-ratio card boxes', desktop.every(l => l.font >= 10 && l.font <= l.choiceWidth * .072 + 1 && l.font >= l.choiceWidth * .045 - 1 && Math.abs(l.cardWidth - 310 * Number(l.mode) / 100) < 1));
     // Human and Orc HUDs show three resources, unlike the single Undead stock.
     for (const [width, height] of [[800, 900], [1366, 768], [1920, 1080], [3840, 2160]]) {
       await page.setViewportSize({ width, height });

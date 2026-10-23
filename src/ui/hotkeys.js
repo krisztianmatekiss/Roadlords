@@ -100,10 +100,12 @@ export function initializeUiHotkeys(runtime) {
     const card = cards[n - 1];
     if (!card) return;
     if (card.disabled) {
+      runtime.revealBuildCard?.(card.dataset.k, {keyboard:true});
       runtime.toast(`${n}. hely: ez az épület most nem építhető.`);
       return;
     }
     card.click();
+    runtime.revealBuildCard?.(card.dataset.k, {keyboard:true});
   }
   function cycleSpeed() {
     runtime.$('#speedBtn')?.click();

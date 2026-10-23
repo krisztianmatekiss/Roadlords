@@ -1,4 +1,5 @@
 import { installRoadMovement } from './movement.js';
+import { shotKind } from '../rendering/battle-effects.js';
 export function register(runtime) {
   runtime.roadDistance = function roadDistance(a, b) {
     return Math.hypot(a.lane - b.lane, (a.offset ?? a.lateral ?? 0) - (b.offset ?? b.lateral ?? 0));
@@ -45,6 +46,8 @@ export function register(runtime) {
       to: t.lane,
       toOffset: t.offset || t.lateral || 0,
       ranged,
+      effect: ranged ? shotKind(runtime, u) : '',
+      radius: u.aoe || (u.key === 'catapult' ? 32 : 20),
       key: u.key
     };
     u.roadFace = t.lane >= u.lane ? 1 : -1;
@@ -84,6 +87,8 @@ export function register(runtime) {
       if (p.a.orcSpear) p.u.orcSpearReady = true;
       try {
         if (p.structure) runtime.roadRealStructure(p.u, p.t);else runtime.roadRealAttack(p.u, p.t, p.opts);
+        p.a.resolved = true;
+        runtime.roadImpactEffect?.(p.u, p.a);
       } finally {
         if (p.a.orcSpear) p.u.orcSpearReady = false;
         runtime.roadResolving = false;

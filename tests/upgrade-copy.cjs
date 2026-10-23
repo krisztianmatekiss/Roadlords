@@ -81,22 +81,22 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       await page.waitForTimeout(100);
     }
     await show(['swordsman_dmg', 'priest_dmg', 'frugal_training', 'building_discount']);
-    check('Choice cards render canonical text, comparison rows and stacking notes', await page.evaluate(() => [...document.querySelectorAll('#choiceList .choice')].every(c => !c.textContent.includes('ELAVULT') && c.querySelector('.upgradeComparison') && c.querySelector('.upgradeStacking'))));
+    check('Choice cards render canonical text and comparisons without repeated headings or stacking paragraphs', await page.evaluate(() => [...document.querySelectorAll('#choiceList .choice')].every(c => !c.textContent.includes('ELAVULT') && c.querySelector('.upgradeComparison') && !c.querySelector('.upgradeStacking,.upgradeHeading,.upgradeContext') && c.title.includes('Felvéve'))));
     await page.screenshot({ path: 'artifacts/upgrade-copy-human.png' });
     check('Card titles, art, text and footer do not overlap', await page.evaluate(() => [...document.querySelectorAll('#choiceList .choice')].every(c => {
       const rect = selector => c.querySelector(selector).getBoundingClientRect();
       return rect('h3').bottom <= rect('.choiceArt').top + 1 && rect('.choiceArt').bottom <= rect('.choiceBody').top + 1 && rect('.choiceBody').bottom <= rect('.choiceFooter').top + 1;
     })));
     await show(['orc_blessing', 'orc_bleed', 'orc_leech', 'orc_crit']);
-    check('Long descriptions remain complete and scroll to the final stacking note', await page.evaluate(() => [...document.querySelectorAll('#choiceList .choiceBody')].every(b => {
+    check('Long descriptions remain complete and scroll to the final comparison', await page.evaluate(() => [...document.querySelectorAll('#choiceList .choiceBody')].every(b => {
       const p = b.querySelector('p'), s = getComputedStyle(p); b.scrollTop = b.scrollHeight;
-      return getComputedStyle(b).overflowY === 'auto' && s.webkitLineClamp === 'none' && s.whiteSpace === 'normal' && b.querySelector('.upgradeStacking').getBoundingClientRect().bottom <= b.getBoundingClientRect().bottom + 1;
+      return getComputedStyle(b).overflowY === 'auto' && s.webkitLineClamp === 'none' && s.whiteSpace === 'normal' && b.querySelector('.upgradeComparison').getBoundingClientRect().bottom <= b.getBoundingClientRect().bottom + 1;
     })));
     await show(['sword_execute', 'magic_order', 'tavern_chain', 'strategic_superiority'], 'legendary');
     await page.screenshot({ path: 'artifacts/upgrade-copy-legends.png' });
     await page.setViewportSize({ width: 800, height: 900 });
     await show(['orc_blessing', 'orc_bleed', 'orc_leech', 'orc_crit']);
-    check('At 800px all text remains reachable without horizontal scrolling inside cards', await page.evaluate(() => [...document.querySelectorAll('#choiceList .choiceBody')].every(b => b.clientHeight > 60 && b.scrollWidth <= b.clientWidth + 1 && getComputedStyle(b).overflowY === 'auto')));
+    check('At 800px all text remains reachable without horizontal scrolling inside cards', await page.evaluate(() => [...document.querySelectorAll('#choiceList .choiceBody')].every(b => b.clientHeight >= 45 && b.scrollWidth <= b.clientWidth + 1 && getComputedStyle(b).overflowY === 'auto')));
     await page.screenshot({ path: 'artifacts/upgrade-copy-800.png' });
     await page.setViewportSize({ width: 1440, height: 960 });
     check('Building upgrades retain current-to-next values and city-wide scope', await page.evaluate(() => {

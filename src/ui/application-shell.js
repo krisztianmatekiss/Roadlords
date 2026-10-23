@@ -1,7 +1,8 @@
 import { installGameMusic } from "../audio/game-player.js";
 import { installMenuMusic } from "../audio/menu-player.js";
 import { assetUrl } from '../assets/urls.js';
-export function installApplicationShell() {
+import { createCodexCards } from './codex-cards.js';
+export function installApplicationShell(game) {
   (() => {
     const styleV4968 = document.createElement('style');
     styleV4968.textContent = "@import url(\"" + (assetUrl("styles/shell/01.css") + "\");");
@@ -217,6 +218,13 @@ export function installApplicationShell() {
     codexBody.innerHTML = `<div class="rlCodexTools"><div class="rlCodexTabs"><button class="rlCodexTab active" data-tab="buildings" type="button">ÉPÜLETEK</button><button class="rlCodexTab" data-tab="units" type="button">EGYSÉGEK</button><button class="rlCodexTab" data-tab="common" type="button">GYAKORI</button><button class="rlCodexTab" data-tab="legendary" type="button">LEGENDÁS</button><button class="rlCodexTab" data-tab="statuses" type="button">ÁLLAPOTOK</button></div><input class="rlCodexSearch" type="search" placeholder="Keresés név vagy leírás alapján…" autocomplete="off"></div><div class="rlCodexCount"></div><div class="rlCodexGrid"></div>`;
     const search = codexBody.querySelector('.rlCodexSearch');
     const grid = codexBody.querySelector('.rlCodexGrid');
+    const cards = createCodexCards(game);
+    grid.addEventListener('click', event => {
+      const button = event.target.closest('[data-codex-level]');
+      if (!button) return;
+      cards.selectLevel(button.closest('[data-codex-building]'), button.dataset.codexLevel);
+      renderCodex();
+    });
     const countEl = codexBody.querySelector('.rlCodexCount');
     let codexTab = 'buildings',
       codexRace = 'human';
@@ -254,90 +262,10 @@ export function installApplicationShell() {
       magic: 'Mágikus',
       siege: 'Ostrom'
     })[cat] || cat || '';
-    function fakeCityFor(type, level) {
-      const c = makeCity(false);
-      c.race = codexRace;
-      c.unlocked.add(type);
-      c.levels[type] = level;
-      if (type === 'keep') {
-        c.buildings[0].level = level;
-      } else c.buildings.push({
-        id: 'lex-' + type,
-        type,
-        level,
-        row: 0,
-        col: 0,
-        rotation: 0,
-        progress: 0,
-        paidCost: C()
-      });
-      return c;
-    }
-    function upgradeHTML(type) {
-      if (type === 'alchemist') return '';
-      if(codexRace==='undead')return window.__ROADLORDS_UNDEAD__.lexiconLevels(type);
-      if (codexRace === 'orc' && (type.startsWith('orc_') || type === 'keep')) return window.__ROADLORDS_ORCS__.lexiconLevels(type);
-      const parts = [];
-      for (const lv of [1, 2]) {
-        try {
-          const c = fakeCityFor(type, lv),
-            html = buildingUpgradeDetails(c, type);
-          if (html) parts.push(`<div class="rlUpgradeStep"><b>L${lv} → L${lv + 1}</b><br>${html}</div>`);
-        } catch (_) {}
-      }
-      if (codexRace === 'orc' && window.__ROADLORDS_ORCS__.maxLevel(type) === 3) return '<div class="rlUpgradeBlock"><strong>SZINTEK</strong>' + parts.join('') + '<p>L4: későbbi csomagban.</p></div>';
-      const branches = (codexRace === 'orc' && type === 'keep' ? window.__ROADLORDS_ORCS__.keepBranches : typeof V4_BRANCHES === 'object' && V4_BRANCHES[type]) || [];
-      if (branches.length) {
-        parts.push(`<div class="rlUpgradeStep"><b>L3 → L4</b><br>Válassz egy specializációt:</div>`);
-        for (const b of branches) parts.push(`<div class="rlBranch"><b>${esc(b.icon || '✦')} ${esc(b.name || 'L4 ág')}</b><br>${b.description || ''}</div>`);
-      } else {
-        try {
-          const c = fakeCityFor(type, 3),
-            html = buildingUpgradeDetails(c, type);
-          if (html) parts.push(`<div class="rlUpgradeStep"><b>L3 → L4</b><br>${html}</div>`);
-        } catch (_) {}
-      }
-      return parts.length ? `<div class="rlUpgradeBlock"><strong>SZINTEK / L4</strong>${parts.join('')}</div>` : '';
-    }
-    function lexCost(cost) {
-      if(codexRace==='undead')return window.__ROADLORDS_UNDEAD__.soulCostHTML(cost);
-      return ['wood', 'stone', 'food'].filter(r => cost[r] > 0).map(r => `<span class="lexResource">${resourceIconTag(r, true)}<b>${Math.ceil(cost[r])}</b></span>`).join(' ') || 'Ingyenes';
-    }
-    function buildingCard(type, d) {
-      if(codexRace==='undead'&&type==='keep')d=window.__ROADLORDS_UNDEAD__.buildings.keep;
-      if (codexRace === 'orc' && type === 'keep') d = {
-        ...d,
-        name: 'Ork főépület',
-        description: BUILDINGS.keep.description
-      };
-      const cost = type === 'keep' ? 'Kezdőépület' : lexCost(buildPrice ? buildPrice(fakeCityFor(type, 1), type) : d.cost || C());
-      const prod = d.unit ? UNITS[d.unit] : null;
-      const extra = prod ? `Gyártott egység: ${prod.name}` : '';
-      const art = typeof cardBuildingImageTag === 'function' ? cardBuildingImageTag(type, 'lexBuildingImg', codexRace) : d.icon || '🏠';
-      return `<article class="rlCodexCard"><header class="rlCodexCardHead"><span class="rlCodexIcon">${art}</span><div class="rlCodexTitle"><h3>${esc(d.name)} ${buildCardFootprintV41004(type)}</h3><small>${esc(categoryName(d.category))}</small></div></header><div class="rlCodexContent"><div class="rlCodexMeta"><span class="rlChip">${cost}</span>${d.unique ? '<span class="rlChip gold">EGYEDI</span>' : ''}</div><p>${d.description || ''}</p>${prod ? `<p><b>${esc(prod.icon)} ${esc(prod.name)}</b> · alap gyártás ${esc(String(prod.train))} mp · egységköltség ${lexCost(prod.cost)}</p>` : ''}${upgradeHTML(type)}</div></article>`;
-    }
-    function unitCard(key, u) {
-      const producer = u.producerHint || Object.entries(BUILDINGS).find(([, d]) => d.unit === key)?.[1]?.name || 'Nincs közvetlen termelő';
-      const art = typeof unitImageTag === 'function' ? unitImageTag(key, 'lexUnitImg') : u.icon || '⚔️';
-      const stats = [['HP', u.hp], ['Sebzés', u.damage], ['Támadási idő', `${u.cooldown} mp`], ['Hatótáv', u.range], ['Mozgás', u.speed], ['Gyártás', `${u.train} mp`]];
-      if (u.heal != null) stats.push(['Gyógyítás', u.heal]);
-      if (u.aoe != null) stats.push(['AOE sugár', u.aoe]);
-      if (u.buildingDamage != null) stats.push(['Épületsebzés', u.buildingDamage]);
-      return `<article class="rlCodexCard"><header class="rlCodexCardHead"><span class="rlCodexIcon">${art}</span><div class="rlCodexTitle"><h3>${esc(u.name)}</h3><small>${esc(catName(u.cat))}</small></div></header><div class="rlCodexContent"><div class="rlCodexMeta"><span class="rlChip">${esc(producer)}</span>${(u.tags || []).map(t => `<span class="rlChip">${esc(t)}</span>`).join('')}</div><div class="rlCodexStats">${stats.map(([a, b]) => `<div class="rlStat"><span>${esc(a)}</span><b>${esc(b)}</b></div>`).join('')}</div><p><b>Költség:</b> ${lexCost(u.cost)}</p>${u.description ? `<p class=orcUnitEffect>${esc(u.description)}</p>` : ''}</div></article>`;
-    }
-    function pickArt(item) {
-      const key = PICK_UNIT_IMAGES?.[item.id],
-        src = PICK_IMAGES?.[item.id];
-      if (key && UNITS[key]) return typeof unitImageTag === 'function' ? unitImageTag(key, 'lexUnitImg') : UNITS[key].icon;
-      if (src) return `<img src="${src}" alt="" draggable="false">`;
-      return esc(item.icon || '✦');
-    }
-    function commonCard(item) {
-      return `<article class="rlCodexCard"><header class="rlCodexCardHead"><span class="rlCodexIcon">${pickArt(item)}</span><div class="rlCodexTitle"><h3>${esc(item.name)}</h3><small>GYAKORI · HALMOZHATÓ</small></div></header><div class="rlCodexContent"><p>${item.description || ''}</p></div></article>`;
-    }
-    function legendaryCard(item) {
-      return `<article class="rlCodexCard rlLegendCard"><header class="rlCodexCardHead"><span class="rlCodexIcon">${pickArt(item)}</span><div class="rlCodexTitle"><h3>${esc(item.name)}</h3><small>LEGENDÁS</small></div></header><div class="rlCodexContent"><p>${item.description || ''}</p></div></article>`;
-    }
+    function buildingCard(type, d) { return cards.building(type, codexRace); }
+    function unitCard(key, u) { return cards.unit(key, u, codexRace); }
+    function commonCard(item) { return cards.upgrade(item, 'normal', codexRace); }
+    function legendaryCard(item) { return cards.upgrade(item, 'legendary', codexRace); }
     function renderCodex() {
       let rows = [];
       if (codexTab === 'statuses') {

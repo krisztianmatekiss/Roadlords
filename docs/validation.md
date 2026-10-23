@@ -1,3 +1,11 @@
+# V4.29.0 – kártyaelrendezés, állapotok és elit jelzés
+
+2026-10-23. A teljes helyi, 20 tesztfájlos sorozat hibamentes, a környezet ICE-jelöltjeinek hiányában a külön valódi WebRTC-próba kihagyott. Az új kártya/effekt ellenőrzés 51 érvényes forráskép hashét és helyi dekódolását, a teljes képarányt, a manifest címdobozát és leírásdobozát méri. A négy upstream üres fájl helyén nem tölt hibás képet a játék. A lexikon csak egy szintet mutat, a főépületben nincs ismétlődő szintváltási bekezdés. A szintváltás a valódi 20 000 → 80 000 életerőt mutatja. A százalékos méretezés és kezelősávok korábbi próbái megmaradnak; a kártyák képarányához és a szövegmezőhöz igazodó ellenőrzésekkel.
+
+A valódi Mágus-támadás találat előtt sem sebzést, sem becsapódást nem ad. Találatkor egyszer sebez, a friss célponthelyen jelenik meg az effekt. A fagyág kék lövedéket és valódi találatot kap. Kilenc ember/ork/élőhalott/ostromgép rangját ellenőrizzük, változatlan statisztikákkal. A host valós JSON-csomagját külön vendégoldal fogadja; a közös rangbit és a méreg/égés/erősítés jelvényei megmaradnak. 1000 látható egységnél a képtárak és effektlista korlátosak.
+
+A kártyák képanyaga, a megmaradó egyszerűsítések, a helyi teljesítménymérés és annak korlátai: [Kártyák és effektek](cards-and-effects-4.29.md). A CI közzététel előtt a teljes tesztsort külön lefuttatja.
+
 # V4.28.2 – tömörebb épület- és fejlesztésleírások
 
 2026-10-22. Mindhárom faj végleges épület-, gyakori/legendás fejlesztés- és L4-ágszövegeit átnéztük. Az élőhalott leírások külön adatfájlban vannak; a feltöltött munkafüzet archivált másolata változatlan. Az épület szerepe, négy szinthatása és ágai külön jelennek meg. A képzési idők a közös balance-adatokból készülnek. A kiválasztott L4-ág mellett az épületvizsgáló megtartja az alap szinthatást is.

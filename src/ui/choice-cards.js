@@ -1,35 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
 export function initializeUiChoiceCards(runtime) {
-  const SHORT_PICK_DESC = {
-    keep: 'A birodalom központja. Alaptermelést, tárolót, fővárosi HP-t, sereglimitet és kapukiengedést ad.',
-    lumber: 'Fát termel. Erdő mellett a termelése megduplázódik.',
-    stonecutter: 'Követ termel. Kőfejtő mellett a termelése megduplázódik.',
-    farm: 'Élelmet termel. Termékeny talajon a termelése megduplázódik.',
-    warehouse: 'Növeli minden nyersanyag tárolókapacitását.',
-    barracks: 'Kardost gyárt.',
-    archery: 'Íjászt gyárt.',
-    spearhall: 'Lándzsást gyárt. Lovasság és nehéz egységek ellen kiemelkedően erős.',
-    stable: 'Lovagot gyárt. Gyors, páncélozott közelharci egység.',
-    temple: 'Papokat gyárt. A Pap támad és sérült szövetségeseket gyógyít.',
-    siegeworks: 'Katapultot gyárt. Épületek ellen teljes sebzést okoz.',
-    magetower: 'Mágust gyárt. Tűzgolyója területi sebzést okoz.',
-    guildhouse: 'A 2 mezőn belüli Favágók, Kővágók és Farmok termelését növeli.',
-    market: 'Folyamatosan egy kijelölt nyersanyagot vált át egy másikra. Az útvonal bármikor módosítható.',
-    builders: 'Csökkenti minden épület Fa- és Kőköltségét.',
-    townhall: 'A legfeljebb 2 mezőre álló Lakóházak sereglimit-bónuszát növeli.',
-    rally: 'A közeli katonai termelők egységeit külön tartalékba gyűjti. Kiengedéskor mozgási bónuszt kapnak az első támadásig.',
-    tavern: 'A főkapun vagy a Gyülekezőtérből kiengedett egységek első 2 támadását erősíti.',
-    guardhouse: 'Csak városfalhoz, Gyülekezőtérhez vagy bekötött Őrházhoz kapcsolható. Növeli a kapcsolt tartalék kapacitását.',
-    house: 'Növeli az úton harcoló sereged maximális létszámát.',
-    warcenter: 'Három globális haditermelési irány közül választhatsz, és bármikor válthatsz közöttük.',
-    armorsmith: 'A közeli katonai termelőkből érkező egységek kezdőpajzsot kapnak.',
-    hospital: 'Az elesett egységek egy részét egyszer visszajuttatja a főhelyőrségbe fél HP-n. Tele helyőrségnél inaktív.',
-    library: 'Minden választásnál ingyenes újrasorsolásokat ad. Ezek csak az aktuális választásra érvényesek.',
-    mastersguild: 'Időközönként ingyenesen fejleszt egy már megépített épülettípust, legfeljebb L3-ig.',
-    academy: 'A szomszédos katonai termelők egységeit nyersanyagból vásárolható sebzés-, HP- és támadásisebesség-fejlesztésekkel erősíti.',
-    merc_tent: 'Három zsoldoscsapat közül bérelhetsz. A választott sor a következő ajánlatok erejét is befolyásolja, és automata mód is használható.',
-    alchemist: 'A szomszédos katonai termelőkből érkező egységeknek véletlenszerű főzetbónuszt ad.'
-  };
   function v4997ShortDesc(type) {
     const d = runtime.BUILDINGS[type];
     if (!d) return '';

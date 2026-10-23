@@ -1,0 +1,82 @@
+{
+  "sourceCommit": "45849177e974f61d8e679aa38c693298d8b6f1e8",
+  "layout": {
+    "canvas": [
+      0.0,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "title": [
+      0.078125,
+      0.040364583333333336,
+      0.84375,
+      0.07552083333333333
+    ],
+    "art": [
+      0.046875,
+      0.1328125,
+      0.90625,
+      0.640625
+    ],
+    "description": [
+      0.078125,
+      0.80078125,
+      0.84375,
+      0.14322916666666666
+    ]
+  },
+  "cards": {
+    "building:orc_war": "buildings/orc_war.webp",
+    "building:orc_work": "buildings/orc_work.webp",
+    "building:orc_hut": "buildings/orc_hut.webp",
+    "building:orc_bers": "buildings/orc_bers.webp",
+    "building:orc_gob": "buildings/orc_gob.webp",
+    "building:orc_warg": "buildings/orc_warg.webp",
+    "building:orc_shaman": "buildings/orc_shaman.webp",
+    "building:orc_troll": "buildings/orc_troll.webp",
+    "building:orc_ram": "buildings/orc_ram.webp",
+    "building:orc_hunt": "buildings/orc_hunt.webp",
+    "building:warehouse": "buildings/warehouse.webp",
+    "building:orc_arena": "buildings/orc_arena.webp",
+    "building:orc_overseer": "buildings/orc_overseer.webp",
+    "building:orc_altar": "buildings/orc_altar.webp",
+    "building:orc_totem": "buildings/orc_totem.webp",
+    "building:orc_slave": "buildings/orc_slave.webp",
+    "building:orc_raider": "buildings/orc_raider.webp",
+    "building:orc_tunnel": "buildings/orc_tunnel.webp",
+    "building:keep": "buildings/keep.webp",
+    "upgrade:orc_ancient_deposits": "upgrades/orc_ancient_deposits.webp",
+    "upgrade:orc_as": "upgrades/orc_as.webp",
+    "upgrade:orc_bers_blood": "upgrades/orc_bers_blood.webp",
+    "upgrade:orc_berserker_common": "upgrades/orc_berserker_common.webp",
+    "upgrade:orc_blessing": "upgrades/orc_blessing.webp",
+    "upgrade:orc_crit": "upgrades/orc_crit.webp",
+    "upgrade:orc_dispel": "upgrades/orc_dispel.webp",
+    "upgrade:orc_glutton": "upgrades/orc_glutton.webp",
+    "upgrade:orc_gob_blood": "upgrades/orc_gob_blood.webp",
+    "upgrade:orc_gob_bow": "upgrades/orc_gob_bow.webp",
+    "upgrade:orc_goblin_common": "upgrades/orc_goblin_common.webp",
+    "upgrade:orc_horde_heart": "upgrades/orc_horde_heart.webp",
+    "upgrade:orc_hp": "upgrades/orc_hp.webp",
+    "upgrade:orc_hunt": "upgrades/orc_hunt.webp",
+    "upgrade:orc_inherit": "upgrades/orc_inherit.webp",
+    "upgrade:orc_last_rampage": "upgrades/orc_last_rampage.webp",
+    "upgrade:orc_loot": "upgrades/orc_loot.webp",
+    "upgrade:orc_momentum": "upgrades/orc_momentum.webp",
+    "upgrade:orc_predator": "upgrades/orc_predator.webp",
+    "upgrade:orc_ram_common": "upgrades/orc_ram_common.webp",
+    "upgrade:orc_refund": "upgrades/orc_refund.webp",
+    "upgrade:orc_revenge": "upgrades/orc_revenge.webp",
+    "upgrade:orc_siege_loot": "upgrades/orc_siege_loot.webp",
+    "upgrade:orc_siege_shield": "upgrades/orc_siege_shield.webp",
+    "upgrade:orc_transfusion": "upgrades/orc_transfusion.webp",
+    "upgrade:orc_trojan": "upgrades/orc_trojan.webp",
+    "upgrade:orc_troll_common": "upgrades/orc_troll_common.webp",
+    "upgrade:orc_united_huts": "upgrades/orc_united_huts.webp",
+    "upgrade:orc_veteran_kills": "upgrades/orc_veteran_kills.webp",
+    "upgrade:orc_volley": "upgrades/orc_volley.webp",
+    "upgrade:orc_warg_common": "upgrades/orc_warg_common.webp",
+    "upgrade:orc_warg_instinct": "upgrades/orc_warg_instinct.webp"
+  }
+}

@@ -47,7 +47,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         const rect = e => e.getBoundingClientRect(), modal = document.querySelector('#choiceOverlay .modal');
         const m = rect(modal), list = document.querySelector('#choiceList'), cards = [...list.children];
         const inside = r => r.top >= -.5 && r.left >= -.5 && r.right <= innerWidth + .5 && r.bottom <= innerHeight + .5;
-        const bodyOK = c => { const b = c.querySelector('.choiceBody'); return b.clientHeight >= 60 && b.scrollWidth <= b.clientWidth + 1 && getComputedStyle(b).overflowY === 'auto'; };
+        const bodyOK = c => { const b = c.querySelector('.choiceBody'); return b.clientHeight >= 45 && b.scrollWidth <= b.clientWidth + 1 && getComputedStyle(b).overflowY === 'auto'; };
         const orderOK = c => { const r = selector => rect(c.querySelector(selector)); return r('h3').bottom <= r('.choiceArt').top + 1 && r('.choiceArt').bottom <= r('.choiceBody').top + 1 && r('.choiceBody').bottom <= r('.choiceFooter').top + 1 && r('.choiceFooter').bottom <= rect(c).bottom + 1; };
         const bar = rect(document.querySelector('.topbar')), roster = rect(document.querySelector('#roadRoster'));
         const catalog = rect(document.querySelector('.catalog')), map = rect(document.querySelector('#roadMinimap')), command = rect(document.querySelector('.command'));
@@ -74,7 +74,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       }
     }
     const desktop = report.layouts.filter(l => l.viewport[0] === 1920 && l.mode !== 'auto');
-    check('Percentages visibly resize text and construction cards by their actual ratio', desktop.every(l => Math.abs(l.font - 19 * Number(l.mode) / 100) < .1 && Math.abs(l.cardWidth - 160 * Number(l.mode) / 100) < 1));
+    check('Percentages resize construction cards while choice text fits the fixed-ratio card boxes', desktop.every(l => l.font >= 10 && l.font <= 17 * Number(l.mode) / 100 + 1 && Math.abs(l.cardWidth - 108 * Number(l.mode) / 100) < 1));
     // Human and Orc HUDs show three resources, unlike the single Undead stock.
     for (const [width, height] of [[800, 900], [1366, 768], [1920, 1080], [3840, 2160]]) {
       await page.setViewportSize({ width, height });

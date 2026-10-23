@@ -1,8 +1,16 @@
-# Roadlords · V4.28.2
+# Roadlords · V4.29.0
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
 
 Az élőhalott városokban nincs erdő, kő vagy termőtalaj; az újrageneráláskor sem jelennek meg. A romok és az alapozás megmaradnak.
+
+## Egységes kártyák és harci jelzések · 4.29.0
+
+Az ork kártyacsomag 51 érvényes WebP-képe helyben, a játék részeként töltődik. A cím és a rövid hatásleírás a képek saját üres mezőibe kerül; a többi faj ugyanazt az elrendezést használja. A lexikon szintválasztója egyszerre egy szint adatait mutatja. Az L4 ágai külön nyithatók meg, nincs ismétlődő szintmagyarázat. A választólapokról lekerült a külön felvételszám-bekezdés és az ismétlődő előnézeti fejléc; a képzési ár, idő és terület ikonokként marad látható.
+
+A méreg zöld, a tűz narancsvörös, a fagy kék, a vérzés piros, az átok lila. Ugyanezek a színek jelzik az egységek aktív állapotait. A közös veterán/elit rang arany felszerelésjelzést és rangjelvényt kap minden fajnál, az ostromgépeken is. Az állapotanimációk közös, korlátos képkockatárból rajzolódnak. A Mágus tűzgolyója, a fagyváltozat és a becsapódási effekt a valódi találat időzítését követi. A harci értékek és szabályok megmaradnak.
+
+A forráscsomag négy üres fájlja és a képek nélküli lapok a meglévő grafikát és az egységes keretet használják. [Képforrások és technikai korlátok](docs/cards-and-effects-4.29.md).
 
 ## Rövidebb leírások · 4.28.2
 

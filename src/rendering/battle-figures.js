@@ -1,4 +1,6 @@
 import { REFINED_UNITS, refinedLegs, refinedBody, refinedHead, refinedShield, refinedArm, refinedWeapon } from './refined-figures.js';
+import { drawStatusEffects, drawMagicShot, shotKind } from './battle-effects.js';
+import { unitIsElite } from '../data/unit-ranks.js';
 // Articulated battle figures follow the original roster's armor, equipment and colors.
 // Vector poses are rasterized on demand; regular frames draw cached sprites only.
 const TAU = Math.PI * 2;
@@ -140,7 +142,7 @@ function mount(g, style, color, p) {
   if(wolf){for(let i=0;i<4;i++)poly(g,[[9+i*2,-28],[13+i*2,-33],[12+i*2,-25]],'#474f42',null);}
   else {line(g,14,-36,12,-26,'#3f3529',2.5);line(g,21,-31,27,-30,'#b89e6a',.8);}
 }
-function undeadFigure(g,style,color,p) {
+function undeadFigure(g,style,color,p,elite=false) {
   const bone=style.undead==='skeleton',ghost=style.undead==='ghost',vampire=style.undead==='vampire',caster=['necro','lich'].includes(style.undead);
   const skin=bone||style.undead==='lich'?'#d4d6bd':vampire?'#bdc6b6':ghost?'#88d9bd':'#81936e',stride=p.walk*4,thrust=(p.strike*4-p.wind*2)*(1-p.recovery);
   g.save();if(ghost)g.globalAlpha=.72;
@@ -166,10 +168,11 @@ function undeadFigure(g,style,color,p) {
   if(vampire){poly(g,[[-2,-29],[-1,-25],[0,-29]],'#f2e9d6');poly(g,[[2,-29],[3,-25],[4,-29]],'#f2e9d6');line(g,-4,-38,4,-38,'#343a35',2);}
   if(style.weapon==='fist'||style.weapon==='claw'){ellipse(g,armX+2,armY,2.5,2.7,skin);if(ghost)for(let i=0;i<3;i++)line(g,armX+2,armY-2+i*2,armX+7,armY-3+i*2,'#c4ffe4',.8);}
   else weapon(g,style.weapon,armX,armY,style.weapon==='sword'?mix(-1.8,.5,p.strike):-.1,style.weapon==='staff'?'#77f2b2':color,p);
+  if(elite){line(g,-5,-26,5,-26,'#ffe098',1.8);line(g,-5,-26,4,-15,'#d6ac4f',2);}
   g.restore();return {stride,body:[thrust,0],weapon:[armX,armY,0]};
 }
-function humanoid(g, style, color, p, refined = false) {
-  if(style.undead)return undeadFigure(g,style,color,p);
+function humanoid(g, style, color, p, refined = false, elite = false) {
+  if(style.undead)return undeadFigure(g,style,color,p,elite);
   const skin=style.orc?'#859453':'#b8a07c', armor=style.orc?'#807b65':'#a4b0a7';
   const metal=material(g,armor),cloth=material(g,color),hide=material(g,skin);
   if(style.mount){mount(g,style,color,p);g.translate(-1,-23);g.scale(.88,.88);}
@@ -206,6 +209,10 @@ function humanoid(g, style, color, p, refined = false) {
   else {line(g,-4,-38,4,-38,'#6c624c',2.5);line(g,1,-28,4,-26,'#c4ba9a',2);}
   }
   const shieldAngle=-.16-p.wind*.15*(1-p.strike);
+  if(elite){
+    line(g,-7,-27,-2,-27,'#ffe29a',2.2);line(g,4,-27,9,-26,'#ffe29a',2.2);
+    line(g,-4,-25,4,-14,'#d7ad4b',2);line(g,-5,-38,5,-38,'#e7c36b',1.5);
+  }
   if(style.shield){g.save();g.translate(-8,-19);g.rotate(shieldAngle);if(refined)refinedShield(g,style.orc,color);else{ellipse(g,0,0,7,10,style.orc?'#443a29':'#b59b61');ellipse(g,0,-.3,5.5,8.1,color);line(g,0,-6,0,6,'#dbc48c',1.1);line(g,-3,-1,3,-1,'#dbc48c',1.1);ellipse(g,0,-1,1.6,1.6,armor);}g.restore();}
   let angle=mix(-.75,-2.05,p.wind);angle=mix(angle,.42,p.strike);angle=mix(angle,-.75,p.recovery);
   if(['spear','bow','cross','staff','sling'].includes(style.weapon))angle=style.weapon==='spear'?-.12-p.wind*.16*(1-p.strike):-.15;
@@ -217,7 +224,8 @@ function humanoid(g, style, color, p, refined = false) {
   return {stride,body:[thrust,-bob],shield:[-8,-19,shieldAngle],weapon:[handX,handY,angle]};
 }
 function sprite(R, u, pose) {
-  const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}`;
+  const elite=unitIsElite(u);
+  const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}${elite?":elite":""}`;
   let canvas=R.ROAD.sprites.get(key);if(canvas)return canvas;
   const style=FIGURES[u.key];if(!style)return null;
   canvas=document.createElement('canvas');canvas.width=canvas.height=refined?192:128;
@@ -226,7 +234,8 @@ function sprite(R, u, pose) {
   ellipse(g,1,2,style.mount||style.machine?18:style.size>1?15:10,3.5,'#18251e66');
   if(p.death){g.translate(p.death*4,-(1-p.death)*23);g.scale(1,1-p.death*.55);g.rotate(p.death*1.48);g.translate(0,23);}
   g.save();g.scale(style.size||1,style.size||1);
-  if(style.machine)machine(g,style,color,p);else canvas.figureRig=humanoid(g,style,color,p,refined);g.restore();
+  if(style.machine){machine(g,style,color,p);if(elite){line(g,-16,-18,16,-18,'#ebc66f',2.5);poly(g,[[-4,-26],[4,-26],[4,-21],[0,-18],[-4,-21]],'#d8ad50');}}
+  else canvas.figureRig=humanoid(g,style,color,p,refined,elite);g.restore();
   if(R.ROAD.sprites.size>=768)R.ROAD.sprites.delete(R.ROAD.sprites.keys().next().value);
   R.ROAD.sprites.set(key,canvas);return canvas;
 }
@@ -247,8 +256,7 @@ export function installBattleFigures(R) {
     g.drawImage(image,...image.figureBounds);g.restore();
     if(!dead){
       if((detail||hurt>.4)&&u.hp<u.maxHp*.98){g.fillStyle='#14251a';g.fillRect(-10,-51,21,3);g.fillStyle=R.unitTeamFill(u);g.fillRect(-9,-50,19*clamp(u.hp/u.maxHp),1.8);}
-      if(detail&&u.veteran){g.fillStyle='#edd184';g.fillRect(-1,-46,2.5,2.5);}
-      if(detail&&u.shield+u.tempShield>0){g.strokeStyle='#b3e6cf88';g.lineWidth=1;g.beginPath();g.ellipse(0,-20,r+3,24,0,0,TAU);g.stroke();}
+      drawStatusEffects(R,g,u,detail,r,p.x,p.y,scale);
       if(hurt>.1){g.strokeStyle='#f7e0a1';g.lineWidth=1;line(g,8,-23,13,-27,'#ffe5a8',1);line(g,9,-19,15,-18,'#ffe5a8',1);}
     }
     g.restore();
@@ -256,13 +264,14 @@ export function installBattleFigures(R) {
   R.roadDrawShots=function drawShots() {
     const g=R.ctx;
     for(const u of R.state.units){
-      const a=u.roadAttack;if(!a?.ranged||R.ROAD.clock<a.launch||R.ROAD.clock>a.hit)continue;
+      const a=u.roadAttack;if(!u.alive||!a?.ranged||R.ROAD.clock<a.launch||R.ROAD.clock>=a.hit)continue;
       const t=clamp((R.ROAD.clock-a.launch)/(a.hit-a.launch||.1));
       const from=R.pointAt(a.lane,a.offset),to=R.pointAt(a.to,a.toOffset),rock=a.key==='catapult'||a.key==='orc_goblin',magic=R.UNITS[a.key]?.damageType==='magic';
       const x=mix(from.x,to.x,t),y=mix(from.y,to.y,t)-19*(R.ROAD.h/600)*(R.ROAD.zoom||1)-(rock?Math.sin(t*Math.PI)*(a.key==='catapult'?65:18):0);
       if(x< -25||x>R.ROAD.w+25)continue;
       g.save();g.translate(x,y);g.rotate(Math.atan2(to.y-from.y,to.x-from.x));
-      if(magic){g.globalAlpha=.25;ellipse(g,-5,0,12,5,R.unitTeamFill(u));g.globalAlpha=1;ellipse(g,0,0,4,4,'#d9e7a6');ellipse(g,1,-1,2,2,'#fff5d5');}
+      if(drawMagicShot(g,a.effect||shotKind(R,u),R.ROAD.h/600*(R.ROAD.zoom||1),R.ROAD.clock)){}
+      else if(magic){g.globalAlpha=.25;ellipse(g,-5,0,12,5,R.unitTeamFill(u));g.globalAlpha=1;ellipse(g,0,0,4,4,'#d9e7a6');ellipse(g,1,-1,2,2,'#fff5d5');}
       else if(rock){ellipse(g,0,0,a.key==='catapult'?4:2.5,a.key==='catapult'?3.7:2,'#b2b7a1');}
       else{line(g,-10,0,4,0,'#cebd8c',1.3);poly(g,[[3,-1.8],[8,0],[3,1.8]],'#e1e4cc',null);}
       g.restore();

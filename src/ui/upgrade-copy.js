@@ -102,7 +102,7 @@ export function initializeUiUpgradeCopy(R) {
     R.$$('#choiceList .choice').forEach((card, i) => {
       const option = options[i], body = card.querySelector('.choiceBody');
       if (option.kind === 'building_upgrade' && body) {
-        body.querySelector('p').textContent = 'Minden ilyen épületed fejlődik, a később épülők is.';
+        body.querySelector('p')?.remove();
       }
       const preview = R.upgradeCopyPreview(R.P, option);
       if (!preview || !body) return;
@@ -117,16 +117,15 @@ export function initializeUiUpgradeCopy(R) {
       };
       append('p', 'upgradeDescription', preview.description);
       if (preview.rows.length) {
-        append('span', 'upgradeHeading', 'Jelenleg → Felvétel után');
         const rows = append('span', 'upgradeComparison', '');
+        rows.title = preview.context;
         for (const row of preview.rows) {
           const line = append('span', 'upgradeRow', '', rows);
           append('span', 'upgradeMetric', row.label, line);
           append('b', 'upgradeValues', `${row.before} → ${row.after}`, line);
         }
-        if (preview.context) append('small', 'upgradeContext', preview.context);
       }
-      append('small', 'upgradeStacking', preview.stacking);
+      card.title = preview.stacking;
       if (preview.specialization) append('small', 'upgradeSpecialization', preview.specialization);
     });
   };

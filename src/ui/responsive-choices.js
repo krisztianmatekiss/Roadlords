@@ -14,7 +14,7 @@ export function initializeResponsiveChoices() {
     const padding = Math.min(18 * scale, innerWidth * .025);
     const gap = 14 * scale;
     const available = innerWidth - 2 * (margin + padding);
-    let columns = Math.max(1, Math.min(count, Math.floor((available + gap) / (230 * scale + gap))));
+    let columns = Math.max(1, Math.min(count, Math.floor((available + gap) / (Math.max(220, 230 * scale) + gap))));
     const rows = Math.ceil(count / columns);
     columns = Math.ceil(count / rows);
     const width = Math.min(innerWidth - margin * 2, columns * 310 * scale + gap * (columns - 1) + padding * 2);
@@ -30,7 +30,9 @@ export function initializeResponsiveChoices() {
     const hud = document.querySelector('.topbar').getBoundingClientRect().height;
     const space = innerHeight - hud - 2 * (margin + padding) - header - tools - hint - gap * 3 - 4;
     // Short windows scroll the deck, keeping heading and actions fixed.
-    const height = Math.min(space, Math.max(300 * scale, Math.min(530 * scale, (space - (rows - 1) * gap) / rows)));
+    const naturalWidth = (width - padding * 2 - gap * (columns - 1)) / columns;
+    const height = Math.min(naturalWidth * 1.5, Math.max(180, space));
+    set('--pick-card-width', `${height / 1.5}px`);
     set('--pick-height', `${height}px`);
     set('--pick-title-height', `${Math.min(58 * scale, Math.max(44 * scale, height * .15))}px`);
     set('--pick-card-padding', `${Math.min(12 * scale, height * .032)}px`);

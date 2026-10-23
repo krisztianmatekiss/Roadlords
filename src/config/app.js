@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.28.2',
-  label: 'V4.28.2 · ÁTTEKINTHETŐ LEÍRÁSOK',
-  title: 'Roadlords – Áttekinthető leírások',
+  version: '4.29.0',
+  label: 'V4.29.0 · KÁRTYÁK ÉS HARCI EFFEKTEK',
+  title: 'Roadlords – Kártyák és harci effektek',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

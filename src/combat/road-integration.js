@@ -106,6 +106,9 @@ export function initializeCombatRoadIntegration(runtime) {
         lane: u.lane,
         offset: u.offset || 0,
         veteran: u.veteran,
+        undElite: u.undElite,
+        eliteVisual: u.eliteVisual,
+        warEliteMult: u.warEliteMult,
         roadFace: u.roadFace,
         death: runtime.ROAD.clock
       });
@@ -250,7 +253,10 @@ export function initializeCombatRoadIntegration(runtime) {
         side: u.side,
         lane: u.lane,
         offset: u.offset,
-        veteran: u.veteran
+        veteran: u.veteran,
+        undElite: u.undElite,
+        eliteVisual: u.eliteVisual,
+        warEliteMult: u.warEliteMult
       });
       for (const [id, u] of previous) if (!next.has(id)) runtime.ROAD.dead.push({
         ...u,
@@ -278,8 +284,11 @@ export function initializeCombatRoadIntegration(runtime) {
     const visible = runtime.state.units.filter(u => u.alive && u.lane >= runtime.ROAD.camera - 40 && u.lane <= runtime.ROAD.camera + runtime.ROAD.w / runtime.ROAD.zoom + 60);
     runtime.ROAD.lowDetail = visible.length > 240 && runtime.ROAD.zoom <= 1.25;
     visible.sort((a, b) => (a.offset || 0) - (b.offset || 0) || a.id - b.id);
+    runtime.roadBeginUnitEffects?.();
     for (const u of visible) runtime.roadDrawUnit(u);
+    runtime.roadFlushUnitEffects?.();
     runtime.roadDrawShots();
+    runtime.roadDrawEffects?.();
     if (runtime.projectiles.length > 180) runtime.projectiles.splice(0, runtime.projectiles.length - 180);
     if (runtime.combatFx.length > 180) runtime.combatFx.splice(0, runtime.combatFx.length - 180);
     const dt = runtime.state.running && !runtime.state.modal && !runtime.ROAD.paused && !runtime.state.ended ? raw * runtime.state.speed : 0;

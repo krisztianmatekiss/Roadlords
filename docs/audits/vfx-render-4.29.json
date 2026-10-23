@@ -1,0 +1,25 @@
+{
+  "base": {
+    "median": 4.5,
+    "p95": 5.700000017881393,
+    "frameMedian": 40.20000001788139,
+    "fps": 24.87562187948232
+  },
+  "effects": {
+    "median": 6.5999999940395355,
+    "p95": 10.399999976158142,
+    "frameMedian": 49.69999998807907,
+    "fps": 20.12072435090257
+  },
+  "sums": {
+    "roadUpdateNavigation": 0.09999999403953552,
+    "drawTower": 0.09999999403953552,
+    "roadDrawUnit": 3.899999976158142,
+    "roadDrawShots": 0.09999999403953552,
+    "roadDrawEffects": 0,
+    "roadDrawMinimap": 0.09999999403953552
+  },
+  "total": 80.19999998807907,
+  "visible": 1000,
+  "statusSprites": 40
+}

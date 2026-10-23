@@ -4,6 +4,7 @@ import { initializeUndeadAi } from '../factions/undead/ai.js';
 import { initializeUndeadArt } from '../factions/undead/art.js';
 import { initializeUndeadUi } from '../factions/undead/ui.js';
 import { initializeUndeadCombat } from '../factions/undead/combat.js';
+import { installBattleEffects } from '../rendering/battle-effects.js';
 import { assetUrl } from '../assets/urls.js';
 import { initializeUiUpgradeCopy } from '../ui/upgrade-copy.js';
 import { initializeAiCityPlanning } from '../ai/city-planning.js';
@@ -272,5 +273,6 @@ export function createGame() {
   initializeCombatRoadIntegration(runtime);
   initializeUndeadCombat(runtime);
   initializeUndeadUi(runtime);
+  installBattleEffects(runtime);
   return runtime;
 }

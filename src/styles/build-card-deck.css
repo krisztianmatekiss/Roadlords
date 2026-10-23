@@ -1,5 +1,5 @@
-/* Full-size faces peek out of the existing dock; the map keeps its height. */
-html body #buildList { --deck-card-width:310px; align-items:flex-start !important; }
+/* Complete thumbnails fit inside the dock; hover reveals a full-size face. */
+html body #buildList { --deck-card-width:104px; align-items:flex-start !important; }
 html body #buildList .buildSlot {
   flex:0 0 var(--deck-card-width) !important; width:var(--deck-card-width) !important;
   height:calc(var(--deck-card-width) * 1.5 + 20px) !important; min-height:0 !important; grid-template-rows:20px auto !important;
@@ -35,8 +35,9 @@ html body :is(#buildList .buildcard,.buildCardPreview) .cardinfo b { font-size:i
 html body :is(#buildList .buildcard,.buildCardPreview) .cardFooter {
   position:absolute; bottom:1.5%; left:8%; right:8%; height:3.5%; text-align:center; font:800 2.8cqw/1 system-ui;
 }
-/* The folded face pins its price into the visible part of the illustration. */
-html body #buildList .buildcard .constructionPrice { top:20%; bottom:auto; right:8%; }
+/* Prices remain readable even though the rest of the resting card is a thumbnail. */
+html body #buildList .buildcard .constructionPrice { font-size:max(12px,5.5cqw); padding:2px 3px; gap:1px; }
+html body #buildList .buildcard .constructionPrice .costIcon { width:max(12px,5.5cqw) !important; height:max(12px,5.5cqw) !important; }
 html body .buildCardPreview.buildcard.gamecard {
   position:fixed !important; z-index:9000 !important; zoom:1 !important; pointer-events:none !important;
   box-shadow:0 12px 36px #000b,0 0 0 2px #b79755 !important;
@@ -57,3 +58,5 @@ html body #buildList .buildcard.illustratedCard .cardart .pickFootprint {
 
 html body .buildCardPreview > * { pointer-events:none !important; }
 html body .buildCardPreview > .previewHitbox { position:absolute; left:0; top:0; width:100%; z-index:8; pointer-events:auto !important; }
+
+html body[data-ui-scale] #app .catalog .tab { font-size:11px !important; line-height:1.1 !important; white-space:nowrap; }

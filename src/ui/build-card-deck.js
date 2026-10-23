@@ -3,7 +3,11 @@ import { fitCardText } from './card-text-fit.js';
 // A fixed preview escapes the horizontal deck's clipping without moving the map.
 export function installBuildCardDeck(R) {
   const list = R.$('#buildList');
-  const sizeDeck = () => list.style.setProperty('--deck-card-width', `${Math.max(100,Math.min(310,list.clientWidth - 4))}px`);
+  const sizeDeck = () => {
+    if (list.clientHeight <= 24) return;
+    const width = Math.max(1,Math.min(140,(list.clientHeight - 24) / 1.5,list.clientWidth - 4));
+    list.style.setProperty('--deck-card-width', `${width}px`);
+  };
   new ResizeObserver(sizeDeck).observe(list);
   sizeDeck();
   let key = null, preview = null, hideTimer = 0, keyboard = false;
@@ -14,7 +18,8 @@ export function installBuildCardDeck(R) {
   }
   function position(card) {
     const rect = card.getBoundingClientRect();
-    const width = Math.min(Math.max(260,rect.width), innerWidth - 16, (innerHeight - R.$('.topbar').getBoundingClientRect().bottom - 24) / 1.5);
+    const scale = window.__ROADLORDS_UI_SCALE__?.effective() || 1;
+    const width = Math.min(Math.max(310 * scale,rect.width), innerWidth - 16, (innerHeight - R.$('.topbar').getBoundingClientRect().bottom - 24) / 1.5);
     preview.style.width = `${width}px`;
     preview.style.height = `${width * 1.5}px`;
     preview.style.left = `${Math.max(8, Math.min(rect.left, innerWidth - width - 8))}px`;

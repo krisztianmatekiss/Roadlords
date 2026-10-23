@@ -1,3 +1,7 @@
+# V4.30.1 – teljes egészében elférő építési bélyegképek
+
+2026-10-23. A pakli mérete a sáv tényleges belső magasságából számolódik, a gyorsgomb- és darabszámjelzések helyével együtt. A böngészőpróba a teljes kártya és ára bennmaradását ellenőrzi 800/1366/1920 px szélességnél, 75/100/150%-on. A számbillentyűs, egérre felugró, Esc és kattintásos működés megmarad; a nagy lap a felületméret szerint nő, de a képernyőn belül marad. A meglévő 800–3840 px felületpróba is sikeres. A felületméret és a nyersanyagárak változatlanok.
+
 # V4.30.0 – teljes méretű építési lapok és automatikus betűméret
 
 2026-10-23. Az új böngészőpróba egérrel, számbillentyűvel, a látómezőn kívüli kilencedik hellyel, felugró lapra kattintással és Esc bezárással ellenőrzi az építést. A nagy lap és az alap pakli ugyanazt a valódi választókezelőt használja; a kamera, a harctér magassága és a minitérkép nem mozdul el. A mindig látható ár és a teljes lap 800, 1366 és 1920 px szélességnél, 75/100/150%-on is a rendelkezésre álló helyen marad. Az élőhalott árjelzés csak Lélek ikont használ. Mindkét saját betűtípus magyar ékezetekkel, külső hálózat nélkül töltődik.

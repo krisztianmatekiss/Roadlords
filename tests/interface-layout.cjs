@@ -63,7 +63,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
           header: roster.top >= bar.top && roster.bottom <= bar.bottom + 1 && roster.right <= innerWidth + 1 && menu.top >= bar.top && menu.bottom <= bar.bottom + 1,
           dock: catalog.right <= map.left + 1 && catalog.bottom <= command.bottom + 1 && Math.abs(command.bottom - innerHeight) < 1,
           bounds: {bar:bar.toJSON(),roster:roster.toJSON(),menu:menu.toJSON(),catalog:catalog.toJSON(),map:map.toJSON(),command:command.toJSON()},
-          font: parseFloat(getComputedStyle(cards[0].querySelector('h3')).fontSize), choiceWidth: rect(cards[0]).width, cardWidth: rect(document.querySelector('.buildcard')).width,
+          font: parseFloat(getComputedStyle(cards[0].querySelector('h3')).fontSize), choiceWidth: rect(cards[0]).width, cardWidth: rect(document.querySelector('.buildcard')).width, cardBottom: rect(document.querySelector('.buildcard')).bottom, deckBottom: rect(document.querySelector('#buildList')).bottom,
           windowLabel: document.querySelector('#uiViewportSize').textContent };
       });
     }
@@ -79,7 +79,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       }
     }
     const desktop = report.layouts.filter(l => l.viewport[0] === 1920 && l.mode !== 'auto');
-    check('Percentages resize construction cards while choice text fits the fixed-ratio card boxes', desktop.every(l => l.font >= 10 && l.font <= l.choiceWidth * .072 + 1 && l.font >= l.choiceWidth * .045 - 1 && Math.abs(l.cardWidth - 310 * Number(l.mode) / 100) < 1));
+    check('Construction thumbnails fit the dock at every percentage while choice text fits its card', desktop.every(l => l.font >= 10 && l.font <= l.choiceWidth * .072 + 1 && l.font >= l.choiceWidth * .045 - 1 && l.cardWidth <= 140 * Number(l.mode) / 100 + 1 && l.cardBottom <= l.deckBottom + 1));
     // Human and Orc HUDs show three resources, unlike the single Undead stock.
     for (const [width, height] of [[800, 900], [1366, 768], [1920, 1080], [3840, 2160]]) {
       await page.setViewportSize({ width, height });

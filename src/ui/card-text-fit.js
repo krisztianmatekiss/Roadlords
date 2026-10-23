@@ -17,7 +17,8 @@ export function fitCardText(card) {
     set(lo);
   };
   fit(card.querySelector('.rlCodexTitle,h3,.cardname'), '--card-title-size', width * .045, width * .072);
-  fit(card.querySelector('.choiceBody,.rlCodexContent,.cardinfo'), '--card-copy-size', Math.max(10, width * .032), width * .066);
+  const thumbnail = !!card.closest('#buildList');
+  fit(card.querySelector('.choiceBody,.rlCodexContent,.cardinfo'), '--card-copy-size', thumbnail ? width * .032 : Math.max(10, width * .032), width * .066);
 }
 
 export function initializeCardTextFit() {

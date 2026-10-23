@@ -1,8 +1,12 @@
-# Roadlords · V4.30.0
+# Roadlords · V4.30.1
 
 A meglévő játék moduláris változata, a kapott harcprototípushoz közelítő, animált harctéri figurákkal. A városépítés, gazdaság és multiplayer alapjai megmaradtak; a jóváhagyott balance-változásokat külön rögzítjük.
 
 Az élőhalott városokban nincs erdő, kő vagy termőtalaj; az újrageneráláskor sem jelennek meg. A romok és az alapozás megmaradnak.
+
+## Kisméretű építési lapok · 4.30.1
+
+Az alsó sávban a kártyák teljes egészükben elférnek. Méretük a rendelkezésre álló magassághoz igazodik; a költség külön olvasható méretű marad. Rámutatásra és gyorsgombra a nagy, teljes leírású lap jelenik meg. A felugró lap mérete követi a választott felületméretet, és a képernyőn belül marad.
 
 ## Felugró építési kártyák · 4.30.0
 

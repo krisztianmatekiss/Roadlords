@@ -26,8 +26,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     check(
       'Undead encyclopedia lists all 20 buildings with faction art and Soul prices',
       (await p.locator('#rlCodexPanel .rlCodexCard').count()) === 20 &&
-        (await p.locator('#rlCodexPanel .undeadBuildingArt').count()) === 14 &&
-        (await p.locator('#rlCodexPanel .cardFrameImage').count()) === 6 &&
+        (await p.locator('#rlCodexPanel .undeadBuildingArt').count()) === 0 &&
+        (await p.locator('#rlCodexPanel .cardFrameImage').count()) === 20 &&
         (await p.locator('[data-codex-building="und_necro_spawner"] .cardFrameImage').count()) === 1 &&
         (await p.locator('#rlCodexPanel .constructionPrice[aria-label*="35 Lélek"] img[alt="Lélek"]').count()) > 0 &&
         (await p
@@ -98,7 +98,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       R.renderStatic();
     });
     report.art = await p.evaluate(() => {
-      const e = document.querySelector('#buildList .card-media>.undeadBuildingArt'),
+      const e = document.querySelector('#playerGrid .undMapSprite .undeadBuildingArt'),
         r = e.getBoundingClientRect();
       return {
         w: r.width,
@@ -114,18 +114,18 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       };
     });
     check(
-      'Building cards keep square atlas tiles instead of stretching them flat',
+      'City sprites preserve their perspective instead of stretching or rotating flat',
       await p.evaluate(() => {
-        const el = document.querySelector('#buildList .card-media>.undeadBuildingArt'),
+        const el = document.querySelector('#playerGrid .undMapSprite .undeadBuildingArt'),
           b = el.getBoundingClientRect();
-        return b.height > 20 && Math.abs(b.width / b.height - 1) < 0.05;
+        return b.height > 20 && el.getAttribute('preserveAspectRatio') === 'xMidYMid meet' && !getComputedStyle(el.parentElement).transform.includes('rotate');
       }),
     );
     check(
       'Generated atlas loads locally and contains real transparent artwork',
       await p.evaluate(async () => {
         const im = new Image();
-        im.src = new URL('art/undead/buildings-atlas.png', location.href).href;
+        im.src = new URL('art/undead/city-0.png', location.href).href;
         await im.decode();
         const c = document.createElement('canvas');
         c.width = im.width;
@@ -139,7 +139,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
           if (data[i] > 220) opaque++;
           if (data[i] === 0) clear++;
         }
-        return im.width === 1254 && opaque > 10000 && clear > 10000;
+        return im.width === 1536 && opaque > 10000 && clear > 10000;
       }),
     );
     await p.evaluate(() => {

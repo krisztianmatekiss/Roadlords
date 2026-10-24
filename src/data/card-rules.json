@@ -6,8 +6,7 @@
   "orc_blessing": "Az áldás +20% sebzés, támadási sebesség, mozgási sebesség vagy életerő; −20% kapott sebzés; vagy +1 életerő/mp regeneráció lehet.",
   "chain_spawn": "Az ingyenes egység nem indít újabb hatást.",
   "long_training": "A helyőrségben, kiengedési sorban és Gyülekezőtérben töltött idő összeadódik.",
-  "orc_volley": "Az össztűz támadása duplázódhat, de új össztüzet nem indít.",
-  "orc_hunt": "Lándzsazáporral együtt is csak 1 új dobás jár ölésenként.",
+  "orc_volley": "Az össztűz nem indít újabb össztüzet.",
   "orc_curse_spread": "Az átadott állapot erőssége és hátralévő ideje megmarad.",
   "orc_dispel": "Végleges fejlesztéseket nem töröl.",
   "orc_inherit": "Az örökölt állapotok ideje és töltetei nem töltődnek újra.",
@@ -21,8 +20,6 @@
   "gen_build_discount": "Minden felvétel a már csökkentett árra hat.",
   "gen_soul_abundance": "A kamatból és a halálesetekből származó Lélekre is hat.",
   "lich_common_respawn": "A Lich többször is újjáéledhet.",
-  "skeleton_leg_guard": "A Csontvázak távolsági ellenállása a magukra vont támadásokra is érvényesül.",
   "ghost_leg_mirror": "A másolat kitérési esélye 40%.",
-  "necro_leg_spirits": "Az Örök sereg az idézett Szellemekre is hat.",
   "lich_leg_shield": "A továbbadott sebzés egyenlően oszlik el a sugárral összekötött ellenségek között."
 }

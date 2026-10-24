@@ -27,11 +27,11 @@ export const UNDEAD_UNITS = {
     tags: ['melee'],
     icon: '💀',
     description:
-      '25% ellenállás távolsági fegyverekkel szemben. A Csontkeménység fejlesztéssel legfeljebb 90%.',
+      '25% ellenállás távolsági fegyverekkel szemben.',
   },
   und_skeleton_archer: {
     name: 'Csontváz Íjász',
-    producerHint: 'Temető · Csontváz Íjász ereklyével',
+    producerHint: 'Temető',
     hp: 85,
     damage: 8,
     cooldown: 1.25,
@@ -43,7 +43,7 @@ export const UNDEAD_UNITS = {
     tags: ['ranged'],
     icon: '🏹',
     description:
-      'A Csontváz Íjász ereklyével a Temető 50% eséllyel ezt képezi. A Csontváz fejlesztései és távolsági ellenállása is érvényesülnek.',
+      'Távolsági Csontváz, 25% ellenállással a távolsági fegyverek ellen.',
   },
   und_zombie: {
     name: 'Zombi',
@@ -103,7 +103,7 @@ export const UNDEAD_UNITS = {
     tags: ['melee'],
     icon: '🧛',
     description:
-      'Az okozott tényleges sebzés 30%-ából gyógyul. A Vérszomj felvételenként +5 százalékpont életlopást ad.',
+      'Az okozott tényleges sebzés 30%-ából gyógyul.',
   },
   und_lich: {
     name: 'Lich',

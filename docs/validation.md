@@ -1,3 +1,9 @@
+# V4.33.0 – élőhalott városi képek és önálló leírások
+
+A `undead-art-and-copy.cjs` a húsz kártyát, a négy irányatlaszt és a nyolcvan érvényes nézetablakot ellenőrzi. Valódi építéssel vizsgálja a Hullaház és az L alakú Holtak kertje mind a négy forgatását: az elfoglalt mezők, az üres sarok, a megjelenített irány és az építési szellemkép együtt változik. Az atlaszoknak tényleges átlátszó hátterük és jól látható épületpixeleik vannak; a forrásfájlok SHA-256 értékét a manifest rögzíti.
+
+A leíráspróba a felhasználó által jelzett Szellemet, a Nekromanta L4-ágait, a más fejlesztésekről szóló kitérők hiányát és a már meglévő ereklyével számolt tényleges kitérési előnézetet is vizsgálja. A régi kártyaszámlálási ellenőrzések húsz teljes kártyával számolnak. A korábbi megjelenítési, szövegilleszkedési, harci és multiplayer-próbák megmaradnak.
+
 # V4.31.0 – nyugodt építés, nyersanyagikonok és nagy fenntartási jelzés
 
 ## V4.32.0

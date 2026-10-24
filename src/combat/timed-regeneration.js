@@ -18,7 +18,7 @@ export function initializeCombatTimedRegeneration(runtime) {
   for (const item of runtime.LEGENDARY) if (descriptions[item.id]) item.description = descriptions[item.id];
   const blessing = runtime.NORMAL.find(x => x.id === 'orc_blessing');
   if (blessing) blessing.description = 'Az új egységek +2,5 százalékpont eséllyel kapnak véletlen pozitív állapotot 40 másodpercre. Regeneráció esetén: 1 HP/mp, összesen legfeljebb 40 HP.';
-  window.__ROADLORDS_STATUSES__.defs.regen[3] = 'Másodpercenként az értékével gyógyít, majd 1-gyel csökken. Összeadódik. Kivétel: a Véletlen áldás 40 másodpercig állandó 1 HP/mp gyógyítást ad.';
+  window.__ROADLORDS_STATUSES__.defs.regen[3] = 'Másodpercenként az értékével gyógyít, majd 1-gyel csökken. Összeadódik.';
   Object.assign(window.__ROADLORDS__, {
     updateUnitStatuses: runtime.updateUnitStatuses,
     productionRoomFor: runtime.productionRoomFor,

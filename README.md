@@ -1,4 +1,12 @@
-# Roadlords · V4.32.0
+# Roadlords · V4.33.0
+
+## V4.33.0 – Élőhalott városok és önálló leírások
+
+Mind a 20 élőhalott épület saját kártyaképet kapott, kategória szerinti kerettel. A Temető nyitott sírkert, különbözik a tetős Hullaháztól. A gazdasági és támogató épületek medence, kasza, páncélterem, láncolt kristály, üst, műhely, tartályok, gyűrűk és gyökérfészek formájával is megkülönböztethetők.
+
+A városban négy külön irányképből jelennek meg az épületek, döntött felülnézetben, átlátszó háttérrel. Forgatáskor az épület állva marad; a helyfoglalás és az építési előnézet ugyanazt a forgatást követi. A képek atlaszokból töltődnek, az eredeti PNG-k változatlanok.
+
+A leírások az adott épület, egység, fejlesztés vagy állapot saját működését írják le. Kikerültek a más ereklyékkel és L4-ágakkal való kombinációk magyarázatai. A tényleges értékváltozásokat továbbra is a jelenlegi fejlesztésekből számolja az előnézet. Játékszabály és balance nem változott.
 
 ## V4.32.0 – Kártyajelzések és élőhalott képek
 

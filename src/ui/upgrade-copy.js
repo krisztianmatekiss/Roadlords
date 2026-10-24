@@ -70,7 +70,6 @@ export function initializeUiUpgradeCopy(R) {
       const before = MODIFIERS[id](n), after = MODIFIERS[id](next);
       rows.push({ label: before.label, before: before.value, after: after.value });
       context = 'A fejlesztés összesített bónusza.';
-      if (id === 'orc_curse_duration' && R.hasBranch(c, 'orc_shaman', 'strong_curses')) context += ' Az erősebb átokág az erősséget módosítja.';
     } else if (normal) {
       const key = unitFor(id);
       if (R.UNITS[key]) {
@@ -140,7 +139,6 @@ export function initializeUiUpgradeCopy(R) {
         }
       }
       card.title = preview.stacking;
-      if (preview.specialization) append('small', 'upgradeSpecialization', preview.specialization);
     });
   };
 }

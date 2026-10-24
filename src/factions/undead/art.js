@@ -1,13 +1,14 @@
 import { assetUrl } from '../../assets/urls.js';
 import { UNDEAD_BUILDINGS as D, UNDEAD_UNITS as U, UNDEAD_UPGRADES } from '../../data/undead.js';
 import { isUndead } from './foundation.js';
+import manifest from '../../data/undead-card-manifest.json';
 const svg = (body) =>
   'data:image/svg+xml;charset=utf-8,' +
   encodeURIComponent(
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><defs><radialGradient id="bg"><stop stop-color="#214839"/><stop offset="1" stop-color="#071713"/></radialGradient><linearGradient id="bone" x2="0" y2="1"><stop stop-color="#e7e6cd"/><stop offset="1" stop-color="#909b87"/></linearGradient></defs>${body}</svg>`,
   );
 export function initializeUndeadArt(R) {
-  const atlas = assetUrl('art/undead/buildings-atlas.png');
+  const cityArt = manifest.city_artwork;
   let artCity = null;
   R.SOUL_IMAGE = svg(
     '<circle cx="64" cy="64" r="59" fill="url(#bg)"/><path d="M64 9 100 57 64 119 28 57Z" fill="#1d876d" stroke="#83f5c8" stroke-width="3"/><path d="M64 20 86 58 64 105 43 58Z" fill="#91f8cc"/><path d="M64 20v85L43 58Z" fill="#39c8a1"/>',
@@ -33,10 +34,12 @@ export function initializeUndeadArt(R) {
     const x=index%4*384,y=Math.floor(index/4)*512;
     return `<svg class="${cls} undeadUnitPortrait" data-unit-portrait="${key}" viewBox="${x} ${y} 384 512" preserveAspectRatio="xMidYMin slice" role="img" aria-label="${U[key].name}"><image href="${portraits}" width="1536" height="1024"/></svg>`;
   };
-  const image = (type, cls) => {
-    const d = D[type],
-      i = d.atlas;
-    return `<span class="${cls} undeadBuildingArt" role="img" aria-label="${d.name}" style="background-image:url('${atlas}');background-position:${(i % 5) * 25}% ${Math.floor(i / 5) * 25}%"></span>`;
+  const image = (type, cls, rotation = 0) => {
+    const turn=((rotation%4)+4)%4, variant=cityArt.variants[turn];
+    const [x,y,w,h]=variant.rects[D[type].atlas];
+    const clip=`und-city-${type}-${turn}`;
+    // Nested viewports clip neighbouring sprites even when the plot is wide.
+    return `<svg class="${cls} undeadBuildingArt" data-undead-building="${type}" data-art-rotation="${turn}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${D[type].name}"><svg width="${w}" height="${h}" viewBox="${x} ${y} ${w} ${h}" overflow="hidden"><defs><clipPath id="${clip}"><path d="${variant.clips[D[type].atlas]}"/></clipPath></defs><image href="${assetUrl(variant.file)}" width="${variant.width}" height="${variant.height}" clip-path="url(#${clip})"/></svg></svg>`;
   };
   R.undBuildingImage = image;
   const renderCity = R.renderCity;
@@ -55,10 +58,7 @@ export function initializeUndeadArt(R) {
   const sprite = R.buildingSpriteHTML;
   R.buildingSpriteHTML = (type, rotation = 0, bounds = null) => {
     if (!D[type] || (type === 'keep' && !isUndead(artCity || R.P))) return sprite(type, rotation, bounds);
-    const base = R.shapeBounds(type, 0),
-      box = bounds || R.shapeBounds(type, rotation),
-      deg = (((rotation % 4) + 4) % 4) * 90;
-    return `<span class="bspriteWrap undMapSprite"><span class="undMapPlane" style="width:${(base.w / box.w) * 100}%;height:${(base.h / box.h) * 100}%;transform:translate(-50%,-50%) rotate(${deg}deg)">${image(type, '')}</span></span>`;
+    return `<span class="bspriteWrap undMapSprite"><span class="undMapPlane">${image(type, '', rotation)}</span></span>`;
   };
   for (const method of ['cardBuildingImageTag', 'buildingImageTag']) {
     const previous = R[method];

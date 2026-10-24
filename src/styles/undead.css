@@ -1,4 +1,4 @@
-/* The faction atlas is shared by map, build cards and the encyclopedia. */
+/* The city uses upright directional sprites; card illustrations are separate. */
 .undeadUnitPortrait { display:block; overflow:hidden; border-radius:inherit; }
 .rlCodexIcon > .undeadUnitPortrait,
 .choiceArt > .undeadUnitPortrait,
@@ -7,8 +7,7 @@
   display: block !important;
   width: 100%;
   height: 100%;
-  background-size: 500% 500%;
-  background-repeat: no-repeat;
+  overflow: hidden;
   opacity: 0.95;
   filter: drop-shadow(0 1px 2px #05100ed0) drop-shadow(0 0 2px #42de9a35);
 }
@@ -16,6 +15,9 @@
   position: absolute;
   left: 50%;
   top: 50%;
+  width:100%;
+  height:100%;
+  transform:translate(-50%,-50%);
   transform-origin: center;
   overflow: hidden;
 }

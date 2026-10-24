@@ -42,8 +42,8 @@ export const UNDEAD_BUILDING_COPY = {
   und_necro_spawner: {
     description: 'Nekromantákat képez.',
     branches: [
-      'A Nekromanták idézett egységei nem tűnnek el idővel. Az idézett Szellemekre is hat.',
-      'A Nekromanták 3 helyett 5 egységet idéznek, továbbra is 10 mp-re. Az idézést erősítő ereklyével 6-ot.',
+      'A Nekromanták idézett egységei nem tűnnek el idővel.',
+      'A Nekromanták 5 egységet idéznek 10 mp-re.',
     ],
   },
   und_vampire_castle: {
@@ -119,7 +119,7 @@ export const UNDEAD_UPGRADE_COPY = {
   garden_chance: 'Holtak kertje: +2 százalékpont feltámasztási esély, legfeljebb 100%.',
   skeleton_common_ranged_res: 'Csontváz: +5 százalékpont távolsági ellenállás. Maximum: 90%.',
   zombie_common_poison: 'Zombi: halálakor +1 méregpontot okoz.',
-  ghost_common_dodge: 'Szellem: +5 százalékpont kitérési esély. Maximum: 70%; Megfoghatatlannal 80%.',
+  ghost_common_dodge: 'Szellem: +5 százalékpont kitérési esély.',
   necro_common_summon_stats: 'A Nekromanták idézett Csontvázai +10% életerőt és sebzést kapnak.',
   vampire_common_lifesteal: 'Vámpír: +5 százalékpont életlopás.',
   lich_common_respawn: 'Lich: halálakor +3 százalékpont eséllyel újjáéled a saját kapunál, teljes életerővel.',
@@ -129,8 +129,8 @@ export const UNDEAD_UPGRADE_COPY = {
   zombie_leg_poisoned_hunt: 'A Zombik mérgezett ellenségek ellen +100% sebzést és támadási sebességet kapnak.',
   ghost_leg_intangible: 'Szellem: +20 százalékpont kitérési esély. Új maximum: 80%.',
   ghost_leg_mirror: 'Kitéréskor a Szellem 10 mp-es másolatot idéz. Nem foglal sereghelyet, újabb másolatot nem idéz.',
-  necro_leg_siege: 'A Nekromanták a célpontjuk mellé idéznek, alkalmanként +1 egységet. Kísértetidézéssel nem halmozódik.',
-  necro_leg_spirits: 'A Nekromanták Csontvázak helyett Szellemeket idéznek, alkalmanként +1-et. Csontostrommal nem halmozódik.',
+  necro_leg_siege: 'A Nekromanták a célpontjuk mellé idéznek, alkalmanként +1 egységet.',
+  necro_leg_spirits: 'A Nekromanták Csontvázak helyett Szellemeket idéznek, alkalmanként +1-et.',
   vampire_leg_shield: 'A Vámpír életlopásából megmaradó túlgyógyítás korlátlan pajzzsá alakul.',
   vampire_leg_dual: 'A Vámpír egyszerre 2 célpontot támad teljes sebzéssel. Mindkettőből életet lop.',
   vampire_leg_frenzy: 'A Vámpír ölésenként +10% támadási sebességet kap haláláig, korlátlanul.',

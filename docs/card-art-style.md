@@ -19,3 +19,9 @@ Az egységportrék a gyakori fejlesztések keretcsaládját használják. Az ork
 Az új ork fejlesztések és az élőhalott gyakori általános/képességfejlesztések önálló jelenetek egy-egy atlaszon. A statisztikai egységfejlesztések a megfelelő meglévő egységportrét használják. A `upgrade-art-manifest.json` a teljes, változatlan forrásfájlokat és sorfolytonos képosztást rögzíti. A képek és a külön keret a megjelenítőben rétegződnek; a generált pixelek nincsenek újrarajzolva.
 
 Az egységjellemzők kis vektoros piktogramjai a portré bal alsó sarkában és a képzőépület egységneve mellett sorakoznak. A jelölés tényleges képességre utal: például az alap Goblin nem kap kitérésikont, a Fürge L4-ággal igen. A jelölés megnevezése súgóként és akadálymentes feliratként is elérhető.
+
+## Elfogadott csontváz – játékbeli próba
+
+A világos, Heroes III ihletésű csontvázhoz külön animálható készlet készült, a korábbi páncélos karakter használata nélkül. A szabad bordázat, a nagy világos koponya, a csupasz csontvégtagok, az egyetlen kis vállvért és a kerek fapajzs őrzi az elfogadott terv sziluettjét. A csontok eredeti arányát ízületi kötési pontok tartják meg.
+
+A változatlan generált kép a `public/art/battle/skeleton-heroes-parts.png` fájl; a manifest téglalapjai csak megjelenítési ablakok. A lábfej ugyanazon alsóláb-rajz külön ablakából jelenik meg, így a talajra helyezhető a sípcsont hajlásától függetlenül. A ruhaszövet semleges rajzát a játék kis, legfeljebb nyolcszínű tára színezi, a pajzson pedig külön festett sáv jelenik meg. A csontok, fa és fém alapanyaga ettől nem változik.

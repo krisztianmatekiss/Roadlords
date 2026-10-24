@@ -1,4 +1,12 @@
-# Roadlords · V4.36.0
+# Roadlords · V4.37.0
+
+## V4.37.0 – Az elfogadott világos csontváz animációja
+
+A csontvázpróba az elfogadott Heroes III ihletésű tervből készült új alkatrészkészletet használja: világos koponya, szabadon látható bordák és medence, csupasz csontvégtagok, rövid kard és kerek fapajzs. Az elutasított, sötét páncélos modell helyét ez veszi át a TESZTEK → CSONTVÁZ vs KARDOS · 50 vs 50 próbában. A Kardos megjelenése és a harci adatok változatlanok.
+
+A csontok a rajzolt ízületeik között, aránytartóan mozognak. A talpak külön maradnak a talaj síkjában, miközben a térdek hajlanak. A kardcsapás érintkezési póza a tényleges találati időpontban van kinyújtva; a halál összerogyó oldalra dőlést használ, a modell összelapítása nélkül. A ruha és a pajzs festése mind a nyolc csapatszínt követi, a koponya és a csontok színe állandó. A grafikai kapcsoló a régi egyszerű változattal hasonlítja össze ugyanazt a csatát.
+
+A modell továbbra is a grafikai próbában szerepel, a többi jóváhagyott terv beépítésének első lépéseként. Az atlasz csak a próba megnyitásakor töltődik le. A képkockatár legfeljebb 768 elemet, a kis ruhaszín-tár legfeljebb 8 elemet tart. A tényleges játékbeli megjelenés nagyítva és kis méretben a `public/previews/skeleton-heroes-in-game.png` képen látható.
 
 ## V4.36.0 – Csontváz grafikai próba
 

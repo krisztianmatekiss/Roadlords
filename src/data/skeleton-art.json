@@ -1,56 +1,112 @@
 {
-  "file": "art/battle/skeleton-parts.png",
-  "width": 1536,
-  "height": 1024,
-  "sha256": "c14418207296c12b8ee9293312b6d70fd43c8fbe5f95d382f14d89fa88be2214",
+  "file": "art/battle/skeleton-heroes-parts.png",
+  "width": 1254,
+  "height": 1254,
+  "sha256": "ebf53f443eef08e87ac3b8f6a8dc1b880a5c40d3dfd6ee1e8af39881bb0509e4",
+  "style": "approved-light-bone-concept",
+  "reference": "https://raw.githubusercontent.com/krisztianmatekiss/Roadlords/1536cb9/previews/csontvaz-regi-es-uj.png",
   "parts": {
     "skull": [
-      65,
-      120,
-      275,
-      345
+      116,
+      91,
+      212,
+      264
     ],
     "torso": [
-      410,
-      0,
-      375,
-      520
+      511,
+      42,
+      283,
+      366
     ],
     "upperArm": [
-      840,
-      15,
-      245,
-      480
+      1040,
+      45,
+      103,
+      340
     ],
     "forearm": [
-      1260,
-      0,
-      220,
-      510
+      151,
+      459,
+      160,
+      303
     ],
     "thigh": [
-      90,
-      530,
-      245,
-      455
+      588,
+      440,
+      120,
+      338
     ],
     "shin": [
-      505,
-      520,
-      280,
-      465
+      975,
+      459,
+      118,
+      268
     ],
     "sword": [
-      890,
-      510,
-      195,
-      490
+      152,
+      811,
+      151,
+      413
     ],
     "shield": [
-      1218,
-      540,
-      270,
-      450
+      483,
+      864,
+      293,
+      332
+    ],
+    "cloth": [
+      962,
+      922,
+      192,
+      259
+    ],
+    "foot": [
+      982,
+      693,
+      198,
+      92
+    ]
+  },
+  "joints": {
+    "upperArm": [
+      [
+        0.46,
+        0.1
+      ],
+      [
+        0.57,
+        0.87
+      ]
+    ],
+    "forearm": [
+      [
+        0.2,
+        0.08
+      ],
+      [
+        0.66,
+        0.86
+      ]
+    ],
+    "thigh": [
+      [
+        0.34,
+        0.1
+      ],
+      [
+        0.66,
+        0.87
+      ]
+    ],
+    "shin": [
+      [
+        0.466,
+        0.108
+      ],
+      [
+        0.525,
+        0.937
+      ]
     ]
   }
 }

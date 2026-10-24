@@ -1,3 +1,9 @@
+# V4.37.0 – világos csontváz, ízületek és találati póz
+
+A `skeleton-figure.cjs` nyolc csapatszínen ellenőrzi a változatlan koponyapixeleket, a jól látható világos bordákat és a talajsíkot elérő csontos lábfejeket. A kék és piros festés a ruhán/pajzson egyértelmű; a színezett ruhák tára nyolc elemre korlátozott. A csontokat aránytartóan rajzoló ízületleképezéshez a forrás képének kötési pontjai a manifestben szerepelnek. A lábfejek külön nézetablakot használnak, ugyanabból a változatlan generált PNG-ből.
+
+Valódi késleltetett csontváztámadásnál a próba a sebzés előtti és utáni állapotot méri: korai sebzés nincs, a találat egyszer 10 életerőt vesz el, és ekkor a kardot tartó kéz a célpont felé van nyújtva. A 8 járás-, 12 támadás- és 6 halálpóz, a Kardos képkockáinak változatlansága, az 50–50-es összetétel, az újraindítás és a főmenübe visszatérés ellenőrzése megmarad. Az elfogadott terv hivatkozása és az eredeti atlasz SHA-256 értéke a `src/data/skeleton-art.json` fájlban található.
+
 # V4.36.0 – festett csontváz, 50 vs 50
 
 A `skeleton-figure.cjs` valódi menükattintással indítja a próbát, ellenőrzi az 50 Csontváz / 50 Kardos összetételt, az alapértékeket és a fejlesztések hiányát. A generált, változatlan PNG nyolc alkatrészének nézetablakai és SHA-256 értéke a `src/data/skeleton-art.json` fájlban vannak. A normál főmenüben az atlasz nem töltődik le.

@@ -234,7 +234,7 @@ function sprite(R, u, pose) {
   const bounds=[-40,-66,80,80];canvas.figureBounds=bounds;
   const g=canvas.getContext('2d'),p=phase(pose),resolution=canvas.width/bounds[2];g.translate(-bounds[0]*resolution,-bounds[1]*resolution);g.scale(resolution,resolution);
   ellipse(g,1,2,style.mount||style.machine?18:style.size>1?15:10,3.5,'#18251e66');
-  if(p.death){g.translate(p.death*4,-(1-p.death)*23);g.scale(1,1-p.death*.55);g.rotate(p.death*1.48);g.translate(0,23);}
+  if(p.death&&!painted){g.translate(p.death*4,-(1-p.death)*23);g.scale(1,1-p.death*.55);g.rotate(p.death*1.48);g.translate(0,23);}
   g.save();g.scale(style.size||1,style.size||1);
   if(style.machine){machine(g,style,color,p);if(elite){line(g,-16,-18,16,-18,'#ebc66f',2.5);poly(g,[[-4,-26],[4,-26],[4,-21],[0,-18],[-4,-21]],'#d8ad50');}}
   else canvas.figureRig=painted?drawSkeleton(g,R,color,p,elite,pose.state==='walk'):humanoid(g,style,color,p,refined,elite);g.restore();

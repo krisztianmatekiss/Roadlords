@@ -32,7 +32,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    const idle=sprite(knight,'idle',0);result.eliteChanges=hash(sprite({...knight,veteran:true},'idle',0))!==hash(idle);
    const area=(s,x,y,w,h)=>{const b=s.figureBounds,k=s.width/b[2];return Array.from(s.getContext('2d').getImageData(Math.round((x-b[0])*k),Math.round((y-b[1])*k),Math.round(w*k),Math.round(h*k)).data).join(',')};
    let head,horse;result.teamHashes=[];result.materialStable=true;
-   for(const [color]of __ROADLORDS_UNIT_COLORS__.palette){R.P.unitColor=color;const s=sprite(knight,'idle',0),a=area(s,2,-54,3,6),b=area(s,14,-42,8,10);head??=a;horse??=b;result.materialStable&&=a===head&&b===horse;result.teamHashes.push(hash(s));}
+   for(const [color]of __ROADLORDS_UNIT_COLORS__.palette){R.P.unitColor=color;const s=sprite(knight,'idle',0),a=area(s,2,-45,3,6),b=area(s,14,-36,6,8);head??=a;horse??=b;result.materialStable&&=a===head&&b===horse&&a.split(',').some((v,i)=>i%4===3&&Number(v)>100)&&b.split(',').some((v,i)=>i%4===3&&Number(v)>100);result.teamHashes.push(hash(s));}
    result.clothCache=R.knightClothCache.size;R.P.unitColor='blue';
    const preview=document.createElement('canvas');preview.width=1080;preview.height=760;const c=preview.getContext('2d');c.fillStyle='#14231c';c.fillRect(0,0,1080,760);c.textAlign='center';c.fillStyle='#f0dba7';c.font='bold 28px Arial';c.fillText('LOVAG — ÚJ JÁTÉKBELI MODELL',540,47);c.font='17px Arial';c.fillStyle='#bacbb9';c.fillText('Tényleges modellek · egységes lépték, nagyítva és kis méretben',540,79);
    for(const [i,u]of [knight,orc].entries()){

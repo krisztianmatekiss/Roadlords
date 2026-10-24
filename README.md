@@ -1,4 +1,14 @@
-# Roadlords · V4.39.1
+# Roadlords · V4.40.0
+
+## V4.40.0 – Katapultpróba
+
+A TESZTEK menüben a LOVAG vs ORK HARCOS · 10 vs 10 és az új KATAPULT vs ORK HARCOS · 5 vs 5 maradt. Az ork–csontváz menüpont kikerült, automatikus ellenőrzése továbbra is elérhető.
+
+A Katapult külön alvázzal, támaszokkal, forgó kerekekkel, hajítókarral, kővel és csapatszínű lobogóval készült. A kő az utolsó megtöltött kanálpozícióból indul; kilövés után a kanál üres. A lövedék az eredeti kilövési és találati időpont között repül, és a valódi célponton megjelenő becsapódási hatáshoz érkezik. A sebzés, hatótáv, sebesség és képességek nem változtak. Eleséskor a támaszok ledőlnek, a kerekek elgurulnak, a gép alkatrészekre hullik.
+
+A próba alapegységeket használ fejlesztések és utánpótlás nélkül. A Grafika gomb mindkét egységet együtt váltja régi/új megjelenésre. Szünet, újraindítás és főmenübe visszatérés elérhető. A normál játék Katapultja még a korábbi grafikát használja.
+
+Az új atlasz csak a próba indításakor töltődik le, eredetije változatlan. Nézetablakai: `src/data/catapult-art.json`. A gép 256 pixeles képkockákat használ a közös, legfeljebb 768 elemes tárban; a lobogószíntár legfeljebb 8 elemes. Játékbeli előnézet: `public/previews/catapult-orc-in-game.png`.
 
 ## V4.39.1 – Ülő lovas és javított arányok
 

@@ -22,13 +22,13 @@ export function installTestMenu(R) {
   });
   for(const [id,label,description,options] of [
     ['roadKnightMenu','LOVAG vs ORK HARCOS · 10 vs 10','Új lovasgrafika, mozgó ló és lovas, időzített lándzsaszúrással.',{count:10,roster:'knight'}],
-    ['roadOrcSkeletonMenu','ORK HARCOS vs CSONTVÁZ · 50 vs 50','Két új, festett egységmodell. Alapegységek, fejlesztések és utánpótlás nélkül.',{count:50,roster:'orc-skeleton'}],
+    ['roadCatapultMenu','KATAPULT vs ORK HARCOS · 5 vs 5','Új ostromgép, mozgó kerekekkel, hajítókarral és követhető lövedékkel.',{count:5,roster:'catapult'}],
   ]){
     const item=document.createElement('div'),button=document.createElement('button'),note=document.createElement('p');
     button.id=id;button.type='button';button.className='menuButton';button.textContent=label;
     button.onclick=async()=>{
       button.disabled=true;
-      const results=await Promise.all([R.loadOrcWarriorArt(),options.roster==='knight'?R.loadKnightArt():R.loadSkeletonArt()]);
+      const results=await Promise.all([R.loadOrcWarriorArt(),options.roster==='knight'?R.loadKnightArt():R.loadCatapultArt()]);
       button.disabled=false;
       if(!results.every(Boolean)){R.toast('Az egységek képe nem töltődött be. Frissítsd az oldalt.');return;}
       close(false);R.roadStartTest(undefined,options);

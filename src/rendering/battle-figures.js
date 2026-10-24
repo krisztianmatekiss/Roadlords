@@ -2,6 +2,7 @@ import { REFINED_UNITS, refinedLegs, refinedBody, refinedHead, refinedShield, re
 import { drawStatusEffects, drawMagicShot, shotKind } from './battle-effects.js';
 import { unitIsElite } from '../data/unit-ranks.js';
 import { installSkeletonArt, paintedSkeleton, drawSkeleton } from './skeleton-figure.js';
+import { installCatapultArt, paintedCatapult, drawCatapult, drawCatapultShot } from './catapult-figure.js';
 import { installKnightArt, paintedKnight, drawKnight } from './knight-figure.js';
 import { installOrcWarriorArt, paintedOrcWarrior, drawOrcWarrior } from './orc-warrior-figure.js';
 // Articulated battle figures follow the original roster's armor, equipment and colors.
@@ -228,17 +229,18 @@ function humanoid(g, style, color, p, refined = false, elite = false) {
 }
 function sprite(R, u, pose) {
   const elite=unitIsElite(u);
-  const skeleton=paintedSkeleton(R,u),orc=paintedOrcWarrior(R,u),knight=paintedKnight(R,u),painted=skeleton||orc||knight;
-  const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}${skeleton?':painted-skeleton':orc?':painted-orc':knight?':painted-knight':''}${elite?":elite":""}`;
+  const skeleton=paintedSkeleton(R,u),orc=paintedOrcWarrior(R,u),knight=paintedKnight(R,u),catapult=paintedCatapult(R,u),painted=skeleton||orc||knight||catapult;
+  const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}${skeleton?':painted-skeleton':orc?':painted-orc':knight?':painted-knight':catapult?':painted-catapult':''}${elite?":elite":""}`;
   let canvas=R.ROAD.sprites.get(key);if(canvas)return canvas;
   const style=FIGURES[u.key];if(!style)return null;
-  canvas=document.createElement('canvas');canvas.width=canvas.height=knight?256:refined||painted?192:128;
-  const bounds=knight?[-54,-84,124,124]:orc?[-46,-70,92,92]:[-40,-66,80,80];canvas.figureBounds=bounds;
+  canvas=document.createElement('canvas');canvas.width=canvas.height=knight||catapult?256:refined||painted?192:128;
+  const bounds=catapult?[-54,-78,112,112]:knight?[-54,-84,124,124]:orc?[-46,-70,92,92]:[-40,-66,80,80];canvas.figureBounds=bounds;
   const g=canvas.getContext('2d'),p=phase(pose),resolution=canvas.width/bounds[2];g.translate(-bounds[0]*resolution,-bounds[1]*resolution);g.scale(resolution,resolution);
   ellipse(g,1,2,style.mount||style.machine?18:style.size>1?15:10,3.5,'#18251e66');
   if(p.death&&!painted){g.translate(p.death*4,-(1-p.death)*23);g.scale(1,1-p.death*.55);g.rotate(p.death*1.48);g.translate(0,23);}
   g.save();g.scale(style.size||1,style.size||1);
-  if(style.machine){machine(g,style,color,p);if(elite){line(g,-16,-18,16,-18,'#ebc66f',2.5);poly(g,[[-4,-26],[4,-26],[4,-21],[0,-18],[-4,-21]],'#d8ad50');}}
+  if(catapult)canvas.figureRig=drawCatapult(g,R,color,p,elite,pose);
+  else if(style.machine){machine(g,style,color,p);if(elite){line(g,-16,-18,16,-18,'#ebc66f',2.5);poly(g,[[-4,-26],[4,-26],[4,-21],[0,-18],[-4,-21]],'#d8ad50');}}
   else canvas.figureRig=skeleton?drawSkeleton(g,R,color,p,elite,pose.state==='walk'):orc?drawOrcWarrior(g,R,color,p,elite,pose.state==='walk'):knight?drawKnight(g,R,color,p,elite,pose.state==='walk'):humanoid(g,style,color,p,refined,elite);g.restore();
   if(R.ROAD.sprites.size>=768)R.ROAD.sprites.delete(R.ROAD.sprites.keys().next().value);
   R.ROAD.sprites.set(key,canvas);return canvas;
@@ -248,6 +250,7 @@ export function installBattleFigures(R) {
   installSkeletonArt(R);
   installOrcWarriorArt(R);
   installKnightArt(R);
+  installCatapultArt(R);
   R.battleFigurePose=figurePose;
   R.roadDrawUnit=function drawFigure(u,dead=false) {
     const p=R.pointAt(u.lane,u.offset||0),zoom=R.ROAD.zoom||1;
@@ -273,6 +276,7 @@ export function installBattleFigures(R) {
     for(const u of R.state.units){
       const a=u.roadAttack;if(!u.alive||!a?.ranged||R.ROAD.clock<a.launch||R.ROAD.clock>=a.hit)continue;
       const t=clamp((R.ROAD.clock-a.launch)/(a.hit-a.launch||.1));
+      if(drawCatapultShot(R,u,a,t))continue;
       const from=R.pointAt(a.lane,a.offset),to=R.pointAt(a.to,a.toOffset),rock=a.key==='catapult'||a.key==='orc_goblin',magic=R.UNITS[a.key]?.damageType==='magic';
       const x=mix(from.x,to.x,t),y=mix(from.y,to.y,t)-19*(R.ROAD.h/600)*(R.ROAD.zoom||1)-(rock?Math.sin(t*Math.PI)*(a.key==='catapult'?65:18):0);
       if(x< -25||x>R.ROAD.w+25)continue;

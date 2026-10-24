@@ -1,0 +1,59 @@
+{
+  "file": "art/battle/catapult-heroes-parts.png",
+  "width": 1536,
+  "height": 1024,
+  "sha256": "fe3f2d849ff93a1de669ea518f661d51315a40f4e8bfd228208af8e87de9b0b1",
+  "reference": "https://raw.githubusercontent.com/krisztianmatekiss/Roadlords/aff1483/previews/egysegtervek/emberek-egysegtervek.png",
+  "parts": {
+    "chassis": [
+      21,
+      204,
+      547,
+      272
+    ],
+    "frame": [
+      597,
+      76,
+      321,
+      393
+    ],
+    "arm": [
+      941,
+      223,
+      580,
+      161
+    ],
+    "wheel": [
+      93,
+      541,
+      392,
+      393
+    ],
+    "rock": [
+      641,
+      616,
+      316,
+      319
+    ],
+    "banner": [
+      1105,
+      532,
+      348,
+      431
+    ]
+  },
+  "anchors": {
+    "armPivot": [
+      0.7931034482758621,
+      0.7080745341614907
+    ],
+    "cup": [
+      0.13275862068965516,
+      0.2236024844720497
+    ],
+    "framePivot": [
+      0.4236760124610592,
+      0.11704834605597965
+    ]
+  }
+}

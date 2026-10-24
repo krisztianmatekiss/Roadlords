@@ -1,0 +1,134 @@
+{
+  "file": "art/battle/human-infantry-heroes-parts.png",
+  "width": 1448,
+  "height": 1086,
+  "sha256": "fe496a7a4ff360523b001dcd5f5f7a78e6ef3049c4da2bdf49d9ef0ddc7f1e1d",
+  "reference": "https://raw.githubusercontent.com/krisztianmatekiss/Roadlords/aff1483/previews/egysegtervek/emberek-egysegtervek.png",
+  "parts": {
+    "swordHead": [
+      99,
+      52,
+      207,
+      229
+    ],
+    "spearHead": [
+      461,
+      53,
+      205,
+      223
+    ],
+    "torso": [
+      779,
+      36,
+      253,
+      310
+    ],
+    "upperArm": [
+      1173,
+      51,
+      178,
+      293
+    ],
+    "forearm": [
+      116,
+      415,
+      166,
+      222
+    ],
+    "thigh": [
+      485,
+      392,
+      194,
+      251
+    ],
+    "shin": [
+      839,
+      394,
+      124,
+      258
+    ],
+    "boot": [
+      1189,
+      478,
+      198,
+      182
+    ],
+    "sword": [
+      145,
+      659,
+      141,
+      390
+    ],
+    "spear": [
+      536,
+      651,
+      44,
+      412
+    ],
+    "shield": [
+      801,
+      708,
+      210,
+      346
+    ],
+    "cloth": [
+      1133,
+      803,
+      267,
+      229
+    ]
+  },
+  "joints": {
+    "upperArm": [
+      [
+        0.550561797752809,
+        0.19795221843003413
+      ],
+      [
+        0.29213483146067415,
+        0.726962457337884
+      ]
+    ],
+    "forearm": [
+      [
+        0.68,
+        0.13
+      ],
+      [
+        0.23,
+        0.84
+      ]
+    ],
+    "thigh": [
+      [
+        0.31,
+        0.12
+      ],
+      [
+        0.7061855670103093,
+        0.7768924302788844
+      ]
+    ],
+    "shin": [
+      [
+        0.6532258064516129,
+        0.19767441860465115
+      ],
+      [
+        0.4,
+        0.92
+      ]
+    ]
+  },
+  "grips": {
+    "sword": [
+      0.5,
+      0.81
+    ],
+    "spear": [
+      0.5,
+      0.82
+    ]
+  },
+  "spearmanShield": false
+}

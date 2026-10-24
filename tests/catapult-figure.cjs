@@ -8,7 +8,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   await page.goto(URL);await page.waitForFunction(()=>!!window.__ROADLORDS_RUNTIME__);
   check('Catapult atlas stays unloaded in the normal main menu',await page.evaluate(()=>!performance.getEntriesByType('resource').some(r=>r.name.includes('catapult-heroes-parts'))));
   await page.locator('.menuBrand').click();await page.waitForTimeout(900);await page.locator('#roadTestsMenu').click();
-  check('Only Knight and Catapult trials remain visible',await page.locator('.roadTestsList button').count()===2&&await page.locator('#roadKnightMenu').isVisible()&&await page.locator('#roadCatapultMenu').isVisible()&&await page.locator('#roadOrcSkeletonMenu').count()===0);
+  check('Only Infantry and Catapult trials remain visible',await page.locator('.roadTestsList button').count()===2&&await page.locator('#roadInfantryMenu').isVisible()&&await page.locator('#roadCatapultMenu').isVisible()&&await page.locator('#roadOrcSkeletonMenu').count()===0);
   await page.locator('#roadCatapultMenu').click();await page.waitForFunction(()=>__ROADLORDS_RUNTIME__.ROAD.testRoster==='catapult');await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadPause());
   check('One click starts exactly five base Catapults against five base Orc Warriors',await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return R.state.units.length===10&&['catapult','orc_warrior'].every(key=>R.state.units.filter(u=>u.key===key).length===5)&&R.state.units.every(u=>u.maxHp===R.UNITS[u.key].hp&&u.damage===R.UNITS[u.key].damage)&&R.catapultTexture.naturalWidth>0&&[R.P,R.E].every(c=>!Object.keys(c.normal).length&&!c.legends.size)}));
   const poses=await page.evaluate(()=>{

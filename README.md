@@ -1,4 +1,14 @@
-# Roadlords · V4.40.0
+# Roadlords · V4.41.0
+
+## V4.41.0 – Kardos és pajzs nélküli Lándzsás
+
+A TESZTEK menüben az EMBERI GYALOGSÁG · 10 vs 10 és a Katapultpróba maradt. Az új próba 5 Kardost és 5 Lándzsást indít 10 Ork Harcos ellen, alapértékekkel, fejlesztések és utánpótlás nélkül. A lovagos próba menüpontja kikerült; automatikus ellenőrzése megmaradt.
+
+A két emberi figura az elfogadott grafikai tervhez illeszkedő közös alkatrészlapot és végtagrendszert használ, eltérő fejjel és felszereléssel. A Kardos kardot és címerpajzsot visel. A Lándzsásnak nincs pajzsa, két kézzel tartja a lándzsát; a két fogópont szúrás közben is a nyélen marad. A találati képkockák a valódi sebzéshez igazodnak. Járás, támadás, elesés, nyolc csapatszín és elitjelzés elérhető.
+
+A Grafika gomb ugyanabban a csatában váltja az új és a korábbi megjelenést. A Lándzsás az egyszerű nézetben és a normál játék korábbi figuráján sem visel többé pajzsot, és a másik karja is a nyélre kerül; ez kizárólag megjelenésbeli változás, egységértékek nem módosultak. A teljes új emberi grafika egyelőre csak az új próbában aktív.
+
+Az atlasz csak a próba indításakor töltődik le, eredetije változatlan. Nézetablakai: `src/data/human-infantry-art.json`. A két figura ugyanazt a legfeljebb 8 elemes ruhaszíntárat használja, a közös képkockatár továbbra is legfeljebb 768 elemes. Előnézet: `public/previews/human-infantry-in-game.png`.
 
 ## V4.40.0 – Katapultpróba
 

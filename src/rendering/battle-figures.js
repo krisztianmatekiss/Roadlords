@@ -2,6 +2,7 @@ import { REFINED_UNITS, refinedLegs, refinedBody, refinedHead, refinedShield, re
 import { drawStatusEffects, drawMagicShot, shotKind } from './battle-effects.js';
 import { unitIsElite } from '../data/unit-ranks.js';
 import { installSkeletonArt, paintedSkeleton, drawSkeleton } from './skeleton-figure.js';
+import { installHumanInfantryArt, paintedHumanInfantry, drawHumanInfantry } from './human-infantry-figures.js';
 import { installCatapultArt, paintedCatapult, drawCatapult, drawCatapultShot } from './catapult-figure.js';
 import { installKnightArt, paintedKnight, drawKnight } from './knight-figure.js';
 import { installOrcWarriorArt, paintedOrcWarrior, drawOrcWarrior } from './orc-warrior-figure.js';
@@ -12,7 +13,7 @@ const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const mix = (a, b, t) => a + (b - a) * t;
 export const FIGURES = Object.freeze({
   swordsman: { weapon: 'sword', shield: true, armor: true },
-  spearman: { weapon: 'spear', shield: true, armor: true },
+  spearman: { weapon: 'spear', shield: false, armor: true },
   archer: { weapon: 'bow', hood: true },
   knight: { weapon: 'spear', shield: true, armor: true, mount: 'horse' },
   priest: { weapon: 'cross', robe: '#d4cbb0' },
@@ -197,7 +198,7 @@ function humanoid(g, style, color, p, refined = false, elite = false) {
   if(style.orc&&!style.robe){line(g,-6,-24,6,-12,'#4b3827',2.4);for(let i=0;i<3;i++)ellipse(g,-4+i*3,-22+i*3,.6,.6,'#c0aa70');}
   if(!style.orc&&!style.bare){line(g,-4,-26,3,-12,'#7a603c',1.8);line(g,-4,-26,3,-12,'#c3a56a',.5);}
   line(g,-7,-11,7,-11,'#493729',2);ellipse(g,1,-11,1.5,1.7,'#c7ab67');
-  line(g,-4,-26,-9,-15,skin,4.5);
+  if(style.weapon!=='spear'||style.mount)line(g,-4,-26,-9,-15,skin,4.5);
   if(style.armor){ellipse(g,-5,-26,4.6,3.1,metal);ellipse(g,6,-25,4.8,3.2,metal);line(g,-7,-28,-2,-28,'#d9d8b8',.8);if(style.orc)poly(g,[[6,-27],[8,-33],[10,-26]],'#cfbea0');}
   }
   if(refined)refinedHead(g,style.orc,color);else{
@@ -224,24 +225,25 @@ function humanoid(g, style, color, p, refined = false, elite = false) {
   const handX=10+p.strike*3*(1-p.recovery),handY=-21-p.wind*3*(1-p.strike);
   if(refined)refinedArm(g,style.orc,color,handX,handY);else{line(g,5,-25,handX-2,handY,style.bare?skin:color,4);line(g,handX-2,handY,handX,handY,armor,2.6);}
   weapon(g,style.weapon,handX,handY,angle,color,p,refined);ellipse(g,handX-2,handY,1.8,1.8,skin);
+  if(style.weapon==='spear'&&!style.mount){line(g,-5,-25,-5,-20,armor,3);line(g,-5,-20,handX-9,handY+1,armor,2.5);ellipse(g,handX-9,handY+1,1.5,1.5,skin);}
   if(style.dual)weapon(g,'axe',-9,-20,-2.5+ p.strike*.9,color,p);
-  return {stride,body:[thrust,-bob],shield:[-8,-19,shieldAngle],weapon:[handX,handY,angle]};
+  return {stride,body:[thrust,-bob],shield:style.shield?[-8,-19,shieldAngle]:null,weapon:[handX,handY,angle]};
 }
 function sprite(R, u, pose) {
   const elite=unitIsElite(u);
-  const skeleton=paintedSkeleton(R,u),orc=paintedOrcWarrior(R,u),knight=paintedKnight(R,u),catapult=paintedCatapult(R,u),painted=skeleton||orc||knight||catapult;
-  const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}${skeleton?':painted-skeleton':orc?':painted-orc':knight?':painted-knight':catapult?':painted-catapult':''}${elite?":elite":""}`;
+  const skeleton=paintedSkeleton(R,u),orc=paintedOrcWarrior(R,u),knight=paintedKnight(R,u),catapult=paintedCatapult(R,u),human=paintedHumanInfantry(R,u),painted=skeleton||orc||knight||catapult||human;
+  const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}${skeleton?':painted-skeleton':orc?':painted-orc':knight?':painted-knight':catapult?':painted-catapult':human?':painted-human':''}${elite?":elite":""}`;
   let canvas=R.ROAD.sprites.get(key);if(canvas)return canvas;
   const style=FIGURES[u.key];if(!style)return null;
-  canvas=document.createElement('canvas');canvas.width=canvas.height=knight||catapult?256:refined||painted?192:128;
-  const bounds=catapult?[-54,-78,112,112]:knight?[-54,-84,124,124]:orc?[-46,-70,92,92]:[-40,-66,80,80];canvas.figureBounds=bounds;
+  canvas=document.createElement('canvas');canvas.width=canvas.height=knight||catapult||human?256:refined||painted?192:128;
+  const bounds=human?[-44,-76,112,112]:catapult?[-54,-78,112,112]:knight?[-54,-84,124,124]:orc?[-46,-70,92,92]:[-40,-66,80,80];canvas.figureBounds=bounds;
   const g=canvas.getContext('2d'),p=phase(pose),resolution=canvas.width/bounds[2];g.translate(-bounds[0]*resolution,-bounds[1]*resolution);g.scale(resolution,resolution);
   ellipse(g,1,2,style.mount||style.machine?18:style.size>1?15:10,3.5,'#18251e66');
   if(p.death&&!painted){g.translate(p.death*4,-(1-p.death)*23);g.scale(1,1-p.death*.55);g.rotate(p.death*1.48);g.translate(0,23);}
   g.save();g.scale(style.size||1,style.size||1);
   if(catapult)canvas.figureRig=drawCatapult(g,R,color,p,elite,pose);
   else if(style.machine){machine(g,style,color,p);if(elite){line(g,-16,-18,16,-18,'#ebc66f',2.5);poly(g,[[-4,-26],[4,-26],[4,-21],[0,-18],[-4,-21]],'#d8ad50');}}
-  else canvas.figureRig=skeleton?drawSkeleton(g,R,color,p,elite,pose.state==='walk'):orc?drawOrcWarrior(g,R,color,p,elite,pose.state==='walk'):knight?drawKnight(g,R,color,p,elite,pose.state==='walk'):humanoid(g,style,color,p,refined,elite);g.restore();
+  else canvas.figureRig=human?drawHumanInfantry(g,R,color,p,elite,pose.state==='walk',u.key):skeleton?drawSkeleton(g,R,color,p,elite,pose.state==='walk'):orc?drawOrcWarrior(g,R,color,p,elite,pose.state==='walk'):knight?drawKnight(g,R,color,p,elite,pose.state==='walk'):humanoid(g,style,color,p,refined,elite);g.restore();
   if(R.ROAD.sprites.size>=768)R.ROAD.sprites.delete(R.ROAD.sprites.keys().next().value);
   R.ROAD.sprites.set(key,canvas);return canvas;
 }
@@ -251,6 +253,7 @@ export function installBattleFigures(R) {
   installOrcWarriorArt(R);
   installKnightArt(R);
   installCatapultArt(R);
+  installHumanInfantryArt(R);
   R.battleFigurePose=figurePose;
   R.roadDrawUnit=function drawFigure(u,dead=false) {
     const p=R.pointAt(u.lane,u.offset||0),zoom=R.ROAD.zoom||1;

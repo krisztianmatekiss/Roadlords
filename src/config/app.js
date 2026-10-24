@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.40.0',
-  label: 'V4.40.0 · KATAPULTPRÓBA',
-  title: 'Roadlords – Katapultpróba',
+  version: '4.41.0',
+  label: 'V4.41.0 · EMBERI GYALOGSÁG',
+  title: 'Roadlords – Emberi gyalogság',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

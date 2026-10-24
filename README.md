@@ -1,4 +1,8 @@
-# Roadlords · V4.39.0
+# Roadlords · V4.39.1
+
+## V4.39.1 – Ülő lovas és javított arányok
+
+A Lovag csípője a nyereghez igazodik, combja előrenyúlik, lábszára külön hajlik. A ló kisebb fej–nyak részt és teltebb törzset kapott; a szügyelő eltakarja az alkatrészillesztést. Az Ork Harcos feje alacsonyabbra került, így a fej és a törzs nyakrésze egybeilleszkedik. A játékbeli előnézetek frissültek.
 
 ## V4.39.0 – Lovagpróba és két aktuális teszt
 

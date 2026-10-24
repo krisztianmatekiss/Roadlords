@@ -262,7 +262,7 @@ export function installBattleFigures(R) {
     const hurt=dead?0:clamp(1-(R.ROAD.clock-(u.roadHurtAt??-99))/.16);g.translate(-Math.sin(hurt*Math.PI)*1.5,0);
     g.drawImage(image,...image.figureBounds);g.restore();
     if(!dead){
-      if((detail||hurt>.4)&&u.hp<u.maxHp*.98){const top=paintedKnight(R,u)?-70:-51;g.fillStyle='#14251a';g.fillRect(-10,top,21,3);g.fillStyle=R.unitTeamFill(u);g.fillRect(-9,top+1,19*clamp(u.hp/u.maxHp),1.8);}
+      if((detail||hurt>.4)&&u.hp<u.maxHp*.98){const top=paintedKnight(R,u)?-61:-51;g.fillStyle='#14251a';g.fillRect(-10,top,21,3);g.fillStyle=R.unitTeamFill(u);g.fillRect(-9,top+1,19*clamp(u.hp/u.maxHp),1.8);}
       drawStatusEffects(R,g,u,detail,r,p.x,p.y,scale);
       if(hurt>.1){g.strokeStyle='#f7e0a1';g.lineWidth=1;line(g,8,-23,13,-27,'#ffe5a8',1);line(g,9,-19,15,-18,'#ffe5a8',1);}
     }

@@ -1,6 +1,6 @@
 export const APP = Object.freeze({
-  version: '4.39.0',
-  label: 'V4.39.0 · LOVAGPRÓBA',
+  version: '4.39.1',
+  label: 'V4.39.1 · LOVAGPRÓBA',
   title: 'Roadlords – Lovagpróba',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',

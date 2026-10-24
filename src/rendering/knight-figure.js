@@ -57,23 +57,31 @@ export function drawKnight(g,R,color,p,elite,walking=false) {
   leg(false,false);leg(true,false);
   g.save();g.translate(0,bob);
   g.save();g.translate(-20,-27);g.rotate(.06+(walking?Math.sin(cycle)*.10:0)+death*.2);part('tail',-12,-1,22);g.restore();
-  part('horseBody',-23,-31,20);
+  part('horseBody',-25,-32,22);
   g.drawImage(cloth(R,color),-18,-27.5,26,17);
   // Redraw the saddle above the blanket, keeping leather and steel unpainted.
-  g.save();g.beginPath();g.rect(-15,-31,18,8);g.clip();part('horseBody',-23,-31,20);g.restore();
-  g.save();g.translate(7,-23);g.rotate((walking?Math.sin(cycle)*.035:0)+.045*strike);part('horseHead',-7,-22,25);g.restore();
+  g.save();g.beginPath();g.rect(-15,-31,18,8);g.clip();part('horseBody',-25,-32,22);g.restore();
+  g.save();g.translate(7,-23);g.rotate((walking?Math.sin(cycle)*.035:0)+.045*strike);part('horseHead',-6.2,-17,20);g.restore();
+  // Breast collar joins the neck to the chest and covers the cutout joints.
+  g.lineCap='round';g.strokeStyle='#4c3425';g.lineWidth=4.2;g.beginPath();g.moveTo(8.2,-26);g.lineTo(5.5,-15.5);g.stroke();
+  g.strokeStyle=color;g.lineWidth=2.3;g.stroke();g.fillStyle='#c3a367';g.fillRect(5.6,-21.5,2.2,1.7);
   g.restore();
   leg(false,true);leg(true,true);
 
-  g.save();g.translate(strike*.9,bob*.65);g.translate(-3,-34);g.rotate(.06*strike-.035*wind+death*.16);g.translate(3,34);
-  g.save();g.globalAlpha=.83;part('riderLeg',-8,-36,17.5);g.restore();
+  g.save();g.translate(strike*.9,9+bob*.65);g.translate(-3,-34);g.rotate(.06*strike-.035*wind+death*.16);g.translate(3,34);
+  // Hips rest in the saddle. The thigh extends forwards, the shin hangs
+  // below the knee; a standing full-leg cutout cannot produce this seated pose.
+  const backHip=[-6,-36],backKnee=[0,-32],backAnkle=[-3,-23];
+  const hip=[-4,-36],knee=[4,-32],ankle=[1,-23];
+  g.save();g.globalAlpha=.83;limb(g,R,'riderThigh',backHip,backKnee);limb(g,R,'riderShin',backKnee,backAnkle);g.restore();
+  limb(g,R,'riderThigh',hip,knee);
   part('rider',-9,-57,27);
   // A small team tabard and plume retain the helmet's painted metal texture.
   g.fillStyle=color;g.strokeStyle='#c9ae70';g.lineWidth=.5;g.beginPath();g.moveTo(-1,-38);g.lineTo(6,-38);g.lineTo(5.5,-31);g.lineTo(2,-29.5);g.lineTo(-1,-31);g.closePath();g.fill();g.stroke();
   g.save();g.translate(-1.8,-56);g.rotate((walking?Math.sin(cycle)*.08:0)-.1*wind);g.fillStyle=color;g.strokeStyle='#2b362b';g.lineWidth=.6;g.beginPath();g.moveTo(0,0);g.bezierCurveTo(-4,-10,-13,-3,-17,-5);g.bezierCurveTo(-12,1,-4,-3,0,2);g.closePath();g.fill();g.stroke();g.restore();
-  part('riderLeg',-5,-36,18.0);
+  limb(g,R,'riderShin',knee,ankle);
 
-  const arm=manifest.parts.arm,armScale=15/arm[3],shoulder=[-3,-45],armAngle=-.55-.65*wind;
+  const arm=manifest.parts.arm,armScale=15/arm[3],shoulder=[-3,-47],armAngle=-.55-.65*wind;
   const proximal=manifest.anchors.armShoulder.map((n,i)=>n*arm[i+2]),distal=manifest.anchors.armHand.map((n,i)=>n*arm[i+2]);
   const dx=(distal[0]-proximal[0])*armScale,dy=(distal[1]-proximal[1])*armScale;
   const hand=[shoulder[0]+Math.cos(armAngle)*dx-Math.sin(armAngle)*dy,shoulder[1]+Math.sin(armAngle)*dx+Math.cos(armAngle)*dy];
@@ -91,5 +99,5 @@ export function drawKnight(g,R,color,p,elite,walking=false) {
   g.globalAlpha=.85;g.fillStyle=color;g.fillRect(-width*.37,-height/2,width*.35,height);g.restore();
   if(elite){g.strokeStyle='#ffdb76';g.lineWidth=.9;g.beginPath();g.moveTo(-width*.46,-height*.43);g.lineTo(width*.46,-height*.43);g.lineTo(width*.38,height*.15);g.lineTo(0,height*.48);g.lineTo(-width*.38,height*.15);g.closePath();g.stroke();}
   g.restore();g.restore();g.restore();
-  return {painted:true,style:'painted-knight',body:[thrust,bob],hoofs,knees,hand,weapon:[...hand,lanceAngle],death};
+  return {painted:true,style:'painted-knight',body:[thrust,bob],riderHip:[hip[0],hip[1]+9],riderKnee:[knee[0],knee[1]+9],riderAnkle:[ankle[0],ankle[1]+9],saddle:[-4,-27],hoofs,knees,hand,weapon:[...hand,lanceAngle],death};
 }

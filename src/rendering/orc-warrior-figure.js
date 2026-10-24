@@ -67,7 +67,7 @@ export function drawOrcWarrior(g,R,color,p,elite,walking=false) {
   const backElbow=joint(backShoulder,backHand,7.5,7,-1);
   limb(g,R,'upperArm',backShoulder,backElbow);limb(g,R,'forearm',backElbow,backHand);
   part('torso',-11.1,-34.6,24.0);
-  g.save();g.translate(.9,-33.2);g.rotate(-.06*wind+.05*strike);part('head',-6.2,-13.8,14.4);g.restore();
+  g.save();g.translate(.9,-30.2);g.rotate(-.06*wind+.05*strike);part('head',-6.2,-13.8,14.4);g.restore();
   g.drawImage(cloth(R,color),-4.7,-13.1,10.2,11.5);
 
   const hand=[14-10*wind+2.5*strike-walk*.45,-22.0-12.4*wind-.8*strike];

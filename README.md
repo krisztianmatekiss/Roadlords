@@ -1,4 +1,14 @@
-# Roadlords · V4.38.0
+# Roadlords · V4.39.0
+
+## V4.39.0 – Lovagpróba és két aktuális teszt
+
+A TESZTEK menüben két próba maradt: LOVAG vs ORK HARCOS · 10 vs 10 és ORK HARCOS vs CSONTVÁZ · 50 vs 50. A korábbi próbák menüpontjai kikerültek; az automatikus ellenőrzések továbbra is lefuttatják a szükséges harci, navigációs és multiplayer forgatókönyveket.
+
+Az új Lovag az elfogadott emberi grafikai terv alapján készült: külön mozgatott lótest, fej, farok, négy láb, páncélos lovas, pajzs és lándzsa. Járáskor az átlós lábpárok váltják egymást, a visszahozott paták emelkednek, a lovas követi a nyereg mozgását. A lándzsa érintkezési képkockája a valódi sebzés időpontjához igazodik. Az elesés aránytartó dőlést használ. A lótakaró, sisakforgó, pajzs és zászló követi a csapatszínt; az elit Lovag pajzsa arany szegélyt kap.
+
+A 10–10 próba alapegységeket használ fejlesztések és utánpótlás nélkül. Kezdőzoomja 125%, hogy a felső sor lovasai is teljesen látszódjanak. A Grafika gomb a Lovagot és az Ork Harcost együtt váltja régi/új megjelenésre. Szünet, újraindítás és főmenübe visszatérés elérhető. A normál játék még a korábbi Lovagot használja.
+
+Az atlasz csak a próba indításakor töltődik le, eredetije változatlan; a nézetablakokat a `src/data/knight-art.json` tárolja. A Lovag 256 pixeles, korlátos közös képkockatárat és legfeljebb 8 ruhaszínváltozatot használ. Játékbeli kép: `public/previews/knight-orc-in-game.png`.
 
 ## V4.38.0 – Ork Harcos és Csontváz grafikai próba
 

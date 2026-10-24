@@ -7,7 +7,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   const page=await browser.newPage({viewport:{width:1920,height:1080}});await page.route('https://**/*',r=>r.abort());page.on('pageerror',e=>report.errors.push(e.message));
   await page.goto(URL);await page.waitForFunction(()=>!!window.__ROADLORDS_ROAD__);
   check('Minimap stays hidden in the main menu',!await page.locator('#roadMinimap').isVisible());
-  await page.locator('.menuBrand').click();await page.waitForTimeout(900);await page.locator('#roadTestsMenu').click();await page.locator('#roadTestMenu').click();
+  await page.locator('.menuBrand').click();await page.waitForTimeout(900);await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadStartTest(42,{count:50}));
   await page.evaluate(()=>{__ROADLORDS_ROAD__.startTest(42);__ROADLORDS_ROAD__.pause();__ROADLORDS_RUNTIME__.roadWar.scrollLeft=0;});await page.waitForTimeout(200);
   check('Each building has one continuous category footprint with a single inset outer border',await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__;

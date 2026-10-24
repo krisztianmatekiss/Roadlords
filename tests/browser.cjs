@@ -21,9 +21,9 @@ async function main(){
   await page.screenshot({path:'artifacts/menu.png'});
   check('TESZTEK groups battle tests behind one main menu entry',await page.locator('.menuMain #roadTestsMenu').isVisible()&&!await page.locator('#roadTestMenu').isVisible());
   await page.locator('#roadTestsMenu').click();
-  await page.locator('#roadTestMenu').click();await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
+  await page.locator('#roadTestsBack').click();await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadStartTest(undefined,{count:50}));await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
   let initial=await page.evaluate(()=>__ROADLORDS_ROAD__.snapshot());
-  check('One menu click generates exactly 50 units per side and all 14 types',initial.initial.counts.every(n=>n===50)&&initial.initial.keys.length===14);
+  check('Diagnostic fixture generates exactly 50 units per side and all 14 types',initial.initial.counts.every(n=>n===50)&&initial.initial.keys.length===14);
   report.randomFixture=initial.initial;
   // Keep performance and casualty checks reproducible; the menu's random generation is checked above.
   await page.evaluate(()=>{__ROADLORDS_ROAD__.startTest(42);__ROADLORDS_ROAD__.pause();});

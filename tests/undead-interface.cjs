@@ -56,8 +56,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       );
     }
     await p.keyboard.press('Escape');
-    await p.locator('#roadTestsMenu').click();
-    await p.locator('#roadUndeadMenu').click();
+    await p.evaluate(()=>__ROADLORDS_RUNTIME__.roadStartTest(42,{count:50,roster:'undead'}));
     check(
       'Building unlock cards show the current effect once, with a readable separate upkeep row',
       await p.evaluate(() => {

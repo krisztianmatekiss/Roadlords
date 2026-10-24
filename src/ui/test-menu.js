@@ -21,22 +21,16 @@ export function installTestMenu(R) {
     }
   });
   for(const [id,label,description,options] of [
-    ['roadTestMenu','PRÓBAHARC · 50 vs 50','Vegyes seregek, minden meglévő egységtípussal.',{count:50}],
-    ['roadStressMenu','TERHELÉS · 500 vs 500','Ezer aktív egység, FPS- és létszámkijelzéssel.',{count:500}],
-    ['roadUndeadMenu','ÉLŐHALOTT PRÓBA · 50 vs 50','Élőhalottak az emberek ellen, minden egységtípussal és valódi képességekkel.',{count:50,roster:'undead'}],
+    ['roadKnightMenu','LOVAG vs ORK HARCOS · 10 vs 10','Új lovasgrafika, mozgó ló és lovas, időzített lándzsaszúrással.',{count:10,roster:'knight'}],
     ['roadOrcSkeletonMenu','ORK HARCOS vs CSONTVÁZ · 50 vs 50','Két új, festett egységmodell. Alapegységek, fejlesztések és utánpótlás nélkül.',{count:50,roster:'orc-skeleton'}],
-    ['roadSkeletonMenu','CSONTVÁZ vs KARDOS · 50 vs 50','Új, festett csontvázfigurák a jelenlegi kardosok ellen. Alapegységek, azonos feltételekkel.',{count:50,roster:'skeleton'}],
-    ['roadFigureMenu','ÚJ GRAFIKAI PRÓBA · Kardos vs Ork','5 vs 5. Új felszerelés és részletek a bevált mozgással. Grafika: Új / Jelenlegi.',{count:5,roster:'figures'}],
   ]){
     const item=document.createElement('div'),button=document.createElement('button'),note=document.createElement('p');
     button.id=id;button.type='button';button.className='menuButton';button.textContent=label;
     button.onclick=async()=>{
-      if(['skeleton','orc-skeleton'].includes(options.roster)){
-        button.disabled=true;
-        const results=await Promise.all([R.loadSkeletonArt(),...(options.roster==='orc-skeleton'?[R.loadOrcWarriorArt()]:[])]);
-        const ready=results.every(Boolean);button.disabled=false;
-        if(!ready){R.toast('Az egységek képe nem töltődött be. Frissítsd az oldalt.');return;}
-      }
+      button.disabled=true;
+      const results=await Promise.all([R.loadOrcWarriorArt(),options.roster==='knight'?R.loadKnightArt():R.loadSkeletonArt()]);
+      button.disabled=false;
+      if(!results.every(Boolean)){R.toast('Az egységek képe nem töltődött be. Frissítsd az oldalt.');return;}
       close(false);R.roadStartTest(undefined,options);
     };
     note.textContent=description;item.append(button,note);list.appendChild(item);

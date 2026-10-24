@@ -6,7 +6,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
  try{
   const page=await browser.newPage({viewport:{width:1920,height:1080}});await page.route('https://**/*',r=>r.abort());page.on('pageerror',e=>report.errors.push(e.message));
   await page.goto(URL);await page.waitForFunction(()=>!!window.__ROADLORDS_ROAD__);await page.evaluate(()=>__ROADLORDS_ROAD__.artReady);
-  await page.locator('.menuBrand').click();await page.waitForTimeout(900);await page.locator('#roadTestsMenu').click();await page.locator('#roadTestMenu').click();
+  await page.locator('.menuBrand').click();await page.waitForTimeout(900);await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadStartTest(42,{count:50}));
   await page.evaluate(()=>{__ROADLORDS_ROAD__.startTest(42,{count:50});__ROADLORDS_ROAD__.pause();__ROADLORDS_RUNTIME__.roadWar.scrollLeft=0;});
   async function geometry(){return page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,war=R.roadWar.getBoundingClientRect();

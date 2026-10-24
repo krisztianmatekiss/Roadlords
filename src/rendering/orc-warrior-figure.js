@@ -13,7 +13,7 @@ export function installOrcWarriorArt(R) {
   };
 }
 
-export const paintedOrcWarrior=(R,u)=>u.key==='orc_warrior'&&R.ROAD.test&&R.ROAD.testRoster==='orc-skeleton'&&R.ROAD.figureStyle==='painted'&&R.orcWarriorTexture?.naturalWidth>0;
+export const paintedOrcWarrior=(R,u)=>u.key==='orc_warrior'&&R.ROAD.test&&['orc-skeleton','knight'].includes(R.ROAD.testRoster)&&R.ROAD.figureStyle==='painted'&&R.orcWarriorTexture?.naturalWidth>0;
 
 function joint(start,end,upper,lower,bend=1) {
   const dx=end[0]-start[0],dy=end[1]-start[1],distance=Math.max(.001,Math.hypot(dx,dy));

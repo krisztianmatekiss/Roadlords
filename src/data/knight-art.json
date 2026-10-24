@@ -1,0 +1,137 @@
+{
+  "file": "art/battle/knight-heroes-parts.png",
+  "width": 1448,
+  "height": 1086,
+  "sha256": "205d7b197a50b063055d0eeda22ca46dca1fc09e8837270585f9d2e1c02e054f",
+  "reference": "https://raw.githubusercontent.com/krisztianmatekiss/Roadlords/aff1483/previews/egysegtervek/emberek-egysegtervek.png",
+  "parts": {
+    "horseBody": [
+      42,
+      76,
+      388,
+      244
+    ],
+    "horseHead": [
+      442,
+      38,
+      315,
+      287
+    ],
+    "tail": [
+      863,
+      81,
+      230,
+      278
+    ],
+    "frontUpper": [
+      1246,
+      54,
+      133,
+      292
+    ],
+    "frontLower": [
+      130,
+      416,
+      158,
+      269
+    ],
+    "hindUpper": [
+      470,
+      417,
+      195,
+      243
+    ],
+    "hindLower": [
+      868,
+      416,
+      123,
+      272
+    ],
+    "rider": [
+      1165,
+      383,
+      209,
+      344
+    ],
+    "arm": [
+      108,
+      775,
+      219,
+      224
+    ],
+    "riderLeg": [
+      462,
+      728,
+      203,
+      308
+    ],
+    "lance": [
+      909,
+      712,
+      34,
+      347
+    ],
+    "shield": [
+      1193,
+      749,
+      163,
+      289
+    ]
+  },
+  "joints": {
+    "frontUpper": [
+      [
+        0.35,
+        0.1
+      ],
+      [
+        0.75,
+        0.91
+      ]
+    ],
+    "frontLower": [
+      [
+        0.3,
+        0.08
+      ],
+      [
+        0.68,
+        0.9
+      ]
+    ],
+    "hindUpper": [
+      [
+        0.2,
+        0.15
+      ],
+      [
+        0.62,
+        0.85
+      ]
+    ],
+    "hindLower": [
+      [
+        0.56,
+        0.1
+      ],
+      [
+        0.52,
+        0.92
+      ]
+    ]
+  },
+  "anchors": {
+    "lance": [
+      0.5,
+      0.74
+    ],
+    "armShoulder": [
+      0.192,
+      0.143
+    ],
+    "armHand": [
+      0.922,
+      0.853
+    ]
+  }
+}

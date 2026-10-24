@@ -10,7 +10,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     page.on('pageerror', e => report.errors.push(e.message));
     await page.goto(URL); await page.waitForFunction(() => !!window.__ROADLORDS_RUNTIME__?.upgradeCopyPreview);
     await page.locator('.menuBrand').click(); await page.waitForTimeout(900);
-    await page.locator('#roadTestsMenu').click(); await page.locator('#roadTestMenu').click();
+    await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadStartTest(42,{count:50}));
     await page.evaluate(() => { __ROADLORDS_ROAD__.pause(); });
     const audit = await page.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__, city = { ...R.P, race: 'human', normal: {}, legends: new Set(), legendaryStacks: {}, levels: {}, l4Branches: {} };

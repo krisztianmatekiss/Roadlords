@@ -5,7 +5,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
  const report={checks:[],errors:[],measurements:{}},check=(name,value)=>{assert(value,name);report.checks.push(name);console.log('PASS',name)};
  try{
   const manifest=JSON.parse(fs.readFileSync('public/cards/orc/manifest.json'));
-  check('All 51 nonempty Orc cards match the source checksums; four empty upstream files use a fallback',manifest.installed_count===51&&manifest.unavailable_upstream.length===4&&manifest.cards.filter(c=>!manifest.unavailable_upstream.includes(c.file)).every(c=>c.width===768&&c.height===1152&&crypto.createHash('sha256').update(fs.readFileSync('public/cards/orc/'+c.file)).digest('hex')===c.sha256));
+  check('All 51 nonempty original Orc cards match source checksums; four original upstream files are empty',manifest.installed_count===51&&manifest.unavailable_upstream.length===4&&manifest.cards.filter(c=>!manifest.unavailable_upstream.includes(c.file)).every(c=>c.width===768&&c.height===1152&&crypto.createHash('sha256').update(fs.readFileSync('public/cards/orc/'+c.file)).digest('hex')===c.sha256));
   const context=await browser.newContext({viewport:{width:1600,height:1000}});await context.route('https://**/*',r=>r.abort());
   const p=await context.newPage();p.on('pageerror',e=>report.errors.push(e.message));await p.goto(URL);await p.waitForFunction(()=>!!window.__ROADLORDS_RUNTIME__?.roadEffects);
   check('All artwork decodes locally without the music repository or a third-party network',await p.evaluate(async files=>{let next=0,ok=true;await Promise.all(Array.from({length:6},async()=>{while(next<files.length){const file=files[next++],img=new Image();img.src=new URL('cards/orc/'+file,location.href).href;try{await img.decode();ok&&=img.naturalWidth===768&&img.naturalHeight===1152}catch{ok=false}}}));return ok},manifest.cards.filter(c=>!manifest.unavailable_upstream.includes(c.file)).map(c=>c.file)));
@@ -17,7 +17,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('Every Orc building uses the new full card, with accessible level and branch controls',await p.locator('#rlCodexPanel .cardFrameImage').count()===19&&await p.locator('#rlCodexPanel [data-codex-building]').count()===19);
   await p.screenshot({path:'artifacts/cards-orc-codex.png'});
   await p.locator('#rlCodexPanel [data-tab="legendary"]').click();
-  check('Orc relics use 21 supplied frames and five usable fallbacks',await p.locator('#rlCodexPanel .rlCodexCard').count()===26&&await p.locator('#rlCodexPanel .cardFrameImage').count()===21);
+  check('All 28 Orc relics have full frames, including newly illustrated missing relics and two additions',await p.locator('#rlCodexPanel .rlCodexCard').count()===28&&await p.locator('#rlCodexPanel .cardFrameImage').count()===28);
   await p.keyboard.press('Escape');
   await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.MP.lobby.style.display='none';document.body.classList.remove('roadlords-menu-open');R.state.running=false;window.__ROADLORDS_ORCS__.setRace(R.P,'orc')});
   for(const [width,height]of [[1366,768],[1920,1080],[3195,1380],[800,900]]){

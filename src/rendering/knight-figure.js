@@ -45,7 +45,7 @@ export function drawKnight(g,R,color,p,elite,walking=false) {
   // only the returning half of a stride lifts, independent of body bobbing.
   const hoofs=[],knees=[];
   const leg=(front,near)=>{
-    const phase=cycle+(front===near?0:Math.PI),stride=walking?Math.cos(phase)*4.3:0;
+    const phase=cycle+(front===near?0:Math.PI),stride=walking?-Math.cos(phase)*4.3:0;
     const lift=walking?Math.max(0,Math.sin(phase))*3.8:0;
     const hip=[(front?5.5:-16)+(near?1.4:-1.4),-18+bob];
     const hoof=[(front?9:-17)+(near?1.4:-1.4)+stride,-1.2-lift];

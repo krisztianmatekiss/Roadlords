@@ -4,6 +4,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
  const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox','--disable-dev-shm-usage']});
  const report={checks:[],errors:[]},check=(name,ok)=>{assert(ok,name);report.checks.push(name);console.log('PASS',name)};
  try{
+  fs.mkdirSync('artifacts',{recursive:true});
   const p=await browser.newPage({viewport:{width:1600,height:1000}});await p.route('https://**/*',r=>r.abort());p.on('pageerror',e=>report.errors.push(e.message));
   await p.goto(URL);await p.waitForFunction(()=>!!window.__ROADLORDS_RUNTIME__);
   check('Experimental skeleton texture does not load in the normal main menu',await p.evaluate(()=>!performance.getEntriesByType('resource').some(r=>r.name.includes('skeleton-parts'))));

@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.37.2',
-  label: 'V4.37.2 · HEROES CSONTVÁZ PRÓBA',
-  title: 'Roadlords – Heroes csontváz próba',
+  version: '4.38.0',
+  label: 'V4.38.0 · ORK HARCOS ÉS CSONTVÁZ',
+  title: 'Roadlords – Ork harcos és csontváz próba',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

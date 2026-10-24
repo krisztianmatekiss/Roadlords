@@ -330,7 +330,7 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.$('.command').appendChild(runtime.roadTestSummary);
   runtime.$('#roadPause').onclick = runtime.roadPause;
   runtime.$('#roadFigureToggle').onclick=()=>{
-    runtime.ROAD.figureStyle=runtime.ROAD.figureStyle!=='simple'?'simple':runtime.ROAD.testRoster==='skeleton'?'skeleton':'refined';
+    runtime.ROAD.figureStyle=runtime.ROAD.figureStyle!=='simple'?'simple':runtime.ROAD.testRoster==='orc-skeleton'?'painted':runtime.ROAD.testRoster==='skeleton'?'skeleton':'refined';
     runtime.$('#roadFigureToggle').textContent=runtime.ROAD.figureStyle!=='simple'?'Grafika: Új':'Grafika: Jelenlegi';
     runtime.$('#roadFigureToggle').setAttribute('aria-pressed',String(runtime.ROAD.figureStyle!=='simple'));
   };

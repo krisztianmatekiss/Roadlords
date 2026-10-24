@@ -1,4 +1,12 @@
-# Roadlords · V4.37.2
+# Roadlords · V4.38.0
+
+## V4.38.0 – Ork Harcos és Csontváz grafikai próba
+
+A TESZTEK → ORK HARCOS vs CSONTVÁZ · 50 vs 50 próba mindkét egységet az elfogadott, Heroes III ihletésű grafikai tervek alapján jeleníti meg. Az Ork Harcos külön mozgatott fejjel, végtagokkal, baltával, fapajzzsal és csapatszínű ruhával készült. A baltacsapás a valódi találati időpontban ér célba; járás, támadás és elesés külön képkockákat használ. Az elit rangot arany pajzsszegély és válljelzés mutatja.
+
+A próba alapegységeket használ fejlesztések és utánpótlás nélkül; ez grafikai összehasonlítás, nem azonos erejű seregek összeállítása. A Grafika gomb mindkét új modellt a korábbi megjelenésre váltja, a csata újraindítása nélkül. Szünet, újraindítás és főmenübe visszatérés elérhető. A meglévő Csontváz–Kardos próba is megmaradt.
+
+Az új orkmodell egyelőre csak az új próbában aktív. A kép csak a próba indításakor töltődik le; a közös képkockatár továbbra is legfeljebb 768 elemes, az ork ruhaszíntára legfeljebb 8 elemes. A generált atlasz eredetije változatlan, az alkatrészeket a `src/data/orc-warrior-art.json` nézetablakai választják ki. Játékbeli összehasonlító kép: `public/previews/orc-skeleton-in-game.png`.
 
 ## V4.37.2 – Csontváz alapállás
 

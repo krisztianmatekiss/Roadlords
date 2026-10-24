@@ -2,6 +2,7 @@ import { REFINED_UNITS, refinedLegs, refinedBody, refinedHead, refinedShield, re
 import { drawStatusEffects, drawMagicShot, shotKind } from './battle-effects.js';
 import { unitIsElite } from '../data/unit-ranks.js';
 import { installSkeletonArt, paintedSkeleton, drawSkeleton } from './skeleton-figure.js';
+import { installOrcWarriorArt, paintedOrcWarrior, drawOrcWarrior } from './orc-warrior-figure.js';
 // Articulated battle figures follow the original roster's armor, equipment and colors.
 // Vector poses are rasterized on demand; regular frames draw cached sprites only.
 const TAU = Math.PI * 2;
@@ -226,24 +227,25 @@ function humanoid(g, style, color, p, refined = false, elite = false) {
 }
 function sprite(R, u, pose) {
   const elite=unitIsElite(u);
-  const painted=paintedSkeleton(R,u);
-  const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}${painted?':painted-skeleton':''}${elite?":elite":""}`;
+  const skeleton=paintedSkeleton(R,u),orc=paintedOrcWarrior(R,u),painted=skeleton||orc;
+  const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}${skeleton?':painted-skeleton':orc?':painted-orc':''}${elite?":elite":""}`;
   let canvas=R.ROAD.sprites.get(key);if(canvas)return canvas;
   const style=FIGURES[u.key];if(!style)return null;
   canvas=document.createElement('canvas');canvas.width=canvas.height=refined||painted?192:128;
-  const bounds=[-40,-66,80,80];canvas.figureBounds=bounds;
+  const bounds=orc?[-46,-70,92,92]:[-40,-66,80,80];canvas.figureBounds=bounds;
   const g=canvas.getContext('2d'),p=phase(pose),resolution=canvas.width/bounds[2];g.translate(-bounds[0]*resolution,-bounds[1]*resolution);g.scale(resolution,resolution);
   ellipse(g,1,2,style.mount||style.machine?18:style.size>1?15:10,3.5,'#18251e66');
   if(p.death&&!painted){g.translate(p.death*4,-(1-p.death)*23);g.scale(1,1-p.death*.55);g.rotate(p.death*1.48);g.translate(0,23);}
   g.save();g.scale(style.size||1,style.size||1);
   if(style.machine){machine(g,style,color,p);if(elite){line(g,-16,-18,16,-18,'#ebc66f',2.5);poly(g,[[-4,-26],[4,-26],[4,-21],[0,-18],[-4,-21]],'#d8ad50');}}
-  else canvas.figureRig=painted?drawSkeleton(g,R,color,p,elite,pose.state==='walk'):humanoid(g,style,color,p,refined,elite);g.restore();
+  else canvas.figureRig=skeleton?drawSkeleton(g,R,color,p,elite,pose.state==='walk'):orc?drawOrcWarrior(g,R,color,p,elite,pose.state==='walk'):humanoid(g,style,color,p,refined,elite);g.restore();
   if(R.ROAD.sprites.size>=768)R.ROAD.sprites.delete(R.ROAD.sprites.keys().next().value);
   R.ROAD.sprites.set(key,canvas);return canvas;
 }
 
 export function installBattleFigures(R) {
   installSkeletonArt(R);
+  installOrcWarriorArt(R);
   R.battleFigurePose=figurePose;
   R.roadDrawUnit=function drawFigure(u,dead=false) {
     const p=R.pointAt(u.lane,u.offset||0),zoom=R.ROAD.zoom||1;

@@ -1,0 +1,109 @@
+{
+  "file": "art/battle/orc-warrior-heroes-parts.png",
+  "width": 1254,
+  "height": 1254,
+  "sha256": "a66f4f117265e126f6fad240818f93713e3f916a8be3198e4409e7e51e0b1433",
+  "reference": "https://raw.githubusercontent.com/krisztianmatekiss/Roadlords/aff1483/previews/egysegtervek/orkok-egysegtervek.png",
+  "parts": {
+    "head": [
+      84,
+      93,
+      269,
+      282
+    ],
+    "torso": [
+      448,
+      39,
+      340,
+      372
+    ],
+    "upperArm": [
+      967,
+      61,
+      192,
+      339
+    ],
+    "forearm": [
+      102,
+      446,
+      237,
+      306
+    ],
+    "thigh": [
+      541,
+      444,
+      233,
+      302
+    ],
+    "shin": [
+      993,
+      439,
+      173,
+      316
+    ],
+    "axe": [
+      146,
+      769,
+      205,
+      443
+    ],
+    "shield": [
+      473,
+      793,
+      327,
+      404
+    ],
+    "boot": [
+      951,
+      913,
+      246,
+      262
+    ]
+  },
+  "joints": {
+    "upperArm": [
+      [
+        0.66,
+        0.12
+      ],
+      [
+        0.35,
+        0.87
+      ]
+    ],
+    "forearm": [
+      [
+        0.24,
+        0.12
+      ],
+      [
+        0.79,
+        0.9
+      ]
+    ],
+    "thigh": [
+      [
+        0.28,
+        0.12
+      ],
+      [
+        0.66,
+        0.85
+      ]
+    ],
+    "shin": [
+      [
+        0.63,
+        0.08
+      ],
+      [
+        0.4,
+        0.91
+      ]
+    ]
+  },
+  "grip": [
+    0.2,
+    0.72
+  ]
+}

@@ -13,7 +13,7 @@ export function installSkeletonArt(R) {
     return R.skeletonArtReady=image.decode().then(()=>true,()=>false);
   };
 }
-export const paintedSkeleton = (R,u) => u.key==='und_skeleton' && R.ROAD.test && R.ROAD.testRoster==='skeleton' && R.ROAD.figureStyle==='skeleton' && R.skeletonTexture?.naturalWidth>0;
+export const paintedSkeleton = (R,u) => u.key==='und_skeleton' && R.ROAD.test && ['skeleton','orc-skeleton'].includes(R.ROAD.testRoster) && ['skeleton','painted'].includes(R.ROAD.figureStyle) && R.skeletonTexture?.naturalWidth>0;
 
 // Uniform joint-to-joint placement preserves the painted bone proportions.
 function bone(g,R,name,start,end) {

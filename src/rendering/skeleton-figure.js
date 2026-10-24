@@ -54,10 +54,13 @@ export function drawSkeleton(g,R,color,p,elite,walking=false) {
   const recovery=clamp((p.recovery-.2)/.8);
   const strike=p.strike*(1-recovery),wind=p.wind*(1-p.strike)*(1-p.recovery);
   const death=p.death,walk=walking?p.walk:0;
-  const thrust=2.0*strike-.8*wind,bob=Math.abs(walk)*.55;
+  const thrust=2.0*strike-.8*wind;
+  // Raise the pelvis for a relaxed standing knee angle. On a wide step the
+  // hips lower slightly, while the planted feet stay on the ground plane.
+  const bodyShift=-2.3+Math.abs(walk)*.8;
   g.save();
-  g.translate(thrust+death*3,-bob+death*14);
-  g.translate(0,-14);g.rotate(death*1.48);g.translate(0,14);
+  g.translate(thrust+death*3,death*16.3);
+  g.translate(0,-16.3);g.rotate(death*1.48);g.translate(0,16.3);
 
   const leg=(hip,ankle,back)=>{
     const knee=elbow(hip,ankle,7.6,7.5,-1);
@@ -68,11 +71,12 @@ export function drawSkeleton(g,R,color,p,elite,walking=false) {
     return knee;
   };
   const lift=walking?Math.cos(p.wheel):0;
-  const backHip=[-2.8,-14.7],frontHip=[3.2,-14.7];
+  const backHip=[-2.8,-14.7+bodyShift],frontHip=[3.2,-14.7+bodyShift];
   const backAnkle=[-5.1-walk*3.6,-2.4-Math.max(0,-lift)*2.5];
   const frontAnkle=[5.0+walk*3.6,-2.4-Math.max(0,lift)*2.5];
   const knees=[leg(backHip,backAnkle,true),leg(frontHip,frontAnkle,false)];
 
+  g.save();g.translate(0,bodyShift);
   const backShoulder=[-4.8,-28.4],backHand=[-7.4+walk*.5,-19.5];
   const backElbow=elbow(backShoulder,backHand,6.4,6.3,-1);
   bone(g,R,'upperArm',backShoulder,backElbow);bone(g,R,'forearm',backElbow,backHand);
@@ -113,6 +117,6 @@ export function drawSkeleton(g,R,color,p,elite,walking=false) {
   if(elite){g.strokeStyle='#efcb69';g.lineWidth=.8;g.beginPath();g.ellipse(0,0,shieldWidth*.47,shieldHeight*.47,0,0,Math.PI*2);g.stroke();}
   g.restore();
   if(elite){g.fillStyle='#f3d77f';g.beginPath();g.moveTo(-5.5,-30);g.lineTo(-4.3,-32);g.lineTo(-3.1,-30);g.lineTo(-4.3,-28);g.fill();}
-  g.restore();
-  return {body:[thrust,-bob],weapon:[...hand,swordAngle],stride:walk*3.6,knees,hand,painted:true,style:'light-bone',death};
+  g.restore();g.restore();
+  return {body:[thrust,bodyShift],weapon:[...hand,swordAngle],stride:walk*3.6,knees,hips:[backHip,frontHip],ankles:[backAnkle,frontAnkle],hand,painted:true,style:'light-bone',death};
 }

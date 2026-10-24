@@ -1,6 +1,6 @@
 export const APP = Object.freeze({
-  version: '4.37.1',
-  label: 'V4.37.1 · HEROES CSONTVÁZ PRÓBA',
+  version: '4.37.2',
+  label: 'V4.37.2 · HEROES CSONTVÁZ PRÓBA',
   title: 'Roadlords – Heroes csontváz próba',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',

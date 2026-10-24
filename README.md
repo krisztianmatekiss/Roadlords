@@ -1,4 +1,8 @@
-# Roadlords · V4.37.1
+# Roadlords · V4.37.2
+
+## V4.37.2 – Csontváz alapállás
+
+Magasabb csípő és egyenesebb térdek nyugalmi helyzetben. Lépéskor a csípő enyhén süllyed, a talpak a talajon maradnak.
 
 ## V4.37.1 – Kardmarkolat
 

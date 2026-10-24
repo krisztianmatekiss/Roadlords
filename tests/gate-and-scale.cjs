@@ -16,12 +16,12 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
     const gate=R.$('#'+id).getBoundingClientRect(),war=R.roadWar.getBoundingClientRect(),scale=Q.state.h/600;
     for(let i=0;i<keys.length*5;i++){
      const u=R.releaseUnit(city,R.makeEntry(city,keys[i%keys.length])),y=war.top+R.pointAt(u.lane,u.offset).y;
-     results.push({key:u.key,lane:u.lane,top:y-64*scale,bottom:y+8*scale,gateTop:gate.top,gateBottom:gate.bottom,offset:u.offset,home:u.roadHomeOffset});
+     results.push({key:u.key,length:R.PATH_LENGTH,lane:u.lane,top:y-64*scale,bottom:y+8*scale,gateTop:gate.top,gateBottom:gate.bottom,offset:u.offset,home:u.roadHomeOffset});
     }
    }
    return results;
   });report.releases=releases;
-  check('All 21 registered unit types emerge only inside the correct gate opening',releases.length===105&&releases.every(u=>(u.lane===6||u.lane===4794)&&u.top>=u.gateTop-.1&&u.bottom<=u.gateBottom+.1));
+  check('All 21 registered unit types emerge only inside the correct gate opening',releases.length===105&&releases.every(u=>(u.lane===6||u.lane===u.length-6)&&u.top>=u.gateTop-.1&&u.bottom<=u.gateBottom+.1));
   check('Gate release preserves a wider destination formation without spawning on that formation',releases.some(u=>Math.abs(u.home)>200)&&releases.every(u=>Math.abs(u.offset)<100));
   const queue=await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,Q=__ROADLORDS_ROAD__;Q.state.test=false;R.state.units=[];Q.state.pending=[];for(const c of [R.P,R.E]){c.releaseQueue=[];c.garrison=[];c.releaseAcc=0;c.gateMode='closed';c.autoReleasing=false;}

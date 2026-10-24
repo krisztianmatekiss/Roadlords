@@ -84,11 +84,23 @@ export function drawSkeleton(g,R,color,p,elite,walking=false) {
   const shoulder=[5.3,-28.0];
   let hand=[13.0-9.0*wind+2.0*strike-walk*.6,-21.7-13.0*wind-.3*strike];
   hand=[lerp(hand[0],4.0,death),lerp(hand[1],-22.0,death)];
-  const frontElbow=elbow(shoulder,hand,7.6,7.5,1);
-  bone(g,R,'upperArm',shoulder,frontElbow);bone(g,R,'forearm',frontElbow,hand);
   const swordAngle=lerp(.42-1.6*wind+1.0*strike,.10,death);
+  const grip=manifest.grip,handScale=grip.handScale;
+  const wristX=(grip.wrist[0]-grip.handHole[0])*handScale,wristY=(grip.wrist[1]-grip.handHole[1])*handScale;
+  const wrist=[hand[0]+Math.cos(swordAngle)*wristX-Math.sin(swordAngle)*wristY,hand[1]+Math.sin(swordAngle)*wristX+Math.cos(swordAngle)*wristY];
+  const frontElbow=elbow(shoulder,wrist,7.6,7.5,1);
+  bone(g,R,'upperArm',shoulder,frontElbow);bone(g,R,'forearmBare',frontElbow,wrist);
   g.save();g.translate(...hand);g.rotate(swordAngle);
-  part('sword',-3.7,-22.0,25.0);g.restore();
+  const gripPart=name=>{
+    const rect=manifest.parts[name];
+    g.drawImage(R.skeletonTexture,...rect,(rect[0]-grip.handHole[0])*handScale,(rect[1]-grip.handHole[1])*handScale,rect[2]*handScale,rect[3]*handScale);
+  };
+  // Palm behind the hilt, curled fingers in front. The wrist follows this grip
+  // instead of rotating the whole hand with the forearm bone.
+  gripPart('hand');
+  const sword=manifest.parts.sword,swordScale=25/sword[3];
+  g.drawImage(R.skeletonTexture,...sword,-grip.sword[0]*sword[2]*swordScale,-grip.sword[1]*25,sword[2]*swordScale,25);
+  gripPart('gripFingers');g.restore();
 
   g.save();g.translate(-7.3,-21.2);g.rotate(-.13+.14*wind-.1*strike-death*.35);
   const shieldHeight=14.6,shieldWidth=shieldHeight*manifest.parts.shield[2]/manifest.parts.shield[3];

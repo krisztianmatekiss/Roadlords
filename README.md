@@ -1,4 +1,8 @@
-# Roadlords · V4.37.0
+# Roadlords · V4.37.1
+
+## V4.37.1 – Kardmarkolat
+
+A csontváz tenyerének fogópontja a markolat közepére került. A kéz a karddal együtt fordul, a csuklóhoz igazított alkar pedig külön követi a mozdulatot. Az ujjak a markolat elé kerülnek. A harci időzítés és az egységértékek változatlanok.
 
 ## V4.37.0 – Az elfogadott világos csontváz animációja
 

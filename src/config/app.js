@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.35.0',
-  label: 'V4.35.0 · EGYSÉGIKONOK ÉS ORK FEJLESZTÉSEK',
-  title: 'Roadlords – Egységikonok és ork fejlesztések',
+  version: '4.36.0',
+  label: 'V4.36.0 · CSONTVÁZ PRÓBA',
+  title: 'Roadlords – Csontváz próba',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

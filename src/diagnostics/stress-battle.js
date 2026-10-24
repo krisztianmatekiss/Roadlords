@@ -70,13 +70,14 @@ export function register(runtime) {
     };
   };
   runtime.roadStartTest = function roadStartTest(seed, {count = 500, roster = 'mixed', figureStyle} = {}) {
-    if (!(roster === 'figures' && count === 5 || ['mixed','undead'].includes(roster) && [50,500].includes(count))) throw new RangeError('Unsupported test roster or size');
+    if (!(roster === 'figures' && count === 5 || roster==='skeleton'&&count===50 || ['mixed','undead'].includes(roster) && [50,500].includes(count))) throw new RangeError('Unsupported test roster or size');
     runtime.ROAD.testRoster = roster;
+    if(roster==='skeleton')runtime.loadSkeletonArt();
     runtime.ROAD.testCount = count;
-    runtime.ROAD.figureStyle=roster==='figures'?(figureStyle==='simple'?'simple':'refined'):'simple';
-    runtime.$('#roadFigureToggle').hidden=roster!=='figures';
-    runtime.$('#roadFigureToggle').textContent=runtime.ROAD.figureStyle==='refined'?'Grafika: Új':'Grafika: Jelenlegi';
-    runtime.$('#roadFigureToggle').setAttribute('aria-pressed',String(runtime.ROAD.figureStyle==='refined'));
+    runtime.ROAD.figureStyle=roster==='skeleton'?(figureStyle==='simple'?'simple':'skeleton'):roster==='figures'?(figureStyle==='simple'?'simple':'refined'):'simple';
+    runtime.$('#roadFigureToggle').hidden=!['figures','skeleton'].includes(roster);
+    runtime.$('#roadFigureToggle').textContent=runtime.ROAD.figureStyle!=='simple'?'Grafika: Új':'Grafika: Jelenlegi';
+    runtime.$('#roadFigureToggle').setAttribute('aria-pressed',String(runtime.ROAD.figureStyle!=='simple'));
     runtime.ROAD.zoom = roster === 'figures' ? 1.75 : count === 50 ? 1.25 : 1;
     runtime.$("#roadZoom").textContent = Math.round(runtime.ROAD.zoom * 100) + "%";
     seed = Number.isInteger(seed) ? seed : crypto.getRandomValues(new Uint32Array(1))[0];
@@ -96,7 +97,7 @@ export function register(runtime) {
       runtime.MP.started = false;
       runtime.state.time = 0;
       runtime.state.running = false;
-      const races = roster === 'figures' ? ['human','orc'] : roster==='undead'?['undead','human']:runtime.shuffle(['human', 'orc']);
+      const races = roster === 'figures' ? ['human','orc'] : ['undead','skeleton'].includes(roster)?['undead','human']:runtime.shuffle(['human', 'orc']);
       runtime.roadResetCity(runtime.P, races[0]);
       runtime.roadResetCity(runtime.E, races[1]);
       runtime.state.units = [];
@@ -126,6 +127,12 @@ export function register(runtime) {
       };
       runtime.roadEndgame(runtime.P);
       runtime.roadEndgame(runtime.E);
+      if(roster==='skeleton')for(const c of [runtime.P,runtime.E]){
+        c.normal={};c.legends=new Set();c.legendaryStacks={};c.levels={};c.l4Branches={};
+        c.buildings=c.buildings.filter(b=>b.type==='keep');c.buildings[0].level=1;
+        c.garrison=[];c.releaseQueue=[];runtime.recomputeCity(c,false);c.hp=c.maxHp;
+        c.roadBuild={upgrades:[],buildings:c.buildings.length,branches:{}};
+      }
       for (const t of runtime.towers) {
         t.alive = true;
         t.hp = t.maxHp;
@@ -133,7 +140,7 @@ export function register(runtime) {
       }
       runtime.roadRefreshFrontiers();
       for (const c of [runtime.P, runtime.E]) {
-        const keys = roster === 'figures' ? [c.race === 'human' ? 'swordsman' : 'orc_warrior'] : Object.keys(runtime.UNITS).filter(k => runtime.factionUnitMatches(c.race,runtime.UNITS[k]));
+        const keys = roster==='skeleton'?[c===runtime.P?'und_skeleton':'swordsman']:roster === 'figures' ? [c.race === 'human' ? 'swordsman' : 'orc_warrior'] : Object.keys(runtime.UNITS).filter(k => runtime.factionUnitMatches(c.race,runtime.UNITS[k]));
         const entries = Array.from({
           length: count
         }, (_, i) => ({
@@ -175,7 +182,7 @@ export function register(runtime) {
       runtime.last = performance.now();
       runtime.roadFocusFront();
       runtime.$('#roadPause').textContent = 'Szünet';
-      runtime.roadTestSummary.textContent = `${count} × ${count} · ${runtime.factionName(runtime.P.race)}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.factionName(runtime.E.race)}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. ${roster === 'figures' ? 'Új kardos és ork harcos, a jelenlegi animációkkal' : 'Minden egységtípus'}, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Pályamozgatás: A / D vagy görgő, dupla leütés: pálya széle, F: harci front. Az ellenfél városát az idő melletti ikon rögzíti / oldja fel. Szünet: szóköz.`;
+      runtime.roadTestSummary.textContent = roster==='skeleton'?'50 Csontváz vs 50 Kardos · Alapértékek, fejlesztések és utánpótlás nélkül. Új csontvázgrafika; a kardos változatlan. Grafika gomb: új / jelenlegi csontváz. Szünet: szóköz.':`${count} × ${count} · ${runtime.factionName(runtime.P.race)}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.factionName(runtime.E.race)}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. ${roster === 'figures' ? 'Új kardos és ork harcos, a jelenlegi animációkkal' : 'Minden egységtípus'}, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Pályamozgatás: A / D vagy görgő, dupla leütés: pálya széle, F: harci front. Az ellenfél városát az idő melletti ikon rögzíti / oldja fel. Szünet: szóköz.`;
     } finally {
       Math.random = savedRandom;
     }

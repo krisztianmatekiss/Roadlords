@@ -1,3 +1,9 @@
+# V4.36.0 – festett csontváz, 50 vs 50
+
+A `skeleton-figure.cjs` valódi menükattintással indítja a próbát, ellenőrzi az 50 Csontváz / 50 Kardos összetételt, az alapértékeket és a fejlesztések hiányát. A generált, változatlan PNG nyolc alkatrészének nézetablakai és SHA-256 értéke a `src/data/skeleton-art.json` fájlban vannak. A normál főmenüben az atlasz nem töltődik le.
+
+A képkockapróba külön járást, támadást és halált jelenít meg; a Kardos képkockáját bájtonként egyezőnek méri az új és régi csontvázmódban. A próba a meglévő 768 képkockás tárkorlátot, a grafikai kapcsolót, az újraindítást és a főmenübe visszatérést is ellenőrzi. Harminc szimulációs másodpercnyi valódi harc támadást, sebzést és egységhalált eredményez. A pózok: `artifacts/skeleton-poses.png`; a csata: `artifacts/skeleton-50v50-ready.png` és `skeleton-50v50-combat.png`.
+
 # V4.35.0 – egységikonok és ork kiegészítések
 
 Az `orc-expansion-and-traits.cjs` mind az öt gyakori és két legendás lapot, a megépített épülethez kötött feltételeket és bontásukat vizsgálja. Mind a hét ork típuson ellenőrzi a mozgást, épületsebzést, életlopást és élelemárat. Valódi, időzített támadásokkal méri a ténylegesen sebzett életerőből számolt gyógyítást és a tornyok/főváros elleni sebzésbónuszt. A Sámán Sorvadás átkát a próbában tudatosan mellőzi, mert a maximális életerő csökkenése nem életlopásra jogosító találati sebzés.

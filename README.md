@@ -1,4 +1,10 @@
-# Roadlords · V4.35.0
+# Roadlords · V4.36.0
+
+## V4.36.0 – Csontváz grafikai próba
+
+A TESZTEK menü új „CSONTVÁZ vs KARDOS · 50 vs 50” csatája 50 alap Csontvázat és 50 változatlan Kardost indít, fejlesztések és utánpótlás nélkül, valódi harcrendszerrel. A csontváz kártyájához igazított festett koponya, páncél, végtagok, kard és pajzs külön alkatrészként mozog. A járásnak nyolc, a támadásnak tizenkét, a halálnak hat képkockája van, a meglévő támadási órához igazítva. A csapatszín a pajzson és a rongyos ruhán látszik.
+
+A Grafika gomb ugyanabban a csatában vált a két csontvázmodell között. A Kardos rajzolása és minden harci érték változatlan. Az új modell egyelőre csak ebben a grafikai próbában jelenik meg. Az alkatrészatlasz csak a próba indításakor töltődik le, és ugyanazt a korlátos képkockatárat használja, mint a többi figura. Szünet, újraindítás és főmenübe visszatérés elérhető.
 
 ## V4.35.0 – Egységjellemzők és ork fejlesztések
 

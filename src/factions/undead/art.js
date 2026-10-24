@@ -35,11 +35,13 @@ export function initializeUndeadArt(R) {
     return `<svg class="${cls} undeadUnitPortrait" data-unit-portrait="${key}" viewBox="${x} ${y} 384 512" preserveAspectRatio="xMidYMin slice" role="img" aria-label="${U[key].name}"><image href="${portraits}" width="1536" height="1024"/></svg>`;
   };
   const image = (type, cls, rotation = 0) => {
-    const turn=((rotation%4)+4)%4, variant=cityArt.variants[turn];
+    const turn=((rotation%4)+4)%4, variant=cityArt.variants[0];
     const [x,y,w,h]=variant.rects[D[type].atlas];
     const clip=`und-city-${type}-${turn}`;
+    const base=R.shapeBounds(type,0),horizontal=base.w>base.h&&h>w;
+    const view=horizontal?`${h} ${w}`:`${w} ${h}`;
     // Nested viewports clip neighbouring sprites even when the plot is wide.
-    return `<svg class="${cls} undeadBuildingArt" data-undead-building="${type}" data-art-rotation="${turn}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${D[type].name}"><svg width="${w}" height="${h}" viewBox="${x} ${y} ${w} ${h}" overflow="hidden"><defs><clipPath id="${clip}"><path d="${variant.clips[D[type].atlas]}"/></clipPath></defs><image href="${assetUrl(variant.file)}" width="${variant.width}" height="${variant.height}" clip-path="url(#${clip})"/></svg></svg>`;
+    return `<svg class="${cls} undeadBuildingArt" data-undead-building="${type}" data-art-rotation="${turn}" viewBox="0 0 ${view}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${D[type].name}"><g${horizontal?` transform="translate(0 ${w}) rotate(-90)"`:''}><svg width="${w}" height="${h}" viewBox="${x} ${y} ${w} ${h}" overflow="hidden"><defs><clipPath id="${clip}"><path d="${variant.clips[D[type].atlas]}"/></clipPath></defs><image href="${assetUrl(variant.file)}" width="${variant.width}" height="${variant.height}" clip-path="url(#${clip})"/></svg></g></svg>`;
   };
   R.undBuildingImage = image;
   const renderCity = R.renderCity;
@@ -58,7 +60,8 @@ export function initializeUndeadArt(R) {
   const sprite = R.buildingSpriteHTML;
   R.buildingSpriteHTML = (type, rotation = 0, bounds = null) => {
     if (!D[type] || (type === 'keep' && !isUndead(artCity || R.P))) return sprite(type, rotation, bounds);
-    return `<span class="bspriteWrap undMapSprite"><span class="undMapPlane">${image(type, '', rotation)}</span></span>`;
+    const base=R.shapeBounds(type,0),box=bounds||R.shapeBounds(type,rotation),turn=((rotation%4)+4)%4;
+    return `<span class="bspriteWrap undMapSprite"><span class="undMapPlane" style="width:${base.w/box.w*100}%;height:${base.h/box.h*100}%;transform:translate(-50%,-50%) rotate(${turn*90}deg)">${image(type, '', rotation)}</span></span>`;
   };
   for (const method of ['cardBuildingImageTag', 'buildingImageTag']) {
     const previous = R[method];

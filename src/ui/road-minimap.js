@@ -1,10 +1,12 @@
+import { formatMetres } from '../world/measurements.js';
 // One small canvas, refreshed at 10 Hz; no per-unit DOM or retained snapshots.
 export function installRoadMinimap(R) {
   const map = document.createElement('canvas'), g = map.getContext('2d');
   map.id = 'roadMinimap'; map.tabIndex = 0;
   map.setAttribute('role', 'slider'); map.setAttribute('aria-orientation', 'horizontal');
   map.setAttribute('aria-label', 'Minitérkép – pályamozgatás'); map.setAttribute('aria-valuemin', '0');
-  map.title = 'Minitérkép · Kattints vagy húzd a nézet mozgatásához · Nyilak / Home / End';
+  map.title = `Út: ${formatMetres(R.PATH_LENGTH)} · Kattints vagy húzd a nézet mozgatásához · Nyilak / Home / End`;
+  map.setAttribute('aria-description',`Az út hossza ${formatMetres(R.PATH_LENGTH)}.`);
   R.$('.command').append(map);
   let width = 0, height = 0, last = -Infinity, dragging = null;
   R.roadLayoutMinimap = () => {
@@ -47,6 +49,8 @@ export function installRoadMinimap(R) {
     const left = pad + R.roadWar.scrollLeft / world * w;
     g.strokeStyle = '#fff0b8'; g.lineWidth = 1;
     g.strokeRect(left, pad - 1, Math.min(visible / world * w, width - pad - left), h + 2);
+    const label=`Út: ${formatMetres(R.PATH_LENGTH)}`;g.font='700 12px system-ui';g.textAlign='center';g.textBaseline='middle';
+    const labelWidth=g.measureText(label).width+12;g.fillStyle='#0c170ff0';g.fillRect(width/2-labelWidth/2,height-21,labelWidth,17);g.fillStyle='#fff0b8';g.fillText(label,width/2,height-12);
     const max = Math.max(0, R.roadWar.scrollWidth - R.roadWar.clientWidth);
     map.setAttribute('aria-valuemax', String(max));
     map.setAttribute('aria-valuenow', String(Math.round(R.roadWar.scrollLeft)));

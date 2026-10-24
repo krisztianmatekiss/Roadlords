@@ -2,6 +2,7 @@ import { cardFrameUrl, frameImage, cardTextBackdrop, constructionPrice, producti
 import { symbolizeResourceHtml } from './resource-symbols.js';
 import { UNIT_COPY } from './unit-copy.js';
 import { upgradeMetricLabel } from './upgrade-copy.js';
+import { formatMetres, formatSpeed } from '../world/measurements.js';
 import cardRules from '../data/card-rules.json';
 
 const BUILDING_RULES = {
@@ -72,7 +73,7 @@ export function createCodexCards(R) {
   }
   function unit(key, u, race) {
     const copy=UNIT_COPY[key] || {role:'Harci egység',ability:u.description || ''};
-    const stats = [['Életerő', u.hp], [key==='und_lich'?'Sugár / mp':'Sebzés', u.damage], [key==='und_lich'?'Új sugár':'Támadásköz', `${u.cooldown.toLocaleString('hu-HU')} mp`], ['Hatótáv', u.range], ['Mozgás', u.speed], ...(u.heal ? [['Gyógyítás', u.heal]] : u.buildingDamage ? [['Épületsebzés',u.buildingDamage]] : [])];
+    const stats = [['Életerő', u.hp], [key==='und_lich'?'Sugár / mp':'Sebzés', u.damage], [key==='und_lich'?'Új sugár':'Támadásköz', `${u.cooldown.toLocaleString('hu-HU')} mp`], ['Hatótáv', formatMetres(u.range)], ['Mozgás', formatSpeed(u.speed)], ...(u.heal ? [['Gyógyítás', u.heal]] : u.buildingDamage ? [['Épületsebzés',u.buildingDamage]] : u.aoe ? [['Területi sugár',formatMetres(u.aoe)]] : [])];
     const body = `<p class="lexUnitAbility">${effectText(copy.ability)}</p><div class="lexUnitStats">${stats.map(([name,value]) => `<div><span>${esc(name)}</span><b>${effectText(value)}</b></div>`).join('')}</div>`;
     const details=copy.details?.length ? `<details class="lexBranches lexUnitDetails"><summary>Részletek</summary><ul>${copy.details.map(line=>`<li>${effectText(line)}</li>`).join('')}</ul></details>` : '';
     return `<article class="rlCodexCard lexUnitCard" data-codex-unit="${key}" data-race="${race}">${face({id:key,kind:'unit',race,name:u.name,category:'military',art:R.unitImageTag(key,'lexUnitImg'),body,meta:`<span class="rlChip">${esc(copy.role)}</span><span class="rlChip">${esc(costText(u.cost, race))}</span>`})}${details}</article>`;

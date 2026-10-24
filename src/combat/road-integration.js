@@ -6,6 +6,7 @@ import { gateExitOffset } from '../world/gate-exits.js';
 import { installRoadCities } from '../ui/road-cities.js';
 import { installBuildingFootprints } from '../ui/building-footprints.js';
 import { installRoadMinimap } from '../ui/road-minimap.js';
+import { drawRoadScale } from '../rendering/road-scale.js';
 export function initializeCombatRoadIntegration(runtime) {
   runtime.ROAD = {
     city: 440,
@@ -269,9 +270,11 @@ export function initializeCombatRoadIntegration(runtime) {
     runtime.ROAD.camera = viewportX + (runtime.ROAD.w - runtime.ROAD.w / runtime.ROAD.zoom) / 2;
     runtime.canvas.style.transform = 'translateX(' + viewportX + 'px)';
     drawBattleGround(runtime);
+    drawRoadScale(runtime);
+    runtime.drawTowerRangeV496();
     for (const t of runtime.towers) {
       const x = runtime.pointAt(t.lane).x;
-      if (x > -70 && x < runtime.ROAD.w + 70) runtime.drawTower(t);
+      if (x > -150 && x < runtime.ROAD.w + 150) runtime.drawTower(t);
     }
     let n = 0;
     for (const d of runtime.ROAD.dead) {

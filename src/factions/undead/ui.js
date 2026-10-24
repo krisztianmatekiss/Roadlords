@@ -5,6 +5,7 @@ import {
   UNDEAD_RULES,
 } from '../../data/undead.js';
 import { isUndead } from './foundation.js';
+import { formatMetres, formatSpeed, metricDescription } from '../../world/measurements.js';
 export function initializeUndeadUi(R) {
   for (const select of document.querySelectorAll('#soloRace,#aiRace,#mpRace')) {
     const option = document.createElement('option');
@@ -129,7 +130,7 @@ export function initializeUndeadUi(R) {
     if (!U[key]) return stats(c, key);
     const s = R.statsFor(c, { key }),
       u = U[key];
-    return `<div class="unitgrid"><div class="unitstat"><span>Életerő</span><b>${s.hp.toFixed(0)}</b></div><div class="unitstat"><span>${key === 'und_lich' ? 'Kezdeti sugár / mp' : 'Sebzés'}</span><b>${s.dmg.toFixed(1)}</b></div><div class="unitstat"><span>Hatótáv</span><b>${s.range}</b></div><div class="unitstat"><span>Egység ára</span><b>${u.souls} Lélek</b></div></div><p class="undUnitMechanic">${u.description}</p>`;
+    return `<div class="unitgrid"><div class="unitstat"><span>Életerő</span><b>${s.hp.toFixed(0)}</b></div><div class="unitstat"><span>${key === 'und_lich' ? 'Kezdeti sugár / mp' : 'Sebzés'}</span><b>${s.dmg.toFixed(1)}</b></div><div class="unitstat"><span>Hatótáv</span><b>${formatMetres(s.range)}</b></div><div class="unitstat"><span>Mozgás</span><b>${formatSpeed(s.speed)}</b></div><div class="unitstat"><span>Egység ára</span><b>${u.souls} Lélek</b></div></div><p class="undUnitMechanic">${metricDescription(u.description)}</p>`;
   };
   const short = R.buildCardShortDescV41004;
   R.buildCardShortDescV41004 = (type) =>

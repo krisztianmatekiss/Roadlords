@@ -1,4 +1,12 @@
-# Roadlords · V4.33.0
+# Roadlords · V4.34.0
+
+## V4.34.0 – Hosszabb út és méteres kijelzések
+
+Az út 4800-ról 9600 belső egységre nőtt. Az egységes kijelzési lépték 10 belső egység = 1 méter: a régi út így 480 m-nek felel meg, az új 960 m. Az egységek sebessége, támadási hatótávja és a harci területek sugara változatlan értékből jelenik meg m/s-ban és méterben. A városrács hatókörei továbbra is mezőszámot használnak. Az út melletti beosztás és a minitérkép a távolságot is mutatja.
+
+A nagyobb tornyok teljes látható testükön kijelölhetők. Kijelöléskor a tényleges, fejlesztett hatótávú útszakasz kap sárga jelzést, méteres értékkel; az adatlap a sáv mellé kerül. A két multiplayer kliens az út hosszát is egyezteti, így eltérő pályaverzióval nem indul hibás koordinátatükrözés.
+
+Az élőhalott városi képeket az ork épületekhez hasonló, tetőt hangsúlyozó felülnézet váltotta. A közel felülnézeti képek a városrács síkjában fordulnak, a többi fajhoz igazodva. Kontár építkezés: felvételenként +12 százalékpont teljesár-visszatérítési esély, legfeljebb 60% (5 felvétel).
 
 ## V4.33.0 – Élőhalott városok és önálló leírások
 

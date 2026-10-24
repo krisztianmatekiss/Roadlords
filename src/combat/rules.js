@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { formatMetres, formatSpeed } from '../world/measurements.js';
 export function register(runtime) {
   runtime.unitImageTag = function unitImageTag(key, cls = 'unitPortrait') {
     const src = runtime.UNIT_IMAGES[key];
@@ -798,10 +799,10 @@ export function register(runtime) {
         physical: 'fizikai',
         magic: 'mágikus'
       },
-      stats = [['HP', Math.round(s.hp)], ['Sebzés', Number(s.dmg.toFixed(1))], ['Támadás/mp', aps.toFixed(2)], ['Hatótáv', Math.round(s.range)], ['Mozgás', Number(s.speed.toFixed(1))]];
+      stats = [['HP', Math.round(s.hp)], ['Sebzés', Number(s.dmg.toFixed(1))], ['Támadás/mp', aps.toFixed(2)], ['Hatótáv', formatMetres(s.range)], ['Mozgás', formatSpeed(s.speed)]];
     if (s.buildingDamage !== s.dmg) stats.push(['Épületsebzés', Number(s.buildingDamage.toFixed(1))]);
     if (key === 'priest') stats.push(['Gyógyítás', Number(s.heal.toFixed(1))]);
-    if (s.aoe) stats.push(['Területi sugár', Number(s.aoe.toFixed(1))]);
+    if (s.aoe) stats.push(['Területi sugár', formatMetres(s.aoe)]);
     return `<div class="unitgrid">${stats.map(([label, value]) => `<div class="unitstat"><span>${label}</span><b>${value}</b></div>`).join('')}</div><div class="spawnCosts"><span>Egységköltség</span><b>${runtime.resourceCostHTML(runtime.unitCost(c, key), true)}</b></div><div class="unitcostrow"><span>Típus</span><b>${cats[base.cat] || base.cat} · ${types[base.damageType] || base.damageType}</b></div>`;
   };
   runtime.unitMixCounts = function unitMixCounts(entries) {

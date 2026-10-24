@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.33.0',
-  label: 'V4.33.0 · ÉLŐHALOTT VÁROSOK',
-  title: 'Roadlords – Élőhalott városok',
+  version: '4.34.0',
+  label: 'V4.34.0 · MÉTERES CSATATÉR',
+  title: 'Roadlords – Méteres csatatér',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

@@ -5,6 +5,7 @@ import { createBuildingCardCopy } from './building-card-copy.js';
 import cardRules from '../data/card-rules.json';
 import { fitCardText } from './card-text-fit.js';
 import { resourceIcon, symbolizeResources } from './resource-symbols.js';
+import { metricDescription } from '../world/measurements.js';
 
 export const escapeText = (s) => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -112,7 +113,7 @@ function numberTone(input, match) {
 }
 
 export function effectText(text) {
-  const input = String(text ?? '');
+  const input = metricDescription(text);
   const terms = [...input.matchAll(mechanics)];
   const tokens = /[+−-]?\d+(?:[,.]\d+)?(?:\s?[%×])?|mérg\p{L}*|méreg\p{L}*|tűz\p{L}*|égés\p{L}*|égési\p{L}*|fagy\p{L}*|lassít\p{L}*|vérz\p{L}*|átok\p{L}*|átk\p{L}*|pajzs\p{L}*|gyógy\p{L}*|regener\p{L}*/giu;
   let out = '', end = 0;

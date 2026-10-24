@@ -36,7 +36,7 @@ export function initializeFactionsOrcRelics(runtime) {
     orc_ram: 'orc_ram',
     orc_troll: 'orc_troll'
   };
-  const extras = [['crit', 'Kritikus csapások', 'Minden egységed +4 százalékpont kritikus esélyt kap. A kritikus találat dupla sebzést okoz; 100% fölött további duplázás is lehetséges.'], ['blessing', 'Véletlen áldás', 'Az új egységeid +2,5 százalékpont eséllyel kapnak 40 másodperces áldást: +20% sebzést, támadási sebességet, mozgást vagy életerőt; −20% kapott sebzést; vagy fokozatosan gyengülő regenerációt.'], ['refund', 'Kontár építkezés', 'Az új épületek +10 százalékpont eséllyel visszaadják teljes építési árukat. Legfeljebb 50% esély.'], ['loot', 'Hadizsákmány', 'Ellenséges egység halálakor +10 százalékpont eséllyel kapsz 2 fát, 2 követ és 2 élelmet. Legfeljebb 100% esély.'], ['cargo', 'Tágasabb ostromgépek', 'A Trójai kos további 4 gyalogost szállíthat.']];
+  const extras = [['crit', 'Kritikus csapások', 'Minden egységed +4 százalékpont kritikus esélyt kap. A kritikus találat dupla sebzést okoz; 100% fölött további duplázás is lehetséges.'], ['blessing', 'Véletlen áldás', 'Az új egységeid +2,5 százalékpont eséllyel kapnak 40 másodperces áldást: +20% sebzést, támadási sebességet, mozgást vagy életerőt; −20% kapott sebzést; vagy fokozatosan gyengülő regenerációt.'], ['refund', 'Kontár építkezés', 'Az új épületek +12 százalékpont eséllyel visszaadják teljes építési árukat. Legfeljebb 60% esély.'], ['loot', 'Hadizsákmány', 'Ellenséges egység halálakor +10 százalékpont eséllyel kapsz 2 fát, 2 követ és 2 élelmet. Legfeljebb 100% esély.'], ['cargo', 'Tágasabb ostromgépek', 'A Trójai kos további 4 gyalogost szállíthat.']];
   for (const [id, name, description] of extras) runtime.NORMAL.push({
     id: 'orc_' + id,
     name,
@@ -170,7 +170,7 @@ export function initializeFactionsOrcRelics(runtime) {
   const oldPlace = runtime.placeBuilding;
   runtime.placeBuilding = function (c, ...args) {
     const out = oldPlace(c, ...args);
-    if (out?.ok && orc(c) && Math.random() < Math.min(.5, .1 * runtime.countNormal(c, 'orc_refund'))) {
+    if (out?.ok && orc(c) && Math.random() < Math.min(ORC_BALANCE.buildingRefundMaximum, ORC_BALANCE.buildingRefundPerStack * runtime.countNormal(c, 'orc_refund'))) {
       gain(c, out.price || out.building.paidCost);
       out.building.paidCost = runtime.C();
       if (c === runtime.P) runtime.toast('Kontár építkezés: az építési ár visszajárt.');

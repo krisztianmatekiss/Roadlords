@@ -1,4 +1,6 @@
 import { NORMAL_COPY, LEGENDARY_COPY, BUILDING_COPY, BRANCH_COPY } from '../data/upgrade-copy.js';
+import { formatMetres, formatSpeed } from '../world/measurements.js';
+import { ORC_BALANCE } from '../data/combat-balance.js';
 
 const NORMAL_LIMITS = { building_discount: 5, orc_double: 20, orc_blessing: 40, orc_refund: 5, orc_loot: 10 };
 const LEGEND_LIMITS = { sword_execute: 5, magic_order: 4, tavern_chain: Infinity, strategic_superiority: Infinity };
@@ -34,7 +36,7 @@ const MODIFIERS = {
   orc_troll_regen: scalar('A lap regenerációja', n => 5 * n, ' életerő/mp'),
   orc_crit: n => ({ label: 'Kritikus esély e lapból', value: percent(4 * n) }),
   orc_blessing: n => ({ label: 'Áldás esélye', value: percent(Math.min(100, 2.5 * n)) }),
-  orc_refund: n => ({ label: 'Visszatérítés esélye', value: percent(Math.min(50, 10 * n)) }),
+  orc_refund: n => ({ label: 'Visszatérítés esélye', value: percent(100 * Math.min(ORC_BALANCE.buildingRefundMaximum, ORC_BALANCE.buildingRefundPerStack * n)) }),
   orc_loot: n => ({ label: 'Zsákmány esélye', value: percent(Math.min(100, 10 * n)) }),
   orc_cargo: scalar('Trójai kos utasférőhelye', n => 10 + 4 * n)
 };
@@ -80,7 +82,8 @@ export function initializeUiUpgradeCopy(R) {
         for (const [metric, [label, suffix]] of Object.entries(METRICS)) {
           if (metric === 'buildingDamage' && !['catapult', 'orc_ram'].includes(key)) continue;
           if (!Number.isFinite(before[metric]) || !Number.isFinite(after[metric]) || Math.abs(before[metric] - after[metric]) < 1e-8) continue;
-          rows.push({ label, before: format(before[metric]) + suffix, after: format(after[metric]) + suffix });
+          const value=n=>metric==='speed'?formatSpeed(n):['range','aoe'].includes(metric)?formatMetres(n):format(n)+suffix;
+          rows.push({ label, before: value(before[metric]), after: value(after[metric]) });
         }
         context = `${R.UNITS[key].name} · városi fejlesztésekkel, veterán és ideiglenes bónuszok nélkül.`;
         if (id === 'all_damage') {

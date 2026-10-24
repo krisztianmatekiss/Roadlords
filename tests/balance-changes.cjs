@@ -59,6 +59,18 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     check('Troll breeding still halves both primary and secondary damage', near(result.breeding.damage[0], 55) && near(result.breeding.damage[1], 17.5));
     check('The separate Earthshaker third hit retains full damage, expanded radius and stun', result.quake.damage.join() === '110,110,110' && result.quake.stun.every(t => near(t, 1)));
     check('Player-facing descriptions match the new 35 splash and 50% Goblin bonus', result.copy.troll.includes('35-öt') && result.copy.goblin.includes('+50% sebzést') && !result.copy.goblin.includes('+100%'));
+    const refunds=await page.evaluate(()=>{
+      const R=__ROADLORDS_RUNTIME__,results=[];
+      for(const [stacks,roll] of [[1,.119],[1,.121],[5,.599],[5,.601],[20,.65]]){
+        R.roadResetCity(R.P,'orc');R.P.buildings=R.P.buildings.filter(b=>b.type==='keep');R.P.buildings[0].row=R.P.buildings[0].col=0;R.P.terrain.fill(null);R.P.normal.orc_refund=stacks;R.P.resources=R.C(180,180,180);R.P.unlocked.add('orc_work');
+        const oldRandom=Math.random;Math.random=()=>roll;let built;try{built=R.placeBuilding(R.P,'orc_work',3,3,0)}finally{Math.random=oldRandom}
+        results.push({stacks,roll,ok:built.ok,refunded:built.ok&&Object.values(built.building.paidCost).every(n=>n===0)});
+      }
+      const def=R.NORMAL.find(o=>o.id==='orc_refund');R.P.normal.orc_refund=4;const preview=R.upgradeCopyPreview(R.P,{...def,kind:'normal'});R.P.normal.orc_refund=5;
+      return {results,preview,ineligible:!def.eligible(R.P)};
+    });report.refunds=refunds;
+    check('Kontár építkezés refunds the real construction price at 12% per stack and stops at 60%',refunds.results.every(x=>x.ok)&&refunds.results.map(x=>x.refunded).join()==='true,false,true,false,false');
+    check('Refund text, 48% to 60% preview and five-pick limit agree with the buff',refunds.preview.description.includes('+12')&&refunds.preview.description.includes('60%')&&refunds.preview.rows[0].before==='48%'&&refunds.preview.rows[0].after==='60%'&&refunds.ineligible);
     check('No balance-change runtime errors', report.errors.length === 0);
   } finally { fs.mkdirSync('artifacts', { recursive: true }); fs.writeFileSync('artifacts/balance-changes.json', JSON.stringify(report, null, 2)); await browser.close(); }
 })().catch(e => { console.error(e); process.exitCode = 1; });

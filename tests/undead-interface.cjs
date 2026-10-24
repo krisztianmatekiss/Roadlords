@@ -114,18 +114,18 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       };
     });
     check(
-      'City sprites preserve their perspective instead of stretching or rotating flat',
+      'City sprites use a roof-plan view that follows the same rotations as other factions',
       await p.evaluate(() => {
         const el = document.querySelector('#playerGrid .undMapSprite .undeadBuildingArt'),
           b = el.getBoundingClientRect();
-        return b.height > 20 && el.getAttribute('preserveAspectRatio') === 'xMidYMid meet' && !getComputedStyle(el.parentElement).transform.includes('rotate');
+        return b.height > 20 && el.getAttribute('preserveAspectRatio') === 'xMidYMid meet';
       }),
     );
     check(
       'Generated atlas loads locally and contains real transparent artwork',
       await p.evaluate(async () => {
         const im = new Image();
-        im.src = new URL('art/undead/city-0.png', location.href).href;
+        im.src = new URL('art/undead/city-roofs.png', location.href).href;
         await im.decode();
         const c = document.createElement('canvas');
         c.width = im.width;

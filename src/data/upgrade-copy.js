@@ -55,7 +55,7 @@ export const NORMAL_COPY = Object.freeze({
   "orc_troll_regen": "A Troll regenerációja +5 életerő másodpercenként.",
   "orc_crit": "Minden egység +4 százalékpont kritikus esélyt kap.",
   "orc_blessing": "Az új egységek +2,5 százalékpont eséllyel véletlen áldást kapnak 40 mp-re.",
-  "orc_refund": "Építéskor +10 százalékpont esély a teljes ár visszatérítésére. Maximum: 50%.",
+  "orc_refund": "Építéskor +12 százalékpont esély a teljes ár visszatérítésére. Maximum: 60%.",
   "orc_loot": "Öléskor +10 százalékpont esély 2 fa, 2 kő és 2 élelem szerzésére. Maximum: 100%.",
   "orc_cargo": "A Trójai kos +4 gyalogost szállíthat."
 });

@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { metricDescription } from '../world/measurements.js';
 
 const MEAT = assetUrl('art/resources/meat.svg');
 const words = /(?<!\p{L})(?:(?:fa|kő|élelem|lélek)(?=termel|bevétel|költség|fogyaszt|fenntart)|(?:fából|fát|fa|követ|kőből|kő|élelmiszert|élelmet|élelem|kaját|kaja|húst|hús|lelkeket|lelkek|lélekből|lelket|lélek)(?!\p{L}))/giu;
@@ -25,6 +26,8 @@ export function symbolizeResources(root, R, race = R.P?.race) {
   for (const text of nodes) {
     const parent=text.parentElement;
     if (!parent || parent.closest(excluded)) continue;
+    const measured=metricDescription(text.textContent);
+    if (measured!==text.textContent) text.textContent=measured;
     const matches=[...text.textContent.matchAll(words)];
     if (!matches.length) continue;
     const faction=parent.closest('[data-race]')?.dataset.race || race;

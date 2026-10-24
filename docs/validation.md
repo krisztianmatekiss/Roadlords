@@ -1,3 +1,11 @@
+# V4.34.0 – méterek, hosszabb út, toronykijelölés
+
+A `road-measurements.cjs` a 9600 koordinátás / 960 méteres utat, az alapegységek változatlan értékeit, mindhárom faj m és m/s kijelzéseit, a fejlesztési előnézetek és egységadatlapok egységeit vizsgálja. Egy valódi másodpercnyi akadálytalan Kardos-mozgás továbbra is 42 koordináta, azaz 4,2 méter. A városrács mezőszámai és a százalékos bónuszok nem váltódnak át.
+
+A toronytetőn végzett valódi egérkattintás 75%, 100% és 150% zoomnál is megjeleníti a 16,5 m-es sávot és az adatlapot. A rajzolt határ egyezik a tényleges célpontkereséssel az út teljes szélességében. Toronykezelővel a sáv és az adatlap egyaránt 17,82 m-re frissül; bezáráskor eltűnik a jelzés. A multiplayer-helló az út hosszát is tartalmazza; eltérő méretű régi kliens frissítési üzenetet kap.
+
+Az élőhalott tetőnézeti atlasz forrását és kivágásait a manifest rögzíti. A hosszú és L alakú épületek négy síkbeli forgatása továbbra is egyezik az elfoglalt mezőkkel és az építési előnézettel. A Kontár építkezés valódi építési műveleteken, rögzített véletlen értékekkel kap ellenőrzést a 12%-os és 60%-os küszöb két oldalán; a maximum, a kártyaszöveg és a 48% → 60% előnézet együtt változik.
+
 # V4.33.0 – élőhalott városi képek és önálló leírások
 
 A `undead-art-and-copy.cjs` a húsz kártyát, a négy irányatlaszt és a nyolcvan érvényes nézetablakot ellenőrzi. Valódi építéssel vizsgálja a Hullaház és az L alakú Holtak kertje mind a négy forgatását: az elfoglalt mezők, az üres sarok, a megjelenített irány és az építési szellemkép együtt változik. Az atlaszoknak tényleges átlátszó hátterük és jól látható épületpixeleik vannak; a forrásfájlok SHA-256 értékét a manifest rögzíti.

@@ -55,7 +55,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    g.arc=(...a)=>{dots.push({a,color:g.fillStyle});arc(...a);};
    R.roadDrawMinimap(true);g.fillRect=rect;g.arc=arc;
    const w=canvas.getBoundingClientRect().width-8,world=R.PATH_LENGTH+R.ROAD.city*2;
-   const cities=rects.filter(r=>r.a[2]>10&&r.a[2]<canvas.width/2);
+   const cities=rects.filter(r=>r.a[3]>(canvas.getBoundingClientRect().height-8)*.8&&['player','enemy'].some(side=>r.color===R.unitTeamFill({side})));
    return {dots:dots.length,alive:R.state.units.filter(u=>u.alive).length,towers:rects.filter(r=>r.a[2]===3&&r.a[3]===6).length,liveTowers:R.towers.filter(t=>t.alive).length,cities:cities.length,
     correct:R.state.units.filter(u=>u.alive).every(u=>dots.some(d=>Math.abs(d.a[0]-(4+(R.ROAD.city+u.lane)/world*w))<.01&&d.color===R.unitTeamFill(u))),pixel: [...g.getImageData(Math.round(canvas.width/2),Math.round(canvas.height/2),1,1).data],canvas:[canvas.width,canvas.height],children:canvas.children.length};
   });report.draw=draw;

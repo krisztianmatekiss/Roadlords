@@ -2,15 +2,18 @@ import manifest from '../data/orc-card-manifest.json';
 import undeadManifest from '../data/undead-card-manifest.json';
 import { assetUrl } from '../assets/urls.js';
 import { createBuildingCardCopy } from './building-card-copy.js';
-import cardRules from '../data/card-rules.json';
 import { fitCardText } from './card-text-fit.js';
 import { resourceIcon, symbolizeResources } from './resource-symbols.js';
 import { metricDescription } from '../world/measurements.js';
+import { unitTraitIcons } from './unit-traits.js';
+import { commonFrameUrl, upgradeScene, hasUpgradeScene } from '../rendering/upgrade-card-art.js';
 
 export const escapeText = (s) => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 export function cardFrameUrl(id, kind, race) {
+  if (kind==='unit' || race==='undead' && kind==='normal') return commonFrameUrl(race);
+  if (race==='orc' && hasUpgradeScene(id)) return assetUrl(kind==='legendary' ? 'cards/orc/upgrades/orc_transfusion.webp' : 'cards/orc/upgrades/orc_as.webp');
   if (race === 'undead') {
     const building = ['building','building_upgrade','building_branch'].includes(kind);
     const file = undeadManifest.cards[`${building ? 'building' : 'upgrade'}:${id}`];
@@ -20,7 +23,6 @@ export function cardFrameUrl(id, kind, race) {
   const building = ['building', 'building_upgrade', 'building_branch'].includes(kind);
   let key = id;
   if (!building) {
-    if (['orc_wood','orc_stone','orc_food'].includes(id)) return cardFrameUrl(id === 'orc_food' ? 'orc_hunt' : 'orc_work','building',race);
     const family = id.match(/^(orc_(?:berserker|goblin|warg|shaman|ram|troll))_(?:hp|dmg)$/)?.[1];
     if (family) key = family + '_common';
     else key = ({ orc_warrior_hp: 'orc_hp', orc_warrior_dmg: 'orc_hp', orc_bleed: 'orc_hp',
@@ -58,7 +60,7 @@ export function productionFacts(R, c, type, level, {before = null, compact = fal
   const time = R.previewTrainingTime(c, type, level);
   const previous = before === null ? '' : `${fmt(R.previewTrainingTime(c, type, before))} → `;
   const cost = R.cardBuildingCopy.costText(R.unitCost(c, key), c.race).replace(/, /g, ' · ');
-  return `<div class="productionFacts${compact ? ' compact' : ''}"><div><span>${compact ? 'Képzés' : escapeText(R.UNITS[key].name)}</span> <b>◷ ${escapeText(previous + fmt(time))} mp</b></div><div><span>Egységár</span> <b>${escapeText(cost)}</b></div></div>`;
+  return `<div class="productionFacts${compact ? ' compact' : ''}"><div><span class="producerUnitName">${compact ? 'Képzés' : escapeText(R.UNITS[key].name)}${unitTraitIcons(R,key,c,'inlineTraits')}</span> <b>◷ ${escapeText(previous + fmt(time))} mp</b></div><div><span>Egységár</span> <b>${escapeText(cost)}</b></div></div>`;
 }
 
 export function buildingUpkeep(R,type) {
@@ -189,7 +191,6 @@ export function installCardPresentation(R) {
         art.insertAdjacentHTML('beforeend', productionFootprint(R,producerCity,o.id));
         card.insertAdjacentHTML('beforeend', uniqueBuildingMark(R,producerCity,o.id));
       }
-      if (cardRules[o.id]) card.title += `\n${cardRules[o.id]}`;
       card.classList.add('illustratedCard');
       card.dataset.race=R.P.race;
       card.insertAdjacentHTML('afterbegin', cardTextBackdrop);
@@ -207,6 +208,8 @@ export function installCardPresentation(R) {
         card.insertAdjacentHTML('afterbegin', frameImage(src));
         card.querySelector('.choiceArt')?.querySelectorAll(':scope > img, :scope > .undeadBuildingArt').forEach(el => el.remove());
       }
+      card.insertAdjacentHTML('beforeend',upgradeScene(R,o.id,o.kind,R.P.race));
+      if(o.kind==='normal'&&R.PICK_UNIT_IMAGES[o.id]) card.insertAdjacentHTML('beforeend',unitTraitIcons(R,R.PICK_UNIT_IMAGES[o.id],R.P,'cardPortraitTraits'));
       decorateEffects(body);
       symbolizeResources(card,R,R.P.race);
       fitCardText(card);

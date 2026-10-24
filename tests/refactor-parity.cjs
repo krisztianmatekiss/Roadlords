@@ -13,7 +13,11 @@ const BASE_URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/
    const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.goto(url,{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>!!window.__ROADLORDS_ROAD__);
    results.push(await page.evaluate(()=>{
-    const R=__ROADLORDS__,Q=__ROADLORDS_ROAD__;Q.startTest(42);Q.pause();
+    const R=__ROADLORDS__,Q=__ROADLORDS_ROAD__;
+    // Compare the same content pool with the archive. New V4.35 cards have dedicated live-combat tests.
+    const additions=new Set(['orc_cursed_damage','orc_move','orc_siege_damage','orc_lifesteal','orc_food_discount','orc_skip_power','orc_enemy_ancestors']);
+    for(const pool of [R.NORMAL,R.LEGENDARY])for(let i=pool.length-1;i>=0;i--)if(additions.has(pool[i].id))pool.splice(i,1);
+    Q.startTest(42);Q.pause();
     let seed=90210;Math.random=()=>((seed=(Math.imul(1664525,seed)+1013904223)>>>0)/4294967296);
     function snapshot(){return JSON.parse(JSON.stringify({pathLength:R.PATH_LENGTH,fixture:Q.snapshot().initial,time:R.state.time,counts:Q.snapshot().counts,units:R.state.units.map(u=>{
      const out={};for(const key of ['id','key','side','lane','offset','hp','maxHp','damage','buildingDamage','speed','range','heal','cooldown','cooldownTime','shield','alive']){const v=u[key];if(v!==undefined)out[key]=typeof v==='number'?Math.round(v*1e6)/1e6:v;}return out;
@@ -23,7 +27,7 @@ const BASE_URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/
    assert.deepEqual(errors,[],`Runtime errors in ${url}`);await page.close();
   }
   assert.deepEqual(results[1].cities,results[0].cities);assert.deepEqual(results[1].fixture,results[0].fixture);
-  console.log('PASS Archived and current games retain identical full cities and legal upgrade fixtures (seed 42)');
+  console.log('PASS Archived and current games retain identical full cities and legal upgrades for their shared content pool (seed 42)');
   assert.equal(results[1].units.length,results[0].units.length);
   const centreShift=(results[1].pathLength-results[0].pathLength)/2;
   assert.equal(results[1].pathLength,results[0].pathLength*2);

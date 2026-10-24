@@ -50,7 +50,7 @@ export function initializeFactionsOrcRelics(runtime) {
     return c.buildings.some(b => ['tavern', 'temple', 'armorsmith', 'alchemist', 'orc_altar', 'orc_overseer'].includes(b.type)) || Object.keys(c.normal || {}).some(k => k === 'orc_blessing' && c.normal[k] > 0) || runtime.state.units.some(u => u.alive && u.side === runtime.sideForCity(c) && (u.key === 'priest' || Object.values(u.orcPositive || {}).some(v => v > 0)));
   }
   function leechSource(c) {
-    return runtime.countNormal(c, 'orc_leech') > 0 || has(c, 'orc_altar') || runtime.hasBranch(c, 'orc_overseer', 'blood_horde');
+    return runtime.countNormal(c, 'orc_leech') > 0 || runtime.countNormal(c, 'orc_lifesteal') > 0 || has(c, 'orc_altar') || runtime.hasBranch(c, 'orc_overseer', 'blood_horde');
   }
   for (const [id, name, description, building] of relics) {
     runtime.LEGENDARY.push({

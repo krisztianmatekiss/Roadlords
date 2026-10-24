@@ -1,3 +1,13 @@
+# V4.35.0 – egységikonok és ork kiegészítések
+
+Az `orc-expansion-and-traits.cjs` mind az öt gyakori és két legendás lapot, a megépített épülethez kötött feltételeket és bontásukat vizsgálja. Mind a hét ork típuson ellenőrzi a mozgást, épületsebzést, életlopást és élelemárat. Valódi, időzített támadásokkal méri a ténylegesen sebzett életerőből számolt gyógyítást és a tornyok/főváros elleni sebzésbónuszt. A Sámán Sorvadás átkát a próbában tudatosan mellőzi, mert a maximális életerő csökkenése nem életlopásra jogosító találati sebzés.
+
+A Totemnél külön ellenőrzést kap a saját Troll 4 pontja, az új ereklye ellenségenkénti 1 pontja, az idővel eltűnő idézet és az inaktív épület. Valódi Kihagyás gombnyomás ellenőrzi az új legendást, az életerőarány megtartását, az ismételt kattintás és kezdőválasztás kizárását, valamint a 100 kihagyásnál is működő összeadódó bónuszt. A vendég stratégia és várossnapshot is hordozza a számlálót.
+
+Mindhárom faj hét egységportréján és mind a 24 élőhalott gyakori lapon ellenőrizhető a keret, kép és feliratos ikon. A megjelenési képek az `artifacts/ghost-common-frame.png`, `goblin-common-frame.png`, `ghost-dodge-upgrade.png`, `orc-food-discount-card.png` és `orc-skip-power-card.png` fájlok. A három új eredeti generált forrás méretét, nézetablakait és SHA-256 értékét a `src/data/upgrade-art-manifest.json` tartalmazza.
+
+Az archívummal végzett megőrzési próba azonos régi kínálattal hasonlítja össze a városokat és az 1000 egységet; a hét új lapot külön, valódi harci próbák fedik le. A többi kártyaillesztési és multiplayer-ellenőrzés megmarad.
+
 # V4.34.0 – méterek, hosszabb út, toronykijelölés
 
 A `road-measurements.cjs` a 9600 koordinátás / 960 méteres utat, az alapegységek változatlan értékeit, mindhárom faj m és m/s kijelzéseit, a fejlesztési előnézetek és egységadatlapok egységeit vizsgálja. Egy valódi másodpercnyi akadálytalan Kardos-mozgás továbbra is 42 koordináta, azaz 4,2 méter. A városrács mezőszámai és a százalékos bónuszok nem váltódnak át.

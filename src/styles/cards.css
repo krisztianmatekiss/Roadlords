@@ -34,6 +34,19 @@ html body .illustratedCard .upkeepFact.pickUpkeep.inText {
 }
 html body .illustratedCard .upkeepFact > b { font-size:1.08em !important; white-space:nowrap !important; }
 .sr-only { position:absolute !important; width:1px !important; height:1px !important; padding:0 !important; margin:-1px !important; overflow:hidden !important; clip-path:inset(50%); white-space:nowrap !important; }
+.unitTraits { display:inline-flex; align-items:center; flex-wrap:wrap; gap:.18em; vertical-align:middle; }
+.unitTrait { display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto; width:1.25em; height:1.25em; padding:.12em; box-sizing:content-box; border:1px solid #a7946977; border-radius:.23em; background:#101611ee; color:var(--trait-color); }
+.unitTrait svg { width:100%; height:100%; }
+.unitTrait:focus-visible { outline:2px solid #f2d384; outline-offset:2px; }
+.inlineTraits { font-size:.83em; margin-left:.3em; }
+.producerUnitName { display:inline-flex; align-items:center; flex-wrap:wrap; }
+.producerUnitName .unitTraits { font-size:.7em; }
+.unitPortraitFrame { position:relative; }
+.portraitTraits { position:absolute; left:4%; right:4%; bottom:4%; font-size:12px; z-index:2; }
+html body .illustratedCard .cardScene { position:absolute !important; left:4.6875% !important; top:13.28125% !important; width:90.625% !important; height:55.6% !important; padding:0 !important; margin:0 !important; max-height:none !important; overflow:hidden !important; z-index:0 !important; filter:url(#card-painterly); pointer-events:none; background:#121610; }
+html body .illustratedCard .unitCardScene { display:grid; place-items:center; }
+html body .illustratedCard .unitCardScene > img, html body .illustratedCard .unitCardScene > svg { width:100% !important; height:100% !important; max-width:none !important; max-height:none !important; object-fit:contain !important; }
+.cardPortraitTraits { position:absolute; bottom:32%; left:7%; right:7%; z-index:3 !important; font-size:4cqw; }
 .cardFrameImage {
   position: absolute !important; inset: 0 !important;
   width: 100% !important; height: 100% !important; max-height: none !important;

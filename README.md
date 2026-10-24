@@ -1,4 +1,12 @@
-# Roadlords · V4.34.0
+# Roadlords · V4.35.0
+
+## V4.35.0 – Egységjellemzők és ork fejlesztések
+
+A képzőépületeken az egység neve mellett közös, feliratos súgójú piktogramok jelzik a közelharcot, távolsági támadást, kitérést, mágiát, területsebzést, életlopást, idézést és a további tényleges képességeket. Az egységportrékon ugyanaz a jelrendszer látszik. A Goblin kitérésikonja az ehhez szükséges L4-ágnál jelenik meg. Mindhárom faj egységlapjai a gyakori lapok keretcsaládját használják; az élőhalott gyakori lapok semleges csont- és fémkeretet, a katonai épületek továbbra is vörös keretet kapnak.
+
+Öt új ork gyakori fejlesztés: +6% sebzés megátkozott egységek ellen, +5% mozgás, +15% épületsebzés, +3 százalékpont életlopás, −8 százalékpont élelemköltség legfeljebb −50%-ig. Az átoksebzéshez megépített Sámántábor szükséges. A Megvetett zsákmány felvétele utáni kihagyások +4% életerőt és sebzést adnak, korlátlanul összeadódva. Az Ellenségvér az ősöknek megépített Totemet igényel, és minden ellenséges harci halált további 1 pontként számol. Az alap Totem saját halálokból és áldozatokból gyűjt.
+
+Az új és hiányzó ork fejlesztési képek, valamint az élőhalott gyakori fejlesztések képei helyi atlaszokból jelennek meg. A forrásképek változatlanok; nézetablakok választják ki az illusztrációkat. A lexikon lenyitható részletei pontosítják a kiváltó találatokat és a számlálás szabályait. A multiplayer helló a szabályverziót is egyezteti, így az új lapokat nem ismerő gyorsítótárazott kliens frissítést kér.
 
 ## V4.34.0 – Hosszabb út és méteres kijelzések
 

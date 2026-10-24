@@ -1,0 +1,158 @@
+{
+  "sources": {
+    "undead-common": {
+      "file": "art/undead/common-atlas.png",
+      "width": 1448,
+      "height": 1086,
+      "columns": 4,
+      "rows": 3,
+      "sha256": "4ee38e8d447e9de7674afc76fce4b4178db0ce345f2504c743dc2fa823dcca82"
+    },
+    "orc-expansion": {
+      "file": "art/orc-upgrades-atlas.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "28ccf126b691b12443f2bfd7d8c4837d84a6af69775dcbe352e5cb0c8d719203"
+    },
+    "common-frame": {
+      "file": "cards/undead/common-frame.png",
+      "width": 1024,
+      "height": 1536,
+      "columns": 1,
+      "rows": 1,
+      "sha256": "fb69ce7e5e8fca8630bc3d8341d63e7ed6384de3df50b373dbcea84145d10e69"
+    }
+  },
+  "scenes": {
+    "gen_soul_frugal": {
+      "source": "undead-common",
+      "index": 0
+    },
+    "gen_soul_abundance": {
+      "source": "undead-common",
+      "index": 1
+    },
+    "gen_graveyard_capacity": {
+      "source": "undead-common",
+      "index": 2
+    },
+    "gen_military_speed": {
+      "source": "undead-common",
+      "index": 3
+    },
+    "gen_build_discount": {
+      "source": "undead-common",
+      "index": 4
+    },
+    "garden_chance": {
+      "source": "undead-common",
+      "index": 5
+    },
+    "skeleton_common_ranged_res": {
+      "source": "undead-common",
+      "index": 6
+    },
+    "zombie_common_poison": {
+      "source": "undead-common",
+      "index": 7
+    },
+    "ghost_common_dodge": {
+      "source": "undead-common",
+      "index": 8
+    },
+    "necro_common_summon_stats": {
+      "source": "undead-common",
+      "index": 9
+    },
+    "vampire_common_lifesteal": {
+      "source": "undead-common",
+      "index": 10
+    },
+    "lich_common_respawn": {
+      "source": "undead-common",
+      "index": 11
+    },
+    "orc_cursed_damage": {
+      "source": "orc-expansion",
+      "index": 0
+    },
+    "orc_move": {
+      "source": "orc-expansion",
+      "index": 1
+    },
+    "orc_siege_damage": {
+      "source": "orc-expansion",
+      "index": 2
+    },
+    "orc_lifesteal": {
+      "source": "orc-expansion",
+      "index": 3
+    },
+    "orc_food_discount": {
+      "source": "orc-expansion",
+      "index": 4
+    },
+    "orc_skip_power": {
+      "source": "orc-expansion",
+      "index": 5
+    },
+    "orc_enemy_ancestors": {
+      "source": "orc-expansion",
+      "index": 6
+    },
+    "orc_shaman_common": {
+      "source": "orc-expansion",
+      "index": 7
+    },
+    "orc_last_blood": {
+      "source": "orc-expansion",
+      "index": 8
+    },
+    "orc_curse_master": {
+      "source": "orc-expansion",
+      "index": 9
+    },
+    "orc_curse_spread": {
+      "source": "orc-expansion",
+      "index": 10
+    },
+    "orc_crowded_huts": {
+      "source": "orc-expansion",
+      "index": 11
+    },
+    "orc_cargo": {
+      "source": "orc-expansion",
+      "index": 12
+    },
+    "orc_wood": {
+      "source": "orc-expansion",
+      "index": 13
+    },
+    "orc_stone": {
+      "source": "orc-expansion",
+      "index": 14
+    },
+    "orc_food": {
+      "source": "orc-expansion",
+      "index": 15
+    },
+    "orc_bers_rage": {
+      "source": "orc-expansion",
+      "index": 8
+    },
+    "orc_shaman_hp": {
+      "source": "orc-expansion",
+      "index": 7
+    },
+    "orc_shaman_dmg": {
+      "source": "orc-expansion",
+      "index": 7
+    },
+    "orc_curse_duration": {
+      "source": "orc-expansion",
+      "index": 7
+    }
+  }
+}

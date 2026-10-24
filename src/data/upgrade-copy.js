@@ -1,5 +1,7 @@
 // Player-facing copy, independent of the preserved legacy initialization order.
+import { ORC_COMMON_ADDITIONS, ORC_LEGEND_ADDITIONS } from './orc-expansion.js';
 export const NORMAL_COPY = Object.freeze({
+  ...Object.fromEntries(ORC_COMMON_ADDITIONS.map(([id,,text])=>[id,text])),
   "spawn_speed": "A katonai épületek képzési sebessége +10%.",
   "production": "Minden nyersanyag alaptermelése +10%.",
   "all_damage": "Minden saját egység sebzése és a Papok gyógyítása +5%.",
@@ -61,6 +63,7 @@ export const NORMAL_COPY = Object.freeze({
 });
 
 export const LEGENDARY_COPY = Object.freeze({
+  ...Object.fromEntries(ORC_LEGEND_ADDITIONS.map(([id,,text])=>[id,text])),
   "chain_spawn": "Egység elkészülésekor 25% eséllyel egy másik katonai épület ingyenes egységet ad.",
   "siege_doctrine": "Minden nem ostromegységed +100% sebzést okoz épületeknek.",
   "melee_doctrine": "Közelharcosok: dupla sebzés. Minden más egység sebzése 0.",

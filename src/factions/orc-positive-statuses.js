@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { ORC_EXPANSION } from '../data/orc-expansion.js';
 export function initializeFactionsOrcPositiveStatuses(runtime) {
   const O = window.__ROADLORDS_ORCS__;
   const defs = {
@@ -97,7 +98,7 @@ export function initializeFactionsOrcPositiveStatuses(runtime) {
   };
   function lifeStealRate(c, key) {
     if (!O.isOrc(c)) return 0;
-    return (key === 'orc_berserker' && runtime.countNormal(c, 'orc_leech') ? .03 + .02 * runtime.countNormal(c, 'orc_leech') : 0) + ((c.orcSupport?.lifestealUntil || 0) > runtime.state.time ? .25 : 0) + (runtime.hasBranch(c, 'orc_overseer', 'blood_horde') && c.buildings.some(b => b.type === 'orc_overseer' && !b.inactive) ? .08 : 0);
+    return ORC_EXPANSION.lifesteal * runtime.countNormal(c, 'orc_lifesteal') + (key === 'orc_berserker' && runtime.countNormal(c, 'orc_leech') ? .03 + .02 * runtime.countNormal(c, 'orc_leech') : 0) + ((c.orcSupport?.lifestealUntil || 0) > runtime.state.time ? .25 : 0) + (runtime.hasBranch(c, 'orc_overseer', 'blood_horde') && c.buildings.some(b => b.type === 'orc_overseer' && !b.inactive) ? .08 : 0);
   }
   const oldStats = runtime.statsFor;
   runtime.statsFor = function (c, e) {

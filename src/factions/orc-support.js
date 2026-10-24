@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { ORC_EXPANSION } from '../data/orc-expansion.js';
 export function initializeFactionsOrcSupport(runtime) {
   const O = window.__ROADLORDS_ORCS__,
     isOrc = O.isOrc;
@@ -81,6 +82,7 @@ export function initializeFactionsOrcSupport(runtime) {
       const own = runtime.cityForSide(u.side),
         enemy = u.side === 'player' ? runtime.E : runtime.P;
       recordDeath(own, O.deathWeight(u));
+      if (runtime.hasLeg(enemy, 'orc_enemy_ancestors')) recordDeath(enemy, 1);
       if (active(enemy, 'orc_slave')) data(enemy).slaveKills++;
     }
     return out;
@@ -123,7 +125,7 @@ export function initializeFactionsOrcSupport(runtime) {
     if (!u?.alive || u.orcDeathDefiance || damage <= 0) return;
     const c = runtime.cityForSide(u.side);
     if (!isOrc(c)) return;
-    const rate = ((c.orcSupport?.lifestealUntil || 0) > runtime.state.time ? .25 : 0) + (runtime.hasBranch(c, 'orc_overseer', 'blood_horde') && active(c, 'orc_overseer') ? .08 : 0);
+    const rate = ORC_EXPANSION.lifesteal * runtime.countNormal(c, 'orc_lifesteal') + ((c.orcSupport?.lifestealUntil || 0) > runtime.state.time ? .25 : 0) + (runtime.hasBranch(c, 'orc_overseer', 'blood_horde') && active(c, 'orc_overseer') ? .08 : 0);
     if (O.lifeSteal) O.lifeSteal(u, damage * rate);else u.hp = Math.min(u.maxHp, u.hp + damage * rate);
   };
   const oldDamage = runtime.damageUnit;

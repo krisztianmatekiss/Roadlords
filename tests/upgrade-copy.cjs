@@ -44,7 +44,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         factory: R.LEGENDARY.find(x => x.id === 'factory_network').description
       };
     }); report.audit = audit;
-    check('All 58 common and 85 legendary descriptions have final, jargon-free copy', audit.coverage.join() === '58,85,143' && audit.text);
+    check('All 63 common and 87 legendary descriptions have final, jargon-free copy', audit.coverage.join() === '63,87,150' && audit.text);
     check('All faction building roles, branches and Undead levels use concise text without workbook dumps or internal jargon', audit.conciseBuildings && audit.conciseBranches && audit.undeadCopy);
     check('All common cards provide a numeric preview without changing cities, units, towers or RNG', audit.pure && audit.rows);
     check('Human damage and priest healing previews use actual unit stats', audit.sword.rows.some(r => r.before === '12' && r.after === '13,2') && audit.priest.rows.some(r => r.before === '30' && r.after === '33'));

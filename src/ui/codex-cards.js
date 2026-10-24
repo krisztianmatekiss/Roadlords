@@ -4,6 +4,8 @@ import { UNIT_COPY } from './unit-copy.js';
 import { upgradeMetricLabel } from './upgrade-copy.js';
 import { formatMetres, formatSpeed } from '../world/measurements.js';
 import cardRules from '../data/card-rules.json';
+import { unitTraitIcons } from './unit-traits.js';
+import { upgradeScene } from '../rendering/upgrade-card-art.js';
 
 const BUILDING_RULES = {
   orc_overseer: 'Több Hajcsártábor nem gyorsítja tovább ugyanazt a tábort. A kezdő sérülés gyógyítható.',
@@ -11,13 +13,13 @@ const BUILDING_RULES = {
   orc_raider: 'L1: Harcos. L2: 65% Harcos, 35% Dühöngő. L3: 55% Harcos, 30% Dühöngő, 15% Warglovas. Az erősítés nem hív újabb erősítést.',
   orc_tunnel: 'Torony nélkül a kaput használja. Az egységek továbbra is foglalnak sereghelyet.',
   orc_altar: 'A feláldozott egységek nem vonulnak ki.',
-  orc_totem: 'Saját harci halál és oltári áldozat ad pontot. Legfeljebb 4 ajánlatból választhatsz.',
+  orc_totem: 'A saját egységek harci halála és az oltári áldozat ad halálpontot. Egy Troll 4 pontot ér, más egység 1-et. Az ellenségek halála alapból nem ad pontot. Csak megépített, aktív Totem gyűjt; bontáskor az összegyűlt pontok megmaradnak. Legfeljebb 4 legendás ajánlatból választhatsz.',
   orc_slave: 'A korábbi ölések is számítanak a tábor megépítésekor és fejlesztésekor.',
   hospital: 'Szabad helyőrségi férőhely szükséges.',
   und_dark_tower: 'Minden további Sötét Őrtorony +25%-kal növeli az összes ilyen torony alapfenntartását.',
   und_soul_anchor: 'Önmagára nem hat.',
   und_bone_forge: 'Csak harci halál számít. Az idézett Csontvázak halála is számít, az idővel eltűnésük nem.',
-  und_plague_chamber: 'Több Pestiskamra hatása összeadódik.',
+  und_plague_chamber: 'A saját élőhalott egységek életerőt sebző támadási találatai mérgeznek, beleértve az idézett egységeket és a területi támadások külön eltalált célpontjait. Kitért vagy teljesen pajzzsal kivédett találat nem mérgez. A méreg, égés és sugár folyamatos sebzése nem támadási találat. Több Pestiskamra hatása összeadódik.',
   und_corrupted_hatchery: 'A kezdő sérülés gyógyítható. Több Keltető közül csak a legerősebb hat.',
 };
 
@@ -32,7 +34,8 @@ export function createCodexCards(R) {
     : race === 'orc' && type === 'keep' ? window.__ROADLORDS_ORCS__.keepBranches : R.V4_BRANCHES[type] || [];
   function face({ id, kind, race, name, category, art, body, meta = '', price = '', footprint = '', mark = '', metaInBody = false }) {
     const src = cardFrameUrl(id, kind, race);
-    return symbolizeResourceHtml(`<div class="cardFace illustratedCard ${src ? 'hasCardFrame' : ''}" data-race="${race}" data-frame="${category || 'support'}">${frameImage(src)}${cardTextBackdrop}
+    const unitKey=kind==='unit'?id:kind==='normal'?R.PICK_UNIT_IMAGES[id]:null;
+    return symbolizeResourceHtml(`<div class="cardFace illustratedCard ${src ? 'hasCardFrame' : ''}" data-race="${race}" data-frame="${category || 'support'}">${frameImage(src)}${upgradeScene(R,id,kind,race)}${unitKey?unitTraitIcons(R,unitKey,null,'cardPortraitTraits'):''}${cardTextBackdrop}
       <header class="rlCodexCardHead"><span class="rlCodexIcon">${src ? '' : art}${footprint}</span><div class="rlCodexTitle"><h3>${esc(name)}</h3></div></header>
       ${price}${mark}${metaInBody ? '' : `<div class="rlCodexMeta">${meta}</div>`}<div class="rlCodexContent">${body}${metaInBody ? `<div class="productionMeta">${meta}</div>` : ''}</div></div>`,R,race);
   }
@@ -76,7 +79,7 @@ export function createCodexCards(R) {
     const stats = [['Életerő', u.hp], [key==='und_lich'?'Sugár / mp':'Sebzés', u.damage], [key==='und_lich'?'Új sugár':'Támadásköz', `${u.cooldown.toLocaleString('hu-HU')} mp`], ['Hatótáv', formatMetres(u.range)], ['Mozgás', formatSpeed(u.speed)], ...(u.heal ? [['Gyógyítás', u.heal]] : u.buildingDamage ? [['Épületsebzés',u.buildingDamage]] : u.aoe ? [['Területi sugár',formatMetres(u.aoe)]] : [])];
     const body = `<p class="lexUnitAbility">${effectText(copy.ability)}</p><div class="lexUnitStats">${stats.map(([name,value]) => `<div><span>${esc(name)}</span><b>${effectText(value)}</b></div>`).join('')}</div>`;
     const details=copy.details?.length ? `<details class="lexBranches lexUnitDetails"><summary>Részletek</summary><ul>${copy.details.map(line=>`<li>${effectText(line)}</li>`).join('')}</ul></details>` : '';
-    return `<article class="rlCodexCard lexUnitCard" data-codex-unit="${key}" data-race="${race}">${face({id:key,kind:'unit',race,name:u.name,category:'military',art:R.unitImageTag(key,'lexUnitImg'),body,meta:`<span class="rlChip">${esc(copy.role)}</span><span class="rlChip">${esc(costText(u.cost, race))}</span>`})}${details}</article>`;
+    return `<article class="rlCodexCard lexUnitCard" data-codex-unit="${key}" data-race="${race}">${face({id:key,kind:'unit',race,name:u.name,category:'common',art:R.unitImageTag(key,'lexUnitImg'),body,meta:`<span class="rlChip">${esc(costText(u.cost, race))}</span>`})}${details}</article>`;
   }
   function selectLevel(article, level) {
     levels.set(`${article.dataset.race}:${article.dataset.codexBuilding}`, Number(level));

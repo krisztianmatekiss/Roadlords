@@ -11,3 +11,11 @@ Az élőhalott egységportrék a `public/art/undead/units-atlas.png` 4×2 képos
 A teljes élőhalott épületkészlet kártyaképet használ. A gazdasági keret zöld, a támogató és védelmi kék. A temető nyílt sírkert; a hullaház fedett csarnok. Az épületeket eltérő sziluettek és tárgyak különböztetik meg, nem pusztán eltérő díszítés.
 
 A városi épületek közel felülnézeti tetőképek: a nézőpont az ork mapképekhez igazodik, kevés homlokzattal és domináns tetőfelületekkel. Az egyetlen tetőatlasz képei a térkép síkjában, 90 fokonként fordulnak, ugyanúgy, mint az ork képek. A hosszú épületek alapiránya és a megjelenítő sík aránya követi a helyfoglalást. A manifest nézetablakai és SVG-kontúrjai a szomszédos atlaszképek belógását zárják ki; a generált PNG-pixelek változatlanok. A helyfoglalás továbbra is a játékmotor forgatott mezőlistájából származik.
+
+## Gyakori fejlesztések és egységek
+
+Az egységportrék a gyakori fejlesztések keretcsaládját használják. Az ork keret a meglévő `orc_as.webp` változat; az élőhalott és semleges egységkeret az új, kategóriaszínek nélküli csont/fém `cards/undead/common-frame.png`. A katonai épületek vörös kerete továbbra is épületkategóriát jelöl.
+
+Az új ork fejlesztések és az élőhalott gyakori általános/képességfejlesztések önálló jelenetek egy-egy atlaszon. A statisztikai egységfejlesztések a megfelelő meglévő egységportrét használják. A `upgrade-art-manifest.json` a teljes, változatlan forrásfájlokat és sorfolytonos képosztást rögzíti. A képek és a külön keret a megjelenítőben rétegződnek; a generált pixelek nincsenek újrarajzolva.
+
+Az egységjellemzők kis vektoros piktogramjai a portré bal alsó sarkában és a képzőépület egységneve mellett sorakoznak. A jelölés tényleges képességre utal: például az alap Goblin nem kap kitérésikont, a Fürge L4-ággal igen. A jelölés megnevezése súgóként és akadálymentes feliratként is elérhető.

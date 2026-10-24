@@ -21,5 +21,12 @@
   "gen_soul_abundance": "A kamatból és a halálesetekből származó Lélekre is hat.",
   "lich_common_respawn": "A Lich többször is újjáéledhet.",
   "ghost_leg_mirror": "A másolat kitérési esélye 40%.",
-  "lich_leg_shield": "A továbbadott sebzés egyenlően oszlik el a sugárral összekötött ellenségek között."
+  "lich_leg_shield": "A továbbadott sebzés egyenlően oszlik el a sugárral összekötött ellenségek között.",
+  "orc_cursed_damage": "A támadás pillanatában aktív sámánátokkal sújtott ellenséges egységekre hat. Több aktív átok nem többszörözi a bónuszt. A felvételek +6%-os bónuszai összeadódnak.",
+  "orc_move": "A felvételek +5%-os mozgásisebesség-bónuszai összeadódnak. A már pályán lévő egységekre is hat.",
+  "orc_siege_damage": "Minden saját ork egység támadását erősíti az ellenséges úttornyok, kaputornyok és a főváros ellen. Egységek elleni sebzésre nem hat. A felvételek +15%-os bónuszai összeadódnak.",
+  "orc_lifesteal": "A saját ork egységek támadásaival ténylegesen elvett életerő 3%-ából gyógyulnak felvételenként. Pajzson elnyelt sebzésből nincs gyógyítás. Az épületek elleni találatok is számítanak. Más életlopással összeadódik; az egyes források ugyanazt a sebzést egyszer számolják.",
+  "orc_food_discount": "Csak az ork egységek képzési élelemköltségét csökkenti. Vételenként −8 százalékpont; a 7. felvétel éri el az 50%-os maximumot. Más nyersanyagot és épületfenntartást nem csökkent.",
+  "orc_skip_power": "A lap felvétele utáni, Kihagyás gombbal lezárt választások számítanak. A kezdő épületválasztás, újrasorsolás, kitiltás és a fel nem vett többi lap nem ad bónuszt. Kihagyásonként +4% életerő és sebzés, felső korlát nélkül; a bónuszok összeadódnak. A már harcoló egységek is erősödnek, életerejük százalékos aránya megmarad.",
+  "orc_enemy_ancestors": "Minden harcban elesett ellenséges egység 1 pontot ad a saját, megépített és aktív Ősök Totemének, bárhol a csatatéren. Az ellenséges Troll is 1 pontot ér. Idővel eltűnő idézet és saját oltári áldozat nem számít ellenséges ölésnek."
 }

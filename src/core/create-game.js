@@ -1,4 +1,5 @@
 import { initializeUndeadFoundation } from '../factions/undead/foundation.js';
+import { initializeOrcExpansion } from '../factions/orc-expansion.js';
 import { initializeUndeadEconomy } from '../factions/undead/economy.js';
 import { initializeUndeadAi } from '../factions/undead/ai.js';
 import { initializeUndeadArt } from '../factions/undead/art.js';
@@ -254,6 +255,7 @@ export function createGame() {
   initializeRenderingOrcEmblems(runtime);
   initializeFactionsOrcPositiveStatuses(runtime);
   initializeCombatCurseDamage(runtime);
+  initializeOrcExpansion(runtime);
   initializeCombatTimedRegeneration(runtime);
   initializeUiBuildingLevelCopy(runtime);
   initializeDataRosterCleanup(runtime);

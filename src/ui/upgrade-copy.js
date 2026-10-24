@@ -1,8 +1,9 @@
 import { NORMAL_COPY, LEGENDARY_COPY, BUILDING_COPY, BRANCH_COPY } from '../data/upgrade-copy.js';
 import { formatMetres, formatSpeed } from '../world/measurements.js';
 import { ORC_BALANCE } from '../data/combat-balance.js';
+import { ORC_EXPANSION as B } from '../data/orc-expansion.js';
 
-const NORMAL_LIMITS = { building_discount: 5, orc_double: 20, orc_blessing: 40, orc_refund: 5, orc_loot: 10 };
+const NORMAL_LIMITS = { building_discount: 5, orc_double: 20, orc_blessing: 40, orc_refund: 5, orc_loot: 10, orc_food_discount: 7 };
 const LEGEND_LIMITS = { sword_execute: 5, magic_order: 4, tavern_chain: Infinity, strategic_superiority: Infinity };
 const UNIT_PREFIXES = { sword: 'swordsman', swordsman: 'swordsman', spear: 'spearman', archer: 'archer', knight: 'knight', priest: 'priest', catapult: 'catapult', cat: 'catapult', mage: 'mage' };
 const METRICS = {
@@ -15,6 +16,11 @@ const bonus = n => `+${percent(n)}`;
 const scalar = (label, value, unit = '') => n => ({ label, value: `${format(value(n))}${unit}` });
 // These rows show the contribution of this card alone, never a fabricated city total.
 const MODIFIERS = {
+  orc_cursed_damage: n=>({label:'Sebzés megátkozott egységek ellen',value:bonus(100*B.cursedDamage*n)}),
+  orc_move: n=>({label:'Mozgási sebesség',value:bonus(100*B.movement*n)}),
+  orc_siege_damage: n=>({label:'Tornyok és főváros elleni sebzés',value:bonus(100*B.siegeDamage*n)}),
+  orc_lifesteal: n=>({label:'Életlopás',value:percent(100*B.lifesteal*n)}),
+  orc_food_discount: n=>({label:'Élelemköltség',value:percent(100*(1-Math.min(B.maximumFoodDiscount,B.foodDiscount*n)))}),
   all_damage: n => ({ label: 'Sebzés és Pap-gyógyítás', value: bonus(5 * n) }),
   orc_as: n => ({ label: 'Támadási sebesség', value: bonus(5 * n) }),
   orc_hp: n => ({ label: 'Maximális életerő', value: bonus(5 * n) }),
@@ -92,6 +98,9 @@ export function initializeUiUpgradeCopy(R) {
           rows.push({ label: 'Pap gyógyítása', before: format(a.heal), after: format(b.heal) });
         }
       }
+    } else if (id === 'orc_skip_power') {
+      rows.push({label:'Életerő és sebzés / kihagyás',before:'0%',after:bonus(100*B.skipPower)});
+      if (c.orcSkippedUpgrades) rows.push({label:'Összegyűlt életerő és sebzés',before:bonus(100*B.skipPower*c.orcSkippedUpgrades),after:bonus(100*B.skipPower*c.orcSkippedUpgrades)});
     } else if (id === 'sword_execute' || id === 'magic_order') {
       rows.push({ label: id === 'sword_execute' ? 'Kivégzés esélye' : 'Mágusképzés esélye', before: percent(n * (id === 'sword_execute' ? 4 : 25)), after: percent(next * (id === 'sword_execute' ? 4 : 25)) });
     } else if (id === 'tavern_chain') {

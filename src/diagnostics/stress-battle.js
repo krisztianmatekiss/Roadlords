@@ -70,6 +70,7 @@ export function register(runtime) {
     };
   };
   runtime.roadStartTest = function roadStartTest(seed, {count = 500, roster = 'mixed', figureStyle} = {}) {
+    const catapultGap=650;
     if (!(roster==='catapult'&&count===5 || roster==='knight'&&count===10 || roster === 'figures' && count === 5 || ['skeleton','orc-skeleton'].includes(roster)&&count===50 || ['mixed','undead'].includes(roster) && [50,500].includes(count))) throw new RangeError('Unsupported test roster or size');
     runtime.ROAD.testRoster = roster;
     if(['skeleton','orc-skeleton'].includes(roster))runtime.loadSkeletonArt();
@@ -82,6 +83,11 @@ export function register(runtime) {
     runtime.$('#roadFigureToggle').textContent=runtime.ROAD.figureStyle!=='simple'?'Grafika: Új':'Grafika: Jelenlegi';
     runtime.$('#roadFigureToggle').setAttribute('aria-pressed',String(runtime.ROAD.figureStyle!=='simple'));
     runtime.ROAD.zoom = roster === 'figures' ? 1.75 : ['knight','catapult'].includes(roster)||count === 50 ? 1.25 : 1;
+    if(roster==='catapult'){
+      const available=runtime.roadWar.clientWidth-(runtime.ROAD.enemyPinned?runtime.ROAD.city+24:0)-32;
+      const span=catapultGap+80*runtime.ROAD.h/600;
+      runtime.ROAD.zoom=[1.25,1,.75].find(zoom=>span*zoom<=available)||.75;
+    }
     runtime.$("#roadZoom").textContent = Math.round(runtime.ROAD.zoom * 100) + "%";
     seed = Number.isInteger(seed) ? seed : crypto.getRandomValues(new Uint32Array(1))[0];
     runtime.ROAD.seed = seed;
@@ -160,7 +166,7 @@ export function register(runtime) {
           const rows = ['figures','knight','catapult'].includes(roster) ? 5 : count === 50 ? 8 : 20, spacing = roster==='catapult'?52:roster==='knight'?68:roster === 'figures' ? 48 : count === 50 ? 36 : 24;
           u.offset = (i % rows - (rows - 1) / 2) * spacing;
           u.roadHomeOffset = u.offset;
-          u.lane = runtime.PATH_LENGTH / 2 - dir * ((roster==='catapult'?325:roster==='knight'?170:100) + Math.floor(i / rows) * (roster==='knight'?90:roster === 'figures' ? 48 : count === 50 ? 42 : 32));
+          u.lane = runtime.PATH_LENGTH / 2 - dir * ((roster==='catapult'?catapultGap/2:roster==='knight'?170:100) + Math.floor(i / rows) * (roster==='knight'?90:roster === 'figures' ? 48 : count === 50 ? 42 : 32));
           u.cooldown = .1 + i % 13 * .025;
         }
       }

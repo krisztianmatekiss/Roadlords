@@ -1,0 +1,144 @@
+{
+  "status": "concepts-for-review",
+  "style": "Heroes III ihletésű, festett 2D stratégiai figurák",
+  "style_reference": "../csontvaz-regi-es-uj.png (jobb oldali új terv)",
+  "existing_portraits_used": false,
+  "unit_count": 21,
+  "sheets": [
+    {
+      "faction": "human",
+      "file": "emberek-egysegtervek.png",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "75d05d9296ad4d8e207e3e6b47b7223ff9222f7ecefbf0b7c41a95a78b0f2e47",
+      "layout": "4 oszlop × 2 sor; az első 7 cellában egy-egy egység, nagy és kis előnézetben; az utolsó cellában paletta",
+      "units": [
+        {
+          "key": "swordsman",
+          "name": "Kardos",
+          "cell": 1
+        },
+        {
+          "key": "spearman",
+          "name": "Lándzsás",
+          "cell": 2
+        },
+        {
+          "key": "archer",
+          "name": "Íjász",
+          "cell": 3
+        },
+        {
+          "key": "knight",
+          "name": "Lovag",
+          "cell": 4
+        },
+        {
+          "key": "priest",
+          "name": "Pap",
+          "cell": 5
+        },
+        {
+          "key": "catapult",
+          "name": "Katapult",
+          "cell": 6
+        },
+        {
+          "key": "mage",
+          "name": "Mágus",
+          "cell": 7
+        }
+      ]
+    },
+    {
+      "faction": "orc",
+      "file": "orkok-egysegtervek.png",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "3b8e57892fb2960b22f9c4ed3674251685245fd27346f04059ffaa69707b0998",
+      "layout": "4 oszlop × 2 sor; az első 7 cellában egy-egy egység, nagy és kis előnézetben; az utolsó cellában paletta",
+      "units": [
+        {
+          "key": "orc_warrior",
+          "name": "Ork Harcos",
+          "cell": 1
+        },
+        {
+          "key": "orc_berserker",
+          "name": "Dühöngő",
+          "cell": 2
+        },
+        {
+          "key": "orc_goblin",
+          "name": "Goblin",
+          "cell": 3
+        },
+        {
+          "key": "orc_warg",
+          "name": "Warglovas",
+          "cell": 4
+        },
+        {
+          "key": "orc_shaman",
+          "name": "Sámán",
+          "cell": 5
+        },
+        {
+          "key": "orc_ram",
+          "name": "Faltörő kos",
+          "cell": 6
+        },
+        {
+          "key": "orc_troll",
+          "name": "Troll",
+          "cell": 7
+        }
+      ]
+    },
+    {
+      "faction": "undead",
+      "file": "elohalottak-egysegtervek.png",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "88a615cd51062f89d46fe8ef97a773f504eb4b20c2c275888ce1e0e4e48b4b66",
+      "layout": "4 oszlop × 2 sor; az első 7 cellában egy-egy egység, nagy és kis előnézetben; az utolsó cellában paletta",
+      "units": [
+        {
+          "key": "und_skeleton",
+          "name": "Csontváz",
+          "cell": 1
+        },
+        {
+          "key": "und_skeleton_archer",
+          "name": "Csontváz Íjász",
+          "cell": 2
+        },
+        {
+          "key": "und_zombie",
+          "name": "Zombi",
+          "cell": 3
+        },
+        {
+          "key": "und_ghost",
+          "name": "Szellem",
+          "cell": 4
+        },
+        {
+          "key": "und_necromancer",
+          "name": "Nekromanta",
+          "cell": 5
+        },
+        {
+          "key": "und_vampire",
+          "name": "Vámpír",
+          "cell": 6
+        },
+        {
+          "key": "und_lich",
+          "name": "Lich",
+          "cell": 7
+        }
+      ]
+    }
+  ]
+}

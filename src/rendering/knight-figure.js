@@ -11,7 +11,7 @@ export function installKnightArt(R) {
     return R.knightArtReady=image.decode().then(()=>true,()=>false);
   };
 }
-export const paintedKnight=(R,u)=>u.key==='knight'&&R.ROAD.test&&R.ROAD.testRoster==='knight'&&R.ROAD.figureStyle==='painted'&&R.knightTexture?.naturalWidth>0;
+export const paintedKnight=(R,u)=>u.key==='knight'&&R.ROAD.test&&['knight','undead-figures'].includes(R.ROAD.testRoster)&&R.ROAD.figureStyle==='painted'&&R.knightTexture?.naturalWidth>0;
 
 function joint(start,end,upper,lower,bend) {
   const dx=end[0]-start[0],dy=end[1]-start[1],distance=Math.max(.001,Math.hypot(dx,dy)),reach=Math.min(distance,upper+lower-.001);

@@ -14,7 +14,7 @@ export function installCatapultArt(R) {
   R.catapultLaunchPoint=()=>cupAt(RELEASE);
   R.catapultProjectilePoint=(a,t)=>catapultProjectilePoint(R,a,t);
 }
-export const paintedCatapult=(R,u)=>u.key==='catapult'&&R.ROAD.test&&R.ROAD.testRoster==='catapult'&&R.ROAD.figureStyle==='painted'&&R.catapultTexture?.naturalWidth>0;
+export const paintedCatapult=(R,u)=>u.key==='catapult'&&R.ROAD.test&&['catapult','undead-figures'].includes(R.ROAD.testRoster)&&R.ROAD.figureStyle==='painted'&&R.catapultTexture?.naturalWidth>0;
 
 function cupAt(angle) {
   const rect=manifest.parts.arm,scale=ARM_WIDTH/rect[2],a=manifest.anchors;

@@ -21,14 +21,14 @@ export function installTestMenu(R) {
     }
   });
   for(const [id,label,description,options] of [
-    ['roadOrcMysticsMenu','SÁMÁN ÉS TROLL · 10 vs 10','5 Troll és 5 Sámán 5 Kardos és 5 Lándzsás ellen.',{count:10,roster:'orc-mystics'}],
-    ['roadOrcSiegeMenu','WARGLOVAS ÉS FALTÖRŐ KOS · 10 vs 10','5 Warglovas és 5 Faltörő kos 5 Kardos és 5 Lándzsás ellen.',{count:10,roster:'orc-siege'}],
+    ['roadUndeadFiguresMenu','ÉLŐHALOTTAK · 28 vs 28','Mind a hét élőhalott egység az emberek ellen, új grafikával.',{count:28,roster:'undead-figures'}],
+    ['roadUndeadStressMenu','TERHELÉS · 500 vs 500','Az összes élőhalott és emberi egységtípus valódi képességekkel.',{count:500,roster:'undead-figures'}],
   ]){
     const item=document.createElement('div'),button=document.createElement('button'),note=document.createElement('p');
     button.id=id;button.type='button';button.className='menuButton';button.textContent=label;
     button.onclick=async()=>{
       button.disabled=true;
-      const results=await Promise.all([R.loadHumanInfantryArt(),...(options.roster==='orc-mystics'?[R.loadOrcMysticsArt()]:[R.loadOrcSiegeArt()])]);
+      const results=await Promise.all([R.loadUndeadArt(),R.loadSkeletonArt(),R.loadHumanInfantryArt(),R.loadArcherArt(),R.loadKnightArt(),R.loadCatapultArt(),R.loadHumanCastersArt()]);
       button.disabled=false;
       if(!results.every(Boolean)){R.toast('Az egységek képe nem töltődött be. Frissítsd az oldalt.');return;}
       close(false);R.roadStartTest(undefined,options);

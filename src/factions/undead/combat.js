@@ -458,6 +458,7 @@ export function initializeUndeadCombat(R) {
                 { undSummoned: true, undNoArmySlot: true, undSummonerId: u.id },
               );
             if (spawn && !R.hasBranch(c, 'und_necro_spawner', 'eternal_army')) spawn.temporary = 10;
+            if (spawn) R.undeadSummonEffect?.(u, spawn);
           }
         }
       }
@@ -570,7 +571,8 @@ export function initializeUndeadCombat(R) {
           if (Math.max(a.x, z.x) < 0 || Math.min(a.x, z.x) > R.ROAD.w) continue;
           const h = ((20 * R.ROAD.h) / 600) * R.ROAD.zoom;
           g.beginPath();
-          g.moveTo(a.x, a.y - h);
+          const origin = R.undeadBeamOrigin?.(u);
+          g.moveTo(origin?.x ?? a.x, origin?.y ?? a.y - h);
           g.lineTo(z.x, z.y - h);
           g.stroke();
         }

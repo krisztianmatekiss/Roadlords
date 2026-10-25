@@ -147,7 +147,7 @@ export function installBattleEffects(R) {
     if(!kind)return;
     if(a.to<R.ROAD.camera-110||a.to>R.ROAD.camera+R.ROAD.w/R.ROAD.zoom+110)return;
     const quake=slam&&R.hasBranch(R.cityForSide(u.side),'orc_troll','earthshaker')&&u.attackCount%3===0;
-    const f={kind,lane:a.to,offset:a.toOffset||0,start:a.hit,radius:slam?(u.aoe||55)*(quake?2.5:1):Math.max(14,Math.min(90,a.radius||28)),quake,casterFire:kind==='fire'&&u.key==='mage'&&R.ROAD.test&&R.ROAD.testRoster==='casters'&&R.ROAD.figureStyle==='painted'};
+    const f={kind,lane:a.to,offset:a.toOffset||0,start:a.hit,radius:slam?(u.aoe||55)*(quake?2.5:1):Math.max(14,Math.min(90,a.radius||28)),quake,casterFire:kind==='fire'&&u.key==='mage'&&R.ROAD.test&&['casters','undead-figures'].includes(R.ROAD.testRoster)&&R.ROAD.figureStyle==='painted'};
     if(slam){
       const contact=R.trollGroundPoint(),face=a.to>=a.lane?1:-1;
       f.lane=a.lane+contact[0]*R.ROAD.h/600*face;f.offset=(a.offset||0)+contact[1];

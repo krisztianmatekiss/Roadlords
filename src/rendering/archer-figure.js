@@ -15,7 +15,7 @@ export function installArcherArt(R) {
   R.archerLaunchPoint=()=>[...RELEASE];
   R.archerProjectilePoint=(a,t)=>archerProjectilePoint(R,a,t);
 }
-export const paintedArcher=(R,u)=>u.key==='archer'&&R.ROAD.test&&R.ROAD.testRoster==='archer'&&R.ROAD.figureStyle==='painted'&&R.archerTexture?.naturalWidth>0;
+export const paintedArcher=(R,u)=>u.key==='archer'&&R.ROAD.test&&['archer','undead-figures'].includes(R.ROAD.testRoster)&&R.ROAD.figureStyle==='painted'&&R.archerTexture?.naturalWidth>0;
 
 function joint(a,b,upper,lower,bend=1) {
   const dx=b[0]-a[0],dy=b[1]-a[1],d=Math.max(.001,Math.hypot(dx,dy)),reach=Math.min(d,upper+lower-.001);
@@ -75,6 +75,16 @@ export function drawArcher(g,R,color,p,elite,pose) {
   limb(g,R,'forearm',rearElbow,rear);
   const shoulder=[4.3,-28.5],elbow=joint(shoulder,front,8.7,8.7,1);
   limb(g,R,'upperArm',shoulder,elbow);limb(g,R,'forearm',elbow,front);
+  const {stringNock}=drawArcherEquipment(g,R,{grip,nock,angle,bend,arrowCenter,arrowLoaded,released,recovery});
+  for(const [hand,rotation]of [[rear,0],[front,angle]]){g.save();g.translate(...hand);g.rotate(rotation);g.fillStyle='#c79c65';g.strokeStyle='#63432d';g.lineWidth=.45;g.beginPath();g.roundRect(-1.4,-1.1,2.8,2.5,.7);g.fill();g.stroke();g.restore();}
+  if(elite){g.strokeStyle='#f3d279';g.lineWidth=1;g.beginPath();g.moveTo(-5,-32);g.lineTo(-2,-30);g.moveTo(2,-30);g.lineTo(5,-32);g.stroke();g.fillStyle='#f2d175';g.beginPath();g.moveTo(-1,-24);g.lineTo(.4,-26);g.lineTo(1.8,-24);g.lineTo(.4,-22);g.closePath();g.fill();}
+  g.restore();g.restore();
+  return {painted:true,style:'painted-archer',hips,ankles,knees,hands:[rear,front],grip,nock,stringNock,top,bottom,arrowCenter,arrowLoaded,draw,released,death};
+}
+
+// Shared bow, string and release geometry for human and skeletal archers.
+export function drawArcherEquipment(g,R,{grip,nock,angle,bend,arrowCenter,arrowLoaded,released,recovery}) {
+  const top=bowPoint('top',grip,angle,bend),bottom=bowPoint('bottom',grip,angle,bend);
   const r=manifest.parts.bow,a=manifest.bow.grip,s=HEIGHT/r[3];
   // Two half-staves bend about the grip; the string follows their actual tips.
   for(const [upper,rotation]of [[true,angle-bend],[false,angle+bend]]){
@@ -84,10 +94,7 @@ export function drawArcher(g,R,color,p,elite,pose) {
   const stringNock=released?[mix(16,nock[0],recovery),-33]:nock;
   g.strokeStyle='#ece0b4';g.lineWidth=.5;g.beginPath();g.moveTo(...top);g.lineTo(...stringNock);g.lineTo(...bottom);g.stroke();
   if(arrowLoaded){const rect=manifest.parts.arrow,w=ARROW,h=w*rect[3]/rect[2];g.drawImage(R.archerTexture,...rect,arrowCenter[0]-w/2,arrowCenter[1]-h/2,w,h);}
-  for(const [hand,rotation]of [[rear,0],[front,angle]]){g.save();g.translate(...hand);g.rotate(rotation);g.fillStyle='#c79c65';g.strokeStyle='#63432d';g.lineWidth=.45;g.beginPath();g.roundRect(-1.4,-1.1,2.8,2.5,.7);g.fill();g.stroke();g.restore();}
-  if(elite){g.strokeStyle='#f3d279';g.lineWidth=1;g.beginPath();g.moveTo(-5,-32);g.lineTo(-2,-30);g.moveTo(2,-30);g.lineTo(5,-32);g.stroke();g.fillStyle='#f2d175';g.beginPath();g.moveTo(-1,-24);g.lineTo(.4,-26);g.lineTo(1.8,-24);g.lineTo(.4,-22);g.closePath();g.fill();}
-  g.restore();g.restore();
-  return {painted:true,style:'painted-archer',hips,ankles,knees,hands:[rear,front],grip,nock,stringNock,top,bottom,arrowCenter,arrowLoaded,draw,released,death};
+  return {top,bottom,stringNock};
 }
 
 export function archerProjectilePoint(R,a,t) {

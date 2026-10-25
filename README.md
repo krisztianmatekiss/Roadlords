@@ -1,4 +1,8 @@
-# Roadlords · V4.43.1
+# Roadlords · V4.43.2
+
+## V4.43.2 – Természetesebb máguskarok
+
+A Mágus szabad karjának könyöke a test mellett hajlik; az alkar és a tenyér azonos irányba vezet tovább. A felkarok a köpeny alá kerültek, az ingujjon látszó dupla arany szegély kikerült. A javítás az alapállásra és a teljes varázslómozdulatra érvényes; a kézkiosztás és a kilövési pont változatlan. A célzott ellenőrzés minden képkockán vizsgálja, hogy a szabad csukló nem fordul vissza az alkarhoz képest.
 
 ## V4.43.1 – Az eredeti kéztartások és illesztések javítása
 

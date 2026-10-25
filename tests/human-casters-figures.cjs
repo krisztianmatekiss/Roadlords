@@ -28,8 +28,8 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
      const hashes=[];g.fillText(u.key+' / '+state,12,ui*680+row*130+23);
      for(let i=0;i<count;i++){const s=sprite(u,state,i);hashes.push(hash(s));if(i%Math.max(1,Math.floor(count/6))===0)g.drawImage(s,170+Math.floor(i/Math.max(1,Math.floor(count/6)))*150,ui*680+row*130,165,165);}
      checks[state]=new Set(hashes).size;
-     checks.rolesStable??=true;checks.jointsAligned??=true;
-     for(let i=0;i<count;i++){const rig=sprite(u,state,i).figureRig,staff=u.key==='priest'?'far':'near',spell=u.key==='priest'?'near':'far';checks.rolesStable&&=rig.handRoles.staff===staff&&rig.handRoles.spell===spell&&rig.arms[staff].wrist.every((v,j)=>Math.abs(v-rig.staffWrist[j])<1e-8)&&rig.arms[spell].wrist.every((v,j)=>Math.abs(v-rig.hands[1][j])<1e-8);checks.jointsAligned&&=rig.neck.every((v,j)=>Math.abs(v-rig.collar[j])<1e-8)&&Object.values(rig.arms).every(arm=>Math.abs(Math.hypot(arm.elbow[0]-arm.shoulder[0],arm.elbow[1]-arm.shoulder[1])-Math.hypot(arm.wrist[0]-arm.elbow[0],arm.wrist[1]-arm.elbow[1]))<1e-6);}
+     checks.rolesStable??=true;checks.jointsAligned??=true;checks.wristNatural??=true;
+     for(let i=0;i<count;i++){const rig=sprite(u,state,i).figureRig,staff=u.key==='priest'?'far':'near',spell=u.key==='priest'?'near':'far';if(u.key==='mage'){const a=rig.arms.far,dx=a.wrist[0]-a.elbow[0],dy=a.wrist[1]-a.elbow[1],hx=rig.palm[0]-a.wrist[0],hy=rig.palm[1]-a.wrist[1];checks.wristNatural&&=dx*hx+dy*hy>0;}checks.rolesStable&&=rig.handRoles.staff===staff&&rig.handRoles.spell===spell&&rig.arms[staff].wrist.every((v,j)=>Math.abs(v-rig.staffWrist[j])<1e-8)&&rig.arms[spell].wrist.every((v,j)=>Math.abs(v-rig.hands[1][j])<1e-8);checks.jointsAligned&&=rig.neck.every((v,j)=>Math.abs(v-rig.collar[j])<1e-8)&&Object.values(rig.arms).every(arm=>Math.abs(Math.hypot(arm.elbow[0]-arm.shoulder[0],arm.elbow[1]-arm.shoulder[1])-Math.hypot(arm.wrist[0]-arm.elbow[0],arm.wrist[1]-arm.elbow[1]))<1e-6);}
 
     }
     checks.eliteChanges=hash(sprite({...u,veteran:true},'idle',0))!==hash(sprite(u,'idle',0));
@@ -47,7 +47,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   for(const [field,name]of [['gallery','human-casters-poses.png'],['preview','human-casters-in-game.png']]){fs.writeFileSync('artifacts/'+name,Buffer.from(poses[field].split(',')[1],'base64'));delete poses[field];}report.poses=poses;
   check('Both casters walk, cast and fall with distinct bounded poses; Priest has six healing poses',Object.values(poses.units).every(u=>u.walk>=6&&u.attack>=9&&u.death===6)&&poses.units.priest.heal===6&&poses.cache<=768);
   check('Eight team colours and elite trims are distinct while leather stays intact',Object.values(poses.units).every(u=>new Set(u.colours).size===8&&u.materialStable&&u.eliteChanges)&&poses.clothCache<=8);
-  check('Staff and spell stay in the concept-approved arms through every pose, with aligned wrists and necks',Object.values(poses.units).every(u=>u.rolesStable&&u.jointsAligned));
+  check('Staff and spell stay in the concept-approved arms through every pose, with aligned wrists and necks',Object.values(poses.units).every(u=>u.rolesStable&&u.jointsAligned&&u.wristNatural));
   check('Release positions match the staff sun and free palm, and Mage releases the held orb',Object.values(poses.units).every(u=>u.releaseMatches)&&poses.mageLoaded&&!poses.mageReleased);
   const timing=await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,Q=R.ROAD,results=[];

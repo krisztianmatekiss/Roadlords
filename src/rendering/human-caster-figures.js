@@ -106,11 +106,12 @@ export function drawHumanCaster(g,R,color,p,elite,pose,key,kind) {
   g.save();g.translate(0,bob);
   if(!priest){g.save();g.translate(-5,-31);g.rotate(.12+walk*.04+p.death*.2);part('cape',-5,0,29);g.restore();}
   const far={shoulder:[-4.5,-30],wrist:priest?staffWrist:hand},near={shoulder:[4.8,-30],wrist:priest?hand:staffWrist};
-  far.elbow=joint(far.shoulder,far.wrist,6.8,priest?-1:1);near.elbow=joint(near.shoulder,near.wrist,6,1);
-  const arm=rig=>{limb(g,R,tinted,prefix+'Upper',rig.shoulder,rig.elbow);limb(g,R,tinted,prefix+'Fore',rig.elbow,rig.wrist);};
-  arm(far);
+  far.elbow=joint(far.shoulder,far.wrist,6.8,-1);near.elbow=joint(near.shoulder,near.wrist,6,1);
   const robe=manifest.parts[prefix+'Robe'],robeX=priest?(243-robe[0])/robe[2]:(600-robe[0])/robe[2];
   g.save();g.translate(1,-21);g.rotate(walk*.03);g.drawImage(tinted[prefix+'Robe'],-robeX*20,0,20,20);g.restore();
+  limb(g,R,tinted,prefix+'Upper',far.shoulder,far.elbow);
+  limb(g,R,tinted,prefix+'Fore',far.elbow,far.wrist);
+  limb(g,R,tinted,prefix+'Upper',near.shoulder,near.elbow);
   const torsoName=prefix+'Torso',torso=manifest.parts[torsoName],torsoHeight=14.8,tw=torsoHeight*torso[2]/torso[3],ta=manifest.anchors[torsoName];
   const torsoAt=[1-ta.waist[0]*tw,-21-ta.waist[1]*torsoHeight];
   g.save();g.translate(...torsoAt);g.beginPath();
@@ -118,7 +119,7 @@ export function drawHumanCaster(g,R,color,p,elite,pose,key,kind) {
   outline.forEach(([x,y],i)=>i?g.lineTo(x*tw,y*torsoHeight):g.moveTo(x*tw,y*torsoHeight));g.closePath();g.clip();part(torsoName,0,0,torsoHeight);g.restore();
   const collar=[torsoAt[0]+ta.collar[0]*tw,torsoAt[1]+ta.collar[1]*torsoHeight],headName=prefix+'Head',hr=manifest.parts[headName],ha=manifest.anchors[headName].neck,hh=priest?11.4:16.5,hw=hh*hr[2]/hr[3];
   part(headName,collar[0]-ha[0]*hw,collar[1]-ha[1]*hh,hh);
-  arm(near);
+  limb(g,R,tinted,prefix+'Fore',near.elbow,near.wrist);
   const name=prefix+'Staff',r=manifest.parts[name],a=manifest.anchors[name].grip,height=manifest.staffHeights[key],s=height/r[3];
   g.save();g.translate(...staffHand);g.rotate(angle);g.drawImage(R.humanCastersTexture,...r,-a[0]*r[2]*s,-a[1]*height,r[2]*s,height);g.restore();
   g.save();g.translate(...staffHand);g.rotate(angle);g.fillStyle='#c79b66';g.strokeStyle='#6f4d32';g.lineWidth=.4;g.beginPath();g.roundRect(-1.4,-1.3,2.8,2.8,.75);g.fill();g.stroke();g.lineWidth=.25;for(const y of [-.5,.3]){g.beginPath();g.moveTo(-1.1,y);g.lineTo(.9,y);g.stroke();}g.restore();

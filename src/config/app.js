@@ -1,6 +1,6 @@
 export const APP = Object.freeze({
-  version: '4.43.1',
-  label: 'V4.43.1 · PAP ÉS MÁGUS',
+  version: '4.43.2',
+  label: 'V4.43.2 · PAP ÉS MÁGUS',
   title: 'Roadlords – Pap és Mágus',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',

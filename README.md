@@ -1,4 +1,14 @@
-# Roadlords · V4.43.2
+# Roadlords · V4.44.0
+
+## V4.44.0 – Dühöngő és Goblin
+
+A TESZTEK menüben a DÜHÖNGŐ ÉS GOBLIN · 10 vs 10 és a Pap–Mágus próba érhető el. Az új próba 5 Dühöngőt és 5 Goblint indít 5 Kardos és 5 Lándzsás ellen, alapértékekkel, fejlesztések és utánpótlás nélkül. Az Íjászpróba a belső diagnosztikában maradt meg.
+
+A Dühöngő két külön fogott baltát visel, felváltva a közelebbi és távolabbi karral vezetett csapásokkal. Egy támadás az eredeti sebzést egyszer okozza; a vezető balta érintkezési póza a valódi találathoz igazodik. A sebesüléstől gyorsuló támadás és a meglévő képességek nem változtak.
+
+A kisebb Goblin a parittya körbelendítése után engedi el a követ. A megtöltött parittya utolsó helyzete megegyezik a repülő kő kiindulópontjával; az elengedett zsinór külön látszik. A Goblinok íjai fejlesztés íjra és nyílra váltja az új megjelenést, a meglévő sebzés- és hatótávbónusszal. A lövedékek a valódi találati pillanatban érkeznek az eredeti célponthoz. A Goblin kisebb léptékét a kilövési pont és a lövedék is követi.
+
+Mindkét figura járást, támadást, elesést, nyolc csapatszínt és elitjelzést kapott. Az új megjelenés egyelőre a próbában aktív. A Grafika gomb ugyanazt a csatát váltja régi/új figurákra; szünet, újraindítás és főmenübe visszatérés elérhető. A közös képkockatár legfeljebb 768 elemes, a ruhaszíntár legfeljebb 8 színt tart. Eredeti alkatrészlap: `public/art/battle/orc-raiders-heroes-parts.png`; nézetablakok és illesztések: `src/data/orc-raiders-art.json`; játékbeli kép: `public/previews/orc-raiders-in-game.png`.
 
 ## V4.43.2 – Természetesebb máguskarok
 

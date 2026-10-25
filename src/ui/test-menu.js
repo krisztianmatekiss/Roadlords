@@ -22,13 +22,13 @@ export function installTestMenu(R) {
   });
   for(const [id,label,description,options] of [
     ['roadCastersMenu','PAP ÉS MÁGUS · 10 vs 10','4 Kardos, 3 Pap és 3 Mágus 10 Ork Harcos ellen. Támadás és gyógyítás a valódi harcrendszerrel.',{count:10,roster:'casters'}],
-    ['roadArcherMenu','ÍJÁSZ vs ORK HARCOS · 10 vs 10','Új íjász, kétkezes ideghúzással és a lövéshez igazított nyíllal.',{count:10,roster:'archer'}],
+    ['roadOrcRaidersMenu','DÜHÖNGŐ ÉS GOBLIN · 10 vs 10','5 Dühöngő és 5 Goblin 5 Kardos és 5 Lándzsás ellen.',{count:10,roster:'orc-raiders'}],
   ]){
     const item=document.createElement('div'),button=document.createElement('button'),note=document.createElement('p');
     button.id=id;button.type='button';button.className='menuButton';button.textContent=label;
     button.onclick=async()=>{
       button.disabled=true;
-      const results=await Promise.all([R.loadOrcWarriorArt(),...(options.roster==='casters'?[R.loadHumanInfantryArt(),R.loadHumanCastersArt()]:[R.loadArcherArt()])]);
+      const results=await Promise.all([R.loadHumanInfantryArt(),...(options.roster==='casters'?[R.loadOrcWarriorArt(),R.loadHumanCastersArt()]:[R.loadOrcRaidersArt()])]);
       button.disabled=false;
       if(!results.every(Boolean)){R.toast('Az egységek képe nem töltődött be. Frissítsd az oldalt.');return;}
       close(false);R.roadStartTest(undefined,options);

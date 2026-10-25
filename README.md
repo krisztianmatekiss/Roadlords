@@ -1,4 +1,10 @@
-# Roadlords · V4.44.1
+# Roadlords · V4.44.2
+
+## V4.44.2 – Teljes karok és összeigazított csípő
+
+Mindkét orkfigura hátsó könyöke a testen kívül hajlik. A váll töve takarásban maradhat, az alkar és a fogás a törzs előtt rajzolódik, így a mozdulatokban nem tűnik el a kar. Az ellenőrzés a felkar és alkar látható képpontjait is vizsgálja.
+
+A törzs dereka, az öv, a két comb töve és a lábak állása közös csípőpontot követ. A kapcsolat járás közben is megmarad. Az előnézet immár az alapállást, a távolabbi baltás csapást és a parittya elengedését is mutatja. A harci értékek és a lövés időzítése változatlan.
 
 ## V4.44.1 – Emelt balta és természetesebb parittyázás
 

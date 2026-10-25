@@ -142,10 +142,12 @@ export function installBattleEffects(R) {
   };
   Object.defineProperty(fx,'statusSprites',{get:()=>statusSprites.size});
   R.roadImpactEffect=(u,a)=>{
-    const kind=a.effect||shotKind(R,u);
+    const slam=u.key==='orc_troll'&&R.ROAD.test&&R.ROAD.testRoster==='orc-mystics'&&R.ROAD.figureStyle==='painted';
+    const kind=slam?'slam':a.effect||shotKind(R,u);
     if(!kind)return;
     if(a.to<R.ROAD.camera-110||a.to>R.ROAD.camera+R.ROAD.w/R.ROAD.zoom+110)return;
-    const f={kind,lane:a.to,offset:a.toOffset||0,start:a.hit,radius:Math.max(14,Math.min(90,a.radius||28)),casterFire:kind==='fire'&&u.key==='mage'&&R.ROAD.test&&R.ROAD.testRoster==='casters'&&R.ROAD.figureStyle==='painted'};
+    const quake=slam&&R.hasBranch(R.cityForSide(u.side),'orc_troll','earthshaker')&&u.attackCount%3===0;
+    const f={kind,lane:a.to,offset:a.toOffset||0,start:a.hit,radius:slam?(u.aoe||55)*(quake?2.5:1):Math.max(14,Math.min(90,a.radius||28)),quake,casterFire:kind==='fire'&&u.key==='mage'&&R.ROAD.test&&R.ROAD.testRoster==='casters'&&R.ROAD.figureStyle==='painted'};
     const limit=R.ROAD.lowDetail?64:128;
     if(fx.impacts.length<limit)fx.impacts.push(f);else{fx.head=(fx.head+1)%limit;fx.impacts[fx.head]=f;}
   };
@@ -165,8 +167,16 @@ export function installBattleEffects(R) {
     for(const f of fx.impacts){
       const age=now-f.start;if(age<0||age>.6)continue;fx.impacts[n++]=f;
       const p=R.pointAt(f.lane,f.offset);if(p.x< -100||p.x>R.ROAD.w+100)continue;
-      const t=age/.6,color=({fire:COLORS.fire,frost:COLORS.frost,curse:COLORS.curse,soul:COLORS.poison,holy:'#ffe2a0',rock:'#c5b180'})[f.kind];
+      const t=age/.6,color=({fire:COLORS.fire,frost:COLORS.frost,curse:COLORS.curse,soul:COLORS.poison,holy:'#ffe2a0',rock:'#c5b180',slam:'#bca27c'})[f.kind];
       const radius=f.radius*(.25+Math.sin(Math.min(1,t*2)*Math.PI/2)*.75);
+      if(f.kind==='slam'){
+        // Ground dust follows the real splash radius; it never deals damage.
+        g.save();g.translate(p.x,p.y);g.scale(R.ROAD.zoom,scale);g.globalAlpha=(1-t)*.65;
+        g.strokeStyle=f.quake?'#e5c480':color;g.lineWidth=(f.quake?2.7:1.5)*(1-t)+.5;g.beginPath();g.ellipse(0,0,radius,radius*.24,0,0,TAU);g.stroke();
+        const pieces=R.ROAD.lowDetail?4:7;g.fillStyle=color;
+        for(let i=0;i<pieces;i++){const angle=i/pieces*TAU+f.start,x=Math.cos(angle)*radius*t,y=Math.sin(angle)*radius*.2*t-Math.sin(t*Math.PI)*(f.quake?13:7),size=(f.quake?2:1.3)*(1-t)+.5;g.fillRect(x-size,y-size,size*2,size*1.4);}
+        g.restore();continue;
+      }
       g.save();g.translate(p.x,p.y-13*scale);g.scale(R.ROAD.zoom,scale);g.globalAlpha=(1-t)*.85;
       g.drawImage(glow(color),-radius,-radius,radius*2,radius*2);
       if(f.casterFire){

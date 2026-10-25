@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.44.2',
-  label: 'V4.44.2 · DÜHÖNGŐ ÉS GOBLIN',
-  title: 'Roadlords – Dühöngő és Goblin',
+  version: '4.45.0',
+  label: 'V4.45.0 · SÁMÁN ÉS TROLL',
+  title: 'Roadlords – Sámán és Troll',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

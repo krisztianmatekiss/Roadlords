@@ -243,7 +243,7 @@ function sprite(R, u, pose) {
   let canvas=R.ROAD.sprites.get(key);if(canvas)return canvas;
   const style=FIGURES[u.key];if(!style)return null;
   canvas=document.createElement('canvas');canvas.width=canvas.height=mystic&&u.key==='orc_troll'?384:mystic||siege?320:knight||catapult||human||archer||caster||raider||mystic?256:refined||painted?192:128;
-  const bounds=siege?(u.key==='orc_warg'?[-68,-86,148,148]:[-60,-70,136,136]):mystic?(u.key==='orc_troll'?[-104,-128,208,208]:[-82,-116,168,168]):raider?[-48,-80,112,112]:human||archer||caster?[-44,-76,112,112]:catapult?[-54,-78,112,112]:knight?[-54,-84,124,124]:orc?[-46,-70,92,92]:[-40,-66,80,80];canvas.figureBounds=bounds;
+  const bounds=siege?(u.key==='orc_warg'?[-68,-86,148,148]:[-60,-70,136,136]):mystic?(u.key==='orc_troll'?[-112,-144,240,240]:[-82,-116,168,168]):raider?[-48,-80,112,112]:human||archer||caster?[-44,-76,112,112]:catapult?[-54,-78,112,112]:knight?[-54,-84,124,124]:orc?[-46,-70,92,92]:[-40,-66,80,80];canvas.figureBounds=bounds;
   const g=canvas.getContext('2d'),p=phase(pose),resolution=canvas.width/bounds[2];g.translate(-bounds[0]*resolution,-bounds[1]*resolution);g.scale(resolution,resolution);
   ellipse(g,1,2,style.mount||style.machine?18:style.size>1?15:10,3.5,'#18251e66');
   if(p.death&&!painted){g.translate(p.death*4,-(1-p.death)*23);g.scale(1,1-p.death*.55);g.rotate(p.death*1.48);g.translate(0,23);}

@@ -58,7 +58,7 @@ function spear(g,R,hand,angle) {
 }
 
 export function drawWargRider(g,R,color,p,elite,pose,variant) {
-  const tinted=tint(R,color),walk=pose.state==='walk',cycle=walk?p.wheel:0,bob=walk?Math.sin(cycle*2)*.55:0,death=p.death,recovery=clamp((p.recovery-.2)/.8),strike=p.strike*(1-recovery),wind=p.wind*(1-p.strike)*(1-p.recovery);
+  const tinted=tint(R,color),walk=pose.state==='walk',cycle=walk?p.wheel:0,bob=walk?Math.sin(cycle*2)*.55:0,death=p.death;
   const hoofs=[],knees=[],saddle=[-4,-30+bob];
   g.save();g.translate(death*5,-17+15*Math.sin(death*1.45));g.rotate(death*1.45);g.translate(0,17);
   const leg=(front,near)=>{
@@ -86,12 +86,13 @@ export function drawWargRider(g,R,color,p,elite,pose,variant) {
   const torso=manifest.parts.riderTorso,a=manifest.anchors.riderTorso,h=18,w=h*torso[2]/torso[3],waist=[-3,-32],at=[waist[0]-a.waist[0]*w,waist[1]-a.waist[1]*h];part(g,R,tinted,'riderTorso',...at,w);
   const collar=[at[0]+a.neck[0]*w,at[1]+a.neck[1]*h],head=manifest.parts.riderHead,anchor=manifest.anchors.riderHead.neck,headH=12.5,headW=headH*head[2]/head[3];part(g,R,tinted,'riderHead',collar[0]-anchor[0]*headW,collar[1]-anchor[1]*headH,headW);
   limb(g,R,tinted,'riderThigh',hips[1],riderKnees[1]);limb(g,R,tinted,'riderShin',riderKnees[1],ankles[1]);
-  const reinsHand=[6,-34],reinsShoulder=[-6,-42],reinsArm=weaponArm(g,R,tinted,reinsShoulder,reinsHand);
+  const reinsHand=[-1,-33],reinsShoulder=[-12,-42],reinsArm=weaponArm(g,R,tinted,reinsShoulder,reinsHand);
   g.strokeStyle='#513425';g.lineWidth=.7;g.beginPath();g.moveTo(...reinsHand);g.quadraticCurveTo(17,-29,28,-28);g.stroke();fist(g,R,reinsHand,reinsArm.handAngle,4.5);
   const throwing=variant==='throw',released=throwing&&pose.frame>=7;
-  let hand=[mix(14-3*wind,17,strike),mix(-37-2*wind,-36,strike)],angle=mix(-.12-.15*wind,.08,strike);
+  const rest=pose.frame>=7?clamp((pose.frame-7)/4):0;
+  let hand=pose.state!=='attack'?[14,-37]:pose.frame<4?[mix(14,7,p.wind),mix(-37,-38,p.wind)]:pose.frame<7?[mix(7,17,p.strike),mix(-38,-37,p.strike)]:[mix(17,14,rest),-37];
+  let angle=pose.state!=='attack'?-.12:pose.frame<4?mix(-.12,-.18,p.wind):pose.frame<7?mix(-.18,.05,p.strike):mix(.05,-.12,rest);
   if(throwing){
-    const rest=pose.frame>=7?clamp((pose.frame-7)/4):0;
     hand=pose.frame<4?[mix(14,2,p.wind),mix(-37,-47,p.wind)]:pose.frame<7?[mix(2,RELEASE_HAND[0],p.strike),mix(-47,RELEASE_HAND[1],p.strike)]:[mix(RELEASE_HAND[0],17,rest),mix(RELEASE_HAND[1],-37,rest)];
     angle=pose.frame<4?mix(-.12,-.4,p.wind):mix(-.4,RELEASE_ANGLE,p.strike);
   }

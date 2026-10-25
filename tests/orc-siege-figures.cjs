@@ -9,7 +9,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   await page.locator('.menuBrand').click();await page.waitForTimeout(900);await page.locator('#roadTestsMenu').click();check('Only Mystics and Siege trials remain visible',await page.locator('.roadTestsList button').count()===2&&await page.locator('#roadOrcMysticsMenu').isVisible()&&await page.locator('#roadOrcSiegeMenu').isVisible()&&await page.locator('#roadOrcRaidersMenu').count()===0);
   await page.locator('#roadOrcSiegeMenu').click();await page.waitForFunction(()=>__ROADLORDS_RUNTIME__.ROAD.testRoster==='orc-siege');await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadPause());
   check('One click starts five base Warg Riders and five Rams against five Swordsmen and five Spearmen',await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return R.state.units.length===20&&Object.entries({orc_warg:5,orc_ram:5,swordsman:5,spearman:5}).every(([key,n])=>R.state.units.filter(u=>u.key===key).length===n)&&R.state.units.every(u=>u.maxHp===R.UNITS[u.key].hp&&u.damage===R.UNITS[u.key].damage)&&[R.P,R.E].every(c=>!Object.keys(c.normal).length&&!c.legends.size)}));
-  const poses=await page.evaluate(()=>{
+  const poses=await page.evaluate((armManifest)=>{
    const R=__ROADLORDS_RUNTIME__,Q=R.ROAD,units=['orc_warg','orc_ram'].map(key=>R.state.units.find(u=>u.key===key));
    const hash=c=>{let n=0;for(const b of c.getContext('2d').getImageData(0,0,c.width,c.height).data)n=(Math.imul(n,31)+b)>>>0;return n};
    const sprite=(u,state,frame,variant='melee')=>{
@@ -31,20 +31,33 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
       const px=s.getContext('2d').getImageData(0,0,s.width,s.height).data;for(let k=0;k<s.width;k++)for(const at of [k,k*s.width,k*s.width+s.width-1,(s.height-1)*s.width+k])if(px[at*4+3]>80)checks.bounds=false;
      }checks[state+(variant||'')]=new Set(hashes).size;
     }
+    if(u.key==='orc_warg'){
+     checks.visibleArms=[];
+     const source=R.orcSiegeTexture,blank=document.createElement('canvas');blank.width=source.naturalWidth;blank.height=source.naturalHeight;blank.naturalWidth=blank.width;const bg=blank.getContext('2d');bg.drawImage(source,0,0);for(const name of ['upper','fore'])bg.clearRect(...armManifest.parts[name]);
+     for(const [state,frame,variant]of [['idle',0,'melee'],['attack',6,'melee'],['attack',3,'throw'],['attack',6,'throw']]){
+      R.orcSiegeTexture=blank;Q.sprites.clear();const without=sprite(u,state,frame,variant);R.orcSiegeTexture=source;Q.sprites.clear();const full=sprite(u,state,frame,variant),rig=full.figureRig;
+      for(const arm of [rig.reinsArm,rig.arm])for(const [a,b]of [[arm.shoulder,arm.elbow],[arm.elbow,arm.wrist]]){
+       const bounds=full.figureBounds,k=full.width/bounds[2],x=((a[0]+b[0])/2-bounds[0])*k,y=((a[1]+b[1])/2-bounds[1])*k,r=2.2*k,rect=[Math.round(x-r),Math.round(y-r),Math.round(r*2),Math.round(r*2)],p=full.getContext('2d').getImageData(...rect).data,q=without.getContext('2d').getImageData(...rect).data;let changed=0;for(let j=0;j<p.length;j+=4)if(Math.abs(p[j]-q[j])+Math.abs(p[j+1]-q[j+1])+Math.abs(p[j+2]-q[j+2])+Math.abs(p[j+3]-q[j+3])>40)changed++;checks.visibleArms.push(changed);
+      }
+     }
+     checks.distinctAttacks=hash(sprite(u,'attack',6,'melee'))!==hash(sprite(u,'attack',6,'throw'));checks.meleeSpearRetained=Array.from({length:12},(_,i)=>sprite(u,'attack',i,'melee').figureRig.loaded).every(Boolean);
+    }
     checks.elite=hash(sprite({...u,veteran:true},'idle',0))!==hash(sprite(u,'idle',0));checks.colors=[];checks.materialStable=true;let skin;
     for(const [color]of __ROADLORDS_UNIT_COLORS__.palette){R.P.unitColor=color;const s=sprite(u,'idle',0),b=s.figureBounds,k=s.width/b[2],x=u.key==='orc_warg'?23:12,y=u.key==='orc_warg'?-33:-29,px=s.getContext('2d').getImageData(Math.round((x-b[0])*k),Math.round((y-b[1])*k),3,3).data,value=Array.from(px).join(',');skin??=value;checks.materialStable&&=skin===value;checks.colors.push(hash(s));}R.P.unitColor='blue';result.units[u.key]=checks;
    }
    result.hoofs=Array.from({length:8},(_,i)=>sprite(units[0],'walk',i).figureRig.hoofs);result.wheels=Array.from({length:8},(_,i)=>sprite(units[1],'walk',i).figureRig.wheels);
    result.loaded=sprite(units[0],'attack',6,'throw').figureRig;result.released=sprite(units[0],'attack',7,'throw').figureRig;result.launch=R.wargLaunchPoint();result.ramShift=sprite(units[1],'attack',7).figureRig.beamShift;
-   const preview=document.createElement('canvas');preview.width=1600;preview.height=760;const c=preview.getContext('2d');c.fillStyle='#14231c';c.fillRect(0,0,1600,760);c.textAlign='center';c.fillStyle='#f1dca8';c.font='bold 28px Arial';c.fillText('WARGLOVAS ÉS FALTÖRŐ KOS — JÁTÉKBELI MODELLEK',800,47);c.fillStyle='#bbcabd';c.font='17px Arial';c.fillText('Tényleges modellek · azonos lépték, nagyítva és kis méretben',800,80);
-   for(const [i,[u,state,frame,variant]]of [[units[0],'idle',0],[units[0],'attack',6,'throw'],[units[1],'idle',0],[units[1],'attack',6]].entries()){
-    const x=200+i*400,s=sprite(u,state,frame,variant),b=s.figureBounds;c.fillStyle='#22382b';c.beginPath();c.roundRect(15+i*400,110,370,610,18);c.fill();c.fillStyle='#edd7a3';c.font='bold 23px Arial';c.fillText(['Warglovas · alapállás','Warglovas · lándzsadobás','Faltörő kos · alapállás','Faltörő kos · csapás'][i],x,149);c.drawImage(s,x+b[0]*3.6,490+b[1]*3.6,b[2]*3.6,b[3]*3.6);c.drawImage(s,x+b[0]*1.05,655+b[1]*1.05,b[2]*1.05,b[3]*1.05);
+   const preview=document.createElement('canvas');preview.width=2000;preview.height=760;const c=preview.getContext('2d');c.fillStyle='#14231c';c.fillRect(0,0,2000,760);c.textAlign='center';c.fillStyle='#f1dca8';c.font='bold 28px Arial';c.fillText('WARGLOVAS ÉS FALTÖRŐ KOS — JÁTÉKBELI MODELLEK',1000,47);c.fillStyle='#bbcabd';c.font='17px Arial';c.fillText('Tényleges modellek · azonos lépték, nagyítva és kis méretben',1000,80);
+   for(const [i,[u,state,frame,variant]]of [[units[0],'idle',0],[units[0],'attack',6,'throw'],[units[0],'attack',7,'throw'],[units[0],'attack',6,'melee'],[units[1],'attack',6]].entries()){
+    const x=200+i*400,s=sprite(u,state,frame,variant),b=s.figureBounds;c.fillStyle='#22382b';c.beginPath();c.roundRect(15+i*400,110,370,610,18);c.fill();c.fillStyle='#edd7a3';c.font='bold 23px Arial';c.fillText(['Warglovas · két kar','Dobás · elengedés előtt','Dobás · elengedés után','Közelharci szúrás','Faltörő kos · csapás'][i],x,149);c.drawImage(s,x+b[0]*3.6,490+b[1]*3.6,b[2]*3.6,b[3]*3.6);c.drawImage(s,x+b[0]*1.05,655+b[1]*1.05,b[2]*1.05,b[3]*1.05);
    }
    result.gallery=gallery.toDataURL();result.preview=preview.toDataURL();result.cache=Q.sprites.size;result.clothCache=R.orcSiegeClothCache.size;return result;
-  });
+  },JSON.parse(fs.readFileSync('src/data/orc-siege-art.json')));
   for(const [field,name]of [['gallery','orc-siege-poses.png'],['preview','orc-siege-in-game.png']]){fs.writeFileSync('artifacts/'+name,Buffer.from(poses[field].split(',')[1],'base64'));delete poses[field];}report.poses=poses;
   check('Walk, melee, throw and death frames remain distinct inside sprite bounds',Object.values(poses.units).every(u=>u.walk>=6&&u.attack>=8&&u.death===6&&u.bounds)&&poses.units.orc_warg.attackthrow>=8);
   check('Rider stays seated and both wrists follow their forearms through every pose',Object.values(poses.units).every(u=>u.aligned&&u.seat&&u.wristNatural));
+  check('Both upper arms and forearms remain visible in idle, throw and melee poses',poses.units.orc_warg.visibleArms.every(n=>n>4));
+  check('Throw and melee have distinct poses and melee retains the spear',poses.units.orc_warg.distinctAttacks&&poses.units.orc_warg.meleeSpearRetained);
   check('Eight team colors preserve fur and wood while distinguishing elite trim',Object.values(poses.units).every(u=>new Set(u.colors).size===8&&u.elite&&u.materialStable)&&poses.clothCache<=8&&poses.cache<=768);
   check('All four paws animate with a grounded stance and all four wheels rotate',poses.hoofs.every(f=>f.length===4&&f.some(p=>p[1]>=-2.01))&&[0,1,2,3].every(i=>new Set(poses.hoofs.map(f=>f[i].join(','))).size>=6)&&poses.wheels.every(f=>f.length===4)&&new Set(poses.wheels.map(f=>f[0][2])).size===8);
   check('Spear leaves its last loaded position at launch and the Ram reaches maximum extension at impact',poses.loaded.loaded&&!poses.released.loaded&&poses.loaded.payload.every((v,i)=>Math.abs(v-poses.launch[i])<1e-8)&&poses.released.payload.every((v,i)=>Math.abs(v-poses.launch[i])<1e-8)&&Math.abs(poses.ramShift-9)<1e-8);
@@ -60,6 +73,12 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   });report.timing=timing;
   check('Opening spear flies from the hand and deals sixty damage once at impact',timing[0].early&&timing[0].damage===60&&timing[0].once&&timing[0].pixels>10&&timing[0].paths&&timing[0].spearConsumed);
   check('Follow-up Warg melee and Ram strikes keep their original damage and timing',timing[1].early&&timing[1].damage===30&&timing[1].once&&timing[2].early&&timing[2].damage===8&&timing[2].once);
+  const transition=await page.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,Q=R.ROAD;R.roadStartTest(42,{count:10,roster:'orc-siege'});R.roadPause();Q.clock=20;
+   const u=R.state.units.find(u=>u.key==='orc_warg'),v=R.state.units.find(u=>u.key==='swordsman');for(const actor of R.state.units){actor.lane=6000;actor.offset=200;}u.lane=4700;u.offset=0;v.lane=4810;v.offset=0;v.hp=v.maxHp=10000;v.shield=v.tempShield=0;R.roadReindex();R.attackUnit(u,v);const first=u.roadAttack;Q.clock=first.hit+.001;R.roadImpacts();const thrown=first.orcSpear&&first.ranged&&!u.orcSpearReady&&v.hp===9940;
+   Q.clock=first.end+.01;v.lane=4725;R.roadReindex();R.attackUnit(u,v);const next=u.roadAttack;Q.clock=next.hit+.001;R.roadImpacts();R.roadDrawUnit(u);const pose=R.battleFigurePose(u,Q.clock),sprite=Q.sprites.get(`figure:orc_warg:${R.unitTeamFill(u)}:${pose.state}:${pose.frame}:painted-siege:melee`);return thrown&&!next.orcSpear&&!next.ranged&&v.hp===9910&&sprite?.figureRig.variant==='melee';
+  });
+  check('The same Rider consumes its opening throw and then uses real melee without resetting its spear state',transition);
   const structure=await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,Q=R.ROAD;R.roadStartTest(42,{count:10,roster:'orc-siege'});R.roadPause();Q.clock=30;const u=R.state.units.find(u=>u.key==='orc_ram'),tower=R.targetStructure('player'),lane=tower.lane;u.lane=tower.lane-25;u.offset=tower.offset??tower.lateral??0;R.roadReindex();const before=tower.hp;R.attackStructure(u,tower);const a=u.roadAttack;Q.clock=a.hit-.001;R.roadImpacts();const early=tower.hp===before;Q.clock=a.hit+.001;R.roadImpacts();const hp=tower.hp;R.roadImpacts();return {early,damage:before-hp,once:hp===tower.hp,laneRestored:tower.lane===lane}});report.structure=structure;
   check('Ram also attacks real towers with unchanged structure damage',structure.early&&structure.damage===130&&structure.once&&structure.laneRestored);
   await page.locator('#roadFigureToggle').click();check('A/B graphics preserves the same twenty units',await page.evaluate(()=>__ROADLORDS_RUNTIME__.ROAD.figureStyle==='simple'&&__ROADLORDS_RUNTIME__.state.units.length===20));await page.locator('#roadFigureToggle').click();await page.locator('#roadRestart').click();await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadPause());check('Restart retains the Siege roster and base armies',await page.evaluate(()=>__ROADLORDS_RUNTIME__.ROAD.testRoster==='orc-siege'&&__ROADLORDS_RUNTIME__.ROAD.figureStyle==='painted'&&__ROADLORDS_RUNTIME__.state.units.filter(u=>u.key==='orc_warg'&&u.orcSpearReady).length===5));

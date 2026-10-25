@@ -14,7 +14,7 @@ export function installOrcMysticsArt(R) {
   };
   R.shamanLaunchPoint=()=>weaponTip('staff',[13,-28],.6);
   R.shamanProjectilePoint=(a,t)=>shamanProjectilePoint(R,a,t);
-  R.trollGroundPoint=()=>[(10+manifest.clubGround.impact.offset[0])*manifest.modelScales.orc_troll,1.5*manifest.modelScales.orc_troll];
+  R.trollGroundPoint=()=>{const pose=trollArmPose({},{state:'attack',frame:7},0);return pose.contact.map(v=>v*manifest.modelScales.orc_troll);};
 }
 function joint(a,b,upper,lower,bend=1) {
   const dx=b[0]-a[0],dy=b[1]-a[1],d=Math.max(.001,Math.hypot(dx,dy)),reach=Math.min(d,upper+lower-.001);
@@ -45,6 +45,26 @@ function shamanGrip(g,point,angle,elite) {
   g.lineWidth=.3;for(const y of [-.6,.2,.9]){g.beginPath();g.moveTo(-1.3,y);g.lineTo(.9,y);g.stroke();}g.restore();
 }
 
+function trollArmPose(p,pose,bob) {
+  const m=manifest.trollSwing,drag=manifest.clubGround.drag,impact=manifest.clubGround.impact,r=manifest.parts.club,a=manifest.anchors.club.grip,scale=manifest.weaponHeights.club/r[3];
+  const pixelOffset=pixel=>[(pixel[0]-r[0]-a[0]*r[2])*scale,(pixel[1]-r[1]-a[1]*r[3])*scale];
+  const raw=pixelOffset(drag.pixel),rotation=Math.PI/2+m.clubOffset+manifest.weaponRotations.club;
+  const q=[m.radius+Math.cos(rotation)*raw[0]-Math.sin(rotation)*raw[1],Math.sin(rotation)*raw[0]+Math.cos(rotation)*raw[1]];
+  const dragAngle=Math.PI-Math.asin((m.groundY-m.shoulder[1]-bob)/Math.hypot(...q))-Math.atan2(q[1],q[0]);
+  const impactAngle=impact.armAngle+TAU;
+  let armAngle=dragAngle;
+  if(pose.state==='attack'){
+    if(pose.frame<4)armAngle=mix(dragAngle,m.raisedAngle,p.wind);
+    else if(pose.frame<7)armAngle=mix(m.raisedAngle,impactAngle,p.strike);
+    else armAngle=mix(impactAngle,dragAngle,clamp(((p.recovery||0)-.2)/.8));
+  }
+  const grip=[m.shoulder[0]+Math.cos(armAngle)*m.radius,m.shoulder[1]+Math.sin(armAngle)*m.radius],weaponAngle=armAngle+Math.PI/2+m.clubOffset;
+  let contact=null;
+  const pixel=pose.state==='idle'||pose.state==='walk'?drag.pixel:pose.state==='attack'&&(pose.frame===6||pose.frame===7)?impact.pixel:null;
+  if(pixel){const point=pixelOffset(pixel),angle=weaponAngle+manifest.weaponRotations.club;contact=[grip[0]+Math.cos(angle)*point[0]-Math.sin(angle)*point[1],grip[1]+Math.sin(angle)*point[0]+Math.cos(angle)*point[1]+bob];}
+  return {grip,armAngle,weaponAngle,contact};
+}
+
 export function drawOrcMystic(g,R,color,p,elite,pose,key) {
   const troll=key==='orc_troll',prefix=troll?'tr':'sh';
   const part=(name,x,y,h)=>{const r=manifest.parts[name],w=h*r[2]/r[3];g.drawImage(R.orcMysticsTexture,...r,x,y,w,h);};
@@ -56,30 +76,19 @@ export function drawOrcMystic(g,R,color,p,elite,pose,key) {
   const knees=hips.map((start,i)=>{const knee=joint(start,feet[i],8.5,7.9,-1);g.save();if(!i)g.globalAlpha=.9;limb(g,R,prefix+'Thigh',start,knee);limb(g,R,prefix+'Shin',knee,feet[i]);const name=prefix+'Foot',r=manifest.parts[name],h=troll?5.8:5,w=h*r[2]/r[3],a=manifest.anchors[name].ankle;part(name,feet[i][0]-a[0]*w,feet[i][1]-a[1]*h,h);g.restore();return knee;});
   g.save();g.translate(0,bob);
   const torso=prefix+'Torso',r=manifest.parts[torso],a=manifest.anchors[torso],h=troll?25:22,w=h*r[2]/r[3],at=[waist[0]-a.waist[0]*w,waist[1]-a.waist[1]*h];
-  const drag=manifest.clubGround.drag,impact=manifest.clubGround.impact;
-  const bezier=(a,b,c,t)=>a.map((v,i)=>(1-t)*(1-t)*v+2*(1-t)*t*b[i]+t*t*c[i]);
-  let grip=[mix(12,13,strike),-28-wind*1.3],angle=mix(-.10-.15*wind,.6,strike);
-  if(troll){
-    const dragging=[-16,1.5-drag.offset[1]-bob],raised=[-10,-43],contact=[10,1.5-impact.offset[1]];
-    grip=dragging;angle=drag.angle;
-    if(pose.state==='attack'){
-      if(pose.frame<4){const t=p.wind;grip=[mix(-16,-10,t)-7*Math.sin(t*Math.PI),mix(dragging[1],raised[1],t)];angle=mix(drag.angle,-.7,t);}
-      else if(pose.frame<7){grip=bezier(raised,[5,-50],contact,p.strike);angle=mix(-.7,impact.angle,p.strike);}
-      else{grip=bezier(contact,[0,-10],dragging,recovery);angle=mix(impact.angle,drag.angle,recovery);}
-    }
-  }
+  const swing=troll?trollArmPose(p,pose,bob):null;
+  const grip=troll?swing.grip:[mix(12,13,strike),-28-wind*1.3],angle=troll?swing.weaponAngle:mix(-.10-.15*wind,.6,strike);
   const fistRect=manifest.parts.fist,fistAnchor=manifest.anchors.fist,fistHeight=7.2,dx=(fistAnchor.grip[0]-fistAnchor.wrist[0])*fistRect[2]*fistHeight/fistRect[3],dy=(fistAnchor.grip[1]-fistAnchor.wrist[1])*fistHeight;
   const shoulder=i=>[at[0]+a.shoulders[i][0]*w,at[1]+a.shoulders[i][1]*h];
-  const far={shoulder:troll?[-9.8,-30.5]:shoulder(0),wrist:troll?[grip[0]-dx,grip[1]-dy]:[-11-2*wind+strike,-18.5-3*wind-strike]},near={shoulder:troll?[5,-31]:shoulder(1),wrist:troll?[12+2*wind-strike,-17-3*wind]:[grip[0]-1.3,grip[1]]};
-  const armLengths=troll?[8.7,8.2]:[7.2,7.2];
+  const far={shoulder:troll?[...manifest.trollSwing.shoulder]:shoulder(0),wrist:troll?[grip[0]-dx,grip[1]-dy]:[-11-2*wind+strike,-18.5-3*wind-strike]},near={shoulder:troll?[5,-31]:shoulder(1),wrist:troll?[12+2*wind-strike,-17-3*wind]:[grip[0]-1.3,grip[1]]};
+  const armLengths=troll?[manifest.trollSwing.upper,manifest.trollSwing.fore]:[7.2,7.2];
   let weaponHandAngle=0;
   if(troll){
-    // Solve the forearm and closed hand as one straight chain. Keeping the
-    // fist fixed on screen while its forearm rotated was twisting the wrist.
-    const handLength=Math.hypot(dx,dy),reach=armLengths[1]+handLength;
-    far.elbow=joint(far.shoulder,grip,armLengths[0],reach,1);
-    const direction=Math.atan2(grip[1]-far.elbow[1],grip[0]-far.elbow[0]);
-    far.wrist=[far.elbow[0]+Math.cos(direction)*armLengths[1],far.elbow[1]+Math.sin(direction)*armLengths[1]];
+    // A straight arm rotates at the shoulder. The elbow, wrist and grip
+    // share one axis, so a bent-arm IK solution cannot flip the elbow.
+    const direction=swing.armAngle;
+    far.elbow=[far.shoulder[0]+Math.cos(direction)*armLengths[0],far.shoulder[1]+Math.sin(direction)*armLengths[0]];
+    far.wrist=[far.shoulder[0]+Math.cos(direction)*(armLengths[0]+armLengths[1]),far.shoulder[1]+Math.sin(direction)*(armLengths[0]+armLengths[1])];
     weaponHandAngle=direction-Math.atan2(dy,dx);
   }else far.elbow=joint(far.shoulder,far.wrist,...armLengths,1);
   near.elbow=joint(near.shoulder,near.wrist,...armLengths,1);
@@ -102,8 +111,7 @@ export function drawOrcMystic(g,R,color,p,elite,pose,key) {
   if(!troll&&!p.death){const radius=loaded?2.1+wind+strike:1.2,gradient=g.createRadialGradient(...tip,0,...tip,radius*2.5);gradient.addColorStop(0,'#f8e4ff');gradient.addColorStop(.25,'#bc72edbb');gradient.addColorStop(1,'#a565e800');g.fillStyle=gradient;g.beginPath();g.arc(...tip,radius*2.5,0,TAU);g.fill();}
   if(elite){g.strokeStyle='#f0cf76';g.lineWidth=1.2;g.beginPath();g.moveTo(-8,-30);g.lineTo(-4,-32);g.moveTo(4,-32);g.lineTo(8,-30);g.stroke();g.strokeStyle='#ffe3a0';g.lineWidth=.8;g.beginPath();g.moveTo(-5,waist[1]+2);g.lineTo(5,waist[1]+2);g.stroke();}
   g.restore();g.restore();
-  const groundOffset=troll&&(pose.state==='idle'||pose.state==='walk')?drag.offset:troll&&pose.state==='attack'&&(pose.frame===6||pose.frame===7)?impact.offset:null;
-  return {painted:true,style:'painted-mystic',handRoles:{weapon:troll?'far':'near',free:troll?'near':'far'},arms:{far,near},armLengths,grip,weaponHandAngle,weapon,weaponAngle:angle,weaponTip:tip,groundContact:groundOffset?[grip[0]+groundOffset[0],grip[1]+groundOffset[1]+bob]:null,torsoShoulders:troll?null:[shoulder(0),shoulder(1)],loaded,neck,collar:[...neck],pelvis,waist:[waist[0],waist[1]+bob],hips,knees,feet,modelScale:manifest.modelScales[key],death:p.death};
+  return {painted:true,style:'painted-mystic',handRoles:{weapon:troll?'far':'near',free:troll?'near':'far'},arms:{far,near},armLengths,grip,weaponHandAngle,weapon,weaponAngle:angle,weaponTip:tip,groundContact:swing?.contact||null,torsoShoulders:troll?null:[shoulder(0),shoulder(1)],loaded,neck,collar:[...neck],pelvis,waist:[waist[0],waist[1]+bob],hips,knees,feet,modelScale:manifest.modelScales[key],death:p.death};
 }
 
 export function shamanProjectilePoint(R,a,t) {

@@ -28,22 +28,26 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
      const hashes=[];g.fillText(u.key+' / '+state,12,ui*680+row*130+23);
      for(let i=0;i<count;i++){const s=sprite(u,state,i);hashes.push(hash(s));if(i%Math.max(1,Math.floor(count/6))===0)g.drawImage(s,170+Math.floor(i/Math.max(1,Math.floor(count/6)))*150,ui*680+row*130,165,165);}
      checks[state]=new Set(hashes).size;
+     checks.rolesStable??=true;checks.jointsAligned??=true;
+     for(let i=0;i<count;i++){const rig=sprite(u,state,i).figureRig,staff=u.key==='priest'?'far':'near',spell=u.key==='priest'?'near':'far';checks.rolesStable&&=rig.handRoles.staff===staff&&rig.handRoles.spell===spell&&rig.arms[staff].wrist.every((v,j)=>Math.abs(v-rig.staffWrist[j])<1e-8)&&rig.arms[spell].wrist.every((v,j)=>Math.abs(v-rig.hands[1][j])<1e-8);checks.jointsAligned&&=rig.neck.every((v,j)=>Math.abs(v-rig.collar[j])<1e-8)&&Object.values(rig.arms).every(arm=>Math.abs(Math.hypot(arm.elbow[0]-arm.shoulder[0],arm.elbow[1]-arm.shoulder[1])-Math.hypot(arm.wrist[0]-arm.elbow[0],arm.wrist[1]-arm.elbow[1]))<1e-6);}
+
     }
     checks.eliteChanges=hash(sprite({...u,veteran:true},'idle',0))!==hash(sprite(u,'idle',0));
     let material;checks.materialStable=true;checks.colours=[];
-    for(const [color]of __ROADLORDS_UNIT_COLORS__.palette){R.P.unitColor=color;const s=sprite(u,'idle',0),b=s.figureBounds,k=s.width/b[2],pixels=s.getContext('2d').getImageData(Math.round((4.5-b[0])*k),Math.round((-1.8-b[1])*k),Math.round(1.2*k),Math.round(1.2*k)).data,value=Array.from(pixels).join(',');material??=value;checks.materialStable&&=material===value&&pixels.some((v,i)=>i%4===3&&v>100);checks.colours.push(hash(s));}R.P.unitColor='blue';result.units[u.key]=checks;
+    for(const [color]of __ROADLORDS_UNIT_COLORS__.palette){R.P.unitColor=color;const s=sprite(u,'idle',0),b=s.figureBounds,k=s.width/b[2],pixels=s.getContext('2d').getImageData(Math.round((4.5-b[0])*k),Math.round((.2-b[1])*k),Math.round(1.2*k),Math.round(1.2*k)).data,value=Array.from(pixels).join(',');material??=value;checks.materialStable&&=material===value&&pixels.some((v,i)=>i%4===3&&v>100);checks.colours.push(hash(s));}R.P.unitColor='blue';result.units[u.key]=checks;
     const rig=sprite(u,'attack',6).figureRig,release=R.casterLaunchPoint(u.key),point=u.key==='priest'?rig.staffTip:rig.palm;checks.releaseMatches=point.every((n,i)=>Math.abs(n-release[i])<1e-8);checks.release=release;
    }
    result.gallery=gallery.toDataURL();result.mageLoaded=sprite(units[1],'attack',6).figureRig.orbLoaded;result.mageReleased=sprite(units[1],'attack',7).figureRig.orbLoaded;
-   const preview=document.createElement('canvas');preview.width=1440;preview.height=760;const c=preview.getContext('2d');c.fillStyle='#14231c';c.fillRect(0,0,1440,760);c.textAlign='center';c.fillStyle='#f1dca8';c.font='bold 28px Arial';c.fillText('PAP ÉS MÁGUS — JÁTÉKBELI MODELLEK',720,47);c.fillStyle='#bbcabd';c.font='17px Arial';c.fillText('Tényleges modellek · azonos lépték, nagyítva és kis méretben',720,80);
-   for(const [i,[u,state,frame]]of [[units[0],'attack',6],[units[0],'heal',0],[units[1],'attack',6]].entries()){
-    const x=240+i*480,s=sprite(u,state,frame),b=s.figureBounds;c.fillStyle='#22382b';c.beginPath();c.roundRect(20+i*480,110,440,610,18);c.fill();c.fillStyle='#edd7a3';c.font='bold 23px Arial';c.fillText(['Pap · támadás','Pap · gyógyítás','Mágus · tűzgolyó'][i],x,149);c.drawImage(s,x+b[0]*5.3,490+b[1]*5.3,b[2]*5.3,b[3]*5.3);c.drawImage(s,x+b[0]*1.15,655+b[1]*1.15,b[2]*1.15,b[3]*1.15);
+   const preview=document.createElement('canvas');preview.width=1600;preview.height=760;const c=preview.getContext('2d');c.fillStyle='#14231c';c.fillRect(0,0,1600,760);c.textAlign='center';c.fillStyle='#f1dca8';c.font='bold 28px Arial';c.fillText('PAP ÉS MÁGUS — JÁTÉKBELI MODELLEK',800,47);c.fillStyle='#bbcabd';c.font='17px Arial';c.fillText('Tényleges modellek · azonos lépték, nagyítva és kis méretben',800,80);
+   for(const [i,[u,state,frame]]of [[units[0],'idle',0],[units[0],'heal',0],[units[1],'idle',0],[units[1],'attack',6]].entries()){
+    const x=200+i*400,s=sprite(u,state,frame),b=s.figureBounds;c.fillStyle='#22382b';c.beginPath();c.roundRect(15+i*400,110,370,610,18);c.fill();c.fillStyle='#edd7a3';c.font='bold 23px Arial';c.fillText(['Pap · alapállás','Pap · gyógyítás','Mágus · alapállás','Mágus · varázslás'][i],x,149);c.drawImage(s,x+b[0]*5.3,490+b[1]*5.3,b[2]*5.3,b[3]*5.3);c.drawImage(s,x+b[0]*1.15,655+b[1]*1.15,b[2]*1.15,b[3]*1.15);
    }
    result.preview=preview.toDataURL();result.cache=Q.sprites.size;result.clothCache=R.casterClothCache.size;return result;
   });
   for(const [field,name]of [['gallery','human-casters-poses.png'],['preview','human-casters-in-game.png']]){fs.writeFileSync('artifacts/'+name,Buffer.from(poses[field].split(',')[1],'base64'));delete poses[field];}report.poses=poses;
   check('Both casters walk, cast and fall with distinct bounded poses; Priest has six healing poses',Object.values(poses.units).every(u=>u.walk>=6&&u.attack>=9&&u.death===6)&&poses.units.priest.heal===6&&poses.cache<=768);
   check('Eight team colours and elite trims are distinct while leather stays intact',Object.values(poses.units).every(u=>new Set(u.colours).size===8&&u.materialStable&&u.eliteChanges)&&poses.clothCache<=8);
+  check('Staff and spell stay in the concept-approved arms through every pose, with aligned wrists and necks',Object.values(poses.units).every(u=>u.rolesStable&&u.jointsAligned));
   check('Release positions match the staff sun and free palm, and Mage releases the held orb',Object.values(poses.units).every(u=>u.releaseMatches)&&poses.mageLoaded&&!poses.mageReleased);
   const timing=await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,Q=R.ROAD,results=[];

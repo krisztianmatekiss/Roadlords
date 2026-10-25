@@ -1,4 +1,12 @@
-# Roadlords · V4.43.0
+# Roadlords · V4.43.1
+
+## V4.43.1 – Az eredeti kéztartások és illesztések javítása
+
+A Pap a távolabbi kezében tartja a botját, a Mágus az elöl látszó kezében, az elfogadott tervek szerint. A szerepek járás, támadás, gyógyítás és elesés közben is megmaradnak. A szabad tenyér a megfelelő irányba fordul; a könyökök természetesebben hajlanak, a csukló az ingujj tényleges nyílásához csatlakozik.
+
+A botok markolati pontjai és méretei külön igazodnak a figurákhoz. A Pap botja alapállásban a talajig ér, a Mágus rövidebb botot tart. A nyak és gallér, valamint az öv és a hosszabb alsó köpeny közös illesztési pontokra épül; a törzsön maradt rögzített ruhaujjak takarása megszünteti a dupla kar hatását. A lövedékek kiindulópontjai a javított fogáshoz igazodnak.
+
+Összehasonlító kép: `public/previews/human-casters-reference-comparison.png`. Az alapállást és a varázslást együtt mutató előnézet frissült; a próbacsata és a játékértékek változatlanok.
 
 ## V4.43.0 – Pap és Mágus
 

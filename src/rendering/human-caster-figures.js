@@ -74,11 +74,15 @@ function limb(g,R,tinted,name,start,end) {
   if(tinted[name])g.drawImage(tinted[name],-ax*r[2],-ay*r[3],r[2],r[3]);else g.drawImage(R.humanCastersTexture,...r,-ax*r[2],-ay*r[3],r[2],r[3]);g.restore();
 }
 function staffTip(key,hand,angle) {
-  const name=key==='priest'?'priestStaff':'mageStaff',r=manifest.parts[name],a=manifest.anchors[name],s=43/r[3];
-  const x=(a.tip[0]-a.grip[0])*r[2]*s,y=(a.tip[1]-a.grip[1])*43;
+  const name=key==='priest'?'priestStaff':'mageStaff',r=manifest.parts[name],a=manifest.anchors[name],height=manifest.staffHeights[key],s=height/r[3];
+  const x=(a.tip[0]-a.grip[0])*r[2]*s,y=(a.tip[1]-a.grip[1])*height;
   return [hand[0]+Math.cos(angle)*x-Math.sin(angle)*y,hand[1]+Math.sin(angle)*x+Math.cos(angle)*y];
 }
-function launchPoint(key){return key==='priest'?staffTip(key,[-2.5,-25],1.12):[16,-31];}
+function palmPoint(wrist,mirror) {
+  const r=manifest.parts.palm,a=manifest.anchors.palm,s=4.7/r[3];
+  return [wrist[0]+(a.center[0]-a.wrist[0])*r[2]*s*mirror,wrist[1]+(a.center[1]-a.wrist[1])*4.7];
+}
+function launchPoint(key){return key==='priest'?staffTip(key,[-12,-28],1.12):palmPoint([-7,-24.5],-1);}
 function light(g,point,color,radius) {
   const glow=g.createRadialGradient(...point,0,...point,radius*2.5);glow.addColorStop(0,'#fff8dd');glow.addColorStop(.28,color+'ee');glow.addColorStop(1,color+'00');
   g.fillStyle=glow;g.beginPath();g.arc(...point,radius*2.5,0,TAU);g.fill();
@@ -90,26 +94,36 @@ export function drawHumanCaster(g,R,color,p,elite,pose,key,kind) {
   const walk=pose.state==='walk'?p.walk:0,lift=pose.state==='walk'?Math.cos(p.wheel):0,bob=Math.abs(walk)*.45;
   const recovering=pose.state==='attack'&&pose.frame>=7,rest=recovering?clamp((pose.frame-7)/4):0;
   const cast=p.strike*(1-rest),wind=p.wind*(1-p.strike),healing=Number.isInteger(pose.healFrame),heal=healing?1-pose.healFrame/6:0;
-  const staffHand=priest?[-7.5+5*cast,-23-2*cast]:[-8,-23],angle=priest?-.08+1.2*cast:-.08-walk*.025;
-  const hand=priest?[mix(9,13,heal),mix(-22,-34,heal)]:[mix(9-18*wind,14,cast),mix(-22-7*wind,-29,cast)];
-  const tip=staffTip(key,staffHand,angle),palm=[hand[0]+2,hand[1]-2],orbLoaded=key==='mage'&&pose.state==='attack'&&!recovering;
+  // Match the approved concepts: Priest holds the staff in the far arm;
+  // Mage holds it in the near arm. These roles never swap during a cast.
+  const staffHand=priest?[-14+2*cast,-28]:[12.5,-25],angle=priest?1.12*cast:.10-walk*.025;
+  const staffWrist=[staffHand[0]+(priest?1.4:-1.4),staffHand[1]+.2];
+  const hand=priest?[mix(12,13,heal),mix(-28.5,-31,heal)]:[mix(-10-3*wind,-7,cast),mix(-20.5-2*wind,-24.5,cast)];
+  const palmMirror=priest?1:-1,tip=staffTip(key,staffHand,angle),palm=palmPoint(hand,palmMirror),orbLoaded=key==='mage'&&pose.state==='attack'&&!recovering;
   const feet=[[-4-walk*3,-2-Math.max(0,-lift)*2.4],[4+walk*3,-2-Math.max(0,lift)*2.4]];
   g.save();g.translate(p.death*3,-17);g.rotate(p.death*1.48);g.translate(0,17);
   for(const foot of feet)part('boot',foot[0]-1.4,foot[1]-1,4.7);
   g.save();g.translate(0,bob);
-  if(!priest){g.save();g.translate(-5,-31);g.rotate(.12+walk*.04+p.death*.2);part('cape',-5,0,27);g.restore();}
-  g.save();g.translate(0,-19);g.rotate(walk*.035);part(prefix+'Robe',priest?-10.1:-10.8,0,17);g.restore();
-  const shoulderBack=[-4.5,-28.5],elbowBack=joint(shoulderBack,staffHand,7.8,1);
-  limb(g,R,tinted,prefix+'Upper',shoulderBack,elbowBack);
-  part(prefix+'Torso',priest?-6.6:-7,-33,15.4);
-  part(prefix+'Head',priest?-4.2:-7.8,priest?-42:-48,priest?11.4:16.5);
-  limb(g,R,tinted,prefix+'Fore',elbowBack,staffHand);
-  const shoulder=[4.8,-28.5],elbow=joint(shoulder,hand,7.8,1);
-  limb(g,R,tinted,prefix+'Upper',shoulder,elbow);limb(g,R,tinted,prefix+'Fore',elbow,hand);
-  const name=prefix+'Staff',r=manifest.parts[name],a=manifest.anchors[name].grip,s=43/r[3];
-  g.save();g.translate(...staffHand);g.rotate(angle);g.drawImage(R.humanCastersTexture,...r,-a[0]*r[2]*s,-a[1]*43,r[2]*s,43);g.restore();
-  g.fillStyle='#c79b66';g.strokeStyle='#6f4d32';g.lineWidth=.4;g.beginPath();g.roundRect(staffHand[0]-1.3,staffHand[1]-1.3,2.6,2.8,.65);g.fill();g.stroke();
-  const palmRect=manifest.parts.palm,h=4.7,w=h*palmRect[2]/palmRect[3];g.drawImage(R.humanCastersTexture,...palmRect,hand[0]-.1*w,hand[1]-.82*h,w,h);
+  if(!priest){g.save();g.translate(-5,-31);g.rotate(.12+walk*.04+p.death*.2);part('cape',-5,0,29);g.restore();}
+  const far={shoulder:[-4.5,-30],wrist:priest?staffWrist:hand},near={shoulder:[4.8,-30],wrist:priest?hand:staffWrist};
+  far.elbow=joint(far.shoulder,far.wrist,6.8,priest?-1:1);near.elbow=joint(near.shoulder,near.wrist,6,1);
+  const arm=rig=>{limb(g,R,tinted,prefix+'Upper',rig.shoulder,rig.elbow);limb(g,R,tinted,prefix+'Fore',rig.elbow,rig.wrist);};
+  arm(far);
+  const robe=manifest.parts[prefix+'Robe'],robeX=priest?(243-robe[0])/robe[2]:(600-robe[0])/robe[2];
+  g.save();g.translate(1,-21);g.rotate(walk*.03);g.drawImage(tinted[prefix+'Robe'],-robeX*20,0,20,20);g.restore();
+  const torsoName=prefix+'Torso',torso=manifest.parts[torsoName],torsoHeight=14.8,tw=torsoHeight*torso[2]/torso[3],ta=manifest.anchors[torsoName];
+  const torsoAt=[1-ta.waist[0]*tw,-21-ta.waist[1]*torsoHeight];
+  g.save();g.translate(...torsoAt);g.beginPath();
+  const outline=priest?[[.32,0],[1,0],[1,1],[.28,1],[.36,.42]]:[[0,0],[1,0],[1,1],[.25,1],[.36,.43],[0,.33]];
+  outline.forEach(([x,y],i)=>i?g.lineTo(x*tw,y*torsoHeight):g.moveTo(x*tw,y*torsoHeight));g.closePath();g.clip();part(torsoName,0,0,torsoHeight);g.restore();
+  const collar=[torsoAt[0]+ta.collar[0]*tw,torsoAt[1]+ta.collar[1]*torsoHeight],headName=prefix+'Head',hr=manifest.parts[headName],ha=manifest.anchors[headName].neck,hh=priest?11.4:16.5,hw=hh*hr[2]/hr[3];
+  part(headName,collar[0]-ha[0]*hw,collar[1]-ha[1]*hh,hh);
+  arm(near);
+  const name=prefix+'Staff',r=manifest.parts[name],a=manifest.anchors[name].grip,height=manifest.staffHeights[key],s=height/r[3];
+  g.save();g.translate(...staffHand);g.rotate(angle);g.drawImage(R.humanCastersTexture,...r,-a[0]*r[2]*s,-a[1]*height,r[2]*s,height);g.restore();
+  g.save();g.translate(...staffHand);g.rotate(angle);g.fillStyle='#c79b66';g.strokeStyle='#6f4d32';g.lineWidth=.4;g.beginPath();g.roundRect(-1.4,-1.3,2.8,2.8,.75);g.fill();g.stroke();g.lineWidth=.25;for(const y of [-.5,.3]){g.beginPath();g.moveTo(-1.1,y);g.lineTo(.9,y);g.stroke();}g.restore();
+  const palmRect=manifest.parts.palm,pa=manifest.anchors.palm.wrist,h=4.7,w=h*palmRect[2]/palmRect[3];
+  g.save();g.translate(...hand);g.scale(palmMirror,1);g.drawImage(R.humanCastersTexture,...palmRect,-pa[0]*w,-pa[1]*h,w,h);g.restore();
   if(!p.death){
     if(priest&&pose.state==='attack')light(g,tip,'#ffe2a0',recovering?1.1:1+cast*1.5+wind);
     if(priest&&healing)light(g,palm,'#c2f09c',1.5+heal*1.5);
@@ -117,7 +131,7 @@ export function drawHumanCaster(g,R,color,p,elite,pose,key,kind) {
   }
   if(elite){g.strokeStyle='#f5d279';g.lineWidth=1.2;g.beginPath();g.moveTo(-6,-30.5);g.lineTo(-2,-28.5);g.moveTo(2,-28.5);g.lineTo(6,-30.5);g.stroke();g.strokeStyle='#fff0b2';g.lineWidth=.65;g.beginPath();g.moveTo(-5,-5);g.lineTo(5,-5);g.stroke();}
   g.restore();g.restore();
-  return {painted:true,style:'painted-caster',hands:[staffHand,hand],staffTip:tip,palm,release:launchPoint(key),orbLoaded,healing,healFrame:pose.healFrame,feet,death:p.death};
+  return {painted:true,style:'painted-caster',hands:[staffHand,hand],staffWrist,handRoles:manifest.handRoles[key],arms:{far,near},collar,neck:[...collar],waist:[1,-21],staffTip:tip,palm,release:launchPoint(key),orbLoaded,healing,healFrame:pose.healFrame,feet,death:p.death};
 }
 
 export function casterProjectilePoint(R,a,t) {

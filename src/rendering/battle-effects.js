@@ -148,8 +148,33 @@ export function installBattleEffects(R) {
     if(a.to<R.ROAD.camera-110||a.to>R.ROAD.camera+R.ROAD.w/R.ROAD.zoom+110)return;
     const quake=slam&&R.hasBranch(R.cityForSide(u.side),'orc_troll','earthshaker')&&u.attackCount%3===0;
     const f={kind,lane:a.to,offset:a.toOffset||0,start:a.hit,radius:slam?(u.aoe||55)*(quake?2.5:1):Math.max(14,Math.min(90,a.radius||28)),quake,casterFire:kind==='fire'&&u.key==='mage'&&R.ROAD.test&&R.ROAD.testRoster==='casters'&&R.ROAD.figureStyle==='painted'};
+    if(slam){
+      const contact=R.trollGroundPoint(),face=a.to>=a.lane?1:-1;
+      f.lane=a.lane+contact[0]*R.ROAD.h/600*face;f.offset=(a.offset||0)+contact[1];
+      // Deterministic decoration must not consume the combat random stream.
+      f.cracks=Array.from({length:quake?8:6},(_,i)=>{
+        const angle=i/(quake?8:6)*TAU+Math.sin(a.hit+u.id)*.4,length=.55+.35*(.5+.5*Math.sin(i*3.7+u.id));
+        return Array.from({length:4},(_,j)=>{const t=j/3,bend=j===0?0:Math.sin(i*2.3+j*4.7)*.11;return [Math.cos(angle+bend)*length*t,Math.sin(angle+bend)*length*t*.32];});
+      });
+    }
     const limit=R.ROAD.lowDetail?64:128;
     if(fx.impacts.length<limit)fx.impacts.push(f);else{fx.head=(fx.head+1)%limit;fx.impacts[fx.head]=f;}
+  };
+  R.roadDrawGroundEffects=()=>{
+    if(!R.ROAD.test||R.ROAD.testRoster!=='orc-mystics'||R.ROAD.figureStyle!=='painted')return;
+    const g=R.ctx,now=R.ROAD.clock,scale=R.ROAD.h/600*R.ROAD.zoom;
+    for(const f of fx.impacts){
+      const age=now-f.start;if(f.kind!=='slam'||age<0||age>=3)continue;
+      const p=R.pointAt(f.lane,f.offset);if(p.x< -180||p.x>R.ROAD.w+180)continue;
+      g.save();g.translate(p.x,p.y);g.scale(R.ROAD.zoom,scale);g.globalAlpha=Math.min(1,age/.07)*Math.min(1,(3-age)/.7)*.85;
+      for(const [pass,color,width]of [[0,'#d6bc86',2.2],[1,'#514131',1.2]]){
+        g.strokeStyle=color;g.lineWidth=width;g.lineJoin='miter';g.beginPath();
+        for(const points of f.cracks){
+          points.forEach(([x,y],i)=>i?g.lineTo(x*f.radius,y*f.radius+(pass?0:.7)):g.moveTo(x*f.radius,y*f.radius+(pass?0:.7)));
+          const a=points[2],b=points[3];g.moveTo(a[0]*f.radius,a[1]*f.radius);g.lineTo((a[0]+(b[0]-a[0])*.7)*f.radius,(a[1]-(b[1]-a[1])*.9)*f.radius);
+        }g.stroke();
+      }g.restore();
+    }
   };
   R.roadDrawEffects=()=>{
     const now=R.ROAD.clock;
@@ -165,7 +190,8 @@ export function installBattleEffects(R) {
     const g=R.ctx,scale=R.ROAD.h/600*R.ROAD.zoom;
     let n=0;
     for(const f of fx.impacts){
-      const age=now-f.start;if(age<0||age>.6)continue;fx.impacts[n++]=f;
+      const age=now-f.start;if(age<0||age>(f.kind==='slam'?3:.6))continue;fx.impacts[n++]=f;
+      if(f.kind==='slam'&&age>.6)continue;
       const p=R.pointAt(f.lane,f.offset);if(p.x< -100||p.x>R.ROAD.w+100)continue;
       const t=age/.6,color=({fire:COLORS.fire,frost:COLORS.frost,curse:COLORS.curse,soul:COLORS.poison,holy:'#ffe2a0',rock:'#c5b180',slam:'#bca27c'})[f.kind];
       const radius=f.radius*(.25+Math.sin(Math.min(1,t*2)*Math.PI/2)*.75);

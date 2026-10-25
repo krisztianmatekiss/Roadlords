@@ -89,7 +89,7 @@ export function register(runtime) {
     runtime.$('#roadFigureToggle').textContent=runtime.ROAD.figureStyle!=='simple'?'Grafika: Új':'Grafika: Jelenlegi';
     runtime.$('#roadFigureToggle').setAttribute('aria-pressed',String(runtime.ROAD.figureStyle!=='simple'));
     runtime.ROAD.zoom = roster === 'figures' ? 1.75 : ['knight','catapult','infantry','archer','casters','orc-raiders','orc-mystics'].includes(roster)||count === 50 ? 1.25 : 1;
-    if(['catapult','casters'].includes(roster)){
+    if(['catapult','casters','orc-mystics'].includes(roster)){
       const available=runtime.roadWar.clientWidth-(runtime.ROAD.enemyPinned?runtime.ROAD.city+24:0)-32;
       const span=(roster==='catapult'?catapultGap:650)+80*runtime.ROAD.h/600;
       runtime.ROAD.zoom=[1.25,1,.75].find(zoom=>span*zoom<=available)||.75;

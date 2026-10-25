@@ -241,8 +241,8 @@ function sprite(R, u, pose) {
   const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}${skeleton?':painted-skeleton':orc?':painted-orc':knight?':painted-knight':catapult?':painted-catapult':human?':painted-human':archer?':painted-archer':caster?':painted-caster:'+kind:raider?':painted-raider:'+variant:mystic?':painted-mystic':''}${elite?":elite":""}${healKey}`;
   let canvas=R.ROAD.sprites.get(key);if(canvas)return canvas;
   const style=FIGURES[u.key];if(!style)return null;
-  canvas=document.createElement('canvas');canvas.width=canvas.height=knight||catapult||human||archer||caster||raider||mystic?256:refined||painted?192:128;
-  const bounds=mystic?[-54,-90,132,132]:raider?[-48,-80,112,112]:human||archer||caster?[-44,-76,112,112]:catapult?[-54,-78,112,112]:knight?[-54,-84,124,124]:orc?[-46,-70,92,92]:[-40,-66,80,80];canvas.figureBounds=bounds;
+  canvas=document.createElement('canvas');canvas.width=canvas.height=mystic?320:knight||catapult||human||archer||caster||raider||mystic?256:refined||painted?192:128;
+  const bounds=mystic?[-78,-96,156,156]:raider?[-48,-80,112,112]:human||archer||caster?[-44,-76,112,112]:catapult?[-54,-78,112,112]:knight?[-54,-84,124,124]:orc?[-46,-70,92,92]:[-40,-66,80,80];canvas.figureBounds=bounds;
   const g=canvas.getContext('2d'),p=phase(pose),resolution=canvas.width/bounds[2];g.translate(-bounds[0]*resolution,-bounds[1]*resolution);g.scale(resolution,resolution);
   ellipse(g,1,2,style.mount||style.machine?18:style.size>1?15:10,3.5,'#18251e66');
   if(p.death&&!painted){g.translate(p.death*4,-(1-p.death)*23);g.scale(1,1-p.death*.55);g.rotate(p.death*1.48);g.translate(0,23);}

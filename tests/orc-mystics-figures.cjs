@@ -27,8 +27,10 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
      for(let i=0;i<count;i++){
       const s=sprite(u,state,i),r=s.figureRig;hashes.push(hash(s));if(i%Math.max(1,Math.floor(count/6))===0)g.drawImage(s,180+Math.floor(i/Math.max(1,Math.floor(count/6)))*200,ui*620+row*150,190,190);
       checks.aligned&&=r.neck.every((v,j)=>Math.abs(v-r.collar[j])<1e-8)&&r.waist.every((v,j)=>Math.abs(v-r.pelvis[j])<1e-8)&&r.hips[0].every((v,j)=>Math.abs((v+r.hips[1][j])/2-r.pelvis[j])<1e-8)&&Math.abs((r.feet[0][0]+r.feet[1][0])/2-r.pelvis[0])<1e-8;
-      checks.reachable&&=Object.values(r.arms).every(a=>Math.abs(Math.hypot(a.elbow[0]-a.shoulder[0],a.elbow[1]-a.shoulder[1])-8.7)<1e-5&&Math.abs(Math.hypot(a.wrist[0]-a.elbow[0],a.wrist[1]-a.elbow[1])-8.2)<1e-5);
-      checks.finite&&=JSON.stringify(r).includes('null')===false;checks.roles=r.handRoles.weapon==='near'&&r.handRoles.free==='far';
+      checks.reachable&&=Object.values(r.arms).every(a=>Math.abs(Math.hypot(a.elbow[0]-a.shoulder[0],a.elbow[1]-a.shoulder[1])-r.armLengths[0])<1e-5&&Math.abs(Math.hypot(a.wrist[0]-a.elbow[0],a.wrist[1]-a.elbow[1])-r.armLengths[1])<1e-5);
+      checks.finite&&=Object.values(r.arms).every(a=>Object.values(a).flat().every(Number.isFinite));checks.roles=r.handRoles.weapon===(u.key==='orc_troll'?'far':'near')&&r.handRoles.free===(u.key==='orc_troll'?'near':'far');
+      checks.shouldersAligned??=true;if(u.key==='orc_shaman')checks.shouldersAligned&&=r.torsoShoulders.every((p,i)=>p.every((v,j)=>Math.abs(v-r.arms[i?'near':'far'].shoulder[j])<1e-8));
+      checks.grounded??=true;if(u.key==='orc_troll'&&(state==='idle'||state==='walk'||state==='attack'&&(i===6||i===7)))checks.grounded&&=Math.abs(r.groundContact[1]-1.5)<1e-8;
       const pixels=s.getContext('2d').getImageData(0,0,s.width,s.height).data;
       for(let k=0;k<s.width;k++)for(const at of [k,k*s.width,k*s.width+s.width-1,(s.height-1)*s.width+k])if(pixels[at*4+3]>50)checks.bounds=false;
      }checks[state]=new Set(hashes).size;
@@ -47,18 +49,18 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
     for(const [color]of __ROADLORDS_UNIT_COLORS__.palette){R.P.unitColor=color;const s=sprite(u,'idle',0),b=s.figureBounds,k=s.width/b[2],x=(u.key==='orc_troll'?7:6)*s.figureRig.modelScale,y=(u.key==='orc_troll'?-35:-34)*s.figureRig.modelScale,px=s.getContext('2d').getImageData(Math.round((x-b[0])*k),Math.round((y-b[1])*k),2,2).data,value=Array.from(px).join(',');skin??=value;checks.skinStable&&=skin===value;checks.colors.push(hash(s));}R.P.unitColor='blue';result.units[u.key]=checks;
    }
    result.launch=sprite(units[0],'attack',6).figureRig.weaponTip;result.expectedLaunch=R.shamanLaunchPoint();result.loaded=sprite(units[0],'attack',6).figureRig.loaded;result.released=sprite(units[0],'attack',7).figureRig.loaded;result.clubContact=sprite(units[1],'attack',7).figureRig.weaponAngle;
-   const preview=document.createElement('canvas');preview.width=1600;preview.height=760;const c=preview.getContext('2d');c.fillStyle='#14231c';c.fillRect(0,0,1600,760);c.textAlign='center';c.fillStyle='#f1dca8';c.font='bold 28px Arial';c.fillText('SÁMÁN ÉS TROLL — JÁTÉKBELI MODELLEK',800,47);c.fillStyle='#bbcabd';c.font='17px Arial';c.fillText('Tényleges modellek · azonos lépték, nagyítva és kis méretben',800,80);
-   for(const [i,[u,state,frame]]of [[units[0],'idle',0],[units[0],'attack',6],[units[1],'idle',0],[units[1],'attack',6]].entries()){
-    const x=200+i*400-(i===3?95:0),s=sprite(u,state,frame),b=s.figureBounds;c.fillStyle='#22382b';c.beginPath();c.roundRect(15+i*400,110,370,610,18);c.fill();c.fillStyle='#edd7a3';c.font='bold 23px Arial';c.fillText(['Sámán · alapállás','Sámán · átok','Troll · alapállás','Troll · csapás'][i],200+i*400,149);c.drawImage(s,x+b[0]*4.1,500+b[1]*4.1,b[2]*4.1,b[3]*4.1);c.drawImage(s,x+b[0]*1.15,660+b[1]*1.15,b[2]*1.15,b[3]*1.15);
+   const preview=document.createElement('canvas');preview.width=2000;preview.height=760;const c=preview.getContext('2d');c.fillStyle='#14231c';c.fillRect(0,0,2000,760);c.textAlign='center';c.fillStyle='#f1dca8';c.font='bold 28px Arial';c.fillText('SÁMÁN ÉS TROLL — JÁTÉKBELI MODELLEK',1000,47);c.fillStyle='#bbcabd';c.font='17px Arial';c.fillText('Tényleges modellek · azonos lépték, nagyítva és kis méretben',1000,80);
+   for(const [i,[u,state,frame]]of [[units[0],'idle',0],[units[0],'attack',6],[units[1],'idle',0],[units[1],'attack',3],[units[1],'attack',6]].entries()){
+    const x=200+i*400+(i===2?95:i===4?-70:0),s=sprite(u,state,frame),b=s.figureBounds;c.fillStyle='#22382b';c.beginPath();c.roundRect(15+i*400,110,370,610,18);c.fill();c.fillStyle='#edd7a3';c.font='bold 23px Arial';c.fillText(['Sámán · alapállás','Sámán · átok','Troll · húzás','Troll · lendítés','Troll · becsapódás'][i],200+i*400,149);c.drawImage(s,x+b[0]*4.1,500+b[1]*4.1,b[2]*4.1,b[3]*4.1);c.drawImage(s,x+b[0]*1.15,660+b[1]*1.15,b[2]*1.15,b[3]*1.15);
    }
    result.gallery=gallery.toDataURL();result.preview=preview.toDataURL();result.cache=Q.sprites.size;result.clothCache=R.orcMysticsClothCache.size;return result;
   },JSON.parse(fs.readFileSync('src/data/orc-mystics-art.json')));
   for(const [field,name]of [['gallery','orc-mystics-poses.png'],['preview','orc-mystics-in-game.png']]){fs.writeFileSync('artifacts/'+name,Buffer.from(poses[field].split(',')[1],'base64'));delete poses[field];}report.poses=poses;
   check('Both units have distinct walking, attack and death poses within sprite bounds',Object.values(poses.units).every(u=>u.walk>=6&&u.attack>=8&&u.death===6&&u.bounds)&&poses.cache<=768);
-  check('Torso, hips, feet, neck and arm joints remain connected in every pose',Object.values(poses.units).every(u=>u.aligned&&u.reachable&&u.finite&&u.roles));
+  check('Torso, hips, feet, neck and arm joints remain connected in every pose',Object.values(poses.units).every(u=>u.aligned&&u.reachable&&u.finite&&u.roles&&u.shouldersAligned&&u.grounded));
   check('Both upper arms and forearms remain visible in idle and impact poses',Object.values(poses.units).every(u=>u.visibleArmPixels.every(n=>n>4)));
   check('Eight team colors and elite trim remain distinct without changing skin materials',Object.values(poses.units).every(u=>new Set(u.colors).size===8&&u.skinStable&&u.elite)&&poses.clothCache<=8);
-  check('Shaman releases from the loaded staff gem and Troll holds the impact pose at the damage frame',poses.launch.every((v,i)=>Math.abs(v-poses.expectedLaunch[i])<1e-8)&&poses.loaded&&!poses.released&&Math.abs(poses.clubContact-1.3)<1e-8);
+  check('Shaman releases from the loaded staff gem and Troll holds the impact pose at the damage frame',poses.launch.every((v,i)=>Math.abs(v-poses.expectedLaunch[i])<1e-8)&&poses.loaded&&!poses.released&&Math.abs(poses.clubContact-2.35)<1e-8);
   const timing=await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,Q=R.ROAD,results=[];
    for(const key of ['orc_shaman','orc_troll']){
@@ -74,6 +76,14 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   });report.timing=timing;
   check('Shaman projectile deals eight damage once at impact and applies a real curse',timing[0].early&&timing[0].damage===8&&timing[0].once&&timing[0].cursed&&timing[0].pixels>10&&timing[0].paths&&timing[0].impact);
   check('Troll impact deals 110 primary and 35 splash damage once, with synchronized ground dust',timing[1].early&&timing[1].damage===110&&timing[1].splash===35&&timing[1].once&&timing[1].impact);
+  const cracks=await page.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,Q=R.ROAD,f=R.roadEffects.impacts.find(f=>f.kind==='slam'),canvas=document.createElement('canvas');canvas.width=Q.w;canvas.height=Q.h;const g=canvas.getContext('2d'),old=R.ctx;R.ctx=g;
+   const count=()=>g.getImageData(0,0,canvas.width,canvas.height).data.filter((v,i)=>i%4===3&&v>30).length;
+   Q.clock=f.start+1.5;R.roadDrawEffects();R.roadDrawGroundEffects();const persistent=count()>20&&R.roadEffects.impacts.includes(f);const saved=Q.clock;g.clearRect(0,0,canvas.width,canvas.height);R.roadDrawGroundEffects();const paused=count()>20&&Q.clock===saved;
+   const u=R.state.units.find(u=>u.key==='orc_troll'),a=u.roadAttack,ground=R.trollGroundPoint(),aligned=Math.abs(f.lane-a.lane-ground[0]*Q.h/600)<1e-8;
+   Q.clock=f.start+3.1;g.clearRect(0,0,canvas.width,canvas.height);R.roadDrawGroundEffects();R.roadDrawEffects();const expires=count()===0&&!R.roadEffects.impacts.includes(f);R.ctx=old;return {persistent,paused,expires,aligned};
+  });report.cracks=cracks;
+  check('Ground cracks follow the real club contact, persist while paused and expire after three seconds',cracks.persistent&&cracks.paused&&cracks.expires&&cracks.aligned);
   const quake=await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,Q=R.ROAD;Q.clock=30;const u=R.state.units.find(u=>u.key==='orc_troll'),v=R.state.units.find(u=>u.key==='swordsman'),other=R.state.units.filter(u=>u.key==='swordsman')[1];R.P.levels.orc_troll=4;R.P.l4Branches.orc_troll='earthshaker';u.attackCount=2;u.roadAttack=null;u.roadPending=false;Q.pending=[];v.hp=other.hp=10000;other.lane=v.lane+100;other.offset=0;R.roadReindex();R.attackUnit(u,v);Q.clock=u.roadAttack.hit+.001;R.roadImpacts();return 10000-v.hp===110&&10000-other.hp===110&&v.stunTime>=1&&other.stunTime>=1&&R.roadEffects.impacts.some(f=>f.quake&&f.radius===137.5)});
   check('Earthshaker uses the existing every-third-hit splash radius and stun',quake);
   await page.locator('#roadFigureToggle').click();check('A/B graphics retains the same armies',await page.evaluate(()=>__ROADLORDS_RUNTIME__.ROAD.figureStyle==='simple'&&__ROADLORDS_RUNTIME__.state.units.length===20));await page.locator('#roadFigureToggle').click();await page.locator('#roadRestart').click();await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadPause());
@@ -83,7 +93,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('Real mixed combat deals damage and kills units with bounded sprite storage',battle.damage>500&&battle.attacks>20&&battle.living<20&&battle.finite&&battle.cache<=768);
   const m=JSON.parse(fs.readFileSync('src/data/orc-mystics-art.json'));check('Original atlas is preserved and rectangles are valid',crypto.createHash('sha256').update(fs.readFileSync('public/'+m.file)).digest('hex')===m.sha256&&Object.values(m.parts).every(([x,y,w,h])=>x>=0&&y>=0&&x+w<=m.width&&y+h<=m.height));
   await page.setViewportSize({width:1280,height:800});await page.waitForTimeout(150);await page.locator('#roadRestart').click();await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadPause());
-  check('Both armies and equipment fit a 1280 by 800 viewport',await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,Q=R.ROAD;R.renderBattle(0);const s=Q.h/600*Q.zoom,free=R.roadWar.clientWidth-(Q.enemyPinned?Q.city+24:0);return R.state.units.every(u=>{const p=R.pointAt(u.lane,u.offset);return p.x-30*s>=0&&p.x+45*s<=free&&p.y-70*s>=0&&p.y+7*s<=Q.h})}));
+  check('Both armies and equipment fit a 1280 by 800 viewport',await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,Q=R.ROAD;R.renderBattle(0);const s=Q.h/600*Q.zoom,free=R.roadWar.clientWidth-(Q.enemyPinned?Q.city+24:0);return R.state.units.every(u=>{const p=R.pointAt(u.lane,u.offset);return p.x-65*s>=0&&p.x+55*s<=free&&p.y-70*s>=0&&p.y+7*s<=Q.h})}));
   await Promise.all([page.waitForEvent('domcontentloaded'),page.locator('#roadMenu').click()]);await page.waitForFunction(()=>!!window.__ROADLORDS_RUNTIME__);check('Return to main menu works without browser errors',await page.evaluate(()=>!__ROADLORDS_RUNTIME__.ROAD.test)&&!report.errors.length);
  }finally{fs.writeFileSync('artifacts/orc-mystics-figures.json',JSON.stringify(report,null,2));await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

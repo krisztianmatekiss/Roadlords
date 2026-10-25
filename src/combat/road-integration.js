@@ -272,6 +272,7 @@ export function initializeCombatRoadIntegration(runtime) {
     runtime.canvas.style.transform = 'translateX(' + viewportX + 'px)';
     drawBattleGround(runtime);
     drawRoadScale(runtime);
+    runtime.roadDrawGroundEffects?.();
     runtime.drawTowerRangeV496();
     for (const t of runtime.towers) {
       const x = runtime.pointAt(t.lane).x;

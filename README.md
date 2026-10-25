@@ -1,4 +1,10 @@
-# Roadlords · V4.44.0
+# Roadlords · V4.44.1
+
+## V4.44.1 – Emelt balta és természetesebb parittyázás
+
+A Dühöngő távolabbi, a képen bal oldali baltája alapállásban felfelé áll, kifelé fordított éllel. A váltott csapások és a kézenkénti fogások megmaradtak.
+
+A Goblin a lógó parittyát egy összefüggő hátralendítéssel a feje fölé emeli. A csukló, a könyök és a váll követi a mozdulatot, a szabad kar ellensúlyoz. Az elengedett kő pályája az utolsó parittyamozgás irányában kezdődik, és az eredeti találati időpontban ér a célhoz. A nyilas változat, a sebzés és a támadási sebesség változatlan.
 
 ## V4.44.0 – Dühöngő és Goblin
 

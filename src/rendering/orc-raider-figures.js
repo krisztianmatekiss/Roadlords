@@ -18,6 +18,10 @@ export function installOrcRaidersArt(R) {
     const point=bow?[7.5,-30]:slingPose({state:'attack',frame:6}).pouch;
     return point.map(n=>n*GOBLIN_SCALE);
   };
+  R.goblinLaunchDirection=()=>{
+    const a=slingSwing(1-.00001).pouch,b=slingSwing(1).pouch,dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy);
+    return [dx/length,dy/length];
+  };
   R.goblinProjectilePoint=(a,t)=>goblinProjectilePoint(R,a,t);
 }
 function joint(a,b,upper,lower,bend=1) {
@@ -41,15 +45,22 @@ function fist(g,point,angle,elite=false) {
   g.lineWidth=.3;for(const y of [-.5,.35]){g.beginPath();g.moveTo(-1.3,y);g.lineTo(.9,y);g.stroke();}
   if(elite){g.strokeStyle='#efd178';g.lineWidth=.8;g.beginPath();g.moveTo(-1.9,-1.6);g.lineTo(-1.9,1.5);g.stroke();}g.restore();
 }
-function axe(g,R,hand,angle,elite) {
+function axe(g,R,hand,angle,elite,mirror=1) {
   const r=manifest.parts.axe,a=manifest.anchors.axe.grip,h=23.5,s=h/r[3];
-  g.save();g.translate(...hand);g.rotate(angle+manifest.axeRotation);g.fillStyle='#65783e';g.beginPath();g.ellipse(0,0,1.8,1.8,0,0,TAU);g.fill();g.beginPath();manifest.clips.axe.forEach(([x,y],i)=>i?g.lineTo((x-a[0])*r[2]*s,(y-a[1])*h):g.moveTo((x-a[0])*r[2]*s,(y-a[1])*h));g.closePath();g.clip();g.drawImage(R.orcRaidersTexture,...r,-a[0]*r[2]*s,-a[1]*h,r[2]*s,h);g.restore();fist(g,hand,angle,elite);
+  g.save();g.translate(...hand);g.rotate(angle+manifest.axeRotation*mirror);g.scale(mirror,1);g.fillStyle='#65783e';g.beginPath();g.ellipse(0,0,1.8,1.8,0,0,TAU);g.fill();g.beginPath();manifest.clips.axe.forEach(([x,y],i)=>i?g.lineTo((x-a[0])*r[2]*s,(y-a[1])*h):g.moveTo((x-a[0])*r[2]*s,(y-a[1])*h));g.closePath();g.clip();g.drawImage(R.orcRaidersTexture,...r,-a[0]*r[2]*s,-a[1]*h,r[2]*s,h);g.restore();fist(g,hand,angle,elite);
+}
+function slingSwing(t) {
+  // One backswing from the hanging pouch into an overhead release. The arm
+  // pulls back, then follows through; the stone follows the combined motion.
+  const s=1-t,hand=[13-27*s*t*t,-25.5*s*s*s-144*s*s*t-112.5*s*t*t-37.5*t*t*t],angle=Math.PI/2+(Math.PI-.2)*t;
+  return {hand,angle,pouch:[hand[0]+Math.cos(angle)*12,hand[1]+Math.sin(angle)*12]};
 }
 function slingPose(pose) {
   const attack=pose.state==='attack',released=attack&&pose.frame>=7,recovery=released?(pose.frame-7)/4:0;
-  const angle=!attack?Math.PI/2:pose.frame<4?-Math.PI/2+(pose.frame+1)/4*TAU:pose.frame<7?mix(Math.PI*1.5,TAU-.55,(pose.frame-3)/3):TAU-.55+recovery*.8;
-  const hand=attack?[13,-27]:[13,-25.5],pouch=[hand[0]+Math.cos(angle)*12,hand[1]+Math.sin(angle)*12];
-  return {hand,pouch,angle,released,loaded:pose.state!=='death'&&!released};
+  const t=attack?Math.min(1,pose.frame/6):0,wind=slingSwing(t),release=slingSwing(1);
+  const hand=released?[mix(release.hand[0],17,recovery),mix(release.hand[1],-26,recovery)]:wind.hand;
+  const angle=released?release.angle+recovery*1.7:wind.angle,pouch=[hand[0]+Math.cos(angle)*12,hand[1]+Math.sin(angle)*12];
+  return {hand,pouch,angle,released,wind:t,loaded:pose.state!=='death'&&!released};
 }
 const bowData=(()=>{
   const r=manifest.parts.bow,a=manifest.anchors.bow,dx=(a.bottom[0]-a.top[0])*r[2],dy=(a.bottom[1]-a.top[1])*r[3];
@@ -73,17 +84,18 @@ export function drawOrcRaider(g,R,color,p,elite,pose,key,variant) {
   let farHand,nearHand,axes=[];
   if(gob){
     nearHand=bow?(pose.state==='attack'?[15,-30]:[13,-25.5]):sling.hand;
-    farHand=bow?(pose.state==='attack'?[mix(9,-5,p.wind),-30]:[4,-25.5]):[-9-walk*.5,-22];
+    farHand=bow?(pose.state==='attack'?[mix(9,-5,p.wind),-30]:[4,-25.5]):[-9-walk*.5+2*Math.sin(sling.wind*Math.PI),-22-Math.sin(sling.wind*Math.PI)*1.5];
   }else{
     const farLead=variant==='far';
     farHand=farLead?[mix(-13,8,strike),mix(-22-12*wind,-25,strike)]:[-13+2*wind,-22-2*strike];
     nearHand=farLead?[12+wind,-23-strike]:[mix(13-3*wind,15,strike),mix(-23-13.5*wind,-25.5,strike)];
-    axes=[{hand:farHand,angle:farLead?mix(2.0-2.5*wind,1.48,strike):2.0-.25*wind},{hand:nearHand,angle:farLead?.35-.15*wind:mix(.35-1.55*wind,1.45,strike)}];
+    axes=[{hand:farHand,angle:farLead?mix(-.22-.68*wind,1.48,strike):-.22-.08*wind,mirror:-1},{hand:nearHand,angle:farLead?.35-.15*wind:mix(.35-1.55*wind,1.45,strike),mirror:1}];
   }
   const far={shoulder:[-5.7,-29.8],wrist:[farHand[0]+(gob?0:1.2),farHand[1]]},near={shoulder:[6,-29.8],wrist:[nearHand[0]-(gob?0:1.2),nearHand[1]]};
+  if(gob&&!bow){near.shoulder[0]-=Math.sin(sling.wind*Math.PI)*.8;near.shoulder[1]-=Math.sin(sling.wind*Math.PI)*.45;}
   far.elbow=joint(far.shoulder,far.wrist,8.1,7.8,-1);near.elbow=joint(near.shoulder,near.wrist,7.2,7.2,1);
   limb(g,R,prefix+'Upper',far.shoulder,far.elbow);limb(g,R,prefix+'Fore',far.elbow,far.wrist);
-  if(!gob)axe(g,R,axes[0].hand,axes[0].angle,elite);
+  if(!gob)axe(g,R,axes[0].hand,axes[0].angle,elite,axes[0].mirror);
   const name=prefix+'Torso',r=manifest.parts[name],a=manifest.anchors[name],h=gob?20.5:22,w=h*r[2]/r[3],waist=[1,gob?-16.3:-15.5],at=[waist[0]-a.waist[0]*w,waist[1]-a.waist[1]*h];
   part(name,...at,h);
   const neck=[at[0]+a.neck[0]*w,at[1]+a.neck[1]*h],headName=prefix+'Head',hr=manifest.parts[headName],ha=manifest.anchors[headName].neck,hh=gob?13:14,hw=hh*hr[2]/hr[3];
@@ -91,7 +103,7 @@ export function drawOrcRaider(g,R,color,p,elite,pose,key,variant) {
   g.drawImage(cloth(R,color),-6.4,gob?-17.5:-16.6,14.5,13.8);
   limb(g,R,prefix+'Upper',near.shoulder,near.elbow);limb(g,R,prefix+'Fore',near.elbow,near.wrist);
   let payload=null;
-  if(!gob)axe(g,R,axes[1].hand,axes[1].angle,elite);
+  if(!gob)axe(g,R,axes[1].hand,axes[1].angle,elite,axes[1].mirror);
   else if(bow){
     const br=manifest.parts.bow,anchor=manifest.anchors.bow.grip,angle=pose.state==='attack'?0:.18,top=bowTip('top',nearHand,angle),bottom=bowTip('bottom',nearHand,angle);
     g.save();g.translate(...nearHand);g.rotate(bowData.rotation+angle);g.scale(bowData.scale,bowData.scale);g.beginPath();manifest.clips.bow.forEach(([x,y],i)=>i?g.lineTo((x-anchor[0])*br[2],(y-anchor[1])*br[3]):g.moveTo((x-anchor[0])*br[2],(y-anchor[1])*br[3]));g.closePath();g.clip();g.drawImage(R.orcRaidersTexture,...br,-anchor[0]*br[2],-anchor[1]*br[3],br[2],br[3]);g.restore();
@@ -114,8 +126,10 @@ export function drawOrcRaider(g,R,color,p,elite,pose,key,variant) {
 
 export function goblinProjectilePoint(R,a,t) {
   const from=R.pointAt(a.lane,a.offset),to=R.pointAt(a.to,a.toOffset),scale=R.ROAD.h/600*R.ROAD.zoom,face=a.goblinFace||(a.to>=a.lane?1:-1),start=R.goblinLaunchPoint(a.goblinBow);
-  const x0=from.x+start[0]*scale*face,y0=from.y+start[1]*scale,x1=to.x,y1=to.y-13*scale,arc=a.goblinBow?4:18;
-  return {x:mix(x0,x1,t),y:mix(y0,y1,t)-Math.sin(t*Math.PI)*arc*scale,angle:Math.atan2(y1-y0-Math.cos(t*Math.PI)*Math.PI*arc*scale,x1-x0),scale};
+  const x0=from.x+start[0]*scale*face,y0=from.y+start[1]*scale,x1=to.x,y1=to.y-13*scale;
+  if(a.goblinBow)return {x:mix(x0,x1,t),y:mix(y0,y1,t)-Math.sin(t*Math.PI)*4*scale,angle:Math.atan2(y1-y0-Math.cos(t*Math.PI)*Math.PI*4*scale,x1-x0),scale};
+  const direction=R.goblinLaunchDirection(),length=Math.min(Math.hypot(x1-x0,y1-y0)*.5,160*scale),cx=x0+direction[0]*face*length,cy=y0+direction[1]*length,s=1-t;
+  return {x:s*s*x0+2*s*t*cx+t*t*x1,y:s*s*y0+2*s*t*cy+t*t*y1,angle:Math.atan2(2*s*(cy-y0)+2*t*(y1-cy),2*s*(cx-x0)+2*t*(x1-cx)),scale};
 }
 export function drawGoblinShot(R,u,a,t) {
   if(u.key!=='orc_goblin'||!paintedOrcRaider(R,u))return false;

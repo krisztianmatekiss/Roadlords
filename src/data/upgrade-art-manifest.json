@@ -23,6 +23,38 @@
       "columns": 1,
       "rows": 1,
       "sha256": "fb69ce7e5e8fca8630bc3d8341d63e7ed6384de3df50b373dbcea84145d10e69"
+    },
+    "undead-expansion": {
+      "file": "art/undead/expansion-atlas.png",
+      "width": 1448,
+      "height": 1086,
+      "columns": 4,
+      "rows": 3,
+      "sha256": "dd3c0d169fecaebb802cc88ed4c49f9df7fc750b68e4d68fb0ca20ad2a58f662"
+    },
+    "human-buildings": {
+      "file": "art/human/buildings-atlas.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "695f508a2526d1dce445e4c718c05656f990cb787a563c2bd3200153c2309f6f"
+    },
+    "human-frame": {
+      "file": "cards/human/frame.png",
+      "width": 1024,
+      "height": 1536,
+      "columns": 1,
+      "rows": 1,
+      "sha256": "5b42a8c4837f51a24a37f1c0ea9ce865d911b891994340b22fdd45eb2c702338"
+    },
+    "undead-legend-frame": {
+      "file": "cards/undead/legendary-frame.png",
+      "width": 1024,
+      "height": 1536,
+      "columns": 1,
+      "rows": 1,
+      "sha256": "313a90f65773f8c74d15e99c07f8a929b8c1b6c5db4a504ea3e85e71e9453b61"
     }
   },
   "scenes": {
@@ -153,6 +185,118 @@
     "orc_curse_duration": {
       "source": "orc-expansion",
       "index": 7
+    },
+    "und_death_mend": {
+      "source": "undead-expansion",
+      "index": 0
+    },
+    "und_soul_might": {
+      "source": "undead-expansion",
+      "index": 1
+    },
+    "und_home_march": {
+      "source": "undead-expansion",
+      "index": 2
+    },
+    "und_siege_force": {
+      "source": "undead-expansion",
+      "index": 3
+    },
+    "und_spawn_ward": {
+      "source": "undead-expansion",
+      "index": 4
+    },
+    "und_rise_skeleton": {
+      "source": "undead-expansion",
+      "index": 5
+    },
+    "und_rise_archer": {
+      "source": "undead-expansion",
+      "index": 6
+    },
+    "und_death_chain": {
+      "source": "undead-expansion",
+      "index": 7
+    },
+    "und_twin_training": {
+      "source": "undead-expansion",
+      "index": 8
+    },
+    "und_army_leech": {
+      "source": "undead-expansion",
+      "index": 9
+    },
+    "und_first_guard": {
+      "source": "undead-expansion",
+      "index": 10
+    },
+    "und_raise_enemy": {
+      "source": "undead-expansion",
+      "index": 11
+    },
+    "human-building:keep": {
+      "source": "human-buildings",
+      "index": 0
+    },
+    "human-building:lumber": {
+      "source": "human-buildings",
+      "index": 1
+    },
+    "human-building:stonecutter": {
+      "source": "human-buildings",
+      "index": 2
+    },
+    "human-building:farm": {
+      "source": "human-buildings",
+      "index": 3
+    },
+    "human-building:warehouse": {
+      "source": "human-buildings",
+      "index": 4
+    },
+    "human-building:barracks": {
+      "source": "human-buildings",
+      "index": 5
+    },
+    "human-building:archery": {
+      "source": "human-buildings",
+      "index": 6
+    },
+    "human-building:spearhall": {
+      "source": "human-buildings",
+      "index": 7
+    },
+    "human-building:stable": {
+      "source": "human-buildings",
+      "index": 8
+    },
+    "human-building:temple": {
+      "source": "human-buildings",
+      "index": 9
+    },
+    "human-building:siegeworks": {
+      "source": "human-buildings",
+      "index": 10
+    },
+    "human-building:magetower": {
+      "source": "human-buildings",
+      "index": 11
+    },
+    "human-building:house": {
+      "source": "human-buildings",
+      "index": 12
+    },
+    "human-building:guardhouse": {
+      "source": "human-buildings",
+      "index": 13
+    },
+    "human-building:rally": {
+      "source": "human-buildings",
+      "index": 14
+    },
+    "human-building:townhall": {
+      "source": "human-buildings",
+      "index": 15
     }
   }
 }

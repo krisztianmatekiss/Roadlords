@@ -35,8 +35,8 @@ export function initializeOrcExpansion(R) {
   const structure = R.attackStructure;
   R.attackStructure = (u, target) => {
     const c=R.cityForSide(u.side), previous=u.damage;
-    // The ram already reads buildingDamage; other Orc attacks use damage and a structure penalty.
-    if (orc(c) && u.key.startsWith('orc_') && u.key!=='orc_ram') u.damage *= 1 + B.siegeDamage * R.countNormal(c,'orc_siege_damage');
+    // Siege units read buildingDamage; other Orc attacks use damage and a structure penalty.
+    if (orc(c) && u.key.startsWith('orc_') && u.cat!=='siege') u.damage *= 1 + B.siegeDamage * R.countNormal(c,'orc_siege_damage');
     try { return structure(u,target); } finally { u.damage=previous; }
   };
   R.unitCost = (c, key) => {

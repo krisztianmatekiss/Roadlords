@@ -111,6 +111,11 @@ export function initializeUndeadUi(R) {
       necro_common_summon_stats: ['Idézett Csontvázak HP- és sebzésbónusza', (n) => '+' + fmt(10 * n) + '%'],
       vampire_common_lifesteal: ['Életlopás', (n) => fmt(30 + 5 * n) + '%'],
       lich_common_respawn: ['Újraéledés esélye', (n) => fmt(Math.min(100, 3 * n)) + '%'],
+      und_death_mend:['Gyógyítás saját harci halálkor',(n)=>fmt(5*n)+'% Max HP'],
+      und_soul_might:['Sebzésbónusz / 100 Lélek',(n)=>'+'+fmt(n)+'%'],
+      und_home_march:['Mozgás a saját térfélen',(n)=>'+'+fmt(10*n)+'%'],
+      und_siege_force:['Tornyok és főváros elleni sebzés',(n)=>'+'+fmt(10*n)+'%'],
+      und_spawn_ward:['Pajzs megjelenéskor',(n)=>fmt(8*n)+'% Max HP'],
     };
     const mod = modifiers[o.id];
     if (mod) rows.push({ label: mod[0], before: String(mod[1](n)), after: String(mod[1](next)) });
@@ -130,7 +135,7 @@ export function initializeUndeadUi(R) {
     if (!U[key]) return stats(c, key);
     const s = R.statsFor(c, { key }),
       u = U[key];
-    return `<div class="unitgrid"><div class="unitstat"><span>Életerő</span><b>${s.hp.toFixed(0)}</b></div><div class="unitstat"><span>${key === 'und_lich' ? 'Kezdeti sugár / mp' : 'Sebzés'}</span><b>${s.dmg.toFixed(1)}</b></div><div class="unitstat"><span>Hatótáv</span><b>${formatMetres(s.range)}</b></div><div class="unitstat"><span>Mozgás</span><b>${formatSpeed(s.speed)}</b></div><div class="unitstat"><span>Egység ára</span><b>${u.souls} Lélek</b></div></div><p class="undUnitMechanic">${metricDescription(u.description)}</p>`;
+    return `<div class="unitgrid"><div class="unitstat"><span>Életerő</span><b>${s.hp.toFixed(0)}</b></div><div class="unitstat"><span>${key === 'und_lich' ? 'Kezdeti sugár / mp' : 'Sebzés'}</span><b>${(s.dmg*(R.undSoulDamageMult?.(c)||1)).toFixed(1)}</b></div><div class="unitstat"><span>Hatótáv</span><b>${formatMetres(s.range)}</b></div><div class="unitstat"><span>Mozgás</span><b>${formatSpeed(s.speed)}</b></div><div class="unitstat"><span>Egység ára</span><b>${u.souls} Lélek</b></div></div><p class="undUnitMechanic">${metricDescription(u.description)}</p>`;
   };
   const short = R.buildCardShortDescV41004;
   R.buildCardShortDescV41004 = (type) =>

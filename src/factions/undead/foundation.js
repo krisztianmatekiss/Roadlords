@@ -71,6 +71,7 @@ export function initializeUndeadFoundation(R) {
       ...o,
       eligible: (c) =>
         isUndead(c) &&
+        (!o.expansion || c.buildings.some(b=>R.BUILDINGS[b.type]?.unit)) &&
         (unit
           ? available(c, unit)
           : o.id === 'garden_chance'
@@ -192,6 +193,7 @@ export function initializeUndeadFoundation(R) {
     const out = oldPermanent(e);
     for (const k of [
       'undElite',
+      'undConverted',
       'undSummoned',
       'undNoArmySlot',
       'undSpawnHp',

@@ -236,11 +236,9 @@ export function initializeUndeadEconomy(R) {
         base === 'und_skeleton' && R.hasLeg(c, 'skeleton_leg_archer') && Math.random() < 0.5
           ? 'und_skeleton_archer'
           : base;
-      R.queueProduced(
-        c,
-        R.makeEntry(c, key, { originBuildingId: b.id, undElite: elite, undSpawnHp: hurt ? 0.5 : 1 }),
-        b,
-      );
+      const extra={originBuildingId:b.id,undElite:elite,undSpawnHp:hurt ? .5 : 1};
+      R.queueProduced(c,R.makeEntry(c,key,extra),b);
+      if(R.hasLeg(c,'und_twin_training')&&Math.random()<.3)R.undQueueFree(c,key,extra);
     }
     c.spawnCounter = (c.spawnCounter || 0) + 1;
     return true;

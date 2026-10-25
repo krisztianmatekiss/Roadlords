@@ -35,7 +35,7 @@ html body .illustratedCard .upkeepFact.pickUpkeep.inText {
 html body .illustratedCard .upkeepFact > b { font-size:1.08em !important; white-space:nowrap !important; }
 .sr-only { position:absolute !important; width:1px !important; height:1px !important; padding:0 !important; margin:-1px !important; overflow:hidden !important; clip-path:inset(50%); white-space:nowrap !important; }
 .unitTraits { display:inline-flex; align-items:center; flex-wrap:wrap; gap:.18em; vertical-align:middle; }
-.unitTrait { display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto; width:1.25em; height:1.25em; padding:.12em; box-sizing:content-box; border:1px solid #a7946977; border-radius:.23em; background:#101611ee; color:var(--trait-color); }
+.unitTrait { display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto; width:1.4em; height:1.4em; padding:.14em; box-sizing:content-box; border:1px solid color-mix(in srgb,var(--trait-color) 65%,#16251c); border-radius:.28em; background:linear-gradient(145deg,color-mix(in srgb,var(--trait-color) 16%,#14201a),#0b1410); color:var(--trait-color); box-shadow:inset 0 1px 0 #ffffff22,0 1px 2px #0008; }
 .unitTrait svg { width:100%; height:100%; }
 .unitTrait:focus-visible { outline:2px solid #f2d384; outline-offset:2px; }
 .inlineTraits { font-size:.83em; margin-left:.3em; }

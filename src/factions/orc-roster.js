@@ -86,17 +86,18 @@ export function initializeFactionsOrcRoster(runtime) {
       name: 'Troll',
       icon: '♟',
       battleIcon: 'T',
-      cat: 'infantry',
+      cat: 'siege',
       tags: ['melee', 'heavy'],
       hp: 3200,
       damage: 110,
+      buildingDamage: 110,
       cooldown: 2,
       speed: 26,
       range: 30,
       aoe: 55,
       train: ORC_TRAINING.orc_troll[0],
       cost: runtime.C(25, 60, 60),
-      description: `110 alapsebzés a célpontra, ${ORC_BALANCE.trollSecondaryDamage} a körülötte álló ellenségekre. Területi sugár: 55 útegység a célpont körül. Épületsebzés: normál közelharci szorzó (torony: 27,5; főváros: 36,67). Az Ősök Totemének és az Áldozati oltárnak 4 pontot ér.`
+      description: `110 alapsebzés a célpontra, ${ORC_BALANCE.trollSecondaryDamage} a körülötte álló ellenségekre. Területi sugár: 55 útegység a célpont körül. Ostromegység: 110 alapsebzést okoz tornyoknak és a fővárosnak. Az Ősök Totemének és az Áldozati oltárnak 4 pontot ér.`
     }
   };
   for (const [key, d] of Object.entries(units)) {
@@ -283,7 +284,6 @@ export function initializeFactionsOrcRoster(runtime) {
       u.damage *= 2;
       runtime.projectileToStructure(u, s);
     }
-    if (u.key === 'orc_ram') u.damage = u.buildingDamage / (s.capital ? 1 / 3 : .25);
     u.damage *= weak;
     u.buildingDamage *= weak;
     try {

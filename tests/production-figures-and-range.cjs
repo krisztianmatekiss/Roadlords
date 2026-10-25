@@ -48,7 +48,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   const visual=await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return R.mpFactionUnitPayload({key:'und_necromancer',roadUndSummon:{start:R.ROAD.clock,end:R.ROAD.clock+.75}})});
   check('Active summoning poses share the existing optional multiplayer metadata',!!visual.roadUndSummon&&visual.roadUndSummon.end>visual.roadUndSummon.start);
   const version=await guest.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,sent=[];let closed=false;R.MP.conn={open:true,send:data=>sent.push(data),close:()=>closed=true};R.mpSend({type:'hello'});R.mpHandle({type:'hello',pathLength:R.PATH_LENGTH,gameRules:2,factionProtocol:2,race:'orc'});return {rules:sent[0].gameRules,closed}});
-  check('Multiplayer prevents mixing the old and new range rules',version.rules===3&&version.closed);
+  check('Multiplayer prevents mixing the old and new range rules',version.rules===4&&version.closed);
   check('No runtime errors in production rendering or combat',report.errors.length===0);
  }finally{fs.writeFileSync('artifacts/production-figures-and-range.json',JSON.stringify(report,null,2));await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

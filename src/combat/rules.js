@@ -995,8 +995,8 @@ export function register(runtime) {
     const c = runtime.cityForSide(u.side);
     if (u.key === 'priest' && runtime.hasLeg(c, 'sacred_vow')) return;
     const opening = runtime.consumeOpeningAttack(u);
-    let dmg = u.key === 'catapult' ? u.buildingDamage : u.damage * (s.capital ? 1 / 3 : .25);
-    if (runtime.hasLeg(c, 'siege_doctrine') && u.key !== 'catapult') dmg *= 2;
+    let dmg = u.cat === 'siege' ? (u.buildingDamage ?? u.damage) : u.damage * (s.capital ? 1 / 3 : .25);
+    if (runtime.hasLeg(c, 'siege_doctrine') && u.cat !== 'siege') dmg *= 2;
     if (runtime.hasLeg(c, 'melee_doctrine')) dmg *= u.tags.includes('melee') ? 2 : 0;
     if (u.key === 'mage' && runtime.hasLeg(c, 'mage_triple')) dmg *= .5;
     if (u.chargeReady) {

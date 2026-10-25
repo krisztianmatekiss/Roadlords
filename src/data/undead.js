@@ -1,3 +1,4 @@
+import { UNDEAD_EXPANSION } from './undead-expansion.js';
 import { rangedRange } from './ranged-balance.js';
 import { UNDEAD_PLAN_BUILDINGS, UNDEAD_PLAN_UPGRADES } from './undead-plan.js';
 import { UNDEAD_TRAINING, trainingPrice } from './unit-balance.js';
@@ -243,6 +244,7 @@ export const UNDEAD_UPGRADES = UNDEAD_PLAN_UPGRADES.map((row) => ({
   icon: '☠',
   race: 'undead',
 }));
+UNDEAD_UPGRADES.push(...UNDEAD_EXPANSION);
 export const UNDEAD_RULES = Object.freeze({
   startingSouls: 140,
   technicalSummonLimit: 1500,

@@ -73,6 +73,10 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         undNoArmySlot: true,
       });
       clone.temporary = 10;
+      R.P.normal.und_spawn_ward=2;
+      R.P.legends.add('und_first_guard');
+      const converted=R.undSpawn(R.P,'knight',2390,8,{undConverted:true,undSpawnHp:.5});
+      converted.undFirstGuardUsed=true;
       R.P.resources = R.C(12345, 0, 0);
       R.roadReindex();
     });
@@ -99,7 +103,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     const mirrored = await guest.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__,
         lich = R.state.units.find((u) => u.key === 'und_lich'),
-        clone = R.state.units.find((u) => u.undMirror);
+        clone = R.state.units.find((u) => u.undMirror),
+        converted = R.state.units.find((u) => u.undConverted);
       R.renderStatic();
       return {
         races: [R.P.race, R.E.race],
@@ -113,6 +118,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
           beams: lich.undBeams,
         },
         clone: { noSlot: clone.undNoArmySlot, summoned: clone.undSummoned, mirror: clone.undMirror },
+        converted:{key:converted.key,side:converted.side,half:converted.hp/converted.maxHp,shield:converted.shield/converted.maxHp,ward:converted.undFirstGuardUsed},
         L: R.PATH_LENGTH,
       };
     });
@@ -133,6 +139,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         mirrored.clone.summoned &&
         mirrored.clone.mirror,
     );
+    check('Raised enemy type, new allegiance, half HP, stacked spawn shield and consumed first-attack ward survive the real snapshot',mirrored.converted.key==='knight'&&mirrored.converted.side==='enemy'&&mirrored.converted.half===.5&&Math.abs(mirrored.converted.shield-.16)<1e-8&&mirrored.converted.ward);
     await host.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__;
       R.roadResetCity(R.P, 'human');

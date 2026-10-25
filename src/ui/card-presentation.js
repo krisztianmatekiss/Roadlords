@@ -1,3 +1,4 @@
+import upgradeArt from '../data/upgrade-art-manifest.json';
 import manifest from '../data/orc-card-manifest.json';
 import undeadManifest from '../data/undead-card-manifest.json';
 import { assetUrl } from '../assets/urls.js';
@@ -12,6 +13,8 @@ export const escapeText = (s) => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 export function cardFrameUrl(id, kind, race) {
+  if(race==='human'&&['building','building_upgrade','building_branch'].includes(kind)&&hasUpgradeScene('human-building:'+id))return assetUrl(upgradeArt.sources['human-frame'].file);
+  if(race==='undead'&&kind==='legendary'&&hasUpgradeScene(id))return assetUrl(upgradeArt.sources['undead-legend-frame'].file);
   if (kind==='unit' || race==='undead' && kind==='normal') return commonFrameUrl(race);
   if (race==='orc' && hasUpgradeScene(id)) return assetUrl(kind==='legendary' ? 'cards/orc/upgrades/orc_transfusion.webp' : 'cards/orc/upgrades/orc_as.webp');
   if (race === 'undead') {
@@ -34,7 +37,7 @@ export function cardFrameUrl(id, kind, race) {
   return file ? assetUrl('cards/orc/' + file) : '';
 }
 export const frameImage = (src) => src
-  ? `<img class="cardFrameImage" src="${src}" alt="" loading="lazy" decoding="async" draggable="false"><img class="cardIllustration" src="${src}" alt="" loading="lazy" decoding="async" draggable="false">` : '';
+  ? `${src.endsWith('/cards/human/frame.png')?'<svg class="humanFrameAccent" viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden="true"><path d="M3 6V144M97 6V144M12 22.5H88M12 104H88"/><path d="m5 3 2 3-2 3-2-3Zm90 0 2 3-2 3-2-3ZM5 141l2 3-2 3-2-3Zm90 0 2 3-2 3-2-3Z"/></svg>':''}<img class="cardFrameImage" src="${src}" alt="" loading="lazy" decoding="async" draggable="false"><img class="cardIllustration" src="${src}" alt="" loading="lazy" decoding="async" draggable="false">` : '';
 
 export const cardTextBackdrop = '<span class="cardTextBackdrop" aria-hidden="true"></span>';
 
@@ -224,10 +227,10 @@ export function installCardPresentation(R) {
       const d = R.BUILDINGS[type], level = R.levelOf(R.P, type);
       const model = R.cardBuildingCopy.metrics(R.P.race, type, level);
       card.classList.add('illustratedBuildCard', 'illustratedCard');
-      card.dataset.race=R.P.race;
+      card.dataset.race=R.P.race;card.dataset.frame=d.category||'support';
       if (src) card.classList.add('hasCardFrame');
       const upkeep = R.P.race === 'undead' ? buildingUpkeep(R,type) : '';
-      card.innerHTML = `${frameImage(src)}${cardTextBackdrop}${uniqueBuildingMark(R,R.P,type)}<h3 class="cardname">${escapeText(d.name)}</h3><span class="cardart card-media">${src ? '' : R.cardBuildingImageTag(type, 'cardBuildingImage')}${productionFootprint(R,R.P,type)}</span>${constructionPrice(R,R.buildPrice(R.P,type),R.P.race)}<span class="cardinfo">${d.unit ? productionFacts(R,R.P,type,level) : `<p>${effectText(model.description)}</p>`}${upkeep}</span><span class="cardFooter">${R.isUniqueBuilding(R.P,type) ? 'EGYEDI ÉPÜLET' : 'ÉPÜLET'} · L${level}</span>`;
+      card.innerHTML = `${frameImage(src)}${upgradeScene(R,type,'building',R.P.race)}${cardTextBackdrop}${uniqueBuildingMark(R,R.P,type)}<h3 class="cardname">${escapeText(d.name)}</h3><span class="cardart card-media">${src ? '' : R.cardBuildingImageTag(type, 'cardBuildingImage')}${productionFootprint(R,R.P,type)}</span>${constructionPrice(R,R.buildPrice(R.P,type),R.P.race)}<span class="cardinfo">${d.unit ? productionFacts(R,R.P,type,level) : `<p>${effectText(model.description)}</p>`}${upkeep}</span><span class="cardFooter">${R.isUniqueBuilding(R.P,type) ? 'EGYEDI ÉPÜLET' : 'ÉPÜLET'} · L${level}</span>`;
       card.setAttribute('aria-label', d.name);
       card.removeAttribute('title');
       decorateEffects(card.querySelector('.cardinfo'));

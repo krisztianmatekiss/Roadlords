@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.49.0',
-  label: 'V4.49.0 · ÚJ EGYSÉGEK',
-  title: 'Roadlords – Új egységek',
+  version: '4.50.0',
+  label: 'V4.50.0 · NEKROMANTA EREKLYÉK',
+  title: 'Roadlords – Nekromanta ereklyék',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

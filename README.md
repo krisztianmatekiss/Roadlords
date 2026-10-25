@@ -1,4 +1,11 @@
-# Roadlords · V4.49.0
+# Roadlords · V4.50.0
+
+## V4.50.0 – Élőhalott ereklyék és új kártyák
+
+Öt halmozható gyakori és hét legendás élőhalott fejlesztés, mindegyik saját illusztrációval. Az első 16 emberi épület új kártyaképet és külön ezüst-arany keretet kapott, a gazdasági, katonai és támogató kategóriák jelölésével.
+
+Színes, közös egységikonok jelzik a típust és képességeket a termelőknél és az egységkártyákon. A Troll közelharci ostromegység: 110 alapsebzést okoz tornyoknak és a fővárosnak. Multiplayerben mindkét fél frissítsen. [Szabályok és ellenőrzések](docs/undead-expansion-4.50.md).
+
 
 ## V4.49.0 – Új egységek élesben
 

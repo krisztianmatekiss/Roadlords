@@ -6,6 +6,7 @@ import './styles/interface-scale.css';
 import './styles/choice-layout.css';
 import './styles/cards.css';
 import './styles/build-card-deck.css';
+import './styles/human-cards.css';
 import Peer from 'peerjs';
 import { applyAppIdentity } from './config/app.js';
 import { createGame } from './core/create-game.js';

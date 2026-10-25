@@ -1,3 +1,4 @@
+import { initializeUndeadExpansion } from '../factions/undead/expansion.js';
 import { installProductionFigures } from '../rendering/production-figures.js';
 import { initializeUndeadFoundation } from '../factions/undead/foundation.js';
 import { initializeOrcExpansion } from '../factions/orc-expansion.js';
@@ -275,6 +276,7 @@ export function createGame() {
   initializeUndeadArt(runtime);
   initializeCombatRoadIntegration(runtime);
   initializeUndeadCombat(runtime);
+  initializeUndeadExpansion(runtime);
   initializeUndeadUi(runtime);
   installBattleEffects(runtime);
   installProductionFigures(runtime);

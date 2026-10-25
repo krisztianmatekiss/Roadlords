@@ -1,0 +1,21 @@
+/* The human frame has carved stone columns and gold heraldry, not Orc timber
+   or Undead bones. Its category enamel is a separate, consistent UI layer. */
+.humanFrameAccent { position:absolute!important;inset:0;width:100%;height:100%;pointer-events:none;z-index:3!important;fill:var(--card-border);stroke:var(--card-border);stroke-width:.7;filter:drop-shadow(0 0 1px #111); }
+.humanFrameAccent path:first-child { fill:none;stroke-width:.8; }
+html body .illustratedCard:has(>.humanFrameAccent) .cardIllustration { display:none!important; }
+html body .illustratedCard:has(>.humanFrameAccent) .cardScene { left:11%!important;top:16%!important;width:78%!important;height:53.3%!important; }
+html body .illustratedCard:has(>.humanFrameAccent) .cardTextBackdrop { left:11%;right:11%;top:69.5%;bottom:9%; }
+html body .illustratedCard:has(>.humanFrameAccent) .constructionPrice { right:13%;bottom:32%; }
+html body .illustratedCard:has(>.humanFrameAccent) .uniqueBuildingMark { top:17%;right:13%; }
+html body .cardFace:has(>.humanFrameAccent) .rlCodexTitle { left:13%;top:5.5%;width:74%;height:8.5%; }
+html body .cardFace:has(>.humanFrameAccent) .rlCodexIcon { left:11%;top:16%;width:78%;height:53.3%; }
+html body .cardFace:has(>.humanFrameAccent) .rlCodexContent { left:13%;top:71%;width:74%;height:19%; }
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard:has(>.humanFrameAccent) h3 { left:13%!important;top:5.5%!important;width:74%!important;height:8.5%!important; }
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard:has(>.humanFrameAccent) .choiceArt.card-media { left:11%!important;top:16%!important;width:78%!important;height:53.3%!important; }
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard:has(>.humanFrameAccent) .choiceBody { left:13%!important;top:71%!important;width:74%!important;height:19%!important; }
+html body .buildcard.illustratedBuildCard:has(>.humanFrameAccent) .cardname { left:13%!important;top:5.5%!important;width:74%!important;height:8.5%!important; }
+html body .buildcard.illustratedBuildCard:has(>.humanFrameAccent) .cardart { left:11%!important;top:16%!important;width:78%!important;height:53.3%!important; }
+html body .buildcard.illustratedBuildCard:has(>.humanFrameAccent) .cardinfo { left:13%!important;top:71%!important;width:74%!important;height:19%!important; }
+html body .illustratedCard:has(>.humanFrameAccent) :is(.cardFooter,.choiceFooter) { left:12%!important;right:auto!important;width:26%!important;bottom:3%!important;font-size:2.5cqw!important;text-align:left!important; }
+
+html body .illustratedCard:has(>.humanFrameAccent) .pickFootprint.inArtwork { left:13%!important;bottom:32%!important; }

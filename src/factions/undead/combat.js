@@ -32,7 +32,7 @@ export function initializeUndeadCombat(R) {
     }
   };
   const rememberGhost = (u) => {
-    if (u?.key !== 'und_ghost' || !context?.attack) return;
+    if (!context?.attack || u?.key !== 'und_ghost' && !R.undHasFirstWard?.(u)) return;
     restoreGhost(context, u);
     context.ghostStatus ||= new Map();
     if (!context.ghostStatus.has(u))
@@ -86,7 +86,8 @@ export function initializeUndeadCombat(R) {
   R.releaseUnit = (c, e) => {
     const u = release(c, e);
     if (!u) return u;
-    if (U[u.key]) {
+    if (U[u.key] || e.undConverted) {
+      if(e.undConverted)u.undConverted=true;
       u.undSummonClock = 0;
       u.undBeams = [];
       u.undAuraClock = 0;
@@ -111,6 +112,10 @@ export function initializeUndeadCombat(R) {
     if (clone) clone.temporary = 10;
   };
   R.undTryDodge = (u, amount = 0, source = null, secondary = false) => {
+    if(R.undConsumeFirstWard?.(u)){
+      if(context?.ghostStatus?.has(u)){context.ghostEvaded ||= new Map();context.ghostEvaded.set(u,context.ghostStatus.get(u));}
+      u.orcLastEvaded=true;return true;
+    }
     if (u.key !== 'und_ghost') return false;
     const chance = u.undMirror
       ? 0.4
@@ -134,7 +139,7 @@ export function initializeUndeadCombat(R) {
   const steal = (u, n) => {
     if (!u.alive || n <= 0) return;
     const c = own(u),
-      requested = n * (0.3 + 0.05 * count(u, 'vampire_common_lifesteal'));
+      requested = n * (0.3 + 0.05 * count(u, 'vampire_common_lifesteal') + (R.undGlobalLifeSteal?.(u)||0));
     const missing = Math.max(0, u.maxHp - u.hp),
       effective = requested * (u.orcPoison > 0 ? 0.7 : 1) * (u.healReceivedMult || 1);
     R.healUnit(u, requested);
@@ -153,6 +158,7 @@ export function initializeUndeadCombat(R) {
     const ctx = context,
       source = ctx?.source,
       hostile = source && source.side !== target.side;
+    if(hostile&&!ctx.guarded)amount *= R.undDamageMultiplier?.(source,ctx)||1;
     if (
       ctx?.attack &&
       ctx.ranged &&
@@ -201,6 +207,7 @@ export function initializeUndeadCombat(R) {
     const actual = damage(target, amount, type);
     if (hostile && actual > 0) {
       if (source.key === 'und_vampire') steal(source, actual);
+      R.undAfterDamage?.(source,actual,ctx);
       if (source.key === 'und_lich' && ctx?.kind === 'beam' && source.alive) R.healUnit(source, actual);
       if (isUndead(own(source)) && ctx?.attack && !target.orcLastEvaded)
         R.undPoison(target, R.undEconomy(own(source)).poisonHits, own(source));
@@ -217,6 +224,7 @@ export function initializeUndeadCombat(R) {
       R.undPoison(source, 2, own(target));
     return actual;
   };
+  R.undDeathChainHit=(target,amount)=>withSource({source:null,attack:false,kind:'death_chain'},()=>R.damageUnit(target,amount,'magic'));
   const connect = (u, target) => {
     if (!target?.alive || u.undBeams.some((b) => b.id === target.id) || R.undTryDodge(target, u.damage, u))
       return false;
@@ -358,7 +366,7 @@ export function initializeUndeadCombat(R) {
   const kill = R.killUnit;
   R.killUnit = (u, combat = true) => {
     if (!u?.alive) return;
-    if (combat && u.hp > 0 && u.key === 'und_ghost' && context?.attack) {
+    if (combat && u.hp > 0 && (u.key === 'und_ghost' || R.undHasFirstWard?.(u)) && context?.attack) {
       rememberGhost(u);
       if (R.undTryDodge(u, context.source?.damage || 0, context.source, context.secondary)) return;
     }
@@ -371,6 +379,7 @@ export function initializeUndeadCombat(R) {
     if (u.alive) return out;
     dirty = true;
     if (!combat) return out;
+    R.undOnCombatDeath?.(u);
     // Every extra life is a fresh actor; its once-only tomb flag survives upgrades.
     if (U[u.key] && isUndead(c)) {
       if (u.key.startsWith('und_skeleton')) {
@@ -579,9 +588,11 @@ export function initializeUndeadCombat(R) {
     g.restore();
   };
   R.mpFactionUnitPayload = (u) =>
-    u && (U[u.key] || u.undPoisonSource || u.undWitherSlow)
+    u && (U[u.key] || u.undConverted || u.undPoisonSource || u.undWitherSlow)
       ? {
           undNoArmySlot: !!u.undNoArmySlot,
+          undConverted: !!u.undConverted,
+          undFirstGuardUsed: !!u.undFirstGuardUsed,
           undSummoned: !!u.undSummoned,
           undElite: !!u.undElite,
           undReborn: !!u.undReborn,

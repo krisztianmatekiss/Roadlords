@@ -9,3 +9,9 @@ Két eredeti, átlátszó PNG-részatlasz készült a jóváhagyott Heroes III h
 A `tests/undead-figures.cjs` valódi böngészős próbája ellenőrzi mind a hét modellt, a járás/támadás/halál képkockáit, a nyolc csapatszínt és elitjelölést, a nyíl és varázslatok indulópontját, tényleges találati időzítést, életlopást, Lich-sugarat és idézést, továbbá az A/B kapcsolást, 50 szimulált másodpercnyi vegyes harcot, 1280×800-as elhelyezést és az 1000 induló egységes csatát. A jelentés és mozgásgaléria az `artifacts` könyvtárba kerül. Az újrahasznált emberi Íjász és sima Csontváz korábbi regressziós próbái külön is futnak.
 
 A terheléses ellenőrzés működést és korlátos képkockatárat igazol; nem eszközfüggetlen 60 FPS ígéret. A nyilvános előnézet tényleges renderelt modelleket mutat: `public/previews/undead-in-game.png`.
+
+## V4.47.1 – karok és kezek
+
+A hátsó könyökök a törzsön kívül maradnak, a Zombi mindkét karma előre nyúl. A Vámpír külön kéz- és alkarillesztést kapott: a kard a tenyér fogáspontján marad, a csukló a mozdulat során legfeljebb 0,8 radiánnal hajlik el az alkartól. A varázslók szabad keze követi az alkar irányát. A Szellem két karja anatómiailag elérhető célpontokat használ. A Csontvázíjász a rövidebb törzséhez illő vállakat, hátrébb húzott ideget és a sima Csontváz festett, csontos kézrészeit használja. A nyíl új indulópontja a tényleges utolsó nockolt nyíl középpontjával egyezik.
+
+A közös böngészőteszt mind a hat új típusnál összeveti a teljes modellt a karok nélküli rajzzal: nyugalomban, hátralendítéskor és találatkor mindkét felkar és alkar tényleges képpontjai látszanak. A csuklók irányát az összes mozgásfázisban külön is ellenőrzi.

@@ -10,7 +10,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('Only the current Undead comparison and stress trial are visible',await page.locator('.roadTestsList button').count()===2&&await page.locator('#roadUndeadFiguresMenu').isVisible()&&await page.locator('#roadUndeadStressMenu').isVisible());
   await page.locator('#roadUndeadFiguresMenu').click();await page.waitForFunction(()=>__ROADLORDS_RUNTIME__.ROAD.testRoster==='undead-figures');await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadPause());
   check('One click starts four of every Undead and Human type with unchanged base stats',await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return R.state.units.length===56&&new Set(R.state.units.map(u=>u.key)).size===14&&R.state.units.every(u=>R.state.units.filter(v=>v.key===u.key).length===4&&u.maxHp===R.UNITS[u.key].hp&&u.damage===R.UNITS[u.key].damage)&&R.P.race==='undead'&&R.E.race==='human'&&[R.P,R.E].every(c=>!c.legends.size&&!Object.keys(c.normal).length)}));
-  const poses=await page.evaluate(()=>{
+  const poses=await page.evaluate((manifests)=>{
    const R=__ROADLORDS_RUNTIME__,Q=R.ROAD,units=R.state.units.filter(u=>u.side==='player').filter((u,i,a)=>a.findIndex(v=>v.key===u.key)===i),hash=c=>{let n=0;for(const b of c.getContext('2d').getImageData(0,0,c.width,c.height).data)n=(Math.imul(n,31)+b)>>>0;return n};
    const sprite=(u,state,frame)=>{
     const actor={...u,lane:Q.camera+350,offset:0,roadFace:1,roadMoving:state==='walk',roadWalk:(frame+.1)/8*Math.PI*2-u.id*.73,roadAttack:null,roadUndSummon:null,undBeams:[],death:10-(frame+.1)/6*.6};Q.clock=10;
@@ -21,12 +21,25 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    };
    const result={units:{}},gallery=document.createElement('canvas');gallery.width=2100;gallery.height=7*430;const g=gallery.getContext('2d');g.fillStyle='#21352a';g.fillRect(0,0,gallery.width,gallery.height);g.fillStyle='#f1dba7';g.font='18px Arial';
    for(const [ui,u]of units.entries()){
-    const c={bounds:true,finite:true,aligned:true};for(const [ri,[state,count]]of [['idle',1],['walk',8],['attack',12],['death',6]].entries()){
+    const c={bounds:true,finite:true,aligned:true,wristNatural:true};for(const [ri,[state,count]]of [['idle',1],['walk',8],['attack',12],['death',6]].entries()){
      const hashes=[];g.fillText(u.key+' / '+state,8,ui*430+ri*105+23);
      for(let i=0;i<count;i++){const s=sprite(u,state,i),rig=s.figureRig;hashes.push(hash(s));if(i%2===0)g.drawImage(s,220+i/2*300,ui*430+ri*105-20,220,220);
       const px=s.getContext('2d').getImageData(0,0,s.width,s.height).data;for(let k=0;k<s.width;k++)for(const at of [k,k*s.width,k*s.width+s.width-1,(s.height-1)*s.width+k])if(px[at*4+3]>80)c.bounds=false;
-      c.finite&&=!JSON.stringify(rig).includes('null');if(rig.hands&&rig.elbows&&rig.shoulders)c.aligned&&=rig.elbows.every((e,j)=>Math.hypot(e[0]-rig.shoulders[j][0],e[1]-rig.shoulders[j][1])<13);
+      c.finite&&=!JSON.stringify(rig).includes('null');if(u.key==='und_vampire'){const e=rig.elbows[1],w=rig.wrists[1],h=rig.hands[1],fx=w[0]-e[0],fy=w[1]-e[1],hx=h[0]-w[0],hy=h[1]-w[1];c.wristNatural&&=(fx*hx+fy*hy)/(Math.hypot(fx,fy)*Math.hypot(hx,hy))>.69;}if(rig.palm){const e=rig.elbows[0],w=rig.hands[0],h=rig.palm;c.wristNatural&&=(w[0]-e[0])*(h[0]-w[0])+(w[1]-e[1])*(h[1]-w[1])>0;}if(rig.hands&&rig.elbows&&rig.shoulders)c.aligned&&=rig.elbows.every((e,j)=>Math.hypot(e[0]-rig.shoulders[j][0],e[1]-rig.shoulders[j][1])<13);
      }c[state]=new Set(hashes).size;
+    }
+    if(u.key!=='und_skeleton'){
+     c.visibleArms=[];const originals={},blanks={};
+     for(const [m,texture,names]of [[manifests.f,'undeadFightersTexture',['zUpper','zFore','vUpper','vFore','vForeBare','vHand','gUpper','gFore']],[manifests.c,'undeadCastersTexture',['nUpper','nFore','lUpper','lFore','nPalm','lPalm']],[manifests.s,'skeletonTexture',['upperArm','forearmBare','hand','gripFingers']]]){
+      const source=R[texture],blank=document.createElement('canvas');blank.width=source.naturalWidth;blank.height=source.naturalHeight;blank.naturalWidth=blank.width;const bg=blank.getContext('2d');bg.drawImage(source,0,0);for(const name of names)bg.clearRect(...m.parts[name]);originals[texture]=source;blanks[texture]=blank;
+     }
+     for(const [state,frame]of [['idle',0],['attack',3],['attack',6]]){
+      Q.sprites.clear();R.undeadClothCache.clear();const full=sprite(u,state,frame),rig=full.figureRig;
+      Object.assign(R,blanks);Q.sprites.clear();R.undeadClothCache.clear();const without=sprite(u,state,frame);Object.assign(R,originals);Q.sprites.clear();R.undeadClothCache.clear();
+      for(let j=0;j<2;j++)for(const [a,b]of [[rig.shoulders[j],rig.elbows[j]],[rig.elbows[j],(rig.wrists||rig.hands)[j]]]){
+       const bounds=full.figureBounds,k=full.width/bounds[2],size=u.key==='und_skeleton_archer'?.95:u.key==='und_zombie'?1.05:1,bob=u.key==='und_ghost'?rig.bob:0,x=(((a[0]+b[0])/2)*size-bounds[0])*k,y=(((a[1]+b[1])/2+bob)*size-bounds[1])*k,r=2.4*k,rect=[Math.round(x-r),Math.round(y-r),Math.round(r*2),Math.round(r*2)],p=full.getContext('2d').getImageData(...rect).data,q=without.getContext('2d').getImageData(...rect).data;let changed=0;for(let z=0;z<p.length;z+=4)if(Math.abs(p[z]-q[z])+Math.abs(p[z+1]-q[z+1])+Math.abs(p[z+2]-q[z+2])+Math.abs(p[z+3]-q[z+3])>30)changed++;c.visibleArms.push(changed);
+      }
+     }
     }
     c.elite=hash(sprite({...u,veteran:true},'idle',0))!==hash(sprite(u,'idle',0));c.colors=[];for(const [color]of __ROADLORDS_UNIT_COLORS__.palette){R.P.unitColor=color;c.colors.push(hash(sprite(u,'idle',0)));}R.P.unitColor='blue';result.units[u.key]=c;
    }
@@ -37,12 +50,14 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    const names={und_skeleton:'Csontváz',und_skeleton_archer:'Csontvázíjász',und_zombie:'Zombi',und_ghost:'Szellem',und_necromancer:'Nekromanta',und_vampire:'Vámpír',und_lich:'Lich'},order=['und_skeleton','und_skeleton_archer','und_zombie','und_ghost','und_necromancer','und_vampire','und_lich'];
    for(const [i,key]of order.entries()){const col=i%4,row=Math.floor(i/4),x=col*450+225,y=100+row*500,s=sprite(units.find(u=>u.key===key),'idle',0),b=s.figureBounds;c.fillStyle='#21372a';c.beginPath();c.roundRect(col*450+12,y,426,470,15);c.fill();c.fillStyle='#eed8a4';c.font='bold 25px Arial';c.fillText(names[key],x,y+39);c.drawImage(s,x+b[0]*4,y+333+b[1]*4,b[2]*4,b[3]*4);c.drawImage(s,x+b[0],y+433+b[1],b[2],b[3]);}
    result.gallery=gallery.toDataURL();result.preview=preview.toDataURL();result.cache=Q.sprites.size;result.clothCache=R.undeadClothCache.size;return result;
-  });
+  },{f:JSON.parse(fs.readFileSync('src/data/undead-fighters-art.json')),c:JSON.parse(fs.readFileSync('src/data/undead-casters-art.json')),s:JSON.parse(fs.readFileSync('src/data/skeleton-art.json'))});
   for(const [field,name]of [['gallery','undead-poses.png'],['preview','undead-in-game.png']]){fs.writeFileSync('artifacts/'+name,Buffer.from(poses[field].split(',')[1],'base64'));delete poses[field];}report.poses=poses;
   check('All seven types have visible distinct walk, attack and death poses within their sprite bounds',Object.values(poses.units).every(c=>c.walk>=6&&c.attack>=7&&c.death>=5&&c.bounds&&c.finite&&c.aligned));
+  check('Both upper arms and forearms remain visibly painted in idle, draw and impact poses',Object.values(poses.units).filter(c=>c.visibleArms).every(c=>c.visibleArms.every(n=>n>4)));
+  check('Weapon and spell hands retain natural wrists throughout every animation',Object.values(poses.units).every(c=>c.wristNatural));
   check('Every type supports eight team colors and an elite marker with bounded caches',Object.values(poses.units).every(c=>new Set(c.colors).size===8&&c.elite)&&poses.cache<=768&&poses.clothCache<=24);
   check('Ghost floats without legs and Necromancer has a separate summoning pose',poses.ghost.legs===0&&poses.ghost.hover>=6&&poses.summon);
-  check('Nocked arrow and both spell origins match the release poses',poses.bowLoaded.arrowLoaded&&!poses.bowReleased.arrowLoaded&&poses.bowLoaded.arrowCenter.every((v,i)=>Math.abs(v-[16,-33][i])<1e-8)&&poses.necroLaunch.every((v,i)=>Math.abs(v-poses.necroRelease.staffTip[i])<1e-8)&&poses.lichLaunch.every((v,i)=>Math.abs(v-poses.lichRelease.staffTip[i])<1e-8));
+  check('Nocked arrow and both spell origins match the release poses',poses.bowLoaded.arrowLoaded&&!poses.bowReleased.arrowLoaded&&poses.bowLoaded.arrowCenter.every((v,i)=>Math.abs(v-[11,-33][i])<1e-8)&&poses.necroLaunch.every((v,i)=>Math.abs(v-poses.necroRelease.staffTip[i])<1e-8)&&poses.lichLaunch.every((v,i)=>Math.abs(v-poses.lichRelease.staffTip[i])<1e-8));
   const combat=await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,Q=R.ROAD,fixture=()=>{R.roadStartTest(42,{count:28,roster:'undead-figures'});R.roadPause();Q.clock=20;R.state.combatStep=(R.state.combatStep||0)+1;for(const u of R.state.units){u.lane=6000;u.offset=200;}},out=[];
    for(const key of ['und_skeleton_archer','und_necromancer','und_vampire','und_lich']){

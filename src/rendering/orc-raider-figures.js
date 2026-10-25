@@ -1,10 +1,11 @@
+import { isMixedFigureTrial } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/orc-raiders-art.json';
 
 const TAU=Math.PI*2,clamp=n=>Math.max(0,Math.min(1,n)),mix=(a,b,t)=>a+(b-a)*t;
 const GOBLIN_SCALE=manifest.modelScales.orc_goblin;
 const goblinBow=(R,u)=>R.hasLeg(R.cityForSide(u.side),'orc_gob_bow');
-export const paintedOrcRaider=(R,u)=>['orc_berserker','orc_goblin'].includes(u.key)&&R.ROAD.test&&R.ROAD.testRoster==='orc-raiders'&&R.ROAD.figureStyle==='painted'&&R.orcRaidersTexture?.naturalWidth>0;
+export const paintedOrcRaider=(R,u)=>['orc_berserker','orc_goblin'].includes(u.key)&&R.ROAD.test&&(isMixedFigureTrial(R.ROAD.testRoster)||R.ROAD.testRoster==='orc-raiders')&&R.ROAD.figureStyle==='painted'&&R.orcRaidersTexture?.naturalWidth>0;
 export const orcRaiderVariant=(R,u)=>u.key==='orc_goblin'?(goblinBow(R,u)?'bow':'sling'):((u.roadAttacks||0)%2?'near':'far');
 
 export function installOrcRaidersArt(R) {

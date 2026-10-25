@@ -1,3 +1,4 @@
+import { isMixedFigureTrial } from '../config/figure-trials.js';
 import { EFFECT_COLORS as COLORS, STATUS_THEMES } from '../data/effect-palette.js';
 import { unitIsElite } from '../data/unit-ranks.js';
 const TAU = Math.PI * 2;
@@ -142,12 +143,12 @@ export function installBattleEffects(R) {
   };
   Object.defineProperty(fx,'statusSprites',{get:()=>statusSprites.size});
   R.roadImpactEffect=(u,a)=>{
-    const slam=u.key==='orc_troll'&&R.ROAD.test&&R.ROAD.testRoster==='orc-mystics'&&R.ROAD.figureStyle==='painted';
+    const slam=u.key==='orc_troll'&&R.ROAD.test&&(isMixedFigureTrial(R.ROAD.testRoster)||R.ROAD.testRoster==='orc-mystics')&&R.ROAD.figureStyle==='painted';
     const kind=slam?'slam':a.effect||shotKind(R,u);
     if(!kind)return;
     if(a.to<R.ROAD.camera-110||a.to>R.ROAD.camera+R.ROAD.w/R.ROAD.zoom+110)return;
     const quake=slam&&R.hasBranch(R.cityForSide(u.side),'orc_troll','earthshaker')&&u.attackCount%3===0;
-    const f={kind,lane:a.to,offset:a.toOffset||0,start:a.hit,radius:slam?(u.aoe||55)*(quake?2.5:1):Math.max(14,Math.min(90,a.radius||28)),quake,casterFire:kind==='fire'&&u.key==='mage'&&R.ROAD.test&&['casters','undead-figures'].includes(R.ROAD.testRoster)&&R.ROAD.figureStyle==='painted'};
+    const f={kind,lane:a.to,offset:a.toOffset||0,start:a.hit,radius:slam?(u.aoe||55)*(quake?2.5:1):Math.max(14,Math.min(90,a.radius||28)),quake,casterFire:kind==='fire'&&u.key==='mage'&&R.ROAD.test&&(isMixedFigureTrial(R.ROAD.testRoster)||['casters','undead-figures'].includes(R.ROAD.testRoster))&&R.ROAD.figureStyle==='painted'};
     if(slam){
       const contact=R.trollGroundPoint(),face=a.to>=a.lane?1:-1;
       f.lane=a.lane+contact[0]*R.ROAD.h/600*face;f.offset=(a.offset||0)+contact[1];
@@ -161,7 +162,7 @@ export function installBattleEffects(R) {
     if(fx.impacts.length<limit)fx.impacts.push(f);else{fx.head=(fx.head+1)%limit;fx.impacts[fx.head]=f;}
   };
   R.roadDrawGroundEffects=()=>{
-    if(!R.ROAD.test||R.ROAD.testRoster!=='orc-mystics'||R.ROAD.figureStyle!=='painted')return;
+    if(!R.ROAD.test||(!isMixedFigureTrial(R.ROAD.testRoster)&&R.ROAD.testRoster!=='orc-mystics')||R.ROAD.figureStyle!=='painted')return;
     const g=R.ctx,now=R.ROAD.clock,scale=R.ROAD.h/600*R.ROAD.zoom;
     for(const f of fx.impacts){
       const age=now-f.start;if(f.kind!=='slam'||age<0||age>=3)continue;

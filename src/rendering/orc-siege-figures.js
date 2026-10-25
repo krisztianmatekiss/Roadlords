@@ -1,10 +1,11 @@
+import { isMixedFigureTrial } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/orc-siege-art.json';
 
 const TAU=Math.PI*2,mix=(a,b,t)=>a+(b-a)*t,clamp=n=>Math.max(0,Math.min(1,n));
 const READY_HAND=[5,-57.2],WIND_HAND=[-2,-57],RELEASE_HAND=[12,-52],STAB_HAND=[15,-45];
 const READY_ANGLE=.03,WIND_ANGLE=-.25,RELEASE_ANGLE=.10,STAB_ANGLE=.80;
-export const paintedOrcSiege=(R,u)=>['orc_warg','orc_ram'].includes(u.key)&&R.ROAD.test&&R.ROAD.testRoster==='orc-siege'&&R.ROAD.figureStyle==='painted'&&R.orcSiegeTexture?.naturalWidth>0;
+export const paintedOrcSiege=(R,u)=>['orc_warg','orc_ram'].includes(u.key)&&R.ROAD.test&&(isMixedFigureTrial(R.ROAD.testRoster)||R.ROAD.testRoster==='orc-siege')&&R.ROAD.figureStyle==='painted'&&R.orcSiegeTexture?.naturalWidth>0;
 export const orcSiegeVariant=(u,pose)=>u.key==='orc_warg'&&pose.state==='attack'&&u.roadAttack?.orcSpear?'throw':'melee';
 
 export function installOrcSiegeArt(R) {

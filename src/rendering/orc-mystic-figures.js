@@ -1,9 +1,10 @@
+import { isMixedFigureTrial } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/orc-mystics-art.json';
 import { drawMagicShot } from './battle-effects.js';
 
 const TAU=Math.PI*2,clamp=n=>Math.max(0,Math.min(1,n)),mix=(a,b,t)=>a+(b-a)*t;
-export const paintedOrcMystic=(R,u)=>['orc_shaman','orc_troll'].includes(u.key)&&R.ROAD.test&&R.ROAD.testRoster==='orc-mystics'&&R.ROAD.figureStyle==='painted'&&R.orcMysticsTexture?.naturalWidth>0;
+export const paintedOrcMystic=(R,u)=>['orc_shaman','orc_troll'].includes(u.key)&&R.ROAD.test&&(isMixedFigureTrial(R.ROAD.testRoster)||R.ROAD.testRoster==='orc-mystics')&&R.ROAD.figureStyle==='painted'&&R.orcMysticsTexture?.naturalWidth>0;
 
 export function installOrcMysticsArt(R) {
   R.orcMysticsClothCache=new Map();

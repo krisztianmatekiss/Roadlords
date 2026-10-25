@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.47.1',
-  label: 'V4.47.1 · ÉLŐHALOTTAK',
-  title: 'Roadlords – Élőhalott egységek',
+  version: '4.48.0',
+  label: 'V4.48.0 · VEGYES CSATÁK',
+  title: 'Roadlords – Vegyes csaták',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

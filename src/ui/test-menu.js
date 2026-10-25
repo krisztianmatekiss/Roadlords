@@ -1,3 +1,4 @@
+import { MIXED_FIGURE_TRIALS, loadMixedFigureTrialArt } from '../config/figure-trials.js';
 // Battle experiments live behind one main-menu entry.
 export function installTestMenu(R) {
   const lobby=R.MP.lobby,main=lobby.querySelector('.menuMain'),card=lobby.querySelector('.mpLobbyCard');
@@ -20,15 +21,13 @@ export function installTestMenu(R) {
       else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
     }
   });
-  for(const [id,label,description,options] of [
-    ['roadUndeadFiguresMenu','ÉLŐHALOTTAK · 28 vs 28','Mind a hét élőhalott egység az emberek ellen, új grafikával.',{count:28,roster:'undead-figures'}],
-    ['roadUndeadStressMenu','TERHELÉS · 500 vs 500','Az összes élőhalott és emberi egységtípus valódi képességekkel.',{count:500,roster:'undead-figures'}],
-  ]){
+  for(const [roster,{id,label}] of Object.entries(MIXED_FIGURE_TRIALS)){
+    const options={count:100,roster},description='Mind a hét egységtípus, új grafikák és valódi képességek.';
     const item=document.createElement('div'),button=document.createElement('button'),note=document.createElement('p');
     button.id=id;button.type='button';button.className='menuButton';button.textContent=label;
     button.onclick=async()=>{
       button.disabled=true;
-      const results=await Promise.all([R.loadUndeadArt(),R.loadSkeletonArt(),R.loadHumanInfantryArt(),R.loadArcherArt(),R.loadKnightArt(),R.loadCatapultArt(),R.loadHumanCastersArt()]);
+      const results=await loadMixedFigureTrialArt(R,roster);
       button.disabled=false;
       if(!results.every(Boolean)){R.toast('Az egységek képe nem töltődött be. Frissítsd az oldalt.');return;}
       close(false);R.roadStartTest(undefined,options);

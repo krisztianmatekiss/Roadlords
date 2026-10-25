@@ -1,3 +1,4 @@
+import { isMixedFigureTrial } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/human-infantry-art.json';
 
@@ -11,7 +12,7 @@ export function installHumanInfantryArt(R) {
     return R.humanInfantryArtReady=image.decode().then(()=>true,()=>false);
   };
 }
-export const paintedHumanInfantry=(R,u)=>(u.key==='swordsman'||u.key==='spearman')&&R.ROAD.test&&['infantry','casters','orc-raiders','orc-mystics','orc-siege','undead-figures'].includes(R.ROAD.testRoster)&&R.ROAD.figureStyle==='painted'&&R.humanInfantryTexture?.naturalWidth>0;
+export const paintedHumanInfantry=(R,u)=>(u.key==='swordsman'||u.key==='spearman')&&R.ROAD.test&&(isMixedFigureTrial(R.ROAD.testRoster)||['infantry','casters','orc-raiders','orc-mystics','orc-siege','undead-figures'].includes(R.ROAD.testRoster))&&R.ROAD.figureStyle==='painted'&&R.humanInfantryTexture?.naturalWidth>0;
 
 function joint(start,end,upper,lower,bend=1) {
   const dx=end[0]-start[0],dy=end[1]-start[1],distance=Math.max(.001,Math.hypot(dx,dy)),reach=Math.min(distance,upper+lower-.001);

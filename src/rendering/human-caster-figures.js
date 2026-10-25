@@ -1,11 +1,11 @@
-import { isMixedFigureTrial } from '../config/figure-trials.js';
+import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/human-casters-art.json';
 import { drawMagicShot } from './battle-effects.js';
 
 const TAU=Math.PI*2,clamp=n=>Math.max(0,Math.min(1,n)),mix=(a,b,t)=>a+(b-a)*t;
-const trial=(R,u)=>['priest','mage'].includes(u.key)&&R.ROAD.test&&(isMixedFigureTrial(R.ROAD.testRoster)||['casters','undead-figures'].includes(R.ROAD.testRoster));
-export const paintedCaster=(R,u)=>trial(R,u)&&R.ROAD.figureStyle==='painted'&&R.humanCastersTexture?.naturalWidth>0;
+const trial=(R,u)=>['priest','mage'].includes(u.key)&&usesPaintedBattleArt(R,['casters','undead-figures']);
+export const paintedCaster=(R,u)=>trial(R,u)&&R.humanCastersTexture?.naturalWidth>0;
 
 export function installHumanCastersArt(R) {
   R.casterClothCache=new Map();R.casterHeals=[];
@@ -18,7 +18,7 @@ export function installHumanCastersArt(R) {
   R.casterProjectilePoint=(a,t)=>casterProjectilePoint(R,a,t);
   R.roadPriestHealEffect=(u,target)=>{
     if(!trial(R,u))return false;
-    const start=R.ROAD.clock;u.roadHeal={start,end:start+.6};
+    const start=R.ROAD.clock;u.roadHeal={start,end:start+.6,targetId:target.id};
     if(R.casterHeals.length>=128)R.casterHeals.shift();
     R.casterHeals.push({target,start});
     return paintedCaster(R,u);
@@ -27,7 +27,7 @@ export function installHumanCastersArt(R) {
     const now=R.ROAD.clock,g=R.ctx,scale=R.ROAD.h/600*R.ROAD.zoom;let n=0;
     for(const event of R.casterHeals){
       const age=now-event.start;if(age<0||age>.6)continue;R.casterHeals[n++]=event;
-      if(!R.ROAD.test||!(isMixedFigureTrial(R.ROAD.testRoster)||['casters','undead-figures'].includes(R.ROAD.testRoster))||R.ROAD.figureStyle!=='painted'||!event.target.alive)continue;
+      if(!usesPaintedBattleArt(R,['casters','undead-figures'])||!event.target.alive)continue;
       const p=R.pointAt(event.target.lane,event.target.offset||0);if(p.x< -60||p.x>R.ROAD.w+60)continue;
       const t=age/.6;g.save();g.translate(p.x,p.y);g.scale(scale,scale);g.globalAlpha=(1-t)*.95;
       g.strokeStyle='#c4ef9b';g.lineWidth=1.2;g.beginPath();g.ellipse(0,1,11+t*5,3+t,0,0,TAU);g.stroke();

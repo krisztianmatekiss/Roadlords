@@ -1,3 +1,4 @@
+import { WARG_THROW_RANGE } from '../data/ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { ORC_BALANCE } from '../data/combat-balance.js';
 export function initializeFactionsOrcRelics(runtime) {
@@ -273,7 +274,7 @@ export function initializeFactionsOrcRelics(runtime) {
     if (changed) refresh(u);
     if (u.key === 'orc_warg' && leg(c, 'hunt') && !u.orcSpearRainActive) reactions.push(() => {
       if (!u.alive) return;
-      const t = near(u, u.side === 'player' ? 'enemy' : 'player', 115)[0];
+      const t = near(u, u.side === 'player' ? 'enemy' : 'player', WARG_THROW_RANGE)[0];
       if (t) {
         u.orcSpearReady = true;
         runtime.attackUnit(u, t, {

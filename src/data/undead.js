@@ -1,3 +1,4 @@
+import { rangedRange } from './ranged-balance.js';
 import { UNDEAD_PLAN_BUILDINGS, UNDEAD_PLAN_UPGRADES } from './undead-plan.js';
 import { UNDEAD_TRAINING, trainingPrice } from './unit-balance.js';
 import { UNDEAD_BUILDING_COPY, UNDEAD_UPGRADE_COPY } from './undead-copy.js';
@@ -36,7 +37,7 @@ export const UNDEAD_UNITS = {
     damage: 8,
     cooldown: 1.25,
     speed: 40,
-    range: 130,
+    range: rangedRange(130),
     train: 5,
     souls: 8,
     cat: 'infantry',
@@ -80,7 +81,7 @@ export const UNDEAD_UNITS = {
     damage: 5,
     cooldown: 2,
     speed: 36,
-    range: 120,
+    range: rangedRange(120),
     train: 14,
     souls: 40,
     cat: 'magic',
@@ -111,7 +112,7 @@ export const UNDEAD_UNITS = {
     damage: 5,
     cooldown: 5,
     speed: 32,
-    range: 140,
+    range: rangedRange(140),
     train: 18,
     souls: 60,
     cat: 'magic',

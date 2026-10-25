@@ -1,3 +1,4 @@
+import { SPEAR_VOLLEY_RANGE, rangedRange } from '../data/ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { formatMetres, formatSpeed } from '../world/measurements.js';
 export function register(runtime) {
@@ -156,7 +157,7 @@ export function register(runtime) {
   };
   runtime.preferredTarget = function preferredTarget(u, opps) {
     const c = runtime.cityForSide(u.side),
-      range = u.spearVolleyReady ? Math.max(u.range, 190) : u.range;
+      range = u.spearVolleyReady ? Math.max(u.range, SPEAR_VOLLEY_RANGE) : u.range;
     const longbow = u.key === 'archer' && runtime.hasBranch(c, 'archery', 'longbowmen');
     let best = null,
       bestPriority = -1,
@@ -885,7 +886,7 @@ export function register(runtime) {
       range *= 1 + .10 * runtime.countNormal(c, 'archer_range');
       if (runtime.hasLeg(c, 'archer_skirmish')) speed *= 1.5;
       if (runtime.hasBranch(c, 'archery', 'longbowmen')) {
-        range += 75;
+        range += rangedRange(75);
         dmg *= 2;
         buildingDamage *= 2;
         as *= .6;

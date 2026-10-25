@@ -209,7 +209,7 @@ export const BRANCH_COPY = Object.freeze({
   "barracks/cavalry_barracks": "Istállóval oldalszomszédos Kaszárnya Kardos helyett az Istállóval azonos Lovagot képez.",
   "spearhall/pike_wall": "Lándzsások: +75% életerő, +50% hatótáv, +300% teljes ellenbónusz; −25% mozgási sebesség.",
   "spearhall/spear_rain": "A Lándzsás első támadása nagy hatótávú, +250% sebzésű, és legfeljebb 3 egységet döf át.",
-  "archery/longbowmen": "Íjászok: +75 hatótáv, +100% sebzés; −40% támadási sebesség. Távolsági és mágikus egységeket keresnek.",
+  "archery/longbowmen": "Íjászok: +150 hatótáv, +100% sebzés; −40% támadási sebesség. Távolsági és mágikus egységeket keresnek.",
   "archery/arrow_rain": "Az Íjász támadásonként legfeljebb 3 célpontot talál el, egyenként 60% sebzéssel.",
   "stable/charge_cavalry": "Lovagok: +50% mozgási sebesség. Első támadásuk +400% sebzésű, és 2 mp-re elkábít.",
   "stable/armored_knights": "Lovagok: +100% életerő, −50% kapott fizikai sebzés; −25% mozgási sebesség.",

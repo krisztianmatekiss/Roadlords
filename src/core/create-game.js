@@ -1,3 +1,4 @@
+import { installProductionFigures } from '../rendering/production-figures.js';
 import { initializeUndeadFoundation } from '../factions/undead/foundation.js';
 import { initializeOrcExpansion } from '../factions/orc-expansion.js';
 import { initializeUndeadEconomy } from '../factions/undead/economy.js';
@@ -276,5 +277,6 @@ export function createGame() {
   initializeUndeadCombat(runtime);
   initializeUndeadUi(runtime);
   installBattleEffects(runtime);
+  installProductionFigures(runtime);
   return runtime;
 }

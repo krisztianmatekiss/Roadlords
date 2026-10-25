@@ -66,7 +66,7 @@ export function initializeFactionsOrcDescriptions(runtime) {
     orc_warrior: 'Erős közelharcos.',
     orc_berserker: 'Minden 2% hiányzó életerőért +1% támadási sebességet kap.',
     orc_goblin: 'Gyorsan támadó távolsági egység.',
-    orc_warg: 'Első támadásként 60 sebzésű lándzsát dob 115 hatótávból, utána közelharcban küzd. Épületek ellen a lándzsa kevesebbet sebez, és nem lehet kritikus.',
+    orc_warg: 'Első támadásként 60 sebzésű lándzsát dob 230 hatótávból, utána közelharcban küzd. Épületek ellen a lándzsa kevesebbet sebez, és nem lehet kritikus.',
     orc_shaman: 'Találatonként egy véletlen átkot tesz a célpontra 4 másodpercre. Elsősorban az átok nélküli ellenfeleket támadja.\nGyengeség: −20% sebzés.\nSorvadás: −20% maximális életerő; lejáratkor nem gyógyít.\nKimerültség: −25% támadási sebesség.\nSebezhetőség: +20% elszenvedett sebzés.\nVakság: 25% eséllyel elhibázza a támadást.\nUgyanaz az átok frissül, nem erősödik.',
     orc_ram: 'Épületek ellen 130-at, egységek ellen 8-at sebez. A fizikai támadásokból 50%-kal kevesebb sebzést kap.',
     orc_troll: 'A célpontnak 110-et, a körülötte álló ellenségeknek 35-öt sebez. 4 sereghelyet és 4 helyőrségi férőhelyet foglal.'

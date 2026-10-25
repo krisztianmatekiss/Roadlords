@@ -1,4 +1,4 @@
-import { isMixedFigureTrial } from '../config/figure-trials.js';
+import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/orc-warrior-art.json';
 
@@ -14,7 +14,7 @@ export function installOrcWarriorArt(R) {
   };
 }
 
-export const paintedOrcWarrior=(R,u)=>u.key==='orc_warrior'&&R.ROAD.test&&(isMixedFigureTrial(R.ROAD.testRoster)||['orc-skeleton','knight','catapult','infantry','archer','casters'].includes(R.ROAD.testRoster))&&R.ROAD.figureStyle==='painted'&&R.orcWarriorTexture?.naturalWidth>0;
+export const paintedOrcWarrior=(R,u)=>u.key==='orc_warrior'&&usesPaintedBattleArt(R,['orc-skeleton','knight','catapult','infantry','archer','casters'])&&R.orcWarriorTexture?.naturalWidth>0;
 
 function joint(start,end,upper,lower,bend=1) {
   const dx=end[0]-start[0],dy=end[1]-start[1],distance=Math.max(.001,Math.hypot(dx,dy));

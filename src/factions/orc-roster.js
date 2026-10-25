@@ -1,3 +1,4 @@
+import { rangedRange, WARG_THROW_RANGE } from '../data/ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { ORC_BALANCE } from '../data/combat-balance.js';
 import { ORC_TRAINING, trainingPrice } from '../data/unit-balance.js';
@@ -47,7 +48,7 @@ export function initializeFactionsOrcRoster(runtime) {
       range: 30,
       train: 11,
       cost: runtime.C(5, 16, 18),
-      description: 'Első támadás: 60 sebzésű lándzsadobás 115 hatótávból, mozgás közben; utána közelharc. Próbaszabály: épületre a dobás normál közelharci épületszorzót kap, kritikus találat nélkül.'
+      description: 'Első támadás: 60 sebzésű lándzsadobás 230 hatótávból, mozgás közben; utána közelharc. Próbaszabály: épületre a dobás normál közelharci épületszorzót kap, kritikus találat nélkül.'
     },
     orc_shaman: {
       name: 'Sámán',
@@ -59,7 +60,7 @@ export function initializeFactionsOrcRoster(runtime) {
       damage: 8,
       cooldown: 2.5,
       speed: 38,
-      range: 150,
+      range: rangedRange(150),
       train: ORC_TRAINING.orc_shaman[0],
       cost: runtime.C(10, 8, 12),
       damageType: 'magic',
@@ -295,10 +296,10 @@ export function initializeFactionsOrcRoster(runtime) {
   runtime.orcBeforeCombat13 = function (u, opps) {
     if (u.key !== 'orc_warg' || !u.orcSpearReady || u.cooldown > 0 || !u.alive) return;
     let target = null,
-      distance = 116;
-    for (const t of runtime.battleCandidates(opps, u.lane, 115)) {
+      distance = WARG_THROW_RANGE + 1;
+    for (const t of runtime.battleCandidates(opps, u.lane, WARG_THROW_RANGE)) {
       const d = runtime.roadDistance(t, u);
-      if (t.alive && d <= 115 && d < distance) {
+      if (t.alive && d <= WARG_THROW_RANGE && d < distance) {
         target = t;
         distance = d;
       }
@@ -310,7 +311,7 @@ export function initializeFactionsOrcRoster(runtime) {
       return;
     }
     const s = runtime.targetStructure(u.side);
-    if (runtime.roadDistance(s, u) <= 115) {
+    if (runtime.roadDistance(s, u) <= WARG_THROW_RANGE) {
       runtime.attackStructure(u, s);
       u.orcSpearReady = false;
       u.cooldown = u.cooldownTime;

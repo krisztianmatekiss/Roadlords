@@ -1,3 +1,4 @@
+import { SPEAR_VOLLEY_RANGE } from '../data/ranged-balance.js';
 import { isMixedFigureTrial } from '../config/figure-trials.js';
 import { installTowerFrontiers } from './frontiers.js';
 import { drawBattleGround } from '../rendering/battle-ground.js';
@@ -42,7 +43,7 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.roadCell = (x, y) => Math.floor(x / 64) * 32 + Math.floor((y + 512) / 64);
   runtime.roadOldPreferred = runtime.preferredTarget;
   runtime.preferredTarget = function (u, opps) {
-    const range = u.spearVolleyReady ? Math.max(190, u.range) : u.range;
+    const range = u.spearVolleyReady ? Math.max(SPEAR_VOLLEY_RANGE, u.range) : u.range;
     if (u.roadAim?.alive && runtime.roadDistance(u, u.roadAim) <= range) return u.roadAim;
     if ((u.roadAimAt || 0) > runtime.ROAD.clock) return null;
     u.roadAimAt = runtime.ROAD.clock + .16 + u.id % 5 * .013;

@@ -1,4 +1,4 @@
-import { isMixedFigureTrial } from '../config/figure-trials.js';
+import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { EFFECT_COLORS as COLORS, STATUS_THEMES } from '../data/effect-palette.js';
 import { unitIsElite } from '../data/unit-ranks.js';
 const TAU = Math.PI * 2;
@@ -143,12 +143,13 @@ export function installBattleEffects(R) {
   };
   Object.defineProperty(fx,'statusSprites',{get:()=>statusSprites.size});
   R.roadImpactEffect=(u,a)=>{
-    const slam=u.key==='orc_troll'&&R.ROAD.test&&(isMixedFigureTrial(R.ROAD.testRoster)||R.ROAD.testRoster==='orc-mystics')&&R.ROAD.figureStyle==='painted';
+    const slam=u.key==='orc_troll'&&usesPaintedBattleArt(R,['orc-mystics']);
     const kind=slam?'slam':a.effect||shotKind(R,u);
     if(!kind)return;
     if(a.to<R.ROAD.camera-110||a.to>R.ROAD.camera+R.ROAD.w/R.ROAD.zoom+110)return;
-    const quake=slam&&R.hasBranch(R.cityForSide(u.side),'orc_troll','earthshaker')&&u.attackCount%3===0;
-    const f={kind,lane:a.to,offset:a.toOffset||0,start:a.hit,radius:slam?(u.aoe||55)*(quake?2.5:1):Math.max(14,Math.min(90,a.radius||28)),quake,casterFire:kind==='fire'&&u.key==='mage'&&R.ROAD.test&&(isMixedFigureTrial(R.ROAD.testRoster)||['casters','undead-figures'].includes(R.ROAD.testRoster))&&R.ROAD.figureStyle==='painted'};
+    const quake=a.groundQuake??(slam&&R.hasBranch(R.cityForSide(u.side),'orc_troll','earthshaker')&&u.attackCount%3===0);
+    if(slam)a.groundQuake=quake;
+    const f={kind,lane:a.to,offset:a.toOffset||0,start:a.hit,radius:slam?(a.radius||u.aoe||55)*(quake?2.5:1):Math.max(14,Math.min(90,a.radius||28)),quake,casterFire:kind==='fire'&&u.key==='mage'&&usesPaintedBattleArt(R,['casters','undead-figures'])};
     if(slam){
       const contact=R.trollGroundPoint(),face=a.to>=a.lane?1:-1;
       f.lane=a.lane+contact[0]*R.ROAD.h/600*face;f.offset=(a.offset||0)+contact[1];
@@ -162,7 +163,7 @@ export function installBattleEffects(R) {
     if(fx.impacts.length<limit)fx.impacts.push(f);else{fx.head=(fx.head+1)%limit;fx.impacts[fx.head]=f;}
   };
   R.roadDrawGroundEffects=()=>{
-    if(!R.ROAD.test||(!isMixedFigureTrial(R.ROAD.testRoster)&&R.ROAD.testRoster!=='orc-mystics')||R.ROAD.figureStyle!=='painted')return;
+    if(!usesPaintedBattleArt(R,['orc-mystics']))return;
     const g=R.ctx,now=R.ROAD.clock,scale=R.ROAD.h/600*R.ROAD.zoom;
     for(const f of fx.impacts){
       const age=now-f.start;if(f.kind!=='slam'||age<0||age>=3)continue;
@@ -183,7 +184,7 @@ export function installBattleEffects(R) {
     fx.clock=now;
     if(R.MP.enabled&&R.MP.role==='guest'){
       for(const u of R.state.units){const a=u.roadAttack;
-        if(!a?.resolved||!a.ranged||now<a.hit||now-a.hit>.6||fx.seen.get(u.id)===a.start)continue;
+        if(!a?.resolved||(!a.ranged&&u.key!=='orc_troll')||now<a.hit||now-a.hit>.6||fx.seen.get(u.id)===a.start)continue;
         fx.seen.set(u.id,a.start);R.roadImpactEffect(u,a);
       }
       if(fx.seen.size>2048){const alive=new Set(R.state.units.map(u=>u.id));for(const id of fx.seen.keys())if(!alive.has(id))fx.seen.delete(id);}

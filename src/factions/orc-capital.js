@@ -1,3 +1,4 @@
+import { SPEAR_VOLLEY_RANGE, WARG_THROW_RANGE } from '../data/ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 export function initializeFactionsOrcCapital(runtime) {
   const O = window.__ROADLORDS_ORCS__,
@@ -138,10 +139,10 @@ export function initializeFactionsOrcCapital(runtime) {
     return best;
   }
   const oldTarget = runtime.preferredTarget;
-  runtime.preferredTarget = (u, opps) => tauntTarget(u, opps, u.spearVolleyReady ? Math.max(u.range, 190) : u.range) || oldTarget(u, opps);
+  runtime.preferredTarget = (u, opps) => tauntTarget(u, opps, u.spearVolleyReady ? Math.max(u.range, SPEAR_VOLLEY_RANGE) : u.range) || oldTarget(u, opps);
   function spearTarget(u) {
     const enemies = runtime.state.units.filter(t => t.alive && t.side !== u.side);
-    return tauntTarget(u, enemies, 115) || enemies.filter(t => runtime.roadDistance(t, u) <= 115).sort((a, b) => runtime.roadDistance(a, u) - runtime.roadDistance(b, u))[0];
+    return tauntTarget(u, enemies, WARG_THROW_RANGE) || enemies.filter(t => runtime.roadDistance(t, u) <= WARG_THROW_RANGE).sort((a, b) => runtime.roadDistance(a, u) - runtime.roadDistance(b, u))[0];
   }
   const oldAttack = runtime.attackUnit;
   runtime.attackUnit = function (u, t, opts = {}) {
@@ -178,7 +179,7 @@ export function initializeFactionsOrcCapital(runtime) {
   const oldBefore = runtime.orcBeforeCombat13;
   runtime.orcBeforeCombat13 = function (u, opps, dt) {
     if (u.key === 'orc_warg' && u.orcSpearReady && u.cooldown <= 0 && u.alive) {
-      const t = tauntTarget(u, opps, 115);
+      const t = tauntTarget(u, opps, WARG_THROW_RANGE);
       if (t) {
         runtime.attackUnit(u, t);
         u.orcSpearReady = false;

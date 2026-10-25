@@ -601,7 +601,10 @@ export function initializeUndeadCombat(R) {
       for (const row of raw)
         if (Array.isArray(row) && row[20]) {
           const u = byId.get(row[0]);
-          if (u) Object.assign(u, row[20]);
+          if (u) {
+            Object.assign(u, row[20]);
+            R.roadRemoteUnitEffects?.(u, row[20], byId);
+          }
         }
     return out;
   };

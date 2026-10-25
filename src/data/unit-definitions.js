@@ -1,3 +1,4 @@
+import { rangedRange } from './ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { trainingPrice } from './unit-balance.js';
 export function initializeDataUnitDefinitions(runtime) {
@@ -41,7 +42,7 @@ export function initializeDataUnitDefinitions(runtime) {
       hp: 55,
       damage: 8,
       cooldown: 1.2,
-      range: 150,
+      range: rangedRange(150),
       speed: 42,
       train: 6,
       cost: runtime.C(7, 0, 6),
@@ -72,7 +73,7 @@ export function initializeDataUnitDefinitions(runtime) {
       damage: 6,
       heal: 30,
       cooldown: 1.4,
-      range: 120,
+      range: rangedRange(120),
       speed: 38,
       train: 9,
       cost: runtime.C(10, 10, 12),
@@ -88,7 +89,7 @@ export function initializeDataUnitDefinitions(runtime) {
       damage: 12,
       buildingDamage: 65,
       cooldown: 2.4,
-      range: 400,
+      range: rangedRange(400),
       speed: 24,
       train: 12,
       cost: runtime.C(26, 21, 9),
@@ -103,7 +104,7 @@ export function initializeDataUnitDefinitions(runtime) {
       hp: 75,
       damage: 24,
       cooldown: 1.7,
-      range: 150,
+      range: rangedRange(150),
       speed: 36,
       train: 12,
       cost: runtime.C(16, 16, 12),

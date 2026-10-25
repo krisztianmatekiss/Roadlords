@@ -1,4 +1,4 @@
-import { isMixedFigureTrial } from '../config/figure-trials.js';
+import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/skeleton-art.json';
 
@@ -14,7 +14,7 @@ export function installSkeletonArt(R) {
     return R.skeletonArtReady=image.decode().then(()=>true,()=>false);
   };
 }
-export const paintedSkeleton = (R,u) => u.key==='und_skeleton' && R.ROAD.test && (isMixedFigureTrial(R.ROAD.testRoster)||['skeleton','orc-skeleton','undead-figures'].includes(R.ROAD.testRoster)) && ['skeleton','painted'].includes(R.ROAD.figureStyle) && R.skeletonTexture?.naturalWidth>0;
+export const paintedSkeleton = (R,u) => u.key==='und_skeleton' &&usesPaintedBattleArt(R,['skeleton','orc-skeleton','undead-figures'],['skeleton','painted'])&& R.skeletonTexture?.naturalWidth>0;
 
 // Uniform joint-to-joint placement preserves the painted bone proportions.
 function bone(g,R,name,start,end) {

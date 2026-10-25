@@ -1,4 +1,4 @@
-import { isMixedFigureTrial } from '../config/figure-trials.js';
+import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/archer-art.json';
 
@@ -16,7 +16,7 @@ export function installArcherArt(R) {
   R.archerLaunchPoint=()=>[...RELEASE];
   R.archerProjectilePoint=(a,t)=>archerProjectilePoint(R,a,t);
 }
-export const paintedArcher=(R,u)=>u.key==='archer'&&R.ROAD.test&&(isMixedFigureTrial(R.ROAD.testRoster)||['archer','undead-figures'].includes(R.ROAD.testRoster))&&R.ROAD.figureStyle==='painted'&&R.archerTexture?.naturalWidth>0;
+export const paintedArcher=(R,u)=>u.key==='archer'&&usesPaintedBattleArt(R,['archer','undead-figures'])&&R.archerTexture?.naturalWidth>0;
 
 function joint(a,b,upper,lower,bend=1) {
   const dx=b[0]-a[0],dy=b[1]-a[1],d=Math.max(.001,Math.hypot(dx,dy)),reach=Math.min(d,upper+lower-.001);

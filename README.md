@@ -1,4 +1,11 @@
-# Roadlords · V4.44.2
+# Roadlords · V4.49.0
+
+## V4.49.0 – Új egységek élesben
+
+Mind a 21 új egységmodell a normál játékban és multiplayerben is elérhető. A távolsági egységek lőtávja kétszeres; a célpontkeresés, megállás, Pap-gyógyítás és nyitó lándzsadobások ehhez igazodnak. A TESZTEK menüben az Orkok vs emberek és az Élőhalottak vs orkok vegyes 100 vs 100 csaták maradnak.
+
+A frakciók képei indulás előtt betöltődnek. Multiplayerben mindkét játékos frissítsen. [Hatótávok és ellenőrzések](docs/production-figures-4.49.md).
+
 
 ## V4.44.2 – Teljes karok és összeigazított csípő
 

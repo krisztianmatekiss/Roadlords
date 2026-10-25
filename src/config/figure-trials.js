@@ -9,3 +9,6 @@ export function loadMixedFigureTrialArt(R,roster){
   const loaders={human:['loadHumanInfantryArt','loadArcherArt','loadKnightArt','loadCatapultArt','loadHumanCastersArt'],orc:['loadOrcWarriorArt','loadOrcRaidersArt','loadOrcMysticsArt','loadOrcSiegeArt'],undead:['loadUndeadArt','loadSkeletonArt','loadArcherArt']};
   return Promise.all([...new Set(races.flatMap(r=>loaders[r]))].map(name=>R[name]()));
 }
+
+// Production always uses the approved models; diagnostic A/B modes stay local.
+export const usesPaintedBattleArt=(R,rosters,styles=['painted'])=>!R.ROAD.test||(styles.includes(R.ROAD.figureStyle)&&(isMixedFigureTrial(R.ROAD.testRoster)||rosters.includes(R.ROAD.testRoster)));

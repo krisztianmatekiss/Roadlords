@@ -25,6 +25,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     await page.locator('#soloRace').selectOption('undead');
     await page.locator('#aiRace').selectOption('orc');
     await page.locator('#raceContinue').click();
+    await page.waitForFunction(()=>__ROADLORDS_RUNTIME__.state.pregame);
     check(
       'The real solo race selector initializes Undead against Orcs with 140 Souls and 2000 capital HP',
       await page.evaluate(() => {

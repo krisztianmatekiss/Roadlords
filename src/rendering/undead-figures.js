@@ -1,4 +1,4 @@
-import { isMixedFigureTrial } from '../config/figure-trials.js';
+import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import fighters from '../data/undead-fighters-art.json';
 import casters from '../data/undead-casters-art.json';
@@ -9,7 +9,7 @@ import { drawMagicShot } from './battle-effects.js';
 
 const TAU=2*Math.PI,clamp=n=>Math.max(0,Math.min(1,n)),mix=(a,b,t)=>a+(b-a)*t;
 const keys=new Set(['und_skeleton_archer','und_zombie','und_ghost','und_necromancer','und_vampire','und_lich']);
-const trial=R=>R.ROAD.test&&(isMixedFigureTrial(R.ROAD.testRoster)||R.ROAD.testRoster==='undead-figures')&&R.ROAD.figureStyle==='painted';
+const trial=R=>usesPaintedBattleArt(R,['undead-figures']);
 export const paintedUndead=(R,u)=>trial(R)&&keys.has(u.key)&&R.undeadFightersTexture?.naturalWidth>0&&R.undeadCastersTexture?.naturalWidth>0&&R.skeletonTexture?.naturalWidth>0&&R.archerTexture?.naturalWidth>0;
 
 export function installUndeadArt(R){

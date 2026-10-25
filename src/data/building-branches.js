@@ -39,7 +39,7 @@ export function initializeDataBuildingBranches(runtime) {
       id: 'longbowmen',
       name: 'Hosszúíjászok',
       icon: '🏹',
-      description: 'Az Íjászok +75 útegység hatótávot és +100% sebzést kapnak, de 40%-kal lassabban támadnak. Elsősorban távolsági és mágikus célpontokra lőnek.'
+      description: 'Az Íjászok +150 útegység hatótávot és +100% sebzést kapnak, de 40%-kal lassabban támadnak. Elsősorban távolsági és mágikus célpontokra lőnek.'
     }, {
       id: 'arrow_rain',
       name: 'Nyílzápor',

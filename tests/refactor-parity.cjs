@@ -38,8 +38,9 @@ const BASE_URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/
    expected.lane=Math.round((expected.lane+centreShift)*1e6)/1e6;
    // Only the explicitly approved balance changes may differ from the archive.
    if(expected.key==='orc_shaman'){
-    scale('damage',8/6);scale('buildingDamage',8/6);scale('cooldownTime',2.5/4.2);scale('range',150/120);
+    scale('damage',8/6);scale('buildingDamage',8/6);scale('cooldownTime',2.5/4.2);scale('range',300/120);
    }
+   if(['archer','priest','catapult','mage','orc_goblin'].includes(expected.key))scale('range',2);
    if(expected.key==='orc_goblin'&&city.legends.includes('orc_gob_bow')){
     scale('damage',1.5/2);scale('buildingDamage',1.5/2);
     if(city.legends.includes('orc_momentum')){

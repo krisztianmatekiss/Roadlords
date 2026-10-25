@@ -10,7 +10,7 @@ export const UNIT_COPY = {
   orc_warrior: {role:'Nehéz közelharcos', ability:'Nagy életerejével tartja a frontot.'},
   orc_berserker: {role:'Rohamgyalogos', ability:'Sebesülten gyorsabban támad.', details:['Minden 2% hiányzó életerőért +1% támadási sebesség.']},
   orc_goblin: {role:'Távolsági gyalogos', ability:'Gyorsan támad, de kevés az életereje.'},
-  orc_warg: {role:'Lovasság', ability:'Lándzsadobással nyit, majd közelharcban küzd.', details:['Nyitó lándzsa: 60 sebzés, 115 hatótáv.','Épületek ellen a dobás gyengébb, és nem lehet kritikus.']},
+  orc_warg: {role:'Lovasság', ability:'Lándzsadobással nyit, majd közelharcban küzd.', details:['Nyitó lándzsa: 60 sebzés, 230 hatótáv.','Épületek ellen a dobás gyengébb, és nem lehet kritikus.']},
   orc_shaman: {role:'Átokmágus', ability:'Találatonként véletlen átkot okoz 4 mp-re.', details:['Gyengeség: −20% sebzés.','Sorvadás: −20% maximális életerő.','Kimerültség: −25% támadási sebesség.','Sebezhetőség: +20% kapott sebzés.','Vakság: 25% melléütési esély.','Azonos átoknál az időtartam frissül. A Sorvadás lejárta nem gyógyít.']},
   orc_ram: {role:'Ostromgép', ability:'Épületek ellen erős. −50% kapott fizikai sebzés.'},
   orc_troll: {role:'Területsebző óriás', ability:'Csapásai a célpont körül is sebeznek.', details:['Másodlagos sebzés: 35; területi sugár: 55.','4 sereghelyet és 4 helyőrségi férőhelyet foglal.']},

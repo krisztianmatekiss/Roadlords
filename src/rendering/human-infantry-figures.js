@@ -11,7 +11,7 @@ export function installHumanInfantryArt(R) {
     return R.humanInfantryArtReady=image.decode().then(()=>true,()=>false);
   };
 }
-export const paintedHumanInfantry=(R,u)=>(u.key==='swordsman'||u.key==='spearman')&&R.ROAD.test&&R.ROAD.testRoster==='infantry'&&R.ROAD.figureStyle==='painted'&&R.humanInfantryTexture?.naturalWidth>0;
+export const paintedHumanInfantry=(R,u)=>(u.key==='swordsman'||u.key==='spearman')&&R.ROAD.test&&['infantry','casters'].includes(R.ROAD.testRoster)&&R.ROAD.figureStyle==='painted'&&R.humanInfantryTexture?.naturalWidth>0;
 
 function joint(start,end,upper,lower,bend=1) {
   const dx=end[0]-start[0],dy=end[1]-start[1],distance=Math.max(.001,Math.hypot(dx,dy)),reach=Math.min(distance,upper+lower-.001);

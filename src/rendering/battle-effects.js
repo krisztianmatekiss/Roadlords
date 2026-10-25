@@ -145,7 +145,7 @@ export function installBattleEffects(R) {
     const kind=a.effect||shotKind(R,u);
     if(!kind)return;
     if(a.to<R.ROAD.camera-110||a.to>R.ROAD.camera+R.ROAD.w/R.ROAD.zoom+110)return;
-    const f={kind,lane:a.to,offset:a.toOffset||0,start:a.hit,radius:Math.max(14,Math.min(90,a.radius||28))};
+    const f={kind,lane:a.to,offset:a.toOffset||0,start:a.hit,radius:Math.max(14,Math.min(90,a.radius||28)),casterFire:kind==='fire'&&u.key==='mage'&&R.ROAD.test&&R.ROAD.testRoster==='casters'&&R.ROAD.figureStyle==='painted'};
     const limit=R.ROAD.lowDetail?64:128;
     if(fx.impacts.length<limit)fx.impacts.push(f);else{fx.head=(fx.head+1)%limit;fx.impacts[fx.head]=f;}
   };
@@ -169,12 +169,22 @@ export function installBattleEffects(R) {
       const radius=f.radius*(.25+Math.sin(Math.min(1,t*2)*Math.PI/2)*.75);
       g.save();g.translate(p.x,p.y-13*scale);g.scale(R.ROAD.zoom,scale);g.globalAlpha=(1-t)*.85;
       g.drawImage(glow(color),-radius,-radius,radius*2,radius*2);
+      if(f.casterFire){
+        // A short flame blossom follows the real AoE footprint at impact.
+        const petals=R.ROAD.lowDetail?4:7;
+        for(let i=0;i<petals;i++){
+          const angle=i/petals*TAU+f.start,x=Math.cos(angle)*radius*.55,y=Math.sin(angle)*radius*.3;
+          const h=radius*(.5+.25*Math.sin(i*1.7))*(1-t),w=radius*.15;
+          g.fillStyle=i%2?'#ffad42':'#ff7334';g.beginPath();g.moveTo(x-w,y);g.quadraticCurveTo(x-w*1.4,y-h*.55,x+w*.25,y-h);g.quadraticCurveTo(x+w*.1,y-h*.35,x+w,y);g.closePath();g.fill();
+        }
+      }
       g.strokeStyle=color;g.lineWidth=2.5*(1-t)+.7;g.beginPath();g.ellipse(0,7,radius,radius*.58,0,0,TAU);g.stroke();
       const sparks=R.ROAD.lowDetail?5:10;
       for(let i=0;i<sparks;i++){const a=i/sparks*TAU+f.start;circle(g,Math.cos(a)*radius*t*1.5,Math.sin(a)*radius*t*1.1-t*10,1.5*(1-t)+.5,color);}
       g.restore();
     }
     fx.impacts.length=n;
+    R.drawCasterHealing?.();
   };
   for(const [id,theme] of Object.entries(STATUS_THEMES))if(window.__ROADLORDS_STATUSES__.defs[id])window.__ROADLORDS_STATUSES__.defs[id][2]=COLORS[theme];
 }

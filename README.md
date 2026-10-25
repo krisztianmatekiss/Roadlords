@@ -1,4 +1,14 @@
-# Roadlords · V4.42.0
+# Roadlords · V4.43.0
+
+## V4.43.0 – Pap és Mágus
+
+A TESZTEK menüben a PAP ÉS MÁGUS · 10 vs 10 és az Íjászpróba maradt. A közös próba 4 Kardost, 3 Papot és 3 Mágust indít 10 Ork Harcos ellen, alapértékekkel, fejlesztések és utánpótlás nélkül. A gyalogságpróba a belső diagnosztikában továbbra is elérhető.
+
+A Pap a bot napjelképéből lő arany fénylövedéket. Gyógyításkor a szabad tenyerét emeli fel; a ténylegesen gyógyított egységeken arany–zöld részecskék jelennek meg, azonnal a meglévő gyógyítási eseménynél. A külön támadási és gyógyítási időzítés megmaradt, a két mozdulat együtt is látható. A négy célpontot gyógyító specializáció minden érintettet megjelöl. Az új nézetben a korábbi késleltetett gyógyító lövedék helyét a fogadó egységen megjelenő fény veszi át.
+
+A Mágus a szabad kezében gyűjti a varázslatot, majd előrelendítve elengedi. A lövedék ugyanebből a tenyérpozícióból indul, a meglévő sebzés időpontjában csapódik be, területi lángrobbanással. A jégspecializáció jégszínű feltöltést, lövedéket és becsapódást használ.
+
+Mindkét figura járást, varázslást, elesést, nyolc csapatszínt és elitjelzést kapott. Az új figurák és gyógyfények egyelőre a próbában aktívak; a játékbeli értékek és a multiplayer szabályai nem változtak. A képkockatár legfeljebb 768 elemes, a közös ruhaszíntár legfeljebb 8 színt tart. Eredeti alkatrészlap: `public/art/battle/human-casters-heroes-parts.png`; nézetablakok: `src/data/human-casters-art.json`; játékbeli előnézet: `public/previews/human-casters-in-game.png`.
 
 ## V4.42.0 – Emberi Íjász
 

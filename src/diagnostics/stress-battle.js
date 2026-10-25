@@ -71,23 +71,25 @@ export function register(runtime) {
   };
   runtime.roadStartTest = function roadStartTest(seed, {count = 500, roster = 'mixed', figureStyle} = {}) {
     const catapultGap=650;
-    if (!(['infantry','archer'].includes(roster)&&count===10 || roster==='catapult'&&count===5 || roster==='knight'&&count===10 || roster === 'figures' && count === 5 || ['skeleton','orc-skeleton'].includes(roster)&&count===50 || ['mixed','undead'].includes(roster) && [50,500].includes(count))) throw new RangeError('Unsupported test roster or size');
+    if (!(['infantry','archer','casters'].includes(roster)&&count===10 || roster==='catapult'&&count===5 || roster==='knight'&&count===10 || roster === 'figures' && count === 5 || ['skeleton','orc-skeleton'].includes(roster)&&count===50 || ['mixed','undead'].includes(roster) && [50,500].includes(count))) throw new RangeError('Unsupported test roster or size');
     runtime.ROAD.testRoster = roster;
     if(['skeleton','orc-skeleton'].includes(roster))runtime.loadSkeletonArt();
-    if(['orc-skeleton','knight','catapult','infantry','archer'].includes(roster))runtime.loadOrcWarriorArt();
+    if(['orc-skeleton','knight','catapult','infantry','archer','casters'].includes(roster))runtime.loadOrcWarriorArt();
     if(roster==='knight')runtime.loadKnightArt();
     if(roster==='catapult')runtime.loadCatapultArt();
     if(roster==='infantry')runtime.loadHumanInfantryArt();
     if(roster==='archer')runtime.loadArcherArt();
+    if(roster==='casters'){runtime.loadHumanInfantryArt();runtime.loadHumanCastersArt();}
+    if(runtime.casterHeals)runtime.casterHeals.length=0;
     runtime.ROAD.testCount = count;
-    runtime.ROAD.figureStyle=['orc-skeleton','knight','catapult','infantry','archer'].includes(roster)?(figureStyle==='simple'?'simple':'painted'):roster==='skeleton'?(figureStyle==='simple'?'simple':'skeleton'):roster==='figures'?(figureStyle==='simple'?'simple':'refined'):'simple';
-    runtime.$('#roadFigureToggle').hidden=!['figures','skeleton','orc-skeleton','knight','catapult','infantry','archer'].includes(roster);
+    runtime.ROAD.figureStyle=['orc-skeleton','knight','catapult','infantry','archer','casters'].includes(roster)?(figureStyle==='simple'?'simple':'painted'):roster==='skeleton'?(figureStyle==='simple'?'simple':'skeleton'):roster==='figures'?(figureStyle==='simple'?'simple':'refined'):'simple';
+    runtime.$('#roadFigureToggle').hidden=!['figures','skeleton','orc-skeleton','knight','catapult','infantry','archer','casters'].includes(roster);
     runtime.$('#roadFigureToggle').textContent=runtime.ROAD.figureStyle!=='simple'?'Grafika: Új':'Grafika: Jelenlegi';
     runtime.$('#roadFigureToggle').setAttribute('aria-pressed',String(runtime.ROAD.figureStyle!=='simple'));
-    runtime.ROAD.zoom = roster === 'figures' ? 1.75 : ['knight','catapult','infantry','archer'].includes(roster)||count === 50 ? 1.25 : 1;
-    if(roster==='catapult'){
+    runtime.ROAD.zoom = roster === 'figures' ? 1.75 : ['knight','catapult','infantry','archer','casters'].includes(roster)||count === 50 ? 1.25 : 1;
+    if(['catapult','casters'].includes(roster)){
       const available=runtime.roadWar.clientWidth-(runtime.ROAD.enemyPinned?runtime.ROAD.city+24:0)-32;
-      const span=catapultGap+80*runtime.ROAD.h/600;
+      const span=(roster==='catapult'?catapultGap:650)+80*runtime.ROAD.h/600;
       runtime.ROAD.zoom=[1.25,1,.75].find(zoom=>span*zoom<=available)||.75;
     }
     runtime.$("#roadZoom").textContent = Math.round(runtime.ROAD.zoom * 100) + "%";
@@ -108,7 +110,7 @@ export function register(runtime) {
       runtime.MP.started = false;
       runtime.state.time = 0;
       runtime.state.running = false;
-      const races = ['knight','catapult','infantry','archer'].includes(roster)?['human','orc']:roster==='orc-skeleton'?['orc','undead']:roster === 'figures' ? ['human','orc'] : ['undead','skeleton'].includes(roster)?['undead','human']:runtime.shuffle(['human', 'orc']);
+      const races = ['knight','catapult','infantry','archer','casters'].includes(roster)?['human','orc']:roster==='orc-skeleton'?['orc','undead']:roster === 'figures' ? ['human','orc'] : ['undead','skeleton'].includes(roster)?['undead','human']:runtime.shuffle(['human', 'orc']);
       runtime.roadResetCity(runtime.P, races[0]);
       runtime.roadResetCity(runtime.E, races[1]);
       runtime.state.units = [];
@@ -138,7 +140,7 @@ export function register(runtime) {
       };
       runtime.roadEndgame(runtime.P);
       runtime.roadEndgame(runtime.E);
-      if(['skeleton','orc-skeleton','knight','catapult','infantry','archer'].includes(roster))for(const c of [runtime.P,runtime.E]){
+      if(['skeleton','orc-skeleton','knight','catapult','infantry','archer','casters'].includes(roster))for(const c of [runtime.P,runtime.E]){
         c.normal={};c.legends=new Set();c.legendaryStacks={};c.levels={};c.l4Branches={};
         c.buildings=c.buildings.filter(b=>b.type==='keep');c.buildings[0].level=1;
         c.garrison=[];c.releaseQueue=[];runtime.recomputeCity(c,false);c.hp=c.maxHp;
@@ -151,7 +153,7 @@ export function register(runtime) {
       }
       runtime.roadRefreshFrontiers();
       for (const c of [runtime.P, runtime.E]) {
-        const keys = roster==='archer'?[c===runtime.P?'archer':'orc_warrior']:roster==='infantry'?(c===runtime.P?['swordsman','spearman']:['orc_warrior']):roster==='catapult'?[c===runtime.P?'catapult':'orc_warrior']:roster==='knight'?[c===runtime.P?'knight':'orc_warrior']:roster==='orc-skeleton'?[c===runtime.P?'orc_warrior':'und_skeleton']:roster==='skeleton'?[c===runtime.P?'und_skeleton':'swordsman']:roster === 'figures' ? [c.race === 'human' ? 'swordsman' : 'orc_warrior'] : Object.keys(runtime.UNITS).filter(k => runtime.factionUnitMatches(c.race,runtime.UNITS[k]));
+        const keys = roster==='casters'?(c===runtime.P?['swordsman','swordsman','swordsman','swordsman','priest','priest','priest','mage','mage','mage']:['orc_warrior']):roster==='archer'?[c===runtime.P?'archer':'orc_warrior']:roster==='infantry'?(c===runtime.P?['swordsman','spearman']:['orc_warrior']):roster==='catapult'?[c===runtime.P?'catapult':'orc_warrior']:roster==='knight'?[c===runtime.P?'knight':'orc_warrior']:roster==='orc-skeleton'?[c===runtime.P?'orc_warrior':'und_skeleton']:roster==='skeleton'?[c===runtime.P?'und_skeleton':'swordsman']:roster === 'figures' ? [c.race === 'human' ? 'swordsman' : 'orc_warrior'] : Object.keys(runtime.UNITS).filter(k => runtime.factionUnitMatches(c.race,runtime.UNITS[k]));
         const entries = Array.from({
           length: count
         }, (_, i) => ({
@@ -165,10 +167,11 @@ export function register(runtime) {
           const u = runtime.releaseUnit(c, runtime.makeEntry(c, entries[i].key, {
             originBuildingId: origin?.id
           }));
-          const rows = ['figures','knight','catapult','infantry','archer'].includes(roster) ? 5 : count === 50 ? 8 : 20, spacing = ['infantry','archer'].includes(roster)?60:roster==='catapult'?52:roster==='knight'?68:roster === 'figures' ? 48 : count === 50 ? 36 : 24;
+          const rows = ['figures','knight','catapult','infantry','archer','casters'].includes(roster) ? 5 : count === 50 ? 8 : 20, spacing = ['infantry','archer','casters'].includes(roster)?60:roster==='catapult'?52:roster==='knight'?68:roster === 'figures' ? 48 : count === 50 ? 36 : 24;
           u.offset = (i % rows - (rows - 1) / 2) * spacing;
           u.roadHomeOffset = u.offset;
-          u.lane = runtime.PATH_LENGTH / 2 - dir * ((roster==='catapult'?catapultGap/2:roster==='archer'?225:['knight','infantry'].includes(roster)?170:100) + Math.floor(i / rows) * (['infantry','archer'].includes(roster)?60:roster==='knight'?90:roster === 'figures' ? 48 : count === 50 ? 42 : 32));
+          u.lane = runtime.PATH_LENGTH / 2 - dir * ((roster==='catapult'?catapultGap/2:['archer','casters'].includes(roster)?225:['knight','infantry'].includes(roster)?170:100) + Math.floor(i / rows) * (['infantry','archer','casters'].includes(roster)?60:roster==='knight'?90:roster === 'figures' ? 48 : count === 50 ? 42 : 32));
+          if(roster==='casters'&&c===runtime.P){const rank=entries.slice(0,i).filter(e=>e.key===u.key).length;u.offset=(rank-(u.key==='swordsman'?1.5:1))*60;u.roadHomeOffset=u.offset;u.lane=runtime.PATH_LENGTH/2-(u.key==='swordsman'?170:245+(u.key==='priest'?0:55));}
           u.cooldown = .1 + i % 13 * .025;
         }
       }
@@ -193,7 +196,7 @@ export function register(runtime) {
       runtime.last = performance.now();
       runtime.roadFocusFront();
       runtime.$('#roadPause').textContent = 'Szünet';
-      runtime.roadTestSummary.textContent = roster==='archer'?'10 Íjász vs 10 Ork Harcos · Alapértékek, fejlesztések és utánpótlás nélkül. Grafika: új / jelenlegi. Szünet: szóköz.':roster==='infantry'?'5 Kardos és 5 Lándzsás vs 10 Ork Harcos · Alapértékek, fejlesztések és utánpótlás nélkül. Grafika: új / jelenlegi. Szünet: szóköz.':roster==='catapult'?'5 Katapult vs 5 Ork Harcos · Alapértékek, fejlesztések és utánpótlás nélkül. Grafika: új / jelenlegi. Szünet: szóköz.':roster==='knight'?'10 Lovag vs 10 Ork Harcos · Alapértékek, fejlesztések és utánpótlás nélkül. Grafika: új / jelenlegi. Szünet: szóköz.':roster==='orc-skeleton'?'50 Ork Harcos vs 50 Csontváz · Alapértékek, fejlesztések és utánpótlás nélkül. Mindkét egység új, animált grafikával. Grafika gomb: új / jelenlegi. Szünet: szóköz.':roster==='skeleton'?'50 Csontváz vs 50 Kardos · Alapértékek, fejlesztések és utánpótlás nélkül. Új csontvázgrafika; a kardos változatlan. Grafika gomb: új / jelenlegi csontváz. Szünet: szóköz.':`${count} × ${count} · ${runtime.factionName(runtime.P.race)}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.factionName(runtime.E.race)}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. ${roster === 'figures' ? 'Új kardos és ork harcos, a jelenlegi animációkkal' : 'Minden egységtípus'}, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Pályamozgatás: A / D vagy görgő, dupla leütés: pálya széle, F: harci front. Az ellenfél városát az idő melletti ikon rögzíti / oldja fel. Szünet: szóköz.`;
+      runtime.roadTestSummary.textContent = roster==='casters'?'4 Kardos, 3 Pap és 3 Mágus vs 10 Ork Harcos · Alapértékek, fejlesztések és utánpótlás nélkül. Grafika: új / jelenlegi. Szünet: szóköz.':roster==='archer'?'10 Íjász vs 10 Ork Harcos · Alapértékek, fejlesztések és utánpótlás nélkül. Grafika: új / jelenlegi. Szünet: szóköz.':roster==='infantry'?'5 Kardos és 5 Lándzsás vs 10 Ork Harcos · Alapértékek, fejlesztések és utánpótlás nélkül. Grafika: új / jelenlegi. Szünet: szóköz.':roster==='catapult'?'5 Katapult vs 5 Ork Harcos · Alapértékek, fejlesztések és utánpótlás nélkül. Grafika: új / jelenlegi. Szünet: szóköz.':roster==='knight'?'10 Lovag vs 10 Ork Harcos · Alapértékek, fejlesztések és utánpótlás nélkül. Grafika: új / jelenlegi. Szünet: szóköz.':roster==='orc-skeleton'?'50 Ork Harcos vs 50 Csontváz · Alapértékek, fejlesztések és utánpótlás nélkül. Mindkét egység új, animált grafikával. Grafika gomb: új / jelenlegi. Szünet: szóköz.':roster==='skeleton'?'50 Csontváz vs 50 Kardos · Alapértékek, fejlesztések és utánpótlás nélkül. Új csontvázgrafika; a kardos változatlan. Grafika gomb: új / jelenlegi csontváz. Szünet: szóköz.':`${count} × ${count} · ${runtime.factionName(runtime.P.race)}: ${runtime.P.buildings.length} épület, ${runtime.P.legends.size} relic · ${runtime.factionName(runtime.E.race)}: ${runtime.E.buildings.length} épület, ${runtime.E.legends.size} relic. ${roster === 'figures' ? 'Új kardos és ork harcos, a jelenlegi animációkkal' : 'Minden egységtípus'}, végső épületszintek, szabályos fejlesztések. A városok nem gyártanak utánpótlást; a harc és a képességek az eredeti játékszabályokat használják. Pályamozgatás: A / D vagy görgő, dupla leütés: pálya széle, F: harci front. Az ellenfél városát az idő melletti ikon rögzíti / oldja fel. Szünet: szóköz.`;
     } finally {
       Math.random = savedRandom;
     }

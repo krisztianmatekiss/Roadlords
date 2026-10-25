@@ -10,7 +10,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   await page.locator('.menuBrand').click();await page.waitForTimeout(900);
   check('Main menu groups the new experiments and removes the retired art entry',await page.locator('#roadArtMenu,#roadArtToggle').count()===0&&await page.locator('#roadTestsMenu').isVisible()&&await page.locator('.menuMain #roadTestMenu,.menuMain #roadStressMenu,.menuMain #roadFigureMenu').count()===0&&!await page.locator('#roadFigureMenu').isVisible());
   await page.locator('#roadTestsMenu').click();
-  check('TESZTEK opens only the two current experiments and removes retired buttons',await page.locator('#roadTestsPanel').isVisible()&&await page.locator('.roadTestsList button').count()===2&&await page.locator('#roadInfantryMenu').isVisible()&&await page.locator('#roadArcherMenu').isVisible()&&await page.locator('#roadTestMenu,#roadStressMenu,#roadUndeadMenu,#roadSkeletonMenu,#roadFigureMenu,#roadOrcSkeletonMenu,#roadKnightMenu').count()===0);
+  check('TESZTEK opens only the two current experiments and removes retired buttons',await page.locator('#roadTestsPanel').isVisible()&&await page.locator('.roadTestsList button').count()===2&&await page.locator('#roadCastersMenu').isVisible()&&await page.locator('#roadArcherMenu').isVisible()&&await page.locator('#roadTestMenu,#roadStressMenu,#roadUndeadMenu,#roadSkeletonMenu,#roadFigureMenu,#roadOrcSkeletonMenu,#roadKnightMenu').count()===0);
   await page.screenshot({path:'artifacts/test-submenu.png'});
   await page.keyboard.press('Escape');
   check('Escape returns to main menu and restores keyboard focus',!await page.locator('#roadTestsPanel').isVisible()&&await page.locator('#roadTestsMenu').evaluate(e=>document.activeElement===e));

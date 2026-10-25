@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.41.0',
-  label: 'V4.41.0 · EMBERI GYALOGSÁG',
-  title: 'Roadlords – Emberi gyalogság',
+  version: '4.42.0',
+  label: 'V4.42.0 · EMBERI ÍJÁSZ',
+  title: 'Roadlords – Emberi íjász',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

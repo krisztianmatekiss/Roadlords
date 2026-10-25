@@ -22,13 +22,13 @@ export function installTestMenu(R) {
   });
   for(const [id,label,description,options] of [
     ['roadInfantryMenu','EMBERI GYALOGSÁG · 10 vs 10','5 Kardos és 5 pajzs nélküli Lándzsás 10 Ork Harcos ellen.',{count:10,roster:'infantry'}],
-    ['roadCatapultMenu','KATAPULT vs ORK HARCOS · 5 vs 5','Új ostromgép, mozgó kerekekkel, hajítókarral és követhető lövedékkel.',{count:5,roster:'catapult'}],
+    ['roadArcherMenu','ÍJÁSZ vs ORK HARCOS · 10 vs 10','Új íjász, kétkezes ideghúzással és a lövéshez igazított nyíllal.',{count:10,roster:'archer'}],
   ]){
     const item=document.createElement('div'),button=document.createElement('button'),note=document.createElement('p');
     button.id=id;button.type='button';button.className='menuButton';button.textContent=label;
     button.onclick=async()=>{
       button.disabled=true;
-      const results=await Promise.all([R.loadOrcWarriorArt(),options.roster==='infantry'?R.loadHumanInfantryArt():R.loadCatapultArt()]);
+      const results=await Promise.all([R.loadOrcWarriorArt(),options.roster==='infantry'?R.loadHumanInfantryArt():R.loadArcherArt()]);
       button.disabled=false;
       if(!results.every(Boolean)){R.toast('Az egységek képe nem töltődött be. Frissítsd az oldalt.');return;}
       close(false);R.roadStartTest(undefined,options);

@@ -1,4 +1,14 @@
-# Roadlords · V4.41.0
+# Roadlords · V4.42.0
+
+## V4.42.0 – Emberi Íjász
+
+A TESZTEK menüben az ÍJÁSZ vs ORK HARCOS · 10 vs 10 és az emberi gyalogság próbája érhető el. A katapultpróba automatikus ellenőrzése megmaradt, menüpontja kikerült.
+
+Az Íjász külön mozgó bőrpáncélt, csuklyát, végtagokat, tegezt, íjat és nyilat kapott. A két kéz az íj markolatát és az ideget követi; a két íjfél hajlása és az ideg végpontjai összetartoznak. Kilövéskor eltűnik a befogott nyíl, és ugyanabból a helyzetből indul a textúrázott lövedék. A valódi sebzés a becsapódás időpontjában történik. Járás, lövés, elesés, nyolc csapatszín és elitjelzés elérhető.
+
+A próba alapértékeket használ, fejlesztések és utánpótlás nélkül; az új grafika egyelőre itt aktív. A Grafika gomb mindkét sereget együtt váltja, a szünet, újraindítás és főmenübe visszalépés megmaradt. Egységértékek és multiplayer szabályok nem változtak.
+
+Az eredeti alkatrészlap csak a próba indításakor töltődik le. Nézetablakai: `src/data/archer-art.json`. A közös képkockatár legfeljebb 768 elemes, az íjász ruhaszíntára legfeljebb 8 színt tart. Játékbeli előnézet: `public/previews/archer-orc-in-game.png`.
 
 ## V4.41.0 – Kardos és pajzs nélküli Lándzsás
 

@@ -53,6 +53,9 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    const R=__ROADLORDS_RUNTIME__,Q=R.ROAD,results=[];
    for(const key of ['priest','mage']){
     for(const actor of R.state.units){actor.roadAttack=null;actor.roadPending=false;}Q.pending=[];Q.clock=20;
+    // The fixture may pause just after a movement tick. Ranged units cannot
+    // shoot in that same tick; advance to the next tick for this stationary hit.
+    R.state.combatStep=(R.state.combatStep||0)+1;
     const u=R.state.units.find(u=>u.key===key),victim=R.state.units.find(u=>u.key==='orc_warrior'),splash=R.state.units.filter(u=>u.key==='orc_warrior')[1];u.lane=4700;u.offset=0;victim.lane=4820;victim.offset=0;splash.lane=4830;splash.offset=0;victim.hp=victim.maxHp=10000;splash.hp=splash.maxHp=10000;victim.shield=victim.tempShield=0;splash.shield=splash.tempShield=0;R.roadReindex();R.attackUnit(u,victim);const a=u.roadAttack;
     Q.clock=a.launch+.001;R.roadImpacts();const noLaunchDamage=victim.hp===10000;
     const canvas=document.createElement('canvas');canvas.width=Q.w;canvas.height=Q.h;const old=R.ctx;R.ctx=canvas.getContext('2d');R.roadDrawShots();R.ctx=old;
@@ -61,7 +64,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
     Q.clock=a.hit-.001;R.roadImpacts();const early=victim.hp===10000;Q.clock=a.hit+.001;R.roadImpacts();const hp=victim.hp;R.roadImpacts();results.push({key,noLaunchDamage,early,damage:10000-hp,expected:u.damage,splash:10000-splash.hp,once:victim.hp===hp,pixels,paths,impact:R.roadEffects.impacts.some(f=>f.start===a.hit&&f.kind===(key==='priest'?'holy':'fire')),flames:key==='priest'||R.roadEffects.impacts.some(f=>f.start===a.hit&&f.casterFire)});
    }return results;
   });report.timing=timing;
-  check('Staff light and fireball use their real launch points and impact exactly once with real damage',timing.every(t=>t.noLaunchDamage&&t.early&&t.damage===t.expected&&t.once&&t.pixels>10&&t.paths&&t.impact&&t.flames)&&timing.find(t=>t.key==='mage').splash>0);
+  check('Staff light and fireball use their real launch points and impact exactly once with real damage: '+JSON.stringify(timing),timing.every(t=>t.noLaunchDamage&&t.early&&t.damage===t.expected&&t.once&&t.pixels>10&&t.paths&&t.impact&&t.flames)&&timing.find(t=>t.key==='mage').splash>0);
   const healing=await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,Q=R.ROAD;R.roadStartTest(42,{count:10,roster:'casters'});R.roadPause();Q.clock=30;const u=R.state.units.find(u=>u.key==='priest'),allies=R.state.units.filter(v=>v.side===u.side),ally=allies.find(v=>v.key==='swordsman');u.lane=4700;u.offset=0;ally.lane=4730;ally.offset=0;ally.hp=35;const before=ally.hp,projectiles=R.projectiles.length;R.roadReindex();const acted=R.priestAction(u,allies),pose=R.battleFigurePose(u,30);const immediate=acted&&ally.hp-before===u.heal&&pose.state==='heal'&&Q.clock===u.roadHeal.start&&R.casterHeals.some(f=>f.target===ally&&f.start===30)&&R.projectiles.length===projectiles;
    const hp=ally.hp;R.renderBattle(0);R.renderBattle(0);const paused=ally.hp===hp&&Q.clock===30;

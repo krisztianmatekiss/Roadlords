@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.50.0',
-  label: 'V4.50.0 · NEKROMANTA EREKLYÉK',
-  title: 'Roadlords – Nekromanta ereklyék',
+  version: '4.51.0',
+  label: 'V4.51.0 · EMBERI KÁRTYÁK',
+  title: 'Roadlords – Emberi kártyák',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

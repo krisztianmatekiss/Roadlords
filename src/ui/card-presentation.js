@@ -1,3 +1,4 @@
+import { cardImageSource } from '../assets/card-loading.js';
 import upgradeArt from '../data/upgrade-art-manifest.json';
 import manifest from '../data/orc-card-manifest.json';
 import undeadManifest from '../data/undead-card-manifest.json';
@@ -37,7 +38,7 @@ export function cardFrameUrl(id, kind, race) {
   return file ? assetUrl('cards/orc/' + file) : '';
 }
 export const frameImage = (src) => src
-  ? `${src.endsWith('/cards/human/frame.png')?'<svg class="humanFrameAccent" viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden="true"><path d="M3 6V144M97 6V144M12 22.5H88M12 104H88"/><path d="m5 3 2 3-2 3-2-3Zm90 0 2 3-2 3-2-3ZM5 141l2 3-2 3-2-3Zm90 0 2 3-2 3-2-3Z"/></svg>':''}<img class="cardFrameImage" src="${src}" alt="" loading="lazy" decoding="async" draggable="false"><img class="cardIllustration" src="${src}" alt="" loading="lazy" decoding="async" draggable="false">` : '';
+  ? `${src.endsWith('/cards/human/frame.png')?'<svg class="humanFrameAccent" viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden="true"><path d="M3 6V144M97 6V144M12 22.5H88M12 104H88"/><path d="m5 3 2 3-2 3-2-3Zm90 0 2 3-2 3-2-3ZM5 141l2 3-2 3-2-3Zm90 0 2 3-2 3-2-3Z"/></svg>':''}<img class="cardFrameImage" ${cardImageSource(src)} alt="" loading="lazy" decoding="async" draggable="false"><img class="cardIllustration" ${cardImageSource(src)} alt="" loading="lazy" decoding="async" draggable="false">` : '';
 
 export const cardTextBackdrop = '<span class="cardTextBackdrop" aria-hidden="true"></span>';
 

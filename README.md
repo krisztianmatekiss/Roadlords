@@ -1,4 +1,11 @@
-# Roadlords · V4.50.0
+# Roadlords · V4.51.0
+
+## V4.51.0 – Teljes emberi épületkártyák és gyorsabb képletöltés
+
+Az emberi épületkártyák teljes, 27 lapos készlete új grafikát használ. A 13 korábbi élőhalott legendás fejlesztés is saját jelenetet kapott, így mind a 20 legendás lap illusztrált.
+
+A nagy kártyaképek változatlan képpontú, veszteségmentes WebP-változatot is kapnak. A rejtett kezdőtábla és a régi egységportrék nem indítanak felesleges nagy letöltéseket. A kiválasztott seregek képei már a fajválasztáskor töltődnek; megszakadt letöltés újratölthető az oldal frissítése nélkül. [Fájlok és mérések](docs/art-loading-4.51.md).
+
 
 ## V4.50.0 – Élőhalott ereklyék és új kártyák
 

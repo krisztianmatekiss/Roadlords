@@ -1,3 +1,4 @@
+import { installDeferredCardImages } from './assets/card-loading.js';
 import './styles/application.css';
 import './styles/road-cities.css';
 import './styles/upgrade-copy.css';
@@ -27,6 +28,7 @@ installTowerPresentation(game);
 installCardPresentation(game);
 installBuildCardDeck(game);
 installApplicationShell(game);
+installDeferredCardImages();
 installUnitTraitInspectors(game);
 initializeResourceSymbols(game);
 initializeVersionAndScaling();

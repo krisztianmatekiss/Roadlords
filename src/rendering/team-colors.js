@@ -11,11 +11,13 @@ export function initializeRenderingTeamColors(runtime) {
   const atlas = new Image(),
     sprites = new Map();
   let loaded = false;
-  atlas.src = assetUrl("art/image-b8c02ed059e88a53.png");
-  const ready = atlas.decode().then(() => {
-    loaded = true;
-    for (const c of [runtime.P, runtime.E]) for (const k of keys) sprite(k, color(c));
-  });
+  let ready;
+  function load() {
+    if (ready) return ready;
+    atlas.src = assetUrl("art/image-b8c02ed059e88a53.png");
+    ready = atlas.decode().then(() => { loaded = true; return true; }, () => {ready = null; return false;});
+    return ready;
+  }
   const inkCache = new Map();
   function pencilInk(i) {
     if (inkCache.has(i)) return inkCache.get(i);
@@ -54,7 +56,8 @@ export function initializeRenderingTeamColors(runtime) {
     const id = key + hex;
     if (sprites.has(id)) return sprites.get(id);
     const i = keys.indexOf(key);
-    if (!loaded || i < 0) return null;
+    if (i < 0) return null;
+    if (!loaded) { load(); return null; }
     const out = document.createElement('canvas');
     out.width = out.height = 128;
     const g = out.getContext('2d');
@@ -279,7 +282,7 @@ export function initializeRenderingTeamColors(runtime) {
   window.__ROADLORDS_UNIT_COLORS__ = {
     palette,
     keys,
-    ready,
+    get ready() { return load(); },
     sprite,
     draw,
     colorFor: side => color(side === 'enemy' ? runtime.E : runtime.P),

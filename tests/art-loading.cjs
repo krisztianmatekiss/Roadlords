@@ -1,0 +1,19 @@
+const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
+(async()=>{const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox','--disable-dev-shm-usage']});const report={checks:[],errors:[]},check=(name,ok)=>{assert(ok,name);report.checks.push(name);console.log('PASS',name)};try{
+ const context=await browser.newContext({viewport:{width:1600,height:1000}});await context.route('https://**/*',r=>r.abort());const p=await context.newPage();p.on('pageerror',e=>report.errors.push(e.message));await p.goto(URL);await p.waitForFunction(()=>!!window.__ROADLORDS_RUNTIME__);await p.waitForTimeout(500);
+ const cold=await p.evaluate(()=>performance.getEntriesByType('resource').filter(r=>r.encodedBodySize).map(r=>({file:new URL(r.name).pathname,bytes:r.encodedBodySize})));report.startupBytes=cold.reduce((n,r)=>n+r.bytes,0);
+ check('Cold menu stays below 4 MB and defers hidden card atlases, the retired portrait atlas and all battle parts',report.startupBytes<4e6&&!cold.some(r=>/heroes-parts|buildings-atlas|buildings-support-atlas|cards\/human\/frame|image-b8c02ed059e88a53|image-5fbf6b0826483991/.test(r.file)));
+ await p.locator('.menuBrand').click();await p.waitForTimeout(900);await p.locator('#rlOpenCodex').click();
+ check('Opening the encyclopedia restores deferred image URLs and shows all 27 Human building cards',await p.evaluate(async()=>{const cards=[...document.querySelectorAll('[data-codex-building]')].filter(c=>c.querySelector('.humanFrameAccent'));await Promise.all(cards.map(c=>{const i=c.querySelector('.cardFrameImage');i.loading='eager';return i.decode()}));return cards.length===27&&cards.every(c=>c.querySelector('.cardScene image').getAttribute('href')&&c.querySelector('.cardFrameImage').naturalWidth>0)}));await p.keyboard.press('Escape');
+ let attempts=0,releaseFailure;const held=new Promise(resolve=>releaseFailure=resolve);
+ await context.route('**/art/battle/knight-heroes-parts.png',async route=>{attempts++;if(attempts===1){await held;return route.abort()}return route.continue()});
+ await p.locator('#mpSolo').click();await p.locator('#raceContinue').click();await p.waitForFunction(()=>document.querySelector('#raceContinue').getAttribute('aria-busy')==='true');
+ check('Race selection warms only the selected faction and a slow load has an explicit busy label',await p.evaluate(()=>{const b=document.querySelector('#raceContinue');return b.disabled&&b.textContent==='KÉPEK BETÖLTÉSE…'&&!__ROADLORDS_RUNTIME__.orcSiegeTexture&&!__ROADLORDS_RUNTIME__.undeadCastersTexture}));
+ releaseFailure();await p.waitForFunction(()=>!document.querySelector('#raceContinue').disabled);
+ check('A failed texture leaves setup usable and restores its original button label',await p.evaluate(()=>!__ROADLORDS_RUNTIME__.state.pregame&&document.querySelector('#raceContinue').textContent==='PÁLYAVÁLASZTÁS'&&!document.querySelector('#raceContinue').hasAttribute('aria-busy')));
+ await p.locator('#raceContinue').click();await p.waitForFunction(()=>__ROADLORDS_RUNTIME__.state.pregame);
+ check('Retry succeeds without reloading the page or keeping a failed faction promise forever',attempts===2&&await p.evaluate(()=>__ROADLORDS_RUNTIME__.knightTexture.naturalWidth>0));
+ check('Opening the real board hydrates its initial hidden build cards',await p.evaluate(()=>[...document.querySelectorAll('#buildList .cardFrameImage')].every(i=>i.getAttribute('src')&&!i.hasAttribute('data-card-source'))));
+ check('No loading runtime errors',report.errors.length===0);
+}finally{fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/art-loading.json',JSON.stringify(report,null,2));await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

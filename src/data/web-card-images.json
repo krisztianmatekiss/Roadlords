@@ -1,0 +1,263 @@
+{
+  "art/human/buildings-atlas.png": {
+    "file": "web-images/695f508a2526d1dce445.webp",
+    "sourceSha256": "695f508a2526d1dce445e4c718c05656f990cb787a563c2bd3200153c2309f6f",
+    "sha256": "c0ca37a4c9582eb86c653cde91d2b8afedd24636d8b0d09e7d8d44dc1afc946b",
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 3938615,
+    "webBytes": 2878736
+  },
+  "art/human/buildings-support-atlas.png": {
+    "file": "web-images/d7fb70f563db79282fb6.webp",
+    "sourceSha256": "d7fb70f563db79282fb6f00ba5a306700363650e1fee0b729759ac620443427c",
+    "sha256": "c3fe43b0b9a678f1412f09e590af71ca2a107ec7f01db7fddc941e8b8120b908",
+    "width": 1448,
+    "height": 1086,
+    "originalBytes": 3798800,
+    "webBytes": 2811704
+  },
+  "art/orc-upgrades-atlas.png": {
+    "file": "web-images/28ccf126b691b12443f2.webp",
+    "sourceSha256": "28ccf126b691b12443f2bfd7d8c4837d84a6af69775dcbe352e5cb0c8d719203",
+    "sha256": "648bd617ef9eb785d1e1cf99afb6b9e232156ab7d78ee308438b947e8166df54",
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 3801757,
+    "webBytes": 2945606
+  },
+  "art/undead/common-atlas.png": {
+    "file": "web-images/4ee38e8d447e9de7674a.webp",
+    "sourceSha256": "4ee38e8d447e9de7674afc76fce4b4178db0ce345f2504c743dc2fa823dcca82",
+    "sha256": "2925af34720fb0a008a060161235e3476916838bf7f797f8afa4f6c67d9cc30b",
+    "width": 1448,
+    "height": 1086,
+    "originalBytes": 3538148,
+    "webBytes": 2629296
+  },
+  "art/undead/expansion-atlas.png": {
+    "file": "web-images/dd3c0d169fecaebb802c.webp",
+    "sourceSha256": "dd3c0d169fecaebb802cc88ed4c49f9df7fc750b68e4d68fb0ca20ad2a58f662",
+    "sha256": "28c58a939aa4d9ab0bd52251929736c9ba2c2f5e4a46a788dd6bbd077884201f",
+    "width": 1448,
+    "height": 1086,
+    "originalBytes": 3508018,
+    "webBytes": 2436096
+  },
+  "art/undead/unit-relics-atlas.png": {
+    "file": "web-images/581188a517c8a09d843a.webp",
+    "sourceSha256": "581188a517c8a09d843a958b5966c7d0a8e4a0b097f1593a2ff8585bb736e17d",
+    "sha256": "e50dae90bd2e91461b9343b27c1319f272769a44216f4279924d900905909075",
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 3581924,
+    "webBytes": 2544016
+  },
+  "cards/human/frame.png": {
+    "file": "web-images/5b42a8c4837f51a24a37.webp",
+    "sourceSha256": "5b42a8c4837f51a24a37f1c0ea9ce865d911b891994340b22fdd45eb2c702338",
+    "sha256": "83c681b953b44335790ebb66b1675574a6b458b68585ec68171a56b3ddeb7750",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 3132789,
+    "webBytes": 1994270
+  },
+  "cards/undead/buildings/keep.png": {
+    "file": "web-images/59f0acb0b8d059a3f9e9.webp",
+    "sourceSha256": "59f0acb0b8d059a3f9e9db10999ec7266b82129b1d6ca211276b0feb863d68c9",
+    "sha256": "ed865dd91881082cadf876415ded0c022bb5c6b209d6c23d554a2f0273c6ad45",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2631029,
+    "webBytes": 1971454
+  },
+  "cards/undead/buildings/und_bone_forge.png": {
+    "file": "web-images/12717466e49a00ea5b97.webp",
+    "sourceSha256": "12717466e49a00ea5b97f3fe89ff2ea3f0b593836cb5a66b19a774ec74c50614",
+    "sha256": "1b57deb27786a67108a017ad8864dfd529f6f02d29ea0055b0cbeba613d0deda",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2657539,
+    "webBytes": 1973352
+  },
+  "cards/undead/buildings/und_corrupted_hatchery.png": {
+    "file": "web-images/90df163e7a5c0aee0a2f.webp",
+    "sourceSha256": "90df163e7a5c0aee0a2fe20f24221f5667167abbe0b7a92055972082bccc0a04",
+    "sha256": "ac1dc7795aedc9816d5c1900fbf9012c247b035de5de18ec716218631c1c5abf",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2753074,
+    "webBytes": 2038656
+  },
+  "cards/undead/buildings/und_crypt.png": {
+    "file": "web-images/d7cb51bfb6a7f722c32d.webp",
+    "sourceSha256": "d7cb51bfb6a7f722c32db2a68375f12729c696f0e11c5f65ab041b518b3fefa1",
+    "sha256": "97192153620c8290c5d32b2494170c82f2cbbfb221094ebfaba4692747e9dcb3",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2622820,
+    "webBytes": 1926258
+  },
+  "cards/undead/buildings/und_dark_tower.png": {
+    "file": "web-images/1b90dc8243f52a4b6070.webp",
+    "sourceSha256": "1b90dc8243f52a4b60706d997900cf963515663e22dadffc1d5a74c3bc0422f1",
+    "sha256": "0448166ff2db2c933ceebbf2cba908ecab74fa8945affd3916ea5ab94383400b",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2455470,
+    "webBytes": 1841360
+  },
+  "cards/undead/buildings/und_garden_of_dead.png": {
+    "file": "web-images/ade5c1627703b387d767.webp",
+    "sourceSha256": "ade5c1627703b387d767beed88b02a8c962b55bdd6d54551941f40895c0aa882",
+    "sha256": "8642a67794819373a4e546753bff45dc892b30a7c6690b738c55944cc44bdca7",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2829396,
+    "webBytes": 2079844
+  },
+  "cards/undead/buildings/und_ghost_spawner.png": {
+    "file": "web-images/d92d1f8b9e32fbfe509a.webp",
+    "sourceSha256": "d92d1f8b9e32fbfe509a948c533f415298cec1b906abbd969210a45c2f80815c",
+    "sha256": "bc2b69dd10d7307414eb17ceb58148ca2dd8f47e27801d22d8cde4b1b66e17de",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2558452,
+    "webBytes": 1900068
+  },
+  "cards/undead/buildings/und_graveyard.png": {
+    "file": "web-images/82bab37ecc93e29b33bd.webp",
+    "sourceSha256": "82bab37ecc93e29b33bdcd2481f924c907cf71173c831a2caa3f921f38ffc1f5",
+    "sha256": "92ac7bf31b5f29835483a15e117c7edda9c076543313205aa0b98f249dac72cf",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2680685,
+    "webBytes": 1972576
+  },
+  "cards/undead/buildings/und_lich_spawner.png": {
+    "file": "web-images/e360e5f341378c52802d.webp",
+    "sourceSha256": "e360e5f341378c52802d0a645f28b322523854527ec41d89374872b11c904f14",
+    "sha256": "f3f6a7b2304473a2c1be05d8ed75c5f525e85ade436837470cd3ed9bae37d7ed",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2527154,
+    "webBytes": 1889778
+  },
+  "cards/undead/buildings/und_morgue.png": {
+    "file": "web-images/61df104527cd9aa32c3b.webp",
+    "sourceSha256": "61df104527cd9aa32c3b61b88ca348fc70de8e46b9cfed08923dace83fdf2498",
+    "sha256": "124c5c3e693b8ba8e775ac9d4ffe101fe7d53e14f9062c279b0e28e4a01e9fbb",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2711589,
+    "webBytes": 1941984
+  },
+  "cards/undead/buildings/und_necro_spawner.png": {
+    "file": "web-images/d0ffb06055e0204c4b0e.webp",
+    "sourceSha256": "d0ffb06055e0204c4b0e768a58d0b9330066cbf6fad248d68f3c5fa99218d8da",
+    "sha256": "c7f3f41f9f19030f8369d03ea3273ce33ac8b2f95002e7afaa803babffa1f621",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2629110,
+    "webBytes": 1914744
+  },
+  "cards/undead/buildings/und_plague_chamber.png": {
+    "file": "web-images/4b56242f94df3b43d56d.webp",
+    "sourceSha256": "4b56242f94df3b43d56da8bd653f8d31d77554267d7b3105835bdcd4846289a9",
+    "sha256": "89f5d65e2b36e0bf2cb561bc4fb80e75553619a2e3014d0a169965246a1d5342",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2642355,
+    "webBytes": 1972480
+  },
+  "cards/undead/buildings/und_rebirth_tomb.png": {
+    "file": "web-images/918be998abdcb8f57be6.webp",
+    "sourceSha256": "918be998abdcb8f57be6284641e083278f859b8fdcc8815bc3b5d36cc59e78ba",
+    "sha256": "a20f8f6fd84effa9dd0177f94bef9bc260c520ec306e443b5526e144c5b1f343",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2709022,
+    "webBytes": 2038158
+  },
+  "cards/undead/buildings/und_soul_anchor.png": {
+    "file": "web-images/856d985873e18973b2eb.webp",
+    "sourceSha256": "856d985873e18973b2ebe401770f45c6b9b316afa176dc4ea258a023f2ac35ce",
+    "sha256": "7b373eba60a7fdeea58ea9770d8d3df53cccf9d063881acdd060cc094881bf7c",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2599632,
+    "webBytes": 1944680
+  },
+  "cards/undead/buildings/und_soul_bank.png": {
+    "file": "web-images/4de300b243fff731fb05.webp",
+    "sourceSha256": "4de300b243fff731fb05d6542f7dbd8dab3c4350c7e05a6401a97b312e8a8f15",
+    "sha256": "e2d7e92ac0cec5ba4e0be1c0f2c1333a88a91243a7a5102a3bf5fb9ab1ffa1f2",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2666442,
+    "webBytes": 1972704
+  },
+  "cards/undead/buildings/und_soul_burner.png": {
+    "file": "web-images/ace350bf44845bda7d8a.webp",
+    "sourceSha256": "ace350bf44845bda7d8ac99871abf653b61f71e9cfa43d586d3e77d796bc33b4",
+    "sha256": "ea0adb8ba3b4a227f22b248a013f04722886746c9143a11f2cb4d322c3dbafa1",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2595518,
+    "webBytes": 1936222
+  },
+  "cards/undead/buildings/und_soul_harvester.png": {
+    "file": "web-images/0142d19335fa21a2b9e8.webp",
+    "sourceSha256": "0142d19335fa21a2b9e8c40e525b63b41ed0cc6c3a9ed1f3ffa5366382aadd05",
+    "sha256": "c884e5480ba6c70adad1052d403903d16d8d6facc20d2562d40819226e720e17",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2695735,
+    "webBytes": 1988648
+  },
+  "cards/undead/buildings/und_soul_overdrive.png": {
+    "file": "web-images/3bb865ed5e7bc2712922.webp",
+    "sourceSha256": "3bb865ed5e7bc27129226d6521d7d5bc2ab1edcadf42defc182a63f524aad2af",
+    "sha256": "6912c92023cf7958967bae5baa2ef927285667b63c92754374db1c9a409b3401",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2758485,
+    "webBytes": 2052380
+  },
+  "cards/undead/buildings/und_vampire_castle.png": {
+    "file": "web-images/6687ec2310e741aa2fbf.webp",
+    "sourceSha256": "6687ec2310e741aa2fbf3d29bc06b0557232902f98600dfd6ab825dc81ae10f6",
+    "sha256": "2e45a8603804bee4e1119e665e3c017b6d2af381c86c60b0a3d41eafc1150497",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2541806,
+    "webBytes": 1880040
+  },
+  "cards/undead/buildings/und_well.png": {
+    "file": "web-images/e11520bb8351f747566e.webp",
+    "sourceSha256": "e11520bb8351f747566e57e8af23e64eae1b76bd6df45e4423949e792a6bd28b",
+    "sha256": "125606ff0757297d855ccf094b53075267abdd8e07d0608a9b20554acae50dc7",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2501626,
+    "webBytes": 1828748
+  },
+  "cards/undead/common-frame.png": {
+    "file": "web-images/fb69ce7e5e8fca8630bc.webp",
+    "sourceSha256": "fb69ce7e5e8fca8630bc3d8341d63e7ed6384de3df50b373dbcea84145d10e69",
+    "sha256": "bd2f68cccd2d0c695581dcdc1553d4aa8cd3a53ab15b85b92dbdc1bb646ed0cd",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 1915236,
+    "webBytes": 1216232
+  },
+  "cards/undead/legendary-frame.png": {
+    "file": "web-images/313a90f65773f8c74d15.webp",
+    "sourceSha256": "313a90f65773f8c74d15e99c07f8a929b8c1b6c5db4a504ea3e85e71e9453b61",
+    "sha256": "3c906ae988b1a15095618d54ff668f11d67008786deb71fcde30ef9b7103f2bd",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 1795010,
+    "webBytes": 1186394
+  }
+}

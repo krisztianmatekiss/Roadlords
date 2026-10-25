@@ -230,13 +230,14 @@ export function initializeCombatRoadIntegration(runtime) {
     };
   };
   runtime.ROAD.art = new Map();
-  const originalArt = Promise.all(Object.entries(runtime.UNIT_IMAGES).filter(([k]) => runtime.UNITS[k]).map(async ([key, src]) => {
+  let originalArt;
+  runtime.loadLegacyRoadArt = () => originalArt ||= Promise.all(Object.entries(runtime.UNIT_IMAGES).filter(([k]) => runtime.UNITS[k]).map(async ([key, src]) => {
     const image = new Image();
     image.src = src;
     await image.decode();
     runtime.ROAD.art.set(key, image);
   }));
-  runtime.roadArtReady = originalArt;
+  Object.defineProperty(runtime, 'roadArtReady', {get:runtime.loadLegacyRoadArt});
   runtime.renderBattle = function (raw) {
     const begin = performance.now();
     runtime.roadUpdateNavigation(raw);
@@ -390,7 +391,7 @@ export function initializeCombatRoadIntegration(runtime) {
     reindex: runtime.roadReindex,
     distance: runtime.roadDistance,
     MP: runtime.MP,
-    artReady: runtime.roadArtReady,
+    get artReady() { return runtime.roadArtReady; },
     render: runtime.renderBattle,
     pose: runtime.battleFigurePose,
     attach: runtime.mpAttachConnection,

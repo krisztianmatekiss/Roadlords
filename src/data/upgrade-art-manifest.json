@@ -55,6 +55,22 @@
       "columns": 1,
       "rows": 1,
       "sha256": "313a90f65773f8c74d15e99c07f8a929b8c1b6c5db4a504ea3e85e71e9453b61"
+    },
+    "human-support-buildings": {
+      "file": "art/human/buildings-support-atlas.png",
+      "width": 1448,
+      "height": 1086,
+      "columns": 4,
+      "rows": 3,
+      "sha256": "d7fb70f563db79282fb6f00ba5a306700363650e1fee0b729759ac620443427c"
+    },
+    "undead-unit-relics": {
+      "file": "art/undead/unit-relics-atlas.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "581188a517c8a09d843a958b5966c7d0a8e4a0b097f1593a2ff8585bb736e17d"
     }
   },
   "scenes": {
@@ -297,6 +313,180 @@
     "human-building:townhall": {
       "source": "human-buildings",
       "index": 15
+    },
+    "human-building:guildhouse": {
+      "source": "human-support-buildings",
+      "index": 0
+    },
+    "human-building:market": {
+      "source": "human-support-buildings",
+      "index": 1
+    },
+    "human-building:tavern": {
+      "source": "human-support-buildings",
+      "index": 2
+    },
+    "human-building:warcenter": {
+      "source": "human-support-buildings",
+      "index": 3
+    },
+    "human-building:armorsmith": {
+      "source": "human-support-buildings",
+      "index": 4
+    },
+    "human-building:hospital": {
+      "source": "human-support-buildings",
+      "index": 5
+    },
+    "human-building:towercommand": {
+      "source": "human-support-buildings",
+      "index": 6
+    },
+    "human-building:library": {
+      "source": "human-support-buildings",
+      "index": 7
+    },
+    "human-building:mastersguild": {
+      "source": "human-support-buildings",
+      "index": 8
+    },
+    "human-building:academy": {
+      "source": "human-support-buildings",
+      "index": 9
+    },
+    "human-building:alchemist": {
+      "source": "human-support-buildings",
+      "index": 10
+    },
+    "skeleton_leg_archer": {
+      "source": "undead-unit-relics",
+      "index": 0,
+      "rect": [
+        0,
+        0,
+        313,
+        301
+      ]
+    },
+    "skeleton_leg_guard": {
+      "source": "undead-unit-relics",
+      "index": 1,
+      "rect": [
+        313,
+        0,
+        314,
+        301
+      ]
+    },
+    "zombie_leg_retribution": {
+      "source": "undead-unit-relics",
+      "index": 2,
+      "rect": [
+        627,
+        0,
+        313,
+        301
+      ]
+    },
+    "zombie_leg_poisoned_hunt": {
+      "source": "undead-unit-relics",
+      "index": 3,
+      "rect": [
+        940,
+        0,
+        314,
+        301
+      ]
+    },
+    "ghost_leg_intangible": {
+      "source": "undead-unit-relics",
+      "index": 4,
+      "rect": [
+        0,
+        301,
+        313,
+        313
+      ]
+    },
+    "ghost_leg_mirror": {
+      "source": "undead-unit-relics",
+      "index": 5,
+      "rect": [
+        313,
+        301,
+        314,
+        313
+      ]
+    },
+    "necro_leg_siege": {
+      "source": "undead-unit-relics",
+      "index": 6,
+      "rect": [
+        627,
+        301,
+        313,
+        313
+      ]
+    },
+    "necro_leg_spirits": {
+      "source": "undead-unit-relics",
+      "index": 7,
+      "rect": [
+        940,
+        301,
+        314,
+        313
+      ]
+    },
+    "vampire_leg_shield": {
+      "source": "undead-unit-relics",
+      "index": 8,
+      "rect": [
+        0,
+        614,
+        313,
+        288
+      ]
+    },
+    "vampire_leg_dual": {
+      "source": "undead-unit-relics",
+      "index": 9,
+      "rect": [
+        313,
+        614,
+        314,
+        288
+      ]
+    },
+    "vampire_leg_frenzy": {
+      "source": "undead-unit-relics",
+      "index": 10,
+      "rect": [
+        627,
+        614,
+        313,
+        288
+      ]
+    },
+    "lich_leg_greedy": {
+      "source": "undead-unit-relics",
+      "index": 11,
+      "rect": [
+        940,
+        614,
+        314,
+        288
+      ]
+    },
+    "lich_leg_shield": {
+      "source": "undead-unit-relics",
+      "index": 12,
+      "rect": [
+        0,
+        902,
+        313,
+        352
+      ]
     }
   }
 }

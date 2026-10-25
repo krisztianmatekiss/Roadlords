@@ -1,6 +1,6 @@
 export const APP = Object.freeze({
-  version: '4.46.1',
-  label: 'V4.46.1 · WARGLOVAS ÉS FALTÖRŐ KOS',
+  version: '4.46.2',
+  label: 'V4.46.2 · WARGLOVAS ÉS FALTÖRŐ KOS',
   title: 'Roadlords – Warglovas és Faltörő kos',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',

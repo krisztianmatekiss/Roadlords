@@ -25,6 +25,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
      for(let i=0;i<count;i++){
       const s=sprite(u,state,i,variant),r=s.figureRig;hashes.push(hash(s));if(i%Math.max(1,Math.floor(count/6))===0)g.drawImage(s,180+Math.floor(i/Math.max(1,Math.floor(count/6)))*195,ui*750+row*140,190,190);
       if(u.key==='orc_warg'){
+       checks.highGuard??=true;if(state==='idle'||state==='walk')checks.highGuard&&=r.hand[1]<r.headTop-1.5&&Math.abs(r.weaponAngle)<.15;
        checks.aligned&&=r.neck.every((v,j)=>Math.abs(v-r.collar[j])<1e-8);checks.seat&&=Math.abs(r.riderHip[1]-r.saddle[1])<1e-8&&Math.abs(r.riderHip[0]-r.saddle[0])<2;
        for(const a of [r.arm,r.reinsArm]){const dx=a.grip[0]-a.wrist[0],dy=a.grip[1]-a.wrist[1],fx=a.wrist[0]-a.elbow[0],fy=a.wrist[1]-a.elbow[1];checks.wristNatural&&=Math.abs(dx*fy-dy*fx)<1e-6&&dx*fx+dy*fy>0&&Math.abs(Math.hypot(a.elbow[0]-a.shoulder[0],a.elbow[1]-a.shoulder[1])-6.5)<1e-5;}
       }
@@ -40,16 +41,16 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
        const bounds=full.figureBounds,k=full.width/bounds[2],x=((a[0]+b[0])/2-bounds[0])*k,y=((a[1]+b[1])/2-bounds[1])*k,r=2.2*k,rect=[Math.round(x-r),Math.round(y-r),Math.round(r*2),Math.round(r*2)],p=full.getContext('2d').getImageData(...rect).data,q=without.getContext('2d').getImageData(...rect).data;let changed=0;for(let j=0;j<p.length;j+=4)if(Math.abs(p[j]-q[j])+Math.abs(p[j+1]-q[j+1])+Math.abs(p[j+2]-q[j+2])+Math.abs(p[j+3]-q[j+3])>40)changed++;checks.visibleArms.push(changed);
       }
      }
-     checks.distinctAttacks=hash(sprite(u,'attack',6,'melee'))!==hash(sprite(u,'attack',6,'throw'));checks.meleeSpearRetained=Array.from({length:12},(_,i)=>sprite(u,'attack',i,'melee').figureRig.loaded).every(Boolean);
+     checks.distinctAttacks=hash(sprite(u,'attack',6,'melee'))!==hash(sprite(u,'attack',6,'throw'));const wind=sprite(u,'attack',3,'melee').figureRig,hit=sprite(u,'attack',6,'melee').figureRig;checks.overarmStab=wind.hand[1]<wind.headTop-1.5&&hit.hand[1]>wind.hand[1]+8&&hit.weaponAngle>.6;checks.meleeSpearRetained=Array.from({length:12},(_,i)=>sprite(u,'attack',i,'melee').figureRig.loaded).every(Boolean);
     }
     checks.elite=hash(sprite({...u,veteran:true},'idle',0))!==hash(sprite(u,'idle',0));checks.colors=[];checks.materialStable=true;let skin;
     for(const [color]of __ROADLORDS_UNIT_COLORS__.palette){R.P.unitColor=color;const s=sprite(u,'idle',0),b=s.figureBounds,k=s.width/b[2],x=u.key==='orc_warg'?23:12,y=u.key==='orc_warg'?-33:-29,px=s.getContext('2d').getImageData(Math.round((x-b[0])*k),Math.round((y-b[1])*k),3,3).data,value=Array.from(px).join(',');skin??=value;checks.materialStable&&=skin===value;checks.colors.push(hash(s));}R.P.unitColor='blue';result.units[u.key]=checks;
    }
    result.hoofs=Array.from({length:8},(_,i)=>sprite(units[0],'walk',i).figureRig.hoofs);result.wheels=Array.from({length:8},(_,i)=>sprite(units[1],'walk',i).figureRig.wheels);
    result.loaded=sprite(units[0],'attack',6,'throw').figureRig;result.released=sprite(units[0],'attack',7,'throw').figureRig;result.launch=R.wargLaunchPoint();result.ramShift=sprite(units[1],'attack',7).figureRig.beamShift;
-   const preview=document.createElement('canvas');preview.width=2000;preview.height=760;const c=preview.getContext('2d');c.fillStyle='#14231c';c.fillRect(0,0,2000,760);c.textAlign='center';c.fillStyle='#f1dca8';c.font='bold 28px Arial';c.fillText('WARGLOVAS ÉS FALTÖRŐ KOS — JÁTÉKBELI MODELLEK',1000,47);c.fillStyle='#bbcabd';c.font='17px Arial';c.fillText('Tényleges modellek · azonos lépték, nagyítva és kis méretben',1000,80);
-   for(const [i,[u,state,frame,variant]]of [[units[0],'idle',0],[units[0],'attack',6,'throw'],[units[0],'attack',7,'throw'],[units[0],'attack',6,'melee'],[units[1],'attack',6]].entries()){
-    const x=200+i*400,s=sprite(u,state,frame,variant),b=s.figureBounds;c.fillStyle='#22382b';c.beginPath();c.roundRect(15+i*400,110,370,610,18);c.fill();c.fillStyle='#edd7a3';c.font='bold 23px Arial';c.fillText(['Warglovas · két kar','Dobás · elengedés előtt','Dobás · elengedés után','Közelharci szúrás','Faltörő kos · csapás'][i],x,149);c.drawImage(s,x+b[0]*3.6,490+b[1]*3.6,b[2]*3.6,b[3]*3.6);c.drawImage(s,x+b[0]*1.05,655+b[1]*1.05,b[2]*1.05,b[3]*1.05);
+   const preview=document.createElement('canvas');preview.width=2000;preview.height=760;const c=preview.getContext('2d');c.fillStyle='#14231c';c.fillRect(0,0,2000,760);c.textAlign='center';c.fillStyle='#f1dca8';c.font='bold 28px Arial';c.fillText('WARGLOVAS — FELSŐ FOGÁSÚ DOBÁS ÉS SZÚRÁS',1000,47);c.fillStyle='#bbcabd';c.font='17px Arial';c.fillText('Tényleges modellek · azonos lépték, nagyítva és kis méretben',1000,80);
+   for(const [i,[u,state,frame,variant]]of [[units[0],'idle',0],[units[0],'attack',3,'throw'],[units[0],'attack',6,'throw'],[units[0],'attack',7,'throw'],[units[0],'attack',6,'melee']].entries()){
+    const x=200+i*400,s=sprite(u,state,frame,variant),b=s.figureBounds;c.fillStyle='#22382b';c.beginPath();c.roundRect(15+i*400,110,370,610,18);c.fill();c.fillStyle='#edd7a3';c.font='bold 23px Arial';c.fillText(['Fej fölötti tartás','Dobás · hátralendítés','Dobás · elengedés előtt','Dobás · elengedés után','Közelharci leszúrás'][i],x,149);c.drawImage(s,x+b[0]*3.6,490+b[1]*3.6,b[2]*3.6,b[3]*3.6);c.drawImage(s,x+b[0]*1.05,655+b[1]*1.05,b[2]*1.05,b[3]*1.05);
    }
    result.gallery=gallery.toDataURL();result.preview=preview.toDataURL();result.cache=Q.sprites.size;result.clothCache=R.orcSiegeClothCache.size;return result;
   },JSON.parse(fs.readFileSync('src/data/orc-siege-art.json')));
@@ -57,7 +58,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('Walk, melee, throw and death frames remain distinct inside sprite bounds',Object.values(poses.units).every(u=>u.walk>=6&&u.attack>=8&&u.death===6&&u.bounds)&&poses.units.orc_warg.attackthrow>=8);
   check('Rider stays seated and both wrists follow their forearms through every pose',Object.values(poses.units).every(u=>u.aligned&&u.seat&&u.wristNatural));
   check('Both upper arms and forearms remain visible in idle, throw and melee poses',poses.units.orc_warg.visibleArms.every(n=>n>4));
-  check('Throw and melee have distinct poses and melee retains the spear',poses.units.orc_warg.distinctAttacks&&poses.units.orc_warg.meleeSpearRetained);
+  check('Overhead ready pose leads into separate throws and descending spear thrusts',poses.units.orc_warg.distinctAttacks&&poses.units.orc_warg.meleeSpearRetained&&poses.units.orc_warg.highGuard&&poses.units.orc_warg.overarmStab);
   check('Eight team colors preserve fur and wood while distinguishing elite trim',Object.values(poses.units).every(u=>new Set(u.colors).size===8&&u.elite&&u.materialStable)&&poses.clothCache<=8&&poses.cache<=768);
   check('All four paws animate with a grounded stance and all four wheels rotate',poses.hoofs.every(f=>f.length===4&&f.some(p=>p[1]>=-2.01))&&[0,1,2,3].every(i=>new Set(poses.hoofs.map(f=>f[i].join(','))).size>=6)&&poses.wheels.every(f=>f.length===4)&&new Set(poses.wheels.map(f=>f[0][2])).size===8);
   check('Spear leaves its last loaded position at launch and the Ram reaches maximum extension at impact',poses.loaded.loaded&&!poses.released.loaded&&poses.loaded.payload.every((v,i)=>Math.abs(v-poses.launch[i])<1e-8)&&poses.released.payload.every((v,i)=>Math.abs(v-poses.launch[i])<1e-8)&&Math.abs(poses.ramShift-9)<1e-8);

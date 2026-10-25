@@ -2,7 +2,8 @@ import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/orc-siege-art.json';
 
 const TAU=Math.PI*2,mix=(a,b,t)=>a+(b-a)*t,clamp=n=>Math.max(0,Math.min(1,n));
-const RELEASE_ANGLE=-.08,RELEASE_HAND=[18,-41];
+const READY_HAND=[5,-57.2],WIND_HAND=[-2,-57],RELEASE_HAND=[12,-52],STAB_HAND=[15,-45];
+const READY_ANGLE=.03,WIND_ANGLE=-.25,RELEASE_ANGLE=.10,STAB_ANGLE=.80;
 export const paintedOrcSiege=(R,u)=>['orc_warg','orc_ram'].includes(u.key)&&R.ROAD.test&&R.ROAD.testRoster==='orc-siege'&&R.ROAD.figureStyle==='painted'&&R.orcSiegeTexture?.naturalWidth>0;
 export const orcSiegeVariant=(u,pose)=>u.key==='orc_warg'&&pose.state==='attack'&&u.roadAttack?.orcSpear?'throw':'melee';
 
@@ -89,18 +90,19 @@ export function drawWargRider(g,R,color,p,elite,pose,variant) {
   const reinsHand=[-1,-33],reinsShoulder=[-12,-42],reinsArm=weaponArm(g,R,tinted,reinsShoulder,reinsHand);
   g.strokeStyle='#513425';g.lineWidth=.7;g.beginPath();g.moveTo(...reinsHand);g.quadraticCurveTo(17,-29,28,-28);g.stroke();fist(g,R,reinsHand,reinsArm.handAngle,4.5);
   const throwing=variant==='throw',released=throwing&&pose.frame>=7;
-  const rest=pose.frame>=7?clamp((pose.frame-7)/4):0;
-  let hand=pose.state!=='attack'?[14,-37]:pose.frame<4?[mix(14,7,p.wind),mix(-37,-38,p.wind)]:pose.frame<7?[mix(7,17,p.strike),mix(-38,-37,p.strike)]:[mix(17,14,rest),-37];
-  let angle=pose.state!=='attack'?-.12:pose.frame<4?mix(-.12,-.18,p.wind):pose.frame<7?mix(-.18,.05,p.strike):mix(.05,-.12,rest);
-  if(throwing){
-    hand=pose.frame<4?[mix(14,2,p.wind),mix(-37,-47,p.wind)]:pose.frame<7?[mix(2,RELEASE_HAND[0],p.strike),mix(-47,RELEASE_HAND[1],p.strike)]:[mix(RELEASE_HAND[0],17,rest),mix(RELEASE_HAND[1],-37,rest)];
-    angle=pose.frame<4?mix(-.12,-.4,p.wind):mix(-.4,RELEASE_ANGLE,p.strike);
+  let hand=[...READY_HAND],angle=READY_ANGLE;
+  if(pose.state==='attack'){
+    const contact=throwing?RELEASE_HAND:STAB_HAND,contactAngle=throwing?RELEASE_ANGLE:STAB_ANGLE;
+    const rest=pose.frame>=7?clamp((pose.frame-7)/4):0;
+    if(pose.frame<4){hand=READY_HAND.map((n,i)=>mix(n,WIND_HAND[i],p.wind));angle=mix(READY_ANGLE,WIND_ANGLE,p.wind);}
+    else if(pose.frame<7){hand=WIND_HAND.map((n,i)=>mix(n,contact[i],p.strike));angle=mix(WIND_ANGLE,contactAngle,p.strike);}
+    else{hand=contact.map((n,i)=>mix(n,READY_HAND[i],rest));angle=mix(contactAngle,READY_ANGLE,rest);}
   }
-  const arm=weaponArm(g,R,tinted,[3,-42],hand),loaded=!death&&!released;
+  const arm=weaponArm(g,R,tinted,[3,-43],hand),loaded=!death&&!released;
   if(loaded||death)spear(g,R,hand,angle);fist(g,R,hand,arm.handAngle,4.5);
   if(elite){g.strokeStyle='#f2cf74';g.lineWidth=1;g.beginPath();g.moveTo(-9,-43);g.lineTo(-5,-46);g.lineTo(-1,-44);g.stroke();g.fillStyle='#ecc667';g.fillRect(-1,-35,2.4,1.6);}
   g.restore();g.restore();
-  return {painted:true,style:'painted-siege',variant,hoofs,knees,saddle,riderHip:[hips[1][0],hips[1][1]+bob],riderKnee:riderKnees[1],riderAnkle:ankles[1],neck:collar,collar:[...collar],arm,reinsArm,hand,payload:spearCenter(hand,angle),weaponAngle:angle,loaded,death};
+  return {painted:true,style:'painted-siege',variant,hoofs,knees,saddle,riderHip:[hips[1][0],hips[1][1]+bob],riderKnee:riderKnees[1],riderAnkle:ankles[1],neck:collar,collar:[...collar],headTop:collar[1]-anchor[1]*headH,arm,reinsArm,hand,payload:spearCenter(hand,angle),weaponAngle:angle,loaded,death};
 }
 
 export function drawOrcRam(g,R,color,p,elite,pose) {

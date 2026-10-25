@@ -1,6 +1,6 @@
 {
   "name": "roadlords",
-  "version": "4.46.1",
+  "version": "4.46.2",
   "description": "Roadlords modular browser game",
   "scripts": {
     "dev": "vite",

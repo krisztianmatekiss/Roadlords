@@ -8,7 +8,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   await page.goto(URL);await page.waitForFunction(()=>!!window.__ROADLORDS_RUNTIME__);
   check('Shaman and Troll atlas stays unloaded in the normal menu',await page.evaluate(()=>!performance.getEntriesByType('resource').some(r=>r.name.includes('orc-mystics-heroes-parts'))));
   await page.locator('.menuBrand').click();await page.waitForTimeout(900);await page.locator('#roadTestsMenu').click();
-  check('Only the two current Orc trials remain visible',await page.locator('.roadTestsList button').count()===2&&await page.locator('#roadOrcMysticsMenu').isVisible()&&await page.locator('#roadOrcRaidersMenu').isVisible()&&await page.locator('#roadCastersMenu').count()===0);
+  check('Only the two current Orc trials remain visible',await page.locator('.roadTestsList button').count()===2&&await page.locator('#roadOrcMysticsMenu').isVisible()&&await page.locator('#roadOrcSiegeMenu').isVisible()&&await page.locator('#roadCastersMenu').count()===0);
   await page.locator('#roadOrcMysticsMenu').click();await page.waitForFunction(()=>__ROADLORDS_RUNTIME__.ROAD.testRoster==='orc-mystics');await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadPause());
   check('One click starts five Trolls and five Shamans against five Swordsmen and five Spearmen with base stats',await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return R.state.units.length===20&&Object.entries({orc_shaman:5,orc_troll:5,swordsman:5,spearman:5}).every(([key,n])=>R.state.units.filter(u=>u.key===key).length===n)&&R.state.units.every(u=>u.maxHp===R.UNITS[u.key].hp&&u.damage===R.UNITS[u.key].damage)&&[R.P,R.E].every(c=>!Object.keys(c.normal).length&&!c.legends.size)}));
   const poses=await page.evaluate((armManifest)=>{
@@ -30,6 +30,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
       checks.reachable&&=Object.values(r.arms).every(a=>Math.abs(Math.hypot(a.elbow[0]-a.shoulder[0],a.elbow[1]-a.shoulder[1])-r.armLengths[0])<1e-5&&Math.abs(Math.hypot(a.wrist[0]-a.elbow[0],a.wrist[1]-a.elbow[1])-r.armLengths[1])<1e-5);
       checks.finite&&=Object.values(r.arms).every(a=>Object.values(a).flat().every(Number.isFinite));checks.roles=r.handRoles.weapon===(u.key==='orc_troll'?'far':'near')&&r.handRoles.free===(u.key==='orc_troll'?'near':'far');
       checks.shouldersAligned??=true;if(u.key==='orc_shaman')checks.shouldersAligned&&=r.torsoShoulders.every((p,i)=>p.every((v,j)=>Math.abs(v-r.arms[i?'near':'far'].shoulder[j])<1e-8));
+      checks.wristStraight??=true;if(u.key==='orc_troll'){const a=r.arms.far,fx=a.wrist[0]-a.elbow[0],fy=a.wrist[1]-a.elbow[1],hx=r.grip[0]-a.wrist[0],hy=r.grip[1]-a.wrist[1];checks.wristStraight&&=Math.abs(fx*hy-fy*hx)<1e-7&&fx*hx+fy*hy>0;}
       checks.grounded??=true;if(u.key==='orc_troll'&&(state==='idle'||state==='walk'||state==='attack'&&(i===6||i===7)))checks.grounded&&=Math.abs(r.groundContact[1]-1.5)<1e-8;
       const pixels=s.getContext('2d').getImageData(0,0,s.width,s.height).data;
       for(let k=0;k<s.width;k++)for(const at of [k,k*s.width,k*s.width+s.width-1,(s.height-1)*s.width+k])if(pixels[at*4+3]>50)checks.bounds=false;
@@ -57,7 +58,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   },JSON.parse(fs.readFileSync('src/data/orc-mystics-art.json')));
   for(const [field,name]of [['gallery','orc-mystics-poses.png'],['preview','orc-mystics-in-game.png']]){fs.writeFileSync('artifacts/'+name,Buffer.from(poses[field].split(',')[1],'base64'));delete poses[field];}report.poses=poses;
   check('Both units have distinct walking, attack and death poses within sprite bounds',Object.values(poses.units).every(u=>u.walk>=6&&u.attack>=8&&u.death===6&&u.bounds)&&poses.cache<=768);
-  check('Torso, hips, feet, neck and arm joints remain connected in every pose',Object.values(poses.units).every(u=>u.aligned&&u.reachable&&u.finite&&u.roles&&u.shouldersAligned&&u.grounded));
+  check('Torso, hips, feet, neck and arm joints remain connected in every pose',Object.values(poses.units).every(u=>u.aligned&&u.reachable&&u.finite&&u.roles&&u.shouldersAligned&&u.grounded&&u.wristStraight));
   check('Both upper arms and forearms remain visible in idle and impact poses',Object.values(poses.units).every(u=>u.visibleArmPixels.every(n=>n>4)));
   check('Eight team colors and elite trim remain distinct without changing skin materials',Object.values(poses.units).every(u=>new Set(u.colors).size===8&&u.skinStable&&u.elite)&&poses.clothCache<=8);
   check('Shaman releases from the loaded staff gem and Troll holds the impact pose at the damage frame',poses.launch.every((v,i)=>Math.abs(v-poses.expectedLaunch[i])<1e-8)&&poses.loaded&&!poses.released&&Math.abs(poses.clubContact-2.35)<1e-8);

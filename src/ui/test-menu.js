@@ -22,13 +22,13 @@ export function installTestMenu(R) {
   });
   for(const [id,label,description,options] of [
     ['roadOrcMysticsMenu','SÁMÁN ÉS TROLL · 10 vs 10','5 Troll és 5 Sámán 5 Kardos és 5 Lándzsás ellen.',{count:10,roster:'orc-mystics'}],
-    ['roadOrcRaidersMenu','DÜHÖNGŐ ÉS GOBLIN · 10 vs 10','5 Dühöngő és 5 Goblin 5 Kardos és 5 Lándzsás ellen.',{count:10,roster:'orc-raiders'}],
+    ['roadOrcSiegeMenu','WARGLOVAS ÉS FALTÖRŐ KOS · 10 vs 10','5 Warglovas és 5 Faltörő kos 5 Kardos és 5 Lándzsás ellen.',{count:10,roster:'orc-siege'}],
   ]){
     const item=document.createElement('div'),button=document.createElement('button'),note=document.createElement('p');
     button.id=id;button.type='button';button.className='menuButton';button.textContent=label;
     button.onclick=async()=>{
       button.disabled=true;
-      const results=await Promise.all([R.loadHumanInfantryArt(),...(options.roster==='orc-mystics'?[R.loadOrcMysticsArt()]:[R.loadOrcRaidersArt()])]);
+      const results=await Promise.all([R.loadHumanInfantryArt(),...(options.roster==='orc-mystics'?[R.loadOrcMysticsArt()]:[R.loadOrcSiegeArt()])]);
       button.disabled=false;
       if(!results.every(Boolean)){R.toast('Az egységek képe nem töltődött be. Frissítsd az oldalt.');return;}
       close(false);R.roadStartTest(undefined,options);

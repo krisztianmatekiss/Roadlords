@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.45.2',
-  label: 'V4.45.2 · SÁMÁN ÉS TROLL',
-  title: 'Roadlords – Sámán és Troll',
+  version: '4.46.0',
+  label: 'V4.46.0 · WARGLOVAS ÉS FALTÖRŐ KOS',
+  title: 'Roadlords – Warglovas és Faltörő kos',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

@@ -67,7 +67,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         const cards = elements.map(c => c.querySelector('.choiceBody').textContent);
         R.$('#choiceOverlay').classList.add('hidden');
         return cards[0].includes('+8 Lélek/mp') && elements[0].querySelector('.upkeepFact').textContent.includes('−0,5') && elements[0].querySelector('.upkeepFact img').alt==='Lélek' &&
-          cards[1].includes('+80 sereghely') && cards[2].includes('90%-kal olcsóbb') &&
+          cards[1].includes('+80 sereghely') && cards[2].includes('90%-kal kevesebb') &&
           elements[2].querySelector('.choiceBody .effect-positive').textContent === '90%' &&
           cards.every(s => !s.includes('L1:') && !s.includes('Másik L4'));
       }),

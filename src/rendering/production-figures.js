@@ -1,12 +1,12 @@
 // Decode only the factions taking part, before the player leaves setup.
 const LOADERS={
-  human:['loadHumanInfantryArt','loadArcherArt','loadKnightArt','loadCatapultArt','loadHumanCastersArt'],
+  human:['loadHumanMapArt','loadHumanInfantryArt','loadArcherArt','loadKnightArt','loadCatapultArt','loadHumanCastersArt'],
   orc:['loadOrcWarriorArt','loadOrcRaidersArt','loadOrcMysticsArt','loadOrcSiegeArt'],
   undead:['loadUndeadArt','loadSkeletonArt','loadArcherArt'],
 };
 export function installProductionFigures(R){
   const loads=new Map();
-  const readyKeys={loadHumanInfantryArt:'humanInfantryArtReady',loadArcherArt:'archerArtReady',loadKnightArt:'knightArtReady',loadCatapultArt:'catapultArtReady',loadHumanCastersArt:'humanCastersArtReady',loadOrcWarriorArt:'orcWarriorArtReady',loadOrcRaidersArt:'orcRaidersArtReady',loadOrcMysticsArt:'orcMysticsArtReady',loadOrcSiegeArt:'orcSiegeArtReady',loadUndeadArt:'undeadArtReady',loadSkeletonArt:'skeletonArtReady'};
+  const readyKeys={loadHumanMapArt:'humanMapArtReady',loadHumanInfantryArt:'humanInfantryArtReady',loadArcherArt:'archerArtReady',loadKnightArt:'knightArtReady',loadCatapultArt:'catapultArtReady',loadHumanCastersArt:'humanCastersArtReady',loadOrcWarriorArt:'orcWarriorArtReady',loadOrcRaidersArt:'orcRaidersArtReady',loadOrcMysticsArt:'orcMysticsArtReady',loadOrcSiegeArt:'orcSiegeArtReady',loadUndeadArt:'undeadArtReady',loadSkeletonArt:'skeletonArtReady'};
   R.loadProductionBattleArt=(races=[R.P.race,R.E.race])=>Promise.all([...new Set(races)].map(race=>{
     if(!loads.has(race)) {
       const names=LOADERS[race]||LOADERS.human;

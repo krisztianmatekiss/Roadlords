@@ -13,9 +13,19 @@ export function cardImageSource(src, attribute = 'src') {
     ? `data-card-source="${src}" data-card-attribute="src"${web ? ` data-card-srcset="${web}"` : ''}`
     : `${web ? `srcset="${web}" ` : ''}src="${src}"`;
 }
+export function mapImageSource(src) {
+  return document.documentElement.classList.contains('booting') || document.body.classList.contains('roadlords-menu-open')
+    ? `data-map-source="${src}"`
+    : `href="${src}"`;
+}
 export function installDeferredCardImages() {
   const codex = document.querySelector('#rlCodexPanel');
   const flush = () => {
+    if (!document.body.classList.contains('roadlords-menu-open')) {
+      for (const image of document.querySelectorAll('[data-map-source]')) {
+        image.setAttribute('href',image.dataset.mapSource);delete image.dataset.mapSource;
+      }
+    }
     if (document.body.classList.contains('roadlords-menu-open') && !codex?.classList.contains('show')) return;
     for (const image of document.querySelectorAll('[data-card-source]')) {
       if (image.dataset.cardSrcset) image.setAttribute('srcset', image.dataset.cardSrcset);

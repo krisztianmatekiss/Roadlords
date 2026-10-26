@@ -1,4 +1,11 @@
-# Roadlords · V4.52.0
+# Roadlords · V4.53.0
+
+## V4.53.0 – Teljes emberi városi grafika
+
+Mind a 27 emberi városi épület új térképi grafikát használ, a Főépület is. A kék palatetők, világos kő és tölgyfa anyagok a kártyaképekhez igazodnak. A hosszúkás és L alakú alaprajzok a valódi helyfoglalásukkal, forgatással és építési előnézettel jelennek meg.
+
+A három atlasz kb. 5,6 MB veszteségmentes webes képként töltődik be, csak az emberi faj kiválasztásakor vagy használatakor. [Teljes város](public/previews/human-city-full.png) · [Épületenkénti áttekintő](public/previews/human-map-building-set.png) · [Megvalósítás és ellenőrzés](docs/human-city-art-4.53.md).
+
 
 ## V4.52.0 – Haditanács és emberi városképminták
 

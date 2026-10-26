@@ -12,7 +12,8 @@
         81,
         540,
         577
-      ]
+      ],
+      "source": "samples"
     },
     "warehouse": {
       "rect": [
@@ -20,7 +21,8 @@
         189,
         729,
         432
-      ]
+      ],
+      "source": "samples"
     },
     "academy": {
       "rect": [
@@ -28,7 +30,264 @@
         25,
         619,
         650
+      ],
+      "source": "samples"
+    },
+    "keep": {
+      "source": "core",
+      "rect": [
+        29,
+        29,
+        354,
+        363
       ]
+    },
+    "stonecutter": {
+      "source": "core",
+      "rect": [
+        409,
+        61,
+        315,
+        329
+      ]
+    },
+    "farm": {
+      "source": "core",
+      "rect": [
+        752,
+        91,
+        316,
+        296
+      ]
+    },
+    "barracks": {
+      "source": "core",
+      "rect": [
+        1086,
+        37,
+        346,
+        349
+      ]
+    },
+    "archery": {
+      "source": "core",
+      "rect": [
+        29,
+        414,
+        331,
+        297
+      ]
+    },
+    "spearhall": {
+      "source": "core",
+      "rect": [
+        391,
+        394,
+        239,
+        318
+      ]
+    },
+    "stable": {
+      "source": "core",
+      "rect": [
+        644,
+        483,
+        423,
+        232
+      ]
+    },
+    "temple": {
+      "source": "core",
+      "rect": [
+        1081,
+        430,
+        350,
+        275
+      ]
+    },
+    "siegeworks": {
+      "source": "core",
+      "rect": [
+        22,
+        723,
+        343,
+        321
+      ]
+    },
+    "magetower": {
+      "source": "core",
+      "rect": [
+        383,
+        733,
+        285,
+        311
+      ]
+    },
+    "guildhouse": {
+      "source": "core",
+      "rect": [
+        693,
+        796,
+        378,
+        245
+      ]
+    },
+    "market": {
+      "source": "core",
+      "rect": [
+        1098,
+        730,
+        333,
+        318
+      ]
+    },
+    "townhall": {
+      "source": "support",
+      "rect": [
+        38,
+        15,
+        339,
+        355
+      ]
+    },
+    "rally": {
+      "source": "support",
+      "rect": [
+        423,
+        13,
+        329,
+        357
+      ]
+    },
+    "tavern": {
+      "source": "support",
+      "rect": [
+        788,
+        52,
+        322,
+        315
+      ]
+    },
+    "guardhouse": {
+      "source": "support",
+      "rect": [
+        1152,
+        32,
+        275,
+        338
+      ]
+    },
+    "house": {
+      "source": "support",
+      "rect": [
+        49,
+        419,
+        283,
+        290
+      ]
+    },
+    "warcenter": {
+      "source": "support",
+      "rect": [
+        400,
+        385,
+        328,
+        319
+      ]
+    },
+    "armorsmith": {
+      "source": "support",
+      "rect": [
+        754,
+        393,
+        315,
+        318
+      ]
+    },
+    "hospital": {
+      "source": "support",
+      "rect": [
+        1100,
+        385,
+        333,
+        326
+      ]
+    },
+    "towercommand": {
+      "source": "support",
+      "rect": [
+        27,
+        795,
+        389,
+        220
+      ]
+    },
+    "library": {
+      "source": "support",
+      "rect": [
+        421,
+        711,
+        311,
+        347
+      ]
+    },
+    "mastersguild": {
+      "source": "support",
+      "rect": [
+        757,
+        712,
+        329,
+        349
+      ]
+    },
+    "alchemist": {
+      "source": "support",
+      "rect": [
+        1135,
+        747,
+        286,
+        308
+      ]
+    }
+  },
+  "sources": {
+    "samples": {
+      "file": "art/human/map-samples.png",
+      "width": 2172,
+      "height": 724,
+      "sha256": "5028ff3dfc5c73be7db55cf779f894a4806c13838d51a2246501afd4d200d649",
+      "webFile": "art/human/map-samples.webp",
+      "webSha256": "83a451e13bf4ddfc2ad8fc4535ac7302c9cf162dd187bcff2d184d8224613b35",
+      "originalBytes": 2162688,
+      "webBytes": 1548562
+    },
+    "core": {
+      "file": "art/human/map-core.png",
+      "webFile": "art/human/map-core.webp",
+      "width": 1448,
+      "height": 1086,
+      "sha256": "e8aa8cbea868444a172ce4f7562500f555d5e0e2e8cfc11099e503d16b02275a",
+      "webSha256": "2613e002d4368f8bcf0c0192b6a7b261f4b060cca5908038da0952d90f88aed2",
+      "originalBytes": 2728519,
+      "webBytes": 2093330,
+      "viewOverrides": {
+        "guildhouse": [
+          693,
+          796,
+          378,
+          245
+        ]
+      }
+    },
+    "support": {
+      "file": "art/human/map-support.png",
+      "webFile": "art/human/map-support.webp",
+      "width": 1448,
+      "height": 1086,
+      "sha256": "1be50d9a44f042b2b9fe6b2e3e179734943a0667ddc73a718b964f214afe2df2",
+      "webSha256": "074dd20fb10a1723a4ea4393b1134358a2a1cce8b2ce840d1a0c1fb7d1629485",
+      "originalBytes": 2535771,
+      "webBytes": 1962208
     }
   }
 }

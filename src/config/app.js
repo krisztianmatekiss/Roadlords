@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.52.0',
-  label: 'V4.52.0 · HADITANÁCS ÉS VÁROSKÉPEK',
-  title: 'Roadlords – Haditanács és városképek',
+  version: '4.53.0',
+  label: 'V4.53.0 · TELJES EMBERI VÁROSKÉPEK',
+  title: 'Roadlords – Teljes emberi városképek',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

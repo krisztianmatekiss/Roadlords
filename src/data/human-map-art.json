@@ -1,0 +1,34 @@
+{
+  "source": {
+    "file": "art/human/map-samples.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "5028ff3dfc5c73be7db55cf779f894a4806c13838d51a2246501afd4d200d649"
+  },
+  "sprites": {
+    "lumber": {
+      "rect": [
+        65,
+        81,
+        540,
+        577
+      ]
+    },
+    "warehouse": {
+      "rect": [
+        712,
+        189,
+        729,
+        432
+      ]
+    },
+    "academy": {
+      "rect": [
+        1514,
+        25,
+        619,
+        650
+      ]
+    }
+  }
+}

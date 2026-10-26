@@ -1,3 +1,4 @@
+import { initializeHumanMapArtwork } from '../rendering/human-map-artwork.js';
 import { initializeUndeadExpansion } from '../factions/undead/expansion.js';
 import { installProductionFigures } from '../rendering/production-figures.js';
 import { initializeUndeadFoundation } from '../factions/undead/foundation.js';
@@ -274,6 +275,7 @@ export function createGame() {
   initializeUndeadEconomy(runtime);
   initializeUndeadAi(runtime);
   initializeUndeadArt(runtime);
+  initializeHumanMapArtwork(runtime);
   initializeCombatRoadIntegration(runtime);
   initializeUndeadCombat(runtime);
   initializeUndeadExpansion(runtime);

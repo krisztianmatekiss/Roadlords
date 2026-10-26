@@ -1,4 +1,11 @@
-# Roadlords · V4.51.0
+# Roadlords · V4.52.0
+
+## V4.52.0 – Haditanács és emberi városképminták
+
+A Haditermelési Központ új neve Haditanács. Rövidebb, szinthelyes épületleírások; a kivételek és halmozódási szabályok a lexikon részleteiben maradnak. A Lélekhorgony egyszerűen a hatótávját és a lélekfogyasztás csökkentését mutatja.
+
+Az emberi Favágó, Raktár és Akadémia új, a kártyákhoz illő térképi képet kapott. A három minta a valódi városban és az építési előnézetben is működik, a tényleges helyfoglalással és négy forgatási iránnyal. [Városi mintakép](public/previews/human-city-map-samples.png). [Részletek](docs/city-art-and-copy-4.52.md).
+
 
 ## V4.51.0 – Teljes emberi épületkártyák és gyorsabb képletöltés
 

@@ -13,7 +13,7 @@ export function initializeUiBuildingLevelCopy(runtime) {
     tavern: '1. szint: a kiengedett egységek első 2 támadása +50% sebzést okoz. A főkapunál és a Gyülekezőtérnél is hat.',
     guardhouse: '1. szint: +20 tartalékkapacitás. Városfalhoz, Gyülekezőtérhez vagy bekötött Őrházhoz kell kapcsolódnia.',
     house: '1. szint: +10 úti sereglimit. A Városháza tovább növelheti.',
-    warcenter: '1. szint: Tömegtermelés: +20% gyártási sebesség, +15% költség. Takarékos: −15% költség, +20% képzési idő. Elit: +15% HP és sebzés, +20% költség és képzési idő. Szabad módváltás.',
+    warcenter: 'Válassz képzési módot: gyorsabb, olcsóbb vagy erősebb egységek.',
     armorsmith: '1. szint: a szomszédos katonai termelők egységeinek kezdőpajzsa a maximális HP 30%-a.',
     hospital: '1. szint: 20% eséllyel menti az elesett egységet fél HP-n a főhelyőrségbe. Egységenként egyszer; csak szabad férőhelynél.',
     towercommand: '1. szint: +20% toronysebzés, HP, hatótáv és támadási sebesség. Városonként legfeljebb 1; a lövedékszámot nem növeli.',

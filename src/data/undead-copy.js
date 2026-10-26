@@ -62,7 +62,7 @@ export const UNDEAD_BUILDING_COPY = {
   },
   und_dark_tower: {
     description: 'A saját térfeleden legelőrébb járó ellenséget sebzi. Minden további torony 25%-kal növeli az összes Sötét Őrtorony alapfenntartását.',
-    levels: [1, 1.5, 2, 3].map((n) => `A saját térfeleden legelöl járó ellenségnek ${fmt(n)}% maximális életerőt sebez másodpercenként.`),
+    levels: [1, 1.5, 2, 3].map((n) => `A saját térfeled első ellenségét sebzi: ${fmt(n)}% Max HP/mp.`),
   },
   und_soul_harvester: {
     description: 'Minden harcban elesett ellenség után Lelket ad, bárhol a csatatéren.',
@@ -70,15 +70,15 @@ export const UNDEAD_BUILDING_COPY = {
   },
   und_soul_bank: {
     description: 'Hitelt ad és kamatot fizet. Adósságból építhetsz és fenntarthatsz, de a katonaképzés és a kamat szünetel.',
-    levels: [200, 300, 400, 1000].map((n, i) => `${n} Lélek hitelkeret; pozitív készletre ${[10, 12, 15, 20][i]}% kamat percenként. Adósságnál nincs képzés vagy kamat.`),
+    levels: [200, 300, 400, 1000].map((n, i) => `${n} Lélek hitelkeret. Pozitív készletre ${[10, 12, 15, 20][i]}% kamat percenként. Adósságnál nincs képzés.`),
   },
   und_soul_anchor: {
-    description: 'Csökkenti a közeli épületek fenntartását. Önmagára nem hat; több horgonyból csak a legerősebb számít.',
-    levels: [1, 2, 3, 3].map((n, i) => `A ${n} mezőn belüli épületek fenntartása ${i === 3 ? 90 : 50}%-kal olcsóbb. Csak a legerősebb hat.`),
+    description: 'Csökkenti a közeli épületek lélekfogyasztását.',
+    levels: [1, 2, 3, 3].map((n, i) => `${n} mezőn belül az épületek ${i === 3 ? 90 : 50}%-kal kevesebb Lelket fogyasztanak.`),
   },
   und_soul_burner: {
     description: 'Gyorsan termel Lelket, de idővel elpusztul.',
-    levels: [2, 3, 4, 8].map((n, i) => `+${n} Lélek/mp, de másodpercenként ${i === 3 ? 2 : 1}% épséget veszít. ${i === 3 ? 50 : 100} mp után elpusztul.`),
+    levels: [2, 3, 4, 8].map((n, i) => `+${n} Lélek/mp, de másodpercenként ${i === 3 ? 2 : 1}% életerőt veszít.`),
   },
   und_bone_forge: {
     description: 'Elesett Csontvázaid után ingyenes Zombit ad. A harcban megölt idézetek is számítanak, az idővel eltűnők nem.',
@@ -86,23 +86,23 @@ export const UNDEAD_BUILDING_COPY = {
   },
   und_plague_chamber: {
     description: 'Egységeid találatai mérgeznek, a méreg erősebben sebez. Több Pestiskamra hatása összeadódik.',
-    levels: [10, 20, 30, 40].map((n, i) => `Találatonként +${i === 3 ? 2 : 1} méregpont; +${n}% méregsebzés.`),
+    levels: [10, 20, 30, 40].map((n, i) => `Egységeid találatai +${i === 3 ? 2 : 1} méregpontot adnak. +${n}% méregsebzés.`),
   },
   und_soul_overdrive: {
     description: 'Fokozza a Lélektermelést és a katonaképzést, de háromszorozza az épületfenntartást. A Nekropoliszra nem hat.',
-    levels: [100, 125, 150, 200].map((n) => `+${n}% Lélektermelés és képzési sebesség, de 3× épületfenntartás. A Nekropoliszra nem hat.`),
+    levels: [100, 125, 150, 200].map((n) => `+${n}% Lélektermelés és képzési sebesség. Az épületek lélekfogyasztása 3×.`),
   },
   und_corrupted_hatchery: {
     description: 'Gyorsítja a közeli katonaképzést. Az egységek fél életerővel indulnak, de teljesen gyógyíthatók. Csak a legerősebb Keltető hat.',
-    levels: [40, 60, 80, 100].map((n) => `Az 1 mezőn belüli táborok ${n}%-kal gyorsabban képeznek, de az egységek 50% HP-val indulnak.`),
+    levels: [40, 60, 80, 100].map((n) => `1 mezőn belül a táborok ${n}%-kal gyorsabban képeznek. Egységeik 50% HP-val indulnak.`),
   },
   und_rebirth_tomb: {
     description: 'Eséllyel visszahozza elesett egységeidet fél életerővel a helyőrségbe. Egységenként egyszer működik.',
-    levels: [25, 30, 40, 50].map((n) => `${n}% eséllyel visszahozza az elesett egységet 50% HP-val a helyőrségbe. Egységenként egyszer.`),
+    levels: [25, 30, 40, 50].map((n) => `Elesett egységeid ${n}% eséllyel, 50% HP-val visszatérnek a helyőrségbe.`),
   },
   und_garden_of_dead: {
     description: 'A saját térfeleden elesett ellenségeket 10% eséllyel saját egységként támasztja fel a haláluk helyén.',
-    levels: ['Csontváz', 'Szellem', 'Zombi', 'Vámpír vagy Lich'].map((name) => `A saját térfeleden elesett ellenséget 10% eséllyel feltámasztja. Egység: ${name}.`),
+    levels: ['Csontváz', 'Szellem', 'Zombi', 'Vámpír vagy Lich'].map((name) => `A saját térfeleden elesett ellenségek 10% eséllyel saját ${name}ként támadnak fel.`),
     branches: [
       'A saját térfeleden elesett ellenségek 10% eséllyel saját Vámpírként támadnak fel.',
       'A saját térfeleden elesett ellenségek 10% eséllyel saját Lichként támadnak fel.',

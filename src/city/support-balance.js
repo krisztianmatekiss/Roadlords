@@ -3,7 +3,7 @@ export function initializeCitySupportBalance(runtime) {
   runtime.ROADLORDS_V17 = 'v1.8';
   runtime.BUILDINGS.keep.description = '+0,5 / +0,75 / +1 Fa/Kő/Élelem másodpercenként. Főváros HP és kapu-kihaladás: 5 / 6 / 7 egység/mp.';
   runtime.BUILDINGS.warcenter = {
-    name: 'Haditermelési Központ',
+    name: 'Haditanács',
     icon: '⚙️',
     category: 'support',
     shape: [[0, 0], [0, 1], [1, 0], [1, 1]],

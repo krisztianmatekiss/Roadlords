@@ -83,13 +83,13 @@ export function createBuildingCardCopy(R) {
       market: () => `${fmt(number('Kereskedelmi tempó'))} nyersanyag/mp-ből ${fmt(number('Kereskedelmi tempó') * number('Hatékonyság') / 100)} másikat termel.`,
       townhall: () => `A ${value('Hatótáv').replace(' mező',' mezőn')} belüli Lakóházak ${value('Lakóházbónusz').replace(/^\+/, '')}-kal több sereghelyet adnak.`,
       rally: () => `${value('Saját tartalék').split(' / ')[1]} tartalék férőhely a szomszédos táboroknak. Kivonuláskor ${value('Mozgási bónusz')} mozgási sebesség az első támadásig.`,
-      tavern: () => `A kivonuló egységek ${value('Hullámbónusz').replace('támadás · ', 'támadásukra ').replace(' / Kocsma', '')}t kapnak.`,
-      guardhouse: () => `${value('Kapacitás').split(' /')[0]} tartalék férőhely, ha falhoz vagy Gyülekezőtérhez kapcsolódik. Őrházláncon át is hat.`,
+      tavern: () => { const [attacks,bonus]=value('Hullámbónusz').match(/\d+(?:[,.]\d+)?/g); return `A kivonuló egységek első ${attacks} támadása +${bonus}% sebzést okoz.`; },
+      guardhouse: () => `Fal vagy Gyülekezőtér mellett ${value('Kapacitás').split(' /')[0]} helyőrségi férőhely.`,
       armorsmith: () => `A szomszédos katonai épületek egységei ${fmt(number('Kezdőpajzs'))}% életerőnyi pajzzsal indulnak.`,
-      hospital: () => `${value('Mentési esély')} eséllyel visszahozza az elesett egységet ${value('Visszatérési HP')} HP-val a helyőrségbe. Egységenként egyszer.`,
-      library: () => `Választásonként +${value('Újrasorsolás')} ingyenes újrasorsolás. A fel nem használt alkalom elvész.`,
+      hospital: () => `Elesett egységeid ${value('Mentési esély')} eséllyel, ${value('Visszatérési HP')} HP-val visszatérnek a helyőrségbe.`,
+      library: () => `Választásonként +${value('Újrasorsolás')} ingyenes újrasorsolás.`,
       mastersguild: () => `${value('Fejlesztési idő')}-enként ingyen fejleszt egy megépített épülettípust, legfeljebb L3-ig.`,
-      warcenter: () => `Választható képzési módok. Tömegtermelés: ${value('Globális hatás').replace('Gyártási sebesség','képzési sebesség').replace(' · ', ', de ')}.`,
+      warcenter: () => 'Válassz képzési módot: gyorsabb, olcsóbb vagy erősebb egységek.',
       academy: () => `A szomszédos katonai épületeknek vásárolhatsz ${value('Bónusz / vétel')} sebzést, életerőt vagy támadási sebességet.`,
       alchemist: () => `A szomszédos táborok egységei ${fmt(number('Esély főzetenként') * 3)}% eséllyel ${value('Főzeterő')} sebzést, életerőt vagy támadási sebességet kapnak.`,
       orc_work: () => `+${value('Fa és kő/mp')} fa és kő/mp. Erdő mellett dupla fa, kőlelőhely mellett dupla kő.`,
@@ -101,7 +101,7 @@ export function createBuildingCardCopy(R) {
       orc_totem: () => `${value('Szükséges elesett egység')} halálpont után 1 legendás lapot választhatsz.`,
       orc_slave: () => `Minden 20 legyőzött ellenség után tartósan +${value('Fa és kő / mp minden 20 ölésért')} fa és kő/mp.`,
       orc_raider: () => `Nyitott kapunál minden elkészült egység ${value('Erősítés esélye (%)')}% eséllyel ingyen erősítést hív.`,
-      orc_tunnel: () => `A ${value('Hatótáv (mező)')} mezőn belüli táborok a legelöl álló saját toronynál vetik be egységeiket, zárt kapunál is.`,
+      orc_tunnel: () => `${value('Hatótáv (mező)')} mezőn belül a táborok a legelöl álló saját toronynál vetik be egységeiket, zárt kapunál is.`,
     };
     return sentences[type]?.() || d.description;
   }

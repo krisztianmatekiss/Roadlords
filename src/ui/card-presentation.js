@@ -106,7 +106,7 @@ function numberTone(input, match) {
   if (/HP-val indul|kezdőéleterő|induló életerő/iu.test(clauseAfter) && n < 100) return 'negative';
   if (/(?:épséget|életerőt) veszít|lassabban mozog|tovább tart/iu.test(clauseAfter)) return 'negative';
   if (n === 0 && /sebzése\s*$/iu.test(clauseBefore)) return 'negative';
-  const expense = /(?:költség|egységár|képzési ár|fenntartás|képzési idő|gyártási idő|várakozás|idő két gyógyítás|kapott (?:fizikai )?sebzés)/iu;
+  const expense = /(?:költség|egységár|képzési ár|fenntartás|lélekfogyasztás|képzési idő|gyártási idő|várakozás|idő két gyógyítás|kapott (?:fizikai )?sebzés)/iu;
   const enemy = /ellenség|ellenfél|célpont|megjelölt|átok|átkai|átkok|fagyasztás/iu.test(clauseBefore);
   const saving = /olcsóbb|rövidebb|kevesebb/iu.test(clauseAfter);
   if (saving && /%|^[+−-]/u.test(match[0])) return 'positive';

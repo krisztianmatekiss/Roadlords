@@ -52,11 +52,11 @@ export function initializeUiWarCenterMarket(runtime) {
   function warCardHTML(c, mode, title) {
     const p = modeProfileAt(c, mode),
       active = (c.warMode || 'mass') === mode;
-    const rows = [['Egységköltség', p.costDelta, false], ['Gyártási seb.', p.speedBonus, true], ['Gyártási idő', p.timePenalty, false], ['HP', p.eliteBonus, true], ['Sebzés', p.eliteBonus, true]];
-    return `<div class="warModeCard ${active ? 'active' : ''}"><div class="warModeTitle">${title}</div><div class="warModeStats">${rows.map(([label, val, positiveGood]) => `<div class="warModeStat ${statClass(val, positiveGood)}"><span>${label}</span><b>${pctText(val)}</b></div>`).join('')}</div><button type="button" class="warModePick" data-war-mode="${mode}" title="${active ? 'Aktív haditermelési irány' : 'Erre az irányra váltás'}">✓</button></div>`;
+    const rows = [['Egységköltség', p.costDelta, false], ['Képzési seb.', p.speedBonus, true], ['Képzési idő', p.timePenalty, false], ['Életerő', p.eliteBonus, true], ['Sebzés', p.eliteBonus, true]];
+    return `<div class="warModeCard ${active ? 'active' : ''}"><div class="warModeTitle">${title}</div><div class="warModeStats">${rows.filter(([,val])=>Math.abs(val)>1e-9).map(([label, val, positiveGood]) => `<div class="warModeStat ${statClass(val, positiveGood)}"><span>${label}</span><b>${pctText(val)}</b></div>`).join('')}</div><button type="button" class="warModePick" data-war-mode="${mode}" title="${active ? 'Aktív képzési mód' : 'Képzési mód kiválasztása'}">✓</button></div>`;
   }
   runtime.warcenterControlsHTML = function (c) {
-    return `<div class="warModeControls">${warCardHTML(c, 'mass', '⚙ TÖMEGTERMELÉS')}${warCardHTML(c, 'economy', '◈ TAKARÉKOS')}${warCardHTML(c, 'elite', '★ ELIT')}<div class="warModeLegend"><span class="good">zöld = előny</span> · <span class="bad">piros = hátrány</span> · <span class="neutral">szürke = változatlan</span> · a ✓ gombbal azonnal válthatsz</div></div>`;
+    return `<div class="warModeControls">${warCardHTML(c, 'mass', '⚙ TÖMEGTERMELÉS')}${warCardHTML(c, 'economy', '◈ TAKARÉKOS')}${warCardHTML(c, 'elite', '★ ELIT')}</div>`;
   };
   const oldSetWarModeV4949 = runtime.setWarMode;
   runtime.setWarMode = function (c, mode, force = false) {
@@ -115,7 +115,7 @@ export function initializeUiWarCenterMarket(runtime) {
     if (b?.type === 'market') installInstantMarketHandlers();
     return out;
   };
-  runtime.BUILDINGS.warcenter.description = 'Három globális haditermelési irány közül választhatsz. A módok között bármikor, várakozási idő nélkül válthatsz.';
+  runtime.BUILDINGS.warcenter.description = 'Válassz képzési módot: gyorsabb, olcsóbb vagy erősebb egységek.';
   if (runtime.BUILDINGS.market) runtime.BUILDINGS.market.description = 'Másodpercenként 1/2/3 egység kijelölt nyersanyagot vált át egy másikra 60%/75%/90% hatékonysággal. Az útvonal bármikor módosítható.';
   const brandSmall = document.querySelector('.brand small');
   if (brandSmall) brandSmall.textContent = 'V4.9.49 · P2P 1V1';

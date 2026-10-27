@@ -1,5 +1,6 @@
 import { UNDEAD_BUILDINGS as D, UNDEAD_UNITS as U, UNDEAD_RULES } from '../../data/undead.js';
 import { isUndead } from './foundation.js';
+import { UNDEAD_ECONOMY as B } from '../../data/economy-balance.js';
 export function initializeUndeadEconomy(R) {
   const { at, soulPrice } = window.__ROADLORDS_UNDEAD__,
     cache = new WeakMap();
@@ -13,12 +14,11 @@ export function initializeUndeadEconomy(R) {
     const memo = cache.get(c);
     if (memo?.key === key) return memo.value;
     const buildings = c.buildings.filter((b) => !b.inactive && D[b.type]),
-      overdrive = active(c, 'und_soul_overdrive')[0],
       anchors = active(c, 'und_soul_anchor'),
       hatcheries = active(c, 'und_corrupted_hatchery');
-    const production = overdrive ? at(overdrive.level, [2, 2.25, 2.5, 3]) : 1,
-      frugal = 0.95 ** R.countNormal(c, 'gen_soul_frugal'),
-      abundance = 1 + 0.1 * R.countNormal(c, 'gen_soul_abundance'),
+    const production = 1,
+      frugal = R.hasLeg(c, 'gen_soul_frugal') ? 1 - B.frugalReduction : 1,
+      abundance = 1 + B.abundancePerStack * R.countNormal(c, 'gen_soul_abundance'),
       upkeep = new Map(),
       speed = new Map();
     const towerCount = active(c, 'und_dark_tower').length;
@@ -33,7 +33,6 @@ export function initializeUndeadEconomy(R) {
       const cost =
         D[b.type].upkeep *
         frugal *
-        (overdrive ? 3 : 1) *
         (1 - reduction) *
         (b.type === 'und_dark_tower' ? 1 + 0.25 * Math.max(0, towerCount - 1) : 1);
       upkeep.set(b.id, cost);
@@ -43,7 +42,7 @@ export function initializeUndeadEconomy(R) {
           ...hatcheries.filter((h) => R.undInRange(c, h, b, 1)).map((h) => at(h.level, [0.4, 0.6, 0.8, 1])),
         );
         speed.set(b.id, {
-          mult: production * (1 + 0.05 * R.countNormal(c, 'gen_military_speed')) * (1 + hatch),
+          mult: production * (1 + (R.hasLeg(c, 'gen_military_speed') ? B.trainingBonus : 0)) * (1 + hatch),
           hurt: hatch > 0,
         });
       }
@@ -79,7 +78,7 @@ export function initializeUndeadEconomy(R) {
   const buildPrice = R.buildPrice;
   R.buildPrice = (c, type) =>
     isUndead(c) && D[type]
-      ? soulPrice(Math.ceil(D[type].souls * 0.95 ** R.countNormal(c, 'gen_build_discount')))
+      ? soulPrice(D[type].souls)
       : buildPrice(c, type);
   const placement = R.placementPrice;
   R.placementPrice = (c, type, row, col, rotation = 0) => {
@@ -87,7 +86,7 @@ export function initializeUndeadEconomy(R) {
     const foundation = R.placementFoundationCells(c, type, row, col, rotation).length > 0;
     return soulPrice(
       Math.ceil(
-        (D[type]?.souls || 0) * (foundation ? 0.5 : 1) * 0.95 ** R.countNormal(c, 'gen_build_discount'),
+        (D[type]?.souls || 0) * (foundation ? 0.5 : 1),
       ),
     );
   };
@@ -102,11 +101,11 @@ export function initializeUndeadEconomy(R) {
     let income = at(R.levelOf(c, 'keep'), UNDEAD_RULES.capitalIncome);
     for (const b of e.buildings)
       if (b.type === 'und_well') income += at(b.level, [1, 2, 4, 8]) * e.production;
-      else if (b.type === 'und_soul_burner') income += at(b.level, [2, 3, 4, 8]) * e.production;
+
     return soulPrice(income * e.abundance);
   };
-  R.undAddSouls = (c, amount) => {
-    const gain = amount * (1 + 0.1 * R.countNormal(c, 'gen_soul_abundance'));
+  R.undAddSouls = (c, amount, interest = false) => {
+    const gain = amount * (interest ? 1 : 1 + B.abundancePerStack * R.countNormal(c, 'gen_soul_abundance'));
     c.resources.wood += gain;
     if (c._matchStats) c._matchStats.resourcesProduced.wood += gain;
     return gain;
@@ -121,7 +120,7 @@ export function initializeUndeadEconomy(R) {
   R.previewTrainingTime = (c, type, level = R.levelOf(c, type)) =>
     isUndead(c) && D[type]?.unit
       ? at(level, D[type].times) /
-        (R.undEconomy(c).production * (1 + 0.05 * R.countNormal(c, 'gen_military_speed')))
+        (R.undEconomy(c).production * (1 + (R.hasLeg(c, 'gen_military_speed') ? B.trainingBonus : 0)))
       : preview(c, type, level);
   const batch = R.productionBatchSize;
   R.productionBatchSize = (c, b) =>
@@ -185,10 +184,6 @@ export function initializeUndeadEconomy(R) {
       if (b.type === 'keep') continue;
       if (R.pay(c, soulPrice((e.upkeep.get(b.id) || 0) * dt))) b.undStarve = 0;
       else b.undStarve = (b.undStarve || 0) + dt;
-      if (b.type === 'und_soul_burner') {
-        b.undHp = (b.undHp ?? 100) - (b.level === 4 ? 2 : 1) * dt;
-        if (b.undHp <= 0) lost.push(b.id);
-      }
       if (b.undStarve >= 10 - 1e-8) lost.push(b.id);
     }
     if (lost.length) {
@@ -204,7 +199,7 @@ export function initializeUndeadEconomy(R) {
       state.bankClock += dt;
       while (state.bankClock >= 60) {
         state.bankClock -= 60;
-        if (c.resources.wood > 0) R.undAddSouls(c, c.resources.wood * at(bank.level, [0.1, 0.12, 0.15, 0.2]));
+        if (c.resources.wood > 0) R.undAddSouls(c, c.resources.wood * at(bank.level, B.bankInterest), true);
       }
     } else state.bankClock = 0;
     for (let i = 0; i < 10 && state.freeQueue.length; i++) {
@@ -218,7 +213,11 @@ export function initializeUndeadEconomy(R) {
     if (c.resources.wood < 0 || b.inactive) return false;
     const base = D[b.type]?.unit;
     if (!base) return false;
-    if (c === R.E && !R.MP.enabled && c.undSaveSouls && c.resources.wood - U[base].souls < c.undSaveSouls)
+    // Saving for construction must not indefinitely starve military production.
+    // When affordable, allow at least one training cycle every 12 game seconds.
+    if (c === R.E && !R.MP.enabled && c.undSaveSouls &&
+        R.state.time - (c.undeadState.lastPaidTraining ?? -12) < 12 &&
+        c.resources.wood - U[base].souls < c.undSaveSouls)
       return false;
     const cost = R.unitCost(c, base),
       count = R.productionBatchSize(c, b);
@@ -241,6 +240,7 @@ export function initializeUndeadEconomy(R) {
       if(R.hasLeg(c,'und_twin_training')&&Math.random()<.3)R.undQueueFree(c,key,extra);
     }
     c.spawnCounter = (c.spawnCounter || 0) + 1;
+    c.undeadState.lastPaidTraining = R.state.time;
     return true;
   };
   const clear = R.clearTerrain;
@@ -248,7 +248,7 @@ export function initializeUndeadEconomy(R) {
     if (!isUndead(c)) return clear(c, row, col, byAI);
     const t = R.terrainAt(c, row, col);
     if (!t) return false;
-    const price = soulPrice(t.type === 'ancient' ? 100 : t.type === 'ruin' ? 25 : 20);
+    const price = R.terrainClearPrice(c, t.type);
     if (!R.pay(c, price)) {
       if (!byAI) R.toast('Nincs elég Lélek az eltakarításhoz.');
       return false;
@@ -281,8 +281,6 @@ export function initializeUndeadEconomy(R) {
         ],
         ['Egység ára', U[d.unit].souls + ' Lélek'],
       );
-    if (b.type === 'und_soul_burner')
-      out.push(['Hátralévő épség', `${Math.max(0, b.undHp ?? 100).toFixed(0)}%`]);
     if (b.undStarve > 0) out.push(['Fenntartás hiánya', `${b.undStarve.toFixed(1)} / 10 mp`]);
     return out;
   };

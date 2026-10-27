@@ -510,7 +510,7 @@ export function register(runtime) {
             }
             cells.push([r, c]);
           }
-          if (hardBlocked || !ruins.length || !ruins.some(([r, c]) => runtime.canPay(runtime.E, runtime.TERRAIN[runtime.terrainAt(runtime.E, r, c).type].clear))) continue;
+          if (hardBlocked || !ruins.length || !ruins.some(([r, c]) => runtime.canPay(runtime.E, runtime.terrainClearPrice(runtime.E, runtime.terrainAt(runtime.E,r,c).type)))) continue;
           const fake = {
             type,
             row,
@@ -520,7 +520,7 @@ export function register(runtime) {
           };
           let score = 1000 - ruins.length * 250;
           for (const [r, c] of ruins) {
-            const price = runtime.TERRAIN[runtime.terrainAt(runtime.E, r, c).type].clear;
+            const price = runtime.terrainClearPrice(runtime.E, runtime.terrainAt(runtime.E,r,c).type);
             score -= (price.wood + price.stone) * .1;
           }
           if (['lumber', 'stonecutter', 'farm'].includes(type) && runtime.producerHasBonus(runtime.E, type, fake)) score += 150;

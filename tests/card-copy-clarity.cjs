@@ -26,7 +26,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    }
   }
   const models=await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,out=[];for(const race of['human','orc','undead']){const defs=race==='undead'?__ROADLORDS_UNDEAD__.buildings:R.BUILDINGS;for(const[type,d]of Object.entries(defs)){if(race==='human'&&(type.startsWith('orc_')||type.startsWith('und_')))continue;if(race==='orc'&&!type.startsWith('orc_')&&type!=='keep'&&type!=='warehouse')continue;for(let level=1;level<=3;level++)out.push({race,type,level,description:R.cardBuildingCopy.metrics(race,type,level).description})}}return out});
-  check('All 66 buildings have valid selected-level copy at L1–L3',models.length===198&&models.every(x=>x.description.length>10&&!/NaN|undefined|\+\+/.test(x.description)));
+  check('All 64 active buildings have valid selected-level copy at L1–L3',models.length===192&&models.every(x=>x.description.length>10&&!/NaN|undefined|\+\+/.test(x.description)));
   check('Selected support values change with the actual level',models.some(x=>x.type==='orc_hut'&&x.level===3&&x.description.includes('40 sereghely')&&x.description.includes('60 helyőrségi'))&&models.some(x=>x.type==='guildhouse'&&x.level===3&&x.description.includes('75%')));
   await p.locator('#rlCodexPanel [data-tab="buildings"]').click();
   await p.locator('[data-codex-building="und_necro_spawner"]').scrollIntoViewIfNeeded();

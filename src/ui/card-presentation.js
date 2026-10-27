@@ -37,8 +37,8 @@ export function cardFrameUrl(id, kind, race) {
   const file = manifest.cards[`${building ? 'building' : 'upgrade'}:${key}`];
   return file ? assetUrl('cards/orc/' + file) : '';
 }
-export const frameImage = (src) => src
-  ? `${src.endsWith('/cards/human/frame.png')?'<svg class="humanFrameAccent" viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden="true"><path d="M3 6V144M97 6V144M12 22.5H88M12 104H88"/><path d="m5 3 2 3-2 3-2-3Zm90 0 2 3-2 3-2-3ZM5 141l2 3-2 3-2-3Zm90 0 2 3-2 3-2-3Z"/></svg>':''}<img class="cardFrameImage" ${cardImageSource(src)} alt="" loading="lazy" decoding="async" draggable="false"><img class="cardIllustration" ${cardImageSource(src)} alt="" loading="lazy" decoding="async" draggable="false">` : '';
+export const frameImage = (src, eager = false) => src
+  ? `${src.endsWith('/cards/human/frame.png')?'<svg class="humanFrameAccent" viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden="true"><path d="M3 6V144M97 6V144M12 22.5H88M12 104H88"/><path d="m5 3 2 3-2 3-2-3Zm90 0 2 3-2 3-2-3ZM5 141l2 3-2 3-2-3Zm90 0 2 3-2 3-2-3Z"/></svg>':''}<img class="cardFrameImage" ${cardImageSource(src)} alt="" loading="${eager ? 'eager' : 'lazy'}" decoding="async" draggable="false"><img class="cardIllustration" ${cardImageSource(src)} alt="" loading="${eager ? 'eager' : 'lazy'}" decoding="async" draggable="false">` : '';
 
 export const cardTextBackdrop = '<span class="cardTextBackdrop" aria-hidden="true"></span>';
 
@@ -209,7 +209,7 @@ export function installCardPresentation(R) {
       if(branchTag)branchTag.textContent='L3 → L4';
       if (src) {
         card.classList.add('hasCardFrame');
-        card.insertAdjacentHTML('afterbegin', frameImage(src));
+        card.insertAdjacentHTML('afterbegin', frameImage(src, true));
         card.querySelector('.choiceArt')?.querySelectorAll(':scope > img, :scope > .undeadBuildingArt').forEach(el => el.remove());
       }
       card.insertAdjacentHTML('beforeend',upgradeScene(R,o.id,o.kind,R.P.race));

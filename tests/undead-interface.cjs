@@ -24,12 +24,12 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     await p.locator('#rlOpenCodex').click();
     await p.locator('#codexRace').selectOption('undead');
     check(
-      'Undead encyclopedia lists all 20 buildings with faction art and Soul prices',
-      (await p.locator('#rlCodexPanel .rlCodexCard').count()) === 20 &&
+      'Undead encyclopedia lists all 18 buildings with faction art and Soul prices',
+      (await p.locator('#rlCodexPanel .rlCodexCard').count()) === 18 &&
         (await p.locator('#rlCodexPanel .undeadBuildingArt').count()) === 0 &&
-        (await p.locator('#rlCodexPanel .cardFrameImage').count()) === 20 &&
+        (await p.locator('#rlCodexPanel .cardFrameImage').count()) === 18 &&
         (await p.locator('[data-codex-building="und_necro_spawner"] .cardFrameImage').count()) === 1 &&
-        (await p.locator('#rlCodexPanel .constructionPrice[aria-label*="35 Lélek"] img[alt="Lélek"]').count()) > 0 &&
+        (await p.locator('#rlCodexPanel .constructionPrice[aria-label*="55 Lélek"] img[alt="Lélek"]').count()) > 0 &&
         (await p
           .locator('#rlCodexPanel')
           .innerText()
@@ -46,8 +46,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     await p.locator('#rlCodexPanel .rlCodexSearch').fill('');
     for (const [tab, count] of [
       ['units', 7],
-      ['common', 29],
-      ['legendary', 20],
+      ['common', 25],
+      ['legendary', 23],
     ]) {
       await p.locator('#rlCodexPanel [data-tab="' + tab + '"]').click();
       check(

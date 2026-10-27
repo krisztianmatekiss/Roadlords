@@ -26,8 +26,10 @@ const BASE_URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/
    }));
    assert.deepEqual(errors,[],`Runtime errors in ${url}`);await page.close();
   }
-  assert.deepEqual(results[1].cities,results[0].cities);assert.deepEqual(results[1].fixture,results[0].fixture);
-  console.log('PASS Archived and current games retain identical full cities and legal upgrades for their shared content pool (seed 42)');
+  const expectedCities=structuredClone(results[0].cities),basics=new Set(['lumber','stonecutter','farm','warehouse','barracks','house','orc_work','orc_hunt','orc_war','orc_hut']);
+  for(const city of expectedCities)for(const b of city.buildings)if(b.paidCost)for(const r of ['wood','stone','food'])b.paidCost[r]=Math.ceil((b.paidCost[r]||0)*(basics.has(b.type)?1.25:1.4)/5)*5;
+  assert.deepEqual(results[1].cities,expectedCities);assert.deepEqual(results[1].fixture,results[0].fixture);
+  console.log('PASS Archived and current games retain identical full city layouts and legal upgrades with approved construction-price deltas for their shared content pool (seed 42)');
   assert.equal(results[1].units.length,results[0].units.length);
   const centreShift=(results[1].pathLength-results[0].pathLength)/2;
   assert.equal(results[1].pathLength,results[0].pathLength*2);
@@ -37,6 +39,9 @@ const BASE_URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/
    // The approved doubled road translates the same initial formation to its new midpoint.
    expected.lane=Math.round((expected.lane+centreShift)*1e6)/1e6;
    // Only the explicitly approved balance changes may differ from the archive.
+   if(expected.key==='knight')scale('speed',147/63);
+   if(expected.key==='orc_warg')scale('speed',136/55);
+   if(expected.key==='orc_goblin')scale('speed',56/50);
    if(expected.key==='orc_shaman'){
     scale('damage',8/6);scale('buildingDamage',8/6);scale('cooldownTime',2.5/4.2);scale('range',300/120);
    }

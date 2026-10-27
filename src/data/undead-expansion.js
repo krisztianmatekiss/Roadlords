@@ -1,6 +1,6 @@
 export const UNDEAD_EXPANSION = [
   {id:'und_death_mend',name:'Lélekörökség',kind:'normal',description:'Saját egység harci halálakor a legközelebbi élőhalott 5% Max HP-t gyógyul. Idézettek is számítanak.'},
-  {id:'und_soul_might',name:'Lélekhatalom',kind:'normal',description:'Minden 100 tárolt Lélek után +1% sebzés az élőhalottaknak.'},
+  {id:'und_soul_might',name:'Lélekhatalom',kind:'legendary',repeatable:true,description:'Minden 1000 tárolt Lélek után +1% sebzés az élőhalottaknak.'},
   {id:'und_home_march',name:'Síri menet',kind:'normal',description:'Élőhalottaid +10% mozgási sebességet kapnak a saját térfélen.'},
   {id:'und_siege_force',name:'Holtak ostroma',kind:'normal',description:'Élőhalottaid +10% sebzést okoznak az ellenséges tornyoknak és fővárosnak.'},
   {id:'und_spawn_ward',name:'Lélekpáncél',kind:'normal',description:'Élőhalottaid 8% Max HP-nak megfelelő pajzzsal jelennek meg. Idézettek is megkapják.'},

@@ -720,6 +720,7 @@ export function register(runtime) {
     const el = runtime.$('#suddenOverlay');
     if (!el) return;
     el.querySelector('.sub').textContent = subtext || '';
+    el.classList.remove('hidden');
     el.classList.add('show');
     clearTimeout(runtime.showSuddenOverlay._t);
     runtime.showSuddenOverlay._t = setTimeout(() => el.classList.remove('show'), dur);

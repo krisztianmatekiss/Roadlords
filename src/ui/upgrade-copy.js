@@ -109,6 +109,7 @@ export function initializeUiUpgradeCopy(R) {
       rows.push({ label: 'Összes extra választás', before: format(3 * n), after: format(3 * next) });
       rows.push({ label: 'Újrasorsolás / kitiltás', before: `${5 * n} / ${3 * n}`, after: `${5 * next} / ${3 * next}` });
     }
+    if (!rows.length && limit > 1) rows.push({label:'Felvételek',before:String(n),after:String(next)});
     const stacking = `${limit === 1 ? 'Egyszer választható.' : Number.isFinite(limit) ? `Legfeljebb ${limit}× választható.` : 'Korlátlanul halmozható.'} Felvéve: ${n}${Number.isFinite(limit) ? `/${limit}` : '×'}${n < limit ? ` → ${next}${Number.isFinite(limit) ? `/${limit}` : '×'}` : ' · maximum'}.`;
     const specialization = normal && n > 0 && R.hasLeg(c, 'specialization') && n < limit
       ? 'Specializáció: 50% eséllyel kétszer kapod meg. Az előnézet egy felvételt mutat.' : '';

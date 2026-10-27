@@ -149,14 +149,14 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       R.state.units = [];
       for (const [type, r, c] of [
         ['und_soul_bank', 0, 0],
-        ['und_soul_burner', 0, 3],
+        ['und_well', 0, 3],
         ['und_graveyard', 0, 4],
       ]) {
         const out = R.placeBuilding(R.E, type, r, c);
         if (!out.ok) throw Error(out.reason);
       }
       R.E.resources.wood = -80;
-      R.E.buildings.find((b) => b.type === 'und_soul_burner').undHp = 51;
+      R.E.buildings.find((b) => b.type === 'und_well').undHp = 51;
       R.E.buildings.find((b) => b.type === 'und_graveyard').undStarve = 4;
     });
     await snapshot();
@@ -178,7 +178,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     const strategy = await guest.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__;
       R.P.resources.wood = 100;
-      const b = R.P.buildings.find((b) => b.type === 'und_soul_burner');
+      const b = R.P.buildings.find((b) => b.type === 'und_well');
       b.undHp = 100;
       R.P.buildings.find((b) => b.type === 'und_graveyard').undStarve = 0;
       return R.mpStrategy(R.P);
@@ -188,25 +188,25 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       strategy,
     );
     check(
-      'Guest strategy cannot reset authoritative building burn HP or unpaid duration',
+      'Guest strategy cannot reset authoritative building metadata or unpaid duration',
       await host.evaluate(() => {
         const R = __ROADLORDS_RUNTIME__;
         return (
-          R.E.buildings.find((b) => b.type === 'und_soul_burner').undHp === 51 &&
+          R.E.buildings.find((b) => b.type === 'und_well').undHp === 51 &&
           R.E.buildings.find((b) => b.type === 'und_graveyard').undStarve === 4
         );
       }),
     );
     const afterLoss = await host.evaluate((data) => {
       const R = __ROADLORDS_RUNTIME__,
-        b = R.E.buildings.find((b) => b.type === 'und_soul_burner');
+        b = R.E.buildings.find((b) => b.type === 'und_well');
       R.E.buildings = R.E.buildings.filter((x) => x.id !== b.id);
       R.undBuildingLost(R.E, b.id);
       R.mpApplyGuestStrategy(data, 51);
       return !R.E.buildings.some((x) => x.id === b.id);
     }, strategy);
     check(
-      'A stale guest command cannot recreate a building already destroyed by upkeep or burning',
+      'A stale guest command cannot recreate a building already destroyed by upkeep',
       afterLoss,
     );
     check(

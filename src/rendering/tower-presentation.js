@@ -10,6 +10,7 @@ export function installTowerPresentation(R) {
   R.drawTower=t=>{
     if(!t.alive)return;
     const g=R.ctx,p=R.pointAt(t.lane,t.lateral||0),s=R.towerVisualScale(t),selected=R.state.selectedTowerId===t.id;
+    const pulse=t.sdActive ? .55+.45*(1+Math.sin(R.state.time*7))/2 : 0;
     g.save();g.translate(p.x,p.y);g.scale(s,s);
     g.fillStyle='#0007';g.beginPath();g.ellipse(3,18,22,8,0,0,Math.PI*2);g.fill();
     g.fillStyle=t.side==='player'?'#80978b':'#976b67';g.fillRect(-15,-18,30,36);
@@ -18,7 +19,7 @@ export function installTowerPresentation(R) {
     for(let x=-15;x<=8;x+=11)g.fillRect(x,-24,7,9);
     if(t.gateTower){g.strokeStyle='#f0c96a';g.lineWidth=2;g.strokeRect(-16,-19,32,38);}
     g.fillStyle='#0a0e0b';g.fillRect(-5,-6,10,18);
-    g.fillStyle='#0b0f0c';g.fillRect(-22,25,44,5);g.fillStyle=R.unitTeamFill(t);
+    g.fillStyle='#0b0f0c';g.fillRect(-22,25,44,5);g.fillStyle=t.sdActive ? `rgba(240,130,255,${pulse})` : R.unitTeamFill(t);
     g.fillRect(-22,25,44*R.clamp(t.hp/t.maxHp,0,1),5);
     if(selected){g.strokeStyle='#ffe397';g.lineWidth=2;g.setLineDash([4,3]);g.strokeRect(-22,-29,44,63);}
     g.restore();
@@ -27,8 +28,9 @@ export function installTowerPresentation(R) {
     const hpY=p.y+(lower?38*s+10:-28*s-12);
     g.save();g.font='800 11px system-ui';g.textAlign='center';g.textBaseline='middle';
     const w=Math.max(60,g.measureText(label).width+12);g.fillStyle='#080c0af2';g.fillRect(p.x-w/2,hpY-9,w,18);
-    g.strokeStyle=R.unitTeamFill(t);g.lineWidth=1.2;g.strokeRect(p.x-w/2+.6,hpY-8.4,w-1.2,16.8);
-    g.fillStyle='#fff2cf';g.fillText(label,p.x,hpY);
+    if(t.sdActive){g.shadowColor='#e98bff';g.shadowBlur=6+10*pulse;}
+    g.strokeStyle=t.sdActive?'#e98bff':R.unitTeamFill(t);g.lineWidth=t.sdActive?1.2+1.5*pulse:1.2;g.strokeRect(p.x-w/2+.6,hpY-8.4,w-1.2,16.8);
+    g.fillStyle=t.sdActive?`rgba(255,${Math.round(165+90*pulse)},255,1)`:'#fff2cf';g.fillText(label,p.x,hpY);
     if(!t.gateTower){g.font='bold 11px system-ui';g.fillText(`T${t.tier}`,p.x,p.y+40*s);}
     g.restore();
   };

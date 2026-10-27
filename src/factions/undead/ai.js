@@ -135,13 +135,11 @@ export function initializeUndeadAi(R) {
           und_soul_anchor: 12,
           und_lich_spawner: 13,
           und_rebirth_tomb: 12,
-          und_soul_burner: 3,
-          und_soul_overdrive: 5,
         }[o.id] || 9
       );
     if (o.kind === 'legendary') return 15;
     return (
-      { gen_soul_abundance: 20, gen_soul_frugal: 18, gen_build_discount: 16, gen_military_speed: 12 }[o.id] ||
+      { gen_soul_abundance: 20, gen_soul_frugal: 18, gen_military_speed: 12 }[o.id] ||
       8
     );
   };

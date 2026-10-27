@@ -38,7 +38,7 @@ export function initializeCardTextFit() {
     }
   }
   const mutations = new MutationObserver(schedule);
-  for (const root of ['#choiceList','#buildList','#rlCodexPanel']) {
+  for (const root of ['#choiceList','#buildList','#rlCodexPanel','#relicList']) {
     const el = document.querySelector(root);
     if (el) mutations.observe(el, {childList:true,subtree:true});
   }

@@ -81,13 +81,27 @@ export function initializeUndeadFoundation(R) {
     (o.kind === 'normal' ? R.NORMAL : R.LEGENDARY).push(def);
     if (unit) R.PICK_UNIT_IMAGES[o.id] = unit;
   }
+  R.undLegendStacks = (c, id) => Math.max(Number(c.legendaryStacks?.[id]) || 0, R.hasLeg(c,id) ? 1 : 0);
+  const repeatable = new Set(UNDEAD_UPGRADES.filter(o => o.repeatable).map(o => o.id));
+  const apply = R.applyChoice;
+  R.applyChoice = (c,o,...args) => {
+    if (isUndead(c) && o.kind === 'legendary' && repeatable.has(o.id)) {
+      c.legendaryStacks ||= {}; c.legendaryStacks[o.id] = R.undLegendStacks(c,o.id) + 1;
+    }
+    return apply(c,o,...args);
+  };
   const oldNormal = R.eligibleNormal,
     oldLegend = R.eligibleLegendary;
   for (const [key, prev] of [
     ['eligibleNormal', oldNormal],
     ['eligibleLegendary', oldLegend],
   ])
-    R[key] = (c) => prev(c).filter((o) => (isUndead(c) ? o.race === 'undead' : o.race !== 'undead'));
+    R[key] = (c) => {
+      const out = prev(c).filter(o => isUndead(c) ? o.race === 'undead' : o.race !== 'undead');
+      if (key === 'eligibleLegendary' && isUndead(c))
+        for (const o of R.LEGENDARY) if (repeatable.has(o.id) && o.eligible(c) && !out.some(x=>x.id===o.id)) out.push(o);
+      return out;
+    };
   const oldUnlock = R.buildingUnlockPool,
     oldStart = R.startBuildingPool,
     oldUpgrade = R.buildingUpgradePool;

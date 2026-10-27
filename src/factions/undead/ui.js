@@ -70,8 +70,8 @@ export function initializeUndeadUi(R) {
   R.upgradeCopyPreview = (c, o) => {
     const d = defs.get(o.id);
     if (!d) return preview(c, o);
-    const n = o.kind === 'normal' ? R.countNormal(c, o.id) : R.hasLeg(c, o.id) ? 1 : 0,
-      next = n + 1,
+    const n = o.kind === 'normal' ? R.countNormal(c, o.id) : R.undLegendStacks(c,o.id),
+      next = o.kind === 'normal' || d.repeatable ? n + 1 : Math.min(1,n+1),
       rows = [];
     const key = Object.keys(U).find((k) => U[k].name === d.scope);
     if (key && o.kind === 'normal' && /_(hp|damage)$/.test(o.id)) {
@@ -87,11 +87,10 @@ export function initializeUndeadUi(R) {
     }
     const fmt = (v) => v.toLocaleString('hu-HU', { maximumFractionDigits: 2 });
     const modifiers = {
-      gen_soul_frugal: ['Fenntartás az eredeti értékhez képest', (n) => fmt(100 * 0.95 ** n) + '%'],
-      gen_soul_abundance: ['Lélekbevétel', (n) => '+' + fmt(10 * n) + '%'],
+      gen_soul_frugal: ['Fenntartás az eredeti értékhez képest', (n) => fmt(n ? 60 : 100) + '%'],
+      gen_soul_abundance: ['Lélekbevétel', (n) => '+' + fmt(5 * n) + '%'],
       gen_graveyard_capacity: ['Plusz helyőrségi férőhely / Temető', (n) => '+' + n],
-      gen_military_speed: ['Katonai gyártás sebessége', (n) => '+' + fmt(5 * n) + '%'],
-      gen_build_discount: ['Építési ár az eredeti értékhez képest', (n) => fmt(100 * 0.95 ** n) + '%'],
+      gen_military_speed: ['Katonai gyártás sebessége', (n) => '+' + fmt(25 * n) + '%'],
       garden_chance: ['Holtak kertje feltámasztási esélye', (n) => fmt(Math.min(100, 10 + 2 * n)) + '%'],
       skeleton_common_ranged_res: [
         'Távolsági fegyverek elleni ellenállás',
@@ -112,7 +111,7 @@ export function initializeUndeadUi(R) {
       vampire_common_lifesteal: ['Életlopás', (n) => fmt(30 + 5 * n) + '%'],
       lich_common_respawn: ['Újraéledés esélye', (n) => fmt(Math.min(100, 3 * n)) + '%'],
       und_death_mend:['Gyógyítás saját harci halálkor',(n)=>fmt(5*n)+'% Max HP'],
-      und_soul_might:['Sebzésbónusz / 100 Lélek',(n)=>'+'+fmt(n)+'%'],
+      und_soul_might:['Sebzésbónusz / 1000 Lélek',(n)=>'+'+fmt(n)+'%'],
       und_home_march:['Mozgás a saját térfélen',(n)=>'+'+fmt(10*n)+'%'],
       und_siege_force:['Tornyok és főváros elleni sebzés',(n)=>'+'+fmt(10*n)+'%'],
       und_spawn_ward:['Pajzs megjelenéskor',(n)=>fmt(8*n)+'% Max HP'],
@@ -124,7 +123,7 @@ export function initializeUndeadUi(R) {
       rows,
       context: 'Az élőhalott frakció jelenlegi fejlesztéseivel.',
       stacking:
-        o.kind === 'normal'
+        o.kind === 'normal' || d.repeatable
           ? `Halmozható · felvéve: ${n} → ${next}.`
           : 'Egyszer választható.',
       specialization: '',

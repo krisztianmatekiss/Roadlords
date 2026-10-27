@@ -719,7 +719,7 @@ export function initializeCoreFeatures2(runtime) {
     }
     function aiExcavateAncient4980(goal) {
       const ruins = runtime.terrainCellsOfType(runtime.E, 'ancient'),
-        price = runtime.TERRAIN.ancient.clear;
+        price = runtime.terrainClearPrice(runtime.E,'ancient');
       if (!ruins.length || !runtime.canPay(runtime.E, price)) return false;
       const crowded = runtime.occupancy(runtime.E).size >= runtime.GRID * runtime.GRID * .65;
       if (!crowded && runtime.spawnerBuildings(runtime.E).length < 2) return false;

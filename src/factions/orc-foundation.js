@@ -1,4 +1,5 @@
 import { rangedRange } from '../data/ranged-balance.js';
+import { MOVEMENT_BALANCE } from '../data/movement-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { ORC_BALANCE } from '../data/combat-balance.js';
 import { ORC_TRAINING, trainingPrice } from '../data/unit-balance.js';
@@ -74,7 +75,7 @@ export function initializeFactionsOrcFoundation(runtime) {
       hp: 30,
       damage: 3.5,
       cooldown: .55,
-      speed: 50,
+      speed: MOVEMENT_BALANCE.orc_goblin,
       range: rangedRange(115),
       train: 3.5,
       cost: runtime.C(3, 1, 4),

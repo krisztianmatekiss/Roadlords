@@ -27,14 +27,14 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     await page.locator('#raceContinue').click();
     await page.waitForFunction(()=>__ROADLORDS_RUNTIME__.state.pregame);
     check(
-      'The real solo race selector initializes Undead against Orcs with 140 Souls and 2000 capital HP',
+      'The real solo race selector initializes Undead against Orcs with 100 Souls and 2000 capital HP',
       await page.evaluate(() => {
         const R = __ROADLORDS_RUNTIME__;
         return (
           R.P.race === 'undead' &&
           R.E.race === 'orc' &&
           R.P.hp === 2000 &&
-          R.P.resources.wood === 140 &&
+          R.P.resources.wood === 100 &&
           R.P.resources.stone === 0 &&
           R.P.resources.food === 0
         );
@@ -201,8 +201,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     });
     report.data = data;
     check(
-      'The workbook registers exactly 20 buildings, 7 unit variants, 29 common and 20 legendary upgrades',
-      data.total === 20 && data.units === 7 && data.normal === 29 && data.legend === 20,
+      'The workbook registers exactly 18 buildings, 7 unit variants, 25 common and 23 legendary upgrades',
+      data.total === 18 && data.units === 7 && data.normal === 25 && data.legend === 23,
     );
     check(
       'Faction-specific draft pools do not leak Human or Orc cards; every common has a numeric preview',
@@ -247,7 +247,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       c.resources.wood = 10000;
       const anchor = undPut('und_soul_anchor', 1, 0);
       const anchorCost = R.undEconomy(c).upkeep.get(well.id);
-      undPut('und_soul_anchor', 0, 3);
+      const duplicate = R.placeBuilding(c,'und_soul_anchor',0,3);
+      if (duplicate.ok) throw Error('Unique Anchor duplicated');
       const strongest = R.undEconomy(c).upkeep.get(well.id);
       R.setBuildingLevel(c, 'und_soul_anchor', 4);
       R.recomputeCity(c, true);
@@ -259,7 +260,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       R.normalSpawn(c, producer);
       const hurtEntry = c.garrison.at(-1),
         unit = R.releaseUnit(c, hurtEntry);
-      const over = undPut('und_soul_overdrive', 6, 0);
+      c.legends.add('gen_military_speed');
       R.recomputeCity(c, true);
       const overIncome = R.productionRates(c).wood,
         overTime = R.trainingTime(c, producer);
@@ -280,26 +281,26 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     });
     report.economy = economy;
     check(
-      'Actual placement uses the same Soul prices and multiplicative discounts as cards',
-      economy.price === 35 && economy.discount === 32,
+      'Actual placement uses the new Soul prices and ignores the removed investment upgrade as cards',
+      economy.price === 55 && economy.discount === 55,
     );
     check(
       'The HUD budgets full training demand while actual upkeep is charged separately',
       Math.abs(economy.flow.gain.wood - 4) < 1e-6 &&
-        Math.abs(economy.flow.use.wood - 2.85) < 1e-6 &&
-        Math.abs(economy.net - 3.15) < 1e-6 &&
-        economy.cost === 10,
+        Math.abs(economy.flow.use.wood - 3.56) < 1e-6 &&
+        Math.abs(economy.net - 3.04) < 1e-6 &&
+        economy.cost === 13,
     );
     check(
-      'Anchors apply the strongest local reduction without stacking',
+      'The unique Anchor reduces local upkeep and rejects a second copy',
       economy.anchorCost === 0.25 && economy.strongest === 0.25 && Math.abs(economy.reduced - 0.05) < 1e-6,
     );
     check(
-      'Hatchery recruits start at half HP with unchanged max HP; Overdrive doubles non-capital production only',
+      'Hatchery recruits start at half HP; the training legendary boosts cadence without producing free resources',
       Math.abs(economy.time - 5 / 1.4) < 1e-6 &&
         economy.spawnRatio === 0.5 &&
-        economy.overIncome === 5 &&
-        Math.abs(economy.overTime - 5 / 2.8) < 1e-6,
+        economy.overIncome === 4 &&
+        Math.abs(economy.overTime - 5 / 1.75) < 1e-6,
     );
     const deaths = await page.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__,
@@ -318,12 +319,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       R.produceResources(c, 1);
       const interest = c.resources.wood;
       undReset();
-      const burner = undPut('und_soul_burner', 0, 0);
-      for (let i = 0; i < 100; i++) {
-        R.state.time++;
-        R.produceResources(R.P, 1);
-      }
-      const burned = !R.P.buildings.some((b) => b.id === burner.id);
+      const burned = !R.BUILDINGS.und_soul_burner && !R.BUILDINGS.und_soul_overdrive;
       undReset();
       const starving = undPut('und_plague_chamber', 0, 0);
       for (let i = 0; i < 9; i++) {
@@ -350,10 +346,10 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     );
     check(
       'Bank interest is applied at 60 seconds; unpaid buildings survive 9 seconds and disappear at 10',
-      Math.abs(deaths.interest - 1101.595) < 0.001 && deaths.survivesNine && deaths.starved,
+      Math.abs(deaths.interest - 1051.407) < 0.001 && deaths.survivesNine && deaths.starved,
     );
     check(
-      'Soul Burners expire and Death Squad creates exactly ten free recruits',
+      'Retired economy buildings are absent and Death Squad creates exactly ten free recruits',
       deaths.burned && deaths.free === 10,
     );
     const hit = await page.evaluate(() => {
@@ -723,7 +719,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     report.branches = branches;
     check(
       'Both Graveyard branches produce Elite or two-for-one recruits through actual training',
-      branches.elite && branches.double.join() === '2,10',
+      branches.elite && branches.double.join() === '2,13',
     );
     check(
       'Morgue branches provide periodic poison, upgraded death poison, or a skeleton at the corpse',
@@ -763,16 +759,17 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         buildings: c.buildings.map((b) => b.type),
         souls: c.resources.wood,
         units: R.fieldUnitCount(c),
+        reserves: R.reserveCount(c),
         lost: c.undeadState.lostBuildingIds,
         flow: R.resourceFlowRates(c),
       };
     });
     report.ai = ai;
     check(
-      'Undead AI builds a funded economy, legal mixed army and releases recruits over four simulated minutes',
+      'Undead AI builds a funded economy, legal mixed army and trains recruits over four simulated minutes',
       ai.buildings.filter((k) => k === 'und_well').length >= 3 &&
         ai.buildings.includes('und_morgue') &&
-        ai.units > 0 &&
+        ai.units + ai.reserves > 0 &&
         ai.souls >= 0 &&
         ai.lost.length === 0 &&
         ai.buildings.every((k) => k === 'keep' || k.startsWith('und_')),

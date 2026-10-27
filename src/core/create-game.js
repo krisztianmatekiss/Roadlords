@@ -137,6 +137,7 @@ import { initializeRenderingOrcUnitArtwork } from '../rendering/orc-unit-artwork
 import { initializeRenderingTeamColors } from '../rendering/team-colors.js';
 import { initializeAiCoordinatedWaves } from '../ai/coordinated-waves.js';
 import { initializeUiBattleStatus } from '../ui/battle-status.js';
+import { initializeExpansionBalance } from '../economy/expansion-balance.js';
 import { initializeUiChoiceCards } from '../ui/choice-cards.js';
 import { initializeCombatRoadIntegration } from '../combat/road-integration.js';
 
@@ -272,6 +273,7 @@ export function createGame() {
   initializeUiChoiceCards(runtime);
   initializeUiUpgradeCopy(runtime);
   initializeUndeadFoundation(runtime);
+  initializeExpansionBalance(runtime);
   initializeUndeadEconomy(runtime);
   initializeUndeadAi(runtime);
   initializeUndeadArt(runtime);

@@ -1,10 +1,11 @@
 import { UNDEAD_UNITS as U, UNDEAD_RULES } from '../../data/undead.js';
 import { isUndead } from './foundation.js';
+import { UNDEAD_ECONOMY } from '../../data/economy-balance.js';
 
 export function initializeUndeadExpansion(R){
   const own=u=>R.cityForSide(u.side);
   R.undFactionUnit=u=>!!u&&isUndead(own(u))&&!!(U[u.key]||u.undConverted);
-  R.undSoulDamageMult=c=>1+Math.floor(Math.max(0,c.resources.wood)/100)*.01*R.countNormal(c,'und_soul_might');
+  R.undSoulDamageMult=c=>1+Math.floor(Math.max(0,c.resources.wood)/UNDEAD_ECONOMY.soulDamageThreshold)*.01*R.undLegendStacks(c,'und_soul_might');
   R.undGlobalLifeSteal=u=>R.undFactionUnit(u)&&R.hasLeg(own(u),'und_army_leech') ? .2 : 0;
   R.undHasFirstWard=u=>R.undFactionUnit(u)&&!u.undFirstGuardUsed&&R.hasLeg(own(u),'und_first_guard');
   R.undConsumeFirstWard=u=>{if(!R.undHasFirstWard(u))return false;u.undFirstGuardUsed=true;return true;};

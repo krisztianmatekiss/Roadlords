@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.53.0',
-  label: 'V4.53.0 · TELJES EMBERI VÁROSKÉPEK',
-  title: 'Roadlords – Teljes emberi városképek',
+  version: '4.54.0',
+  label: 'V4.54.0 · GAZDASÁG ÉS HIRTELEN HALÁL',
+  title: 'Roadlords – Gazdaság és hirtelen halál',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

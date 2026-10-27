@@ -70,15 +70,11 @@ export const UNDEAD_BUILDING_COPY = {
   },
   und_soul_bank: {
     description: 'Hitelt ad és kamatot fizet. Adósságból építhetsz és fenntarthatsz, de a katonaképzés és a kamat szünetel.',
-    levels: [200, 300, 400, 1000].map((n, i) => `${n} Lélek hitelkeret. Pozitív készletre ${[10, 12, 15, 20][i]}% kamat percenként. Adósságnál nincs képzés.`),
+    levels: [200, 300, 400, 1000].map((n, i) => `${n} Lélek hitelkeret. Pozitív készletre ${[5, 6, 8, 10][i]}% kamat percenként. Adósságnál nincs képzés.`),
   },
   und_soul_anchor: {
     description: 'Csökkenti a közeli épületek lélekfogyasztását.',
     levels: [1, 2, 3, 3].map((n, i) => `${n} mezőn belül az épületek ${i === 3 ? 90 : 50}%-kal kevesebb Lelket fogyasztanak.`),
-  },
-  und_soul_burner: {
-    description: 'Gyorsan termel Lelket, de idővel elpusztul.',
-    levels: [2, 3, 4, 8].map((n, i) => `+${n} Lélek/mp, de másodpercenként ${i === 3 ? 2 : 1}% életerőt veszít.`),
   },
   und_bone_forge: {
     description: 'Elesett Csontvázaid után ingyenes Zombit ad. A harcban megölt idézetek is számítanak, az idővel eltűnők nem.',
@@ -87,10 +83,6 @@ export const UNDEAD_BUILDING_COPY = {
   und_plague_chamber: {
     description: 'Egységeid találatai mérgeznek, a méreg erősebben sebez. Több Pestiskamra hatása összeadódik.',
     levels: [10, 20, 30, 40].map((n, i) => `Egységeid találatai +${i === 3 ? 2 : 1} méregpontot adnak. +${n}% méregsebzés.`),
-  },
-  und_soul_overdrive: {
-    description: 'Fokozza a Lélektermelést és a katonaképzést, de háromszorozza az épületfenntartást. A Nekropoliszra nem hat.',
-    levels: [100, 125, 150, 200].map((n) => `+${n}% Lélektermelés és képzési sebesség. Az épületek lélekfogyasztása 3×.`),
   },
   und_corrupted_hatchery: {
     description: 'Gyorsítja a közeli katonaképzést. Az egységek fél életerővel indulnak, de teljesen gyógyíthatók. Csak a legerősebb Keltető hat.',
@@ -111,11 +103,10 @@ export const UNDEAD_BUILDING_COPY = {
 };
 
 export const UNDEAD_UPGRADE_COPY = {
-  gen_soul_frugal: 'Az épületek fenntartása 5%-kal olcsóbb.',
-  gen_soul_abundance: '+10% Lélekbevétel minden forrásból.',
+  gen_soul_frugal: 'Az épületek fenntartása 40%-kal olcsóbb.',
+  gen_soul_abundance: '+5% Lélekbevétel. A bankkamatra nem hat.',
   gen_graveyard_capacity: '+1 helyőrségi férőhely minden Temetőd után.',
-  gen_military_speed: '+5% képzési sebesség minden katonai épületnek.',
-  gen_build_discount: 'Az építkezés 5%-kal olcsóbb.',
+  gen_military_speed: '+25% képzési sebesség minden katonai épületnek.',
   garden_chance: 'Holtak kertje: +2 százalékpont feltámasztási esély, legfeljebb 100%.',
   skeleton_common_ranged_res: 'Csontváz: +5 százalékpont távolsági ellenállás. Maximum: 90%.',
   zombie_common_poison: 'Zombi: halálakor +1 méregpontot okoz.',

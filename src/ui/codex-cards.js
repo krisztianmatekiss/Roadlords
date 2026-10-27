@@ -20,8 +20,7 @@ const BUILDING_RULES = {
   library: 'A fel nem használt újrasorsolás a választás végén elvész.',
   guardhouse: 'Összekapcsolt Őrházakon át is eléri a városfalat vagy Gyülekezőteret.',
   und_dark_tower: 'Minden további Sötét Őrtorony +25%-kal növeli az összes ilyen torony alapfenntartását.',
-  und_soul_anchor: 'Önmagára nem hat. Több Lélekhorgony közül csak a legerősebb hatása érvényes.',
-  und_soul_overdrive: 'A Nekropolisz termelését nem növeli.',
+  und_soul_anchor: 'Önmagára nem hat. Egyedi épület: egyszerre egy építhető.',
   und_corrupted_hatchery: 'Több Keltető közül csak a legerősebb hatása érvényes. A kezdő sérülés teljesen gyógyítható.',
   und_rebirth_tomb: 'Egységenként egyszer működik.',
   und_bone_forge: 'Csak harci halál számít. Az idézett Csontvázak halála is számít, az idővel eltűnésük nem.',
@@ -72,12 +71,12 @@ export function createCodexCards(R) {
       ${bs.length ? `<details class="lexBranches"><summary>L4 ágak</summary>${bs.map(b => `<div class="rlBranch"><b>${esc(b.name)}</b><p>${effectText(b.description)}</p>${ruleDetails(cardRules[type+'/'+b.id])}</div>`).join('')}</details>` : ''}
       ${extraRules(type,race,level)}</article>`;
   }
-  function upgrade(item, kind, race) {
+  function upgrade(item, kind, race, city = null) {
     const key = R.PICK_UNIT_IMAGES[item.id], src = R.PICK_IMAGES[item.id];
     const art = key && R.UNITS[key] ? R.unitImageTag(key, 'lexUnitImg') : src ? `<img src="${src}" alt="" loading="lazy">` : esc(item.icon || '✦');
-    const reference=cityFor(race,'keep',1)[0];
+    const reference=city || cityFor(race,'keep',1)[0];
     const preview=R.upgradeCopyPreview(reference,{...item,kind});
-    const changes=preview?.rows.length ? `<div class="upgradeComparison" aria-label="Első felvétel változása">${preview.rows.map(row=>`<span class="upgradeRow"><span class="upgradeMetric">${esc(upgradeMetricLabel(row.label))}</span><b class="upgradeValues"><span class="upgradeBefore">${esc(row.before)}</span> → <span class="upgradeAfter effect-positive">${esc(row.after)}</span></b></span>`).join('')}</div>` : '';
+    const changes=preview?.rows.length ? `<div class="upgradeComparison" aria-label="${city ? 'Jelenlegi hatás' : 'Első felvétel változása'}">${preview.rows.map(row=>`<span class="upgradeRow"><span class="upgradeMetric">${esc(upgradeMetricLabel(row.label))}</span><b class="upgradeValues">${city ? `<span class="upgradeCurrent">${esc(row.before)}</span>` : `<span class="upgradeBefore">${esc(row.before)}</span> → <span class="upgradeAfter effect-positive">${esc(row.after)}</span>`}</b></span>`).join('')}</div>` : '';
     return `<article class="rlCodexCard ${kind === 'legendary' ? 'rlLegendCard' : ''}" data-codex-upgrade="${item.id}">${face({id:item.id,kind,race,name:item.name,category:kind === 'legendary' ? 'legendary' : 'common',art,body:`<p>${effectText(item.description)}</p>${changes}`})}${ruleDetails(cardRules[item.id])}</article>`;
   }
   function unit(key, u, race) {

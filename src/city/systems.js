@@ -193,7 +193,7 @@ export function register(runtime) {
     const t = runtime.terrainAt(c, row, col);
     if (!t || !['ruin', 'ancient'].includes(t.type)) return false;
     const def = runtime.TERRAIN[t.type],
-      price = def.clear;
+      price = runtime.terrainClearPrice(c, t.type);
     if (!runtime.canPay(c, price)) {
       if (!byAI) runtime.toast(`Eltakarítás: ${runtime.costText(price)} · nincs elég nyersanyag.`);
       return false;
@@ -602,7 +602,7 @@ export function register(runtime) {
   };
   runtime.terrainTooltipHtml = function terrainTooltipHtml(def, t) {
     const desc = t.type === 'forest' ? 'A mellette álló Favágó termelése megduplázódik.' : t.type === 'quarry' ? 'A mellette álló Kővágó termelése megduplázódik.' : t.type === 'fertile' ? 'Az ide épített Farm termelése megduplázódik.' : t.type === 'foundation' ? 'Az ide épített épület 50%-kal olcsóbb.' : t.type === 'ruin' ? 'El kell takarítani, mielőtt használhatnád ezt a mezőt.' : t.type === 'ancient' ? 'El kell takarítani, utána egy extra választást kapsz.' : def.tip,
-      extra = t.type === 'ancient' ? '<div class="ttCost">Eltakarítás: 100 Fa + 100 Kő · Jutalom: +1 választás</div>' : t.type === 'ruin' ? '<div class="ttCost">Eltakarítás: 25 Fa + 25 Kő</div>' : '';
+      extra = ['ancient','ruin'].includes(t.type) ? `<div class="ttCost">Eltakarítás: ${runtime.costText(runtime.terrainClearPrice(runtime.P,t.type))}${t.type==='ancient'?' · Jutalom: +1 választás':''}</div>` : '';
     return `<div class="ttTitle">${def.name}</div><div class="ttDesc">${desc}</div>${extra}`;
   };
   runtime.recomputeCity = function recomputeCity(c, preserve = true) {

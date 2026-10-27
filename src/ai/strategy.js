@@ -72,7 +72,7 @@ export function register(runtime) {
   };
   runtime.aiClearBlockingRuin = function aiClearBlockingRuin(preferType = null) {
     const ruins = runtime.terrainCellsOfType(runtime.E, 'ruin');
-    if (!ruins.length || !runtime.canPay(runtime.E, runtime.TERRAIN.ruin.clear)) return false;
+    if (!ruins.length || !runtime.canPay(runtime.E, runtime.terrainClearPrice(runtime.E,'ruin'))) return false;
     let ranked = ruins.map(([r, col]) => {
       const fake = {
         type: preferType || 'lumber',

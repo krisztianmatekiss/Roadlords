@@ -4,7 +4,7 @@ export function initializeAiRuinClearing(runtime) {
     if (!preferType || !runtime.E.unlocked.has(preferType)) return false;
     const plan = runtime.v4918BlockingRuinPlan(preferType);
     if (!plan) return false;
-    const affordable = plan.ruins.filter(([r, c]) => runtime.canPay(runtime.E, runtime.TERRAIN[runtime.terrainAt(runtime.E, r, c).type].clear));
+    const affordable = plan.ruins.filter(([r, c]) => runtime.canPay(runtime.E, runtime.terrainClearPrice(runtime.E, runtime.terrainAt(runtime.E, r, c).type)));
     if (!affordable.length) return false;
     let chosen = affordable[0];
     if (affordable.length > 1) {

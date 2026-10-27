@@ -1,7 +1,8 @@
 import { UNDEAD_EXPANSION } from './undead-expansion.js';
 import { rangedRange } from './ranged-balance.js';
 import { UNDEAD_PLAN_BUILDINGS, UNDEAD_PLAN_UPGRADES } from './undead-plan.js';
-import { UNDEAD_TRAINING, trainingPrice } from './unit-balance.js';
+import { UNDEAD_TRAINING } from './unit-balance.js';
+import { UNDEAD_ECONOMY, UNDEAD_REMOVED_BUILDINGS, UNDEAD_TRAINING_PRICES } from './economy-balance.js';
 import { UNDEAD_BUILDING_COPY, UNDEAD_UPGRADE_COPY } from './undead-copy.js';
 export const UNDEAD_RACE = 'undead';
 export const UNDEAD_NAME = 'Élőhalottak';
@@ -126,30 +127,28 @@ export const UNDEAD_UNITS = {
 };
 for (const [key, u] of Object.entries(UNDEAD_UNITS)) {
   u.aiRole = aiRoles[key.replace('und_', '')];
-  u.souls = trainingPrice({ wood: u.souls }).wood;
+  u.souls = UNDEAD_TRAINING_PRICES[key];
 }
 // Prices, upkeep and missing training times are initial balance values, not workbook values.
 const economics = {
   keep: [0, 0],
-  und_well: [35, 0.5],
-  und_crypt: [45, 0.3],
-  und_graveyard: [40, 0.35],
-  und_morgue: [65, 0.55],
-  und_ghost_spawner: [60, 0.5],
-  und_necro_spawner: [140, 1],
-  und_vampire_castle: [200, 1.2],
-  und_lich_spawner: [220, 1.4],
-  und_dark_tower: [75, 0.75],
+  und_well: [55, 0.5],
+  und_crypt: [70, 0.4],
+  und_graveyard: [60, 0.46],
+  und_morgue: [100, 0.72],
+  und_ghost_spawner: [90, 0.65],
+  und_necro_spawner: [250, 1.3],
+  und_vampire_castle: [320, 1.56],
+  und_lich_spawner: [360, 1.82],
+  und_dark_tower: [115, 0.98],
   und_soul_harvester: [80, 0.5],
-  und_soul_bank: [150, 1.2],
-  und_soul_anchor: [95, 0.8],
-  und_soul_burner: [45, 0.6],
-  und_bone_forge: [90, 0.7],
-  und_plague_chamber: [115, 1],
-  und_soul_overdrive: [160, 1.4],
-  und_corrupted_hatchery: [100, 0.8],
-  und_rebirth_tomb: [180, 1.6],
-  und_garden_of_dead: [200, 1.5],
+  und_soul_bank: [300, 1.2],
+  und_soul_anchor: [160, 1.04],
+  und_bone_forge: [140, 0.91],
+  und_plague_chamber: [180, 1.3],
+  und_corrupted_hatchery: [155, 1.04],
+  und_rebirth_tomb: [280, 2.08],
+  und_garden_of_dead: [310, 1.95],
 };
 const producers = UNDEAD_TRAINING;
 const branchIds = {
@@ -170,6 +169,7 @@ const names = {
 export const UNDEAD_BUILDINGS = Object.fromEntries(
   UNDEAD_PLAN_BUILDINGS.map((row, index) => {
     const key = row.A === 'und_capital' ? 'keep' : row.A;
+    if (UNDEAD_REMOVED_BUILDINGS.has(key)) return null;
     const shape = row.D.startsWith('L alak')
       ? [
           [0, 0],
@@ -220,7 +220,7 @@ export const UNDEAD_BUILDINGS = Object.fromEntries(
               ? 'defense'
               : 'support',
         shape,
-        unique: row.E !== 'Nem',
+        unique: key === 'und_soul_anchor' || row.E !== 'Nem',
         souls,
         upkeep,
         unit: producer?.[0],
@@ -233,20 +233,20 @@ export const UNDEAD_BUILDINGS = Object.fromEntries(
         sourceId: row.A,
       },
     ];
-  }),
+  }).filter(Boolean),
 );
-export const UNDEAD_UPGRADES = UNDEAD_PLAN_UPGRADES.map((row) => ({
+export const UNDEAD_UPGRADES = UNDEAD_PLAN_UPGRADES.filter(row => row.A !== 'gen_build_discount').map((row) => ({
   id: row.A,
   name: /^(HP|Sebzés) \+10%$/.test(row.D) ? row.C + ' · ' + row.D.replace('HP', 'Életerő') : row.D,
   description: UNDEAD_UPGRADE_COPY[row.A] || `${row.C}: +10% ${row.A.endsWith('_hp') ? 'maximális életerő' : 'sebzés'}.`,
   scope: row.C,
-  kind: row.B === 'Common' ? 'normal' : 'legendary',
+  kind: ['gen_soul_frugal','gen_military_speed'].includes(row.A) ? 'legendary' : row.B === 'Common' ? 'normal' : 'legendary',
   icon: '☠',
   race: 'undead',
 }));
 UNDEAD_UPGRADES.push(...UNDEAD_EXPANSION);
 export const UNDEAD_RULES = Object.freeze({
-  startingSouls: 140,
+  startingSouls: UNDEAD_ECONOMY.startingSouls,
   technicalSummonLimit: 1500,
   capitalHp: [2000, 4000, 8000, 16000],
   capitalIncome: [3, 6, 12, 24],

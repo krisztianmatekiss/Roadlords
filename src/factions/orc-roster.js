@@ -2,6 +2,7 @@ import { rangedRange, WARG_THROW_RANGE } from '../data/ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { ORC_BALANCE } from '../data/combat-balance.js';
 import { ORC_TRAINING, trainingPrice } from '../data/unit-balance.js';
+import { MOVEMENT_BALANCE } from '../data/movement-balance.js';
 export function initializeFactionsOrcRoster(runtime) {
   const O = window.__ROADLORDS_ORCS__,
     isOrc = O.isOrc;
@@ -44,7 +45,7 @@ export function initializeFactionsOrcRoster(runtime) {
       hp: 400,
       damage: 30,
       cooldown: 1.5,
-      speed: 55,
+      speed: MOVEMENT_BALANCE.orc_warg,
       range: 30,
       train: 11,
       cost: runtime.C(5, 16, 18),

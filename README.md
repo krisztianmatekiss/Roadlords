@@ -365,3 +365,7 @@ A PeerJS csomag helyben kerül a buildbe; a menü és a TESZT nem igényel CDN-t
 Az internetes multiplayer továbbra is PeerJS/WebRTC kapcsolatot és megfelelő hálózatot igényel. A csomagkompatibilitás ellenőrzött; a felhőkörnyezet nulla ICE jelöltje miatt a tényleges kétgépes kapcsolat itt nem volt igazolható. TLS- és böngészőbiztonsági ellenőrzéseket nem kapcsolunk ki.
 
 Részletes eredmények és korlátok: [docs/validation.md](docs/validation.md).
+
+## V4.54.0 · Gazdaság és hirtelen halál
+
+Drágább építkezés és romeltakarítás minden fajnál; átdolgozott élőhalott gazdaság, 30 perces hirtelen halál pulzáló torony- és városi HP-val, valódi kártyák az aktív ereklyéknél. [Részletes változások](docs/economy-update-4.54.md).

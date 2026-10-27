@@ -1,6 +1,7 @@
 import { rangedRange } from './ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { trainingPrice } from './unit-balance.js';
+import { MOVEMENT_BALANCE } from './movement-balance.js';
 export function initializeDataUnitDefinitions(runtime) {
   runtime.UNITS = {
     swordsman: {
@@ -58,7 +59,7 @@ export function initializeDataUnitDefinitions(runtime) {
       damage: 30,
       cooldown: 1.25,
       range: 32,
-      speed: 63,
+      speed: MOVEMENT_BALANCE.knight,
       train: 9,
       cost: runtime.C(0, 16, 15),
       damageType: 'physical'

@@ -9,6 +9,8 @@ export function initializeCombatSuddenDeath(runtime) {
     el.id = 'suddenOverlay';
     el.className = 'suddenOverlay';
     el.innerHTML = '<span class="big">HIRTELEN HALÁL</span><span class="sub"></span>';
-    battle.appendChild(el);
+    el.setAttribute('role','status');
+    el.setAttribute('aria-live','assertive');
+    document.body.appendChild(el);
   }
 }

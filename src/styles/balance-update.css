@@ -1,0 +1,18 @@
+html body #suddenOverlay {
+  position:fixed;left:50%;top:24%;transform:translate(-50%,-12px);
+  width:min(650px,90vw);height:auto;padding:22px 28px;box-sizing:border-box;
+  z-index:800;pointer-events:none;text-align:center;border:2px solid #e98bff;
+  border-radius:12px;background:#24122aee;box-shadow:0 0 35px #ce56df66;
+  opacity:0;transition:opacity .25s,transform .25s;
+}
+html body #suddenOverlay.show {opacity:1;transform:translate(-50%,0);}
+html body #suddenOverlay .big {display:block;font-size:clamp(24px,3vw,40px);color:#f6c7ff;font-weight:900;}
+html body #suddenOverlay .sub {display:block;margin-top:8px;font-size:clamp(14px,1.5vw,19px);color:#f6e5f8;}
+html body .suddenDeathHp {animation:balance-hp-pulse .9s ease-in-out infinite;}
+@keyframes balance-hp-pulse {50% {filter:brightness(1.55);box-shadow:0 0 16px #f08aff;}}
+html body #relicList {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(245px,100%),310px));justify-content:center;gap:22px;padding:16px;}
+html body #relicList .rlCodexCard {position:relative;width:100%;max-width:none;}
+#relicList .relicOwnedCount {position:absolute;right:9%;top:12%;z-index:10;border:1px solid #edce7b;border-radius:7px;padding:4px 9px;background:#101b15ef;color:#ffdd83;font-weight:900;font-size:19px;}
+#relicList .relicLiveProgress {color:#f1d68e;font-size:14px;text-align:center;}
+#relicList .upgradeCurrent {color:#8ae1a5;}
+@media(prefers-reduced-motion:reduce){html body .suddenDeathHp{animation:none;outline:2px solid #e98bff;}}

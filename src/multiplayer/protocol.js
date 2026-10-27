@@ -69,7 +69,7 @@ export function register(runtime) {
   };
   runtime.mpSharedState = function mpSharedState() {
     const out = {};
-    for (const key of ['time', 'running', 'ended', 'speed', 'nextPick', 'timedPickCount', 'unitSerial', 'suddenDeath', 'suddenDeathStarted', 'startPickTimer']) if (key in runtime.state) out[key] = runtime.state[key];
+    for (const key of ['time', 'running', 'ended', 'speed', 'nextPick', 'timedPickCount', 'unitSerial', 'suddenDeath', 'suddenDeathStarted', 'suddenStarted', 'startPickTimer']) if (key in runtime.state) out[key] = runtime.state[key];
     return out;
   };
   runtime.mpSendSnapshot = function mpSendSnapshot() {

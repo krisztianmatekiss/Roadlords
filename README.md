@@ -375,3 +375,5 @@ Drágább építkezés és romeltakarítás minden fajnál; átdolgozott élőha
 A legendás íjászváltozat +40% sebzést és +40% hatótávot kap, támadási sebessége 40%-kal csökken. Alapértékeken: 4,9 sebzés, 32,2 m hatótáv és 0,9167 mp támadásköz. A sima Goblin változatlan. A Harci lendület az új sebzésbónuszból számol. A kártya, lexikon és tényleges harc közös bónuszokat használ. Multiplayer-szabályverzió: 6.
 
 Az AI gazdaságát fajonként két tízperces, tényleges költségeket és választásokat használó próbában ellenőriztük. A folyamatos utánpótlási igényt a kivonult egységek 45 mp utáni, jutalom nélküli kivételével modelleztük. Az élőhalott AI most finanszírozható katonai épületre cserélheti a telített város fölösleges Lélekkútját; fizetésképtelen helyzetben nem bont. A célzott próbában 13→17, illetve 20→37 katonai épületig jutott az előző 10 perces állapothoz képest. Ez gazdasági ellenőrzés, nem fajgyőzelmi mérés.
+
+A V4.54.1-ben a hirtelen halál a felhasználó kérésére ismét **20:00-nál** kezdődik. A torony → kaputorony → főváros sorrend és a pulzáló HP-jelzések maradnak.

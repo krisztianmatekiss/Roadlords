@@ -40,17 +40,17 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   const sd=await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__;balanceReset('human');R.roadResetCity(R.E,'orc');R.state.suddenStarted=false;delete R.state.suddenSides;R.state.ended=false;
    for(const t of R.towers){t.alive=true;t.hp=t.maxHp;t.sdActive=false;}
-   const hp=R.towers.map(t=>t.hp);R.state.time=1799.99;R.updateSuddenDeath(1);const untouched=R.towers.every((t,i)=>t.hp===hp[i])&&!R.state.suddenStarted;
-   R.state.time=1800;R.updateSuddenDeath(.01);const exact=R.state.suddenStarted&&R.towers.every((t,i)=>t.hp===hp[i]);
-   R.state.time=1801;R.updateSuddenDeath(1);R.updateHud();const first=R.towers.filter(t=>t.sdActive).map(t=>({tier:t.tier,gate:t.gateTower}));const capitalSafe=R.P.hp===R.P.maxHp&&R.E.hp===R.E.maxHp;
+   const hp=R.towers.map(t=>t.hp);R.state.time=1199.99;R.updateSuddenDeath(1);const untouched=R.towers.every((t,i)=>t.hp===hp[i])&&!R.state.suddenStarted;
+   R.state.time=1200;R.updateSuddenDeath(.01);const exact=R.state.suddenStarted&&R.towers.every((t,i)=>t.hp===hp[i]);
+   R.state.time=1201;R.updateSuddenDeath(1);R.updateHud();const first=R.towers.filter(t=>t.sdActive).map(t=>({tier:t.tier,gate:t.gateTower}));const capitalSafe=R.P.hp===R.P.maxHp&&R.E.hp===R.E.maxHp;
    const packet={enemy:R.mpCitySnapshot(R.P),player:R.mpCitySnapshot(R.E),shared:R.mpPack(R.mpSharedState()),units:[],towers:R.mpPack(R.towers),capitalTowers:R.mpPack(R.capitalTowers)};
    const snapshotStarted=R.mpRevive(packet.shared).suddenStarted;R.MP.enabled=true;R.MP.role='guest';R.state.suddenStarted=false;R.$('#suddenOverlay').classList.remove('show');R.mpApplySnapshot(packet);const guestPopup=R.$('#suddenOverlay').classList.contains('show');const before=R.towers.map(t=>t.hp);R.updateSuddenDeath(100);const guestNoDrain=R.towers.every((t,i)=>t.hp===before[i]);R.MP.enabled=false;R.MP.role=null;
    // Each side advances independently; surviving defenders shield its capital.
    for(const t of R.towers)if(t.side==='player'){t.alive=false;t.hp=0;}
-   R.state.time=1802;R.updateSuddenDeath(1);R.updateHud();const phases={own:R.P.sdActive,enemy:R.E.sdActive,ownPulse:R.$('#playerHp').parentElement.classList.contains('suddenDeathHp')};
+   R.state.time=1202;R.updateSuddenDeath(1);R.updateHud();const phases={own:R.P.sdActive,enemy:R.E.sdActive,ownPulse:R.$('#playerHp').parentElement.classList.contains('suddenDeathHp')};
    return {untouched,exact,first,capitalSafe,snapshotStarted,guestPopup,guestNoDrain,phases,popup:getComputedStyle(R.$('#suddenOverlay')).position};
   });report.sudden=sd;
-  check('Sudden death begins at 30:00 exactly and drains outer towers before capitals',sd.untouched&&sd.exact&&sd.first.length>0&&sd.first.every(t=>t.tier===1&&!t.gate)&&sd.capitalSafe);
+  check('Sudden death begins at 20:00 exactly and drains outer towers before capitals',sd.untouched&&sd.exact&&sd.first.length>0&&sd.first.every(t=>t.tier===1&&!t.gate)&&sd.capitalSafe);
   check('Each side advances separately and its currently draining capital pulses',sd.phases.own&&!sd.phases.enemy&&sd.phases.ownPulse);
   check('Guests receive the popup and authoritative tower states without draining twice',sd.snapshotStarted&&sd.guestPopup&&sd.guestNoDrain&&sd.popup==='fixed');
   // Compare every active Undead pick with the same Lexicon renderer used for owned cards.

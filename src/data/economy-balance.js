@@ -4,7 +4,7 @@ export const ECONOMY_BALANCE = Object.freeze({
   advancedBuildingPrice: 1.4,
   ruinClearing: 4,
   ancientClearing: 10,
-  suddenDeathAt: 30 * 60,
+  suddenDeathAt: 20 * 60,
 });
 export const UNDEAD_ECONOMY = Object.freeze({
   startingSouls: 100,

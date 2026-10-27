@@ -47,10 +47,10 @@ const BASE_URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/
    }
    if(['archer','priest','catapult','mage','orc_goblin'].includes(expected.key))scale('range',2);
    if(expected.key==='orc_goblin'&&city.legends.includes('orc_gob_bow')){
-    scale('damage',1.5/2);scale('buildingDamage',1.5/2);
+    scale('damage',1.4/2);scale('buildingDamage',1.4/2);scale('range',1.4/1.5);scale('cooldownTime',1/.6);
     if(city.legends.includes('orc_momentum')){
      const damage=1+.1*(city.normal.orc_goblin_dmg||0);
-     scale('cooldownTime',(1+(damage*2-1)*.5)/(1+(damage*1.5-1)*.5));
+     scale('cooldownTime',(1+(damage*2-1)*.5)/(1+Math.max(0,damage*1.4-1)*.5));
     }
    }
    assert.deepEqual(actual,expected);

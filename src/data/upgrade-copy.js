@@ -1,3 +1,4 @@
+import { GOBLIN_BOW_COPY } from './combat-balance.js';
 // Player-facing copy, independent of the preserved legacy initialization order.
 import { ORC_COMMON_ADDITIONS, ORC_LEGEND_ADDITIONS } from './orc-expansion.js';
 export const NORMAL_COPY = Object.freeze({
@@ -124,7 +125,7 @@ export const LEGENDARY_COPY = Object.freeze({
   "royal_district": "A Főépület +1 szintet kap. Szomszédos termelők: +25% termelés; katonai épületek: +25% képzési sebesség.",
   "strategic_superiority": "+3 választás, +5 újrasorsolás és +3 kitiltás.",
   "orc_bers_rage": "A Dühöngő minden 1% hiányzó életerőért +1% sebzést kap.",
-  "orc_gob_bow": "A Goblin +50% sebzést és +50% hatótávot kap.",
+  "orc_gob_bow": GOBLIN_BOW_COPY,
   "orc_ancient_deposits": "A Munkatábor erdő mellett 3× fát, kőlelőhely mellett 3× követ termel.",
   "orc_bers_blood": "A Dühöngő dupla sebzést okoz Vérző ellenfeleknek.",
   "orc_gob_blood": "A Goblin találatai 1 Vérzést okoznak. A már Vérző ellenfeleknek +25% sebzést okoz.",

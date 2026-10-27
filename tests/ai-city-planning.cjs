@@ -113,6 +113,24 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       }
       return true;
     }));
+    const redevelopment = await page.evaluate(() => {
+      const R=__ROADLORDS_RUNTIME__;
+      const fullWells=()=>{
+        R.MP.enabled=false;R.roadResetCity(R.E,'undead');const c=R.E;
+        c.terrain.fill(null);c.unlocked=new Set(Object.keys(__ROADLORDS_UNDEAD__.buildings));c.resources=R.C(100000,0,0);
+        for(let row=0;row<10;row++)for(let col=0;col<10;col++)if(!R.occupancy(c).has(R.idx(row,col))){const out=R.placeBuilding(c,'und_well',row,col,0,true);if(!out.ok)throw Error(out.reason);}
+        R.setBuildingLevel(c,'und_well',4);return c;
+      };
+      let c=fullWells();const before=R.buildingOf(c,'und_well').length;
+      const madeRoom=R.aiMakeRoomFor('und_graveyard'),built=R.aiBuild('und_graveyard');
+      const funded={madeRoom,built,wells:R.buildingOf(c,'und_well').length,before,gain:R.productionRates(c).wood,use:R.resourceFlowRates(c).use.wood,replaced:c.undeadState.aiRedeveloped};
+      c.resources.wood=0;const unchanged=JSON.stringify(c.buildings);const noCash=!R.aiMakeRoomFor('und_graveyard')&&JSON.stringify(c.buildings)===unchanged;
+      c=fullWells();R.setBuildingLevel(c,'und_well',1);for(const [i,b]of R.buildingOf(c,'und_well').entries())b.inactive=i>=4;R.recomputeCity(c,true);
+      const leanBefore=JSON.stringify(c.buildings),noSupply=!R.aiMakeRoomFor('und_graveyard')&&JSON.stringify(c.buildings)===leanBefore;
+      return {funded,noCash,noSupply};
+    });report.redevelopment=redevelopment;
+    check('Undead AI reuses one redundant upgraded Well only when a real, fully funded military building can replace it',redevelopment.funded.madeRoom&&redevelopment.funded.built&&redevelopment.funded.wells===redevelopment.funded.before-1&&redevelopment.funded.replaced===1&&redevelopment.funded.gain>redevelopment.funded.use*1.15);
+    check('Undead redevelopment leaves the city intact when construction is unaffordable or would underfund training',redevelopment.noCash&&redevelopment.noSupply);
     check('No AI city-planning runtime errors', report.errors.length === 0);
   } finally { fs.mkdirSync('artifacts', { recursive: true }); fs.writeFileSync('artifacts/ai-city-planning.json', JSON.stringify(report, null, 2)); await browser.close(); }
 })().catch(e => { console.error(e); process.exitCode = 1; });

@@ -1,3 +1,4 @@
+import { GOBLIN_BOW_COPY } from '../data/combat-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { ORC_TRAINING } from '../data/unit-balance.js';
 export function initializeFactionsOrcDescriptions(runtime) {
@@ -82,7 +83,7 @@ export function initializeFactionsOrcDescriptions(runtime) {
     orc_as: 'Minden ork egység +5% támadási sebességet kap.',
     orc_hp: 'Minden ork egység +5% maximális életerőt kap.',
     orc_bers_rage: 'A Dühöngő minden 1% hiányzó életerőért +1% sebzést kap.',
-    orc_gob_bow: 'A Goblin +50% sebzést és +50% hatótávot kap.',
+    orc_gob_bow: GOBLIN_BOW_COPY,
     orc_ancient_deposits: 'A Munkatábor erdő mellett háromszor annyi fát, kőlelőhely mellett háromszor annyi követ termel a kétszeres helyett.',
     orc_bers_blood: 'A Dühöngő dupla sebzést okoz Vérző ellenfeleknek.',
     orc_gob_blood: 'A Goblin találatai 1 Vérzést okoznak. A már Vérző ellenfeleknek +25% sebzést okoz.',

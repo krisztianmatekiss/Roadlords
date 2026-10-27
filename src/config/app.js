@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.54.0',
-  label: 'V4.54.0 · GAZDASÁG ÉS HIRTELEN HALÁL',
-  title: 'Roadlords – Gazdaság és hirtelen halál',
+  version: '4.54.1',
+  label: 'V4.54.1 · GOBLIN ÉS AI GAZDASÁG',
+  title: 'Roadlords – Goblin és AI gazdaság',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

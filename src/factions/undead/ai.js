@@ -57,6 +57,38 @@ export function initializeUndeadAi(R) {
     }
     return best;
   };
+  const makeRoom = R.aiMakeRoomFor;
+  R.aiMakeRoomFor = (type) => {
+    const c = R.E;
+    if (!isUndead(c)) return makeRoom(type);
+    const d = D[type];
+    if (!d || ['keep','und_well'].includes(type) || !c.unlocked.has(type) ||
+        (d.unique && R.hasBuilding(c,type)) || R.findCell(c,type) ||
+        c.resources.wood < R.buildPrice(c,type).wood) return false;
+    const wells = R.buildingOf(c,'und_well').filter(b=>!b.inactive);
+    if (wells.length <= 2) return false;
+    // A well upgrade can leave many old plots redundant. Reuse one only when
+    // the new building fits and its full training + upkeep remains funded.
+    for (const well of wells) {
+      const original = c.buildings;
+      let fits = false;
+      c.buildings = original.filter(b=>b.id!==well.id);
+      try {
+        const cell = R.findCell(c,type);
+        if (cell) {
+          c.buildings.push({id:'ai-room-preview:'+well.id,type,row:cell[0],col:cell[1],rotation:cell[2],level:R.levelOf(c,type),progress:0});
+          fits = R.productionRates(c).wood >= R.resourceFlowRates(c).use.wood * 1.15 + 1;
+        }
+      } finally {
+        c.buildings = original;
+      }
+      if (fits && R.demolish(c,well.id)) {
+        c.undeadState.aiRedeveloped = (c.undeadState.aiRedeveloped || 0) + 1;
+        return true;
+      }
+    }
+    return false;
+  };
   const buildAi = R.enemyBuildAI;
   R.enemyBuildAI = (dt) => {
     const c = R.E;
@@ -71,7 +103,8 @@ export function initializeUndeadAi(R) {
       demand = R.resourceFlowRates(c).use.wood;
     const tryBuild = (type) => {
       if (!c.unlocked.has(type)) return false;
-      const cell = R.findCell(c, type);
+      let cell = R.findCell(c, type);
+      if (!cell && type !== 'und_well' && R.aiMakeRoomFor(type)) cell = R.findCell(c,type);
       if (!cell) return false;
       const price = R.placementPrice(c, type, ...cell).wood;
       if (c.resources.wood < price) {

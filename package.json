@@ -1,6 +1,6 @@
 {
   "name": "roadlords",
-  "version": "4.54.0",
+  "version": "4.54.1",
   "description": "Roadlords modular browser game",
   "scripts": {
     "dev": "vite",
@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "test": "node scripts/test.cjs",
     "audit:balance": "node scripts/test.cjs scripts/audit-unit-balance.cjs",
+    "audit:ai": "node scripts/test.cjs scripts/audit-ai-economy.cjs",
     "test:multiplayer": "node scripts/test.cjs tests/multiplayer.cjs tests/multiplayer-rtc.cjs",
     "art:web": "node scripts/prepare-card-images.cjs"
   },

@@ -1,0 +1,28 @@
+{
+  "worksheets": [
+    "Emberek",
+    "Orkok",
+    "Élőhalottak"
+  ],
+  "currentRows": 283,
+  "ideaRows": 56,
+  "rows": 339,
+  "ideasByFaction": {
+    "human": {
+      "building": 1,
+      "normal": 7,
+      "legendary": 6
+    },
+    "orc": {
+      "building": 2,
+      "normal": 6,
+      "legendary": 12
+    },
+    "undead": {
+      "building": 2,
+      "normal": 6,
+      "legendary": 14
+    }
+  },
+  "xlsxBytes": 148348
+}

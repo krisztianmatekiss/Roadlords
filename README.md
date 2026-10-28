@@ -1,4 +1,14 @@
-# Roadlords · V4.56.0
+# Roadlords · V4.57.0
+
+## V4.57.0 – Ablakkezelés, kártya-előnézet és bontókalapács
+
+- Az épület- és toronyablakok tényleges méretük alapján férnek a képernyőre, átméretezés és felületméret-váltás után is. A hosszú tartalom belül görgethető; a húzható fejléc és a bezárógomb látható marad.
+- A fejlécnél kezdett húzás megszakítás nélkül követi a mutatót. Az épületablakokat a felület frissítése megtartja, a tornyok automatikus igazítása pedig nem írja felül a kézzel választott helyet.
+- Az építési sáv kártyái 1,5 másodperc folyamatos rámutatás után nagyítódnak ki. Az előnézet a kártyán tartott egér mellett megmarad, elhúzáskor vagy épületválasztáskor bezárul.
+- Bal alul, az építési sáv fölött kapcsolható bontókalapács: saját épületre kattintva a meglévő bontási szabályok és 50%-os visszatérítés működnek. A főépület védett. Esc, jobb kattintás vagy épületválasztás leteszi a kalapácsot.
+- Az időkorlátos egységek 55%-os fedettséggel látszanak. A tartós idézettek normál megjelenése és a harci értékek megmaradnak; a vendég a megjelenés jelzését a meglévő multiplayer csomagban kapja.
+
+Célzott ellenőrzés: `node scripts/test.cjs tests/window-controls.cjs tests/build-card-deck.cjs`. A játékegyensúly-javaslatok továbbra is a külön felülvizsgálati dokumentumban maradnak.
 
 ## V4.56.0 – Egységtempó és célzott balance
 

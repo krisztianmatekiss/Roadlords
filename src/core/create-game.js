@@ -72,7 +72,6 @@ import { initializeAiArmyPlanning } from '../ai/army-planning.js';
 import { initializeDiagnosticsPublicApi } from '../diagnostics/public-api.js';
 import { initializeCityTowerCommand } from '../city/tower-command.js';
 import { initializeEconomyTerrainStacking } from '../economy/terrain-stacking.js';
-import { initializeUiInspectorDrag } from '../ui/inspector-drag.js';
 import { initializeRenderingShieldFeedback } from '../rendering/shield-feedback.js';
 import { initializeRenderingTowerHealth } from '../rendering/tower-health.js';
 import { initializeProgressionRerolls } from '../progression/rerolls.js';
@@ -203,7 +202,6 @@ export function createGame() {
   initializeDiagnosticsPublicApi(runtime);
   initializeCityTowerCommand(runtime);
   initializeEconomyTerrainStacking(runtime);
-  initializeUiInspectorDrag(runtime);
   initializeRenderingShieldFeedback(runtime);
   initializeRenderingTowerHealth(runtime);
   initializeProgressionRerolls(runtime);

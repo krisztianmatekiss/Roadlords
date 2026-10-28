@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.56.0',
-  label: 'V4.56.0 · EGYSÉGTEMPÓ ÉS BALANCE',
-  title: 'Roadlords – Egységtempó és balance',
+  version: '4.57.0',
+  label: 'V4.57.0 · ABLAKOK ÉS BONTÓKALAPÁCS',
+  title: 'Roadlords – Ablakok és bontókalapács',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

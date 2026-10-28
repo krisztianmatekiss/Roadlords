@@ -1,10 +1,12 @@
 import { assetUrl } from '../assets/urls.js';
+import { bindInspectorDrag, fitInspectorWindow, inspectorViewport } from './inspector-window.js';
 export function initializeUiMultipleInspectors(runtime) {
   const VERSION_LABEL = 'V4.9.59 · P2P 1V1';
   runtime.state.openBuildingInspectors = Array.isArray(runtime.state.openBuildingInspectors) ? runtime.state.openBuildingInspectors : [];
   runtime.state.buildingInspectorPos = runtime.state.buildingInspectorPos || {};
   runtime.state.buildingInspectorZ = runtime.state.buildingInspectorZ || {};
   runtime.state.buildingInspectorZCounter = Number(runtime.state.buildingInspectorZCounter) || 9200;
+  const windows = new Map();
   runtime.rotationOptions = function (type) {
     return [0, 1, 2, 3];
   };
@@ -16,9 +18,6 @@ export function initializeUiMultipleInspectors(runtime) {
       document.body.appendChild(layer);
     }
     return layer;
-  }
-  function getOpenBuilding(id) {
-    return runtime.getBuilding(runtime.P, id) || runtime.getBuilding(runtime.E, id) || null;
   }
   function focusBuildingInspector(id) {
     runtime.state.buildingInspectorZCounter = (Number(runtime.state.buildingInspectorZCounter) || 9200) + 1;
@@ -34,26 +33,25 @@ export function initializeUiMultipleInspectors(runtime) {
     runtime.state.buildingInspectorPos = {};
     runtime.state.buildingInspectorZ = {};
   }
-  function defaultBuildingInspectorPos(id, index = 0) {
+  function defaultBuildingInspectorPos(id, index, win) {
     const anchor = document.querySelector(`#playerGrid .buildingHitCell[data-id="${id}"]`) || document.querySelector(`#playerGrid .building[data-id="${id}"]`);
     const cascade = index * 24;
     if (anchor) {
       const r = anchor.getBoundingClientRect(),
-        w = 340,
-        h = 300,
+        w = win.getBoundingClientRect().width,
+        h = win.getBoundingClientRect().height,
         gap = 12;
       let left = r.right + gap + cascade;
       if (left + w > window.innerWidth - 12) left = r.left - w - gap - cascade;
-      left = runtime.clamp(left, 10, window.innerWidth - w - 10);
-      let top = runtime.clamp(r.top + r.height / 2 - h / 2 + cascade, 74, window.innerHeight - h - 10);
+      const top = r.top + r.height / 2 - h / 2 + cascade;
       return {
         left: Math.round(left),
         top: Math.round(top)
       };
     }
     return {
-      left: Math.min(30 + cascade, Math.max(10, window.innerWidth - 350)),
-      top: Math.min(90 + cascade, Math.max(74, window.innerHeight - 320))
+      left: 30 + cascade,
+      top: inspectorViewport().top + cascade
     };
   }
   function openBuildingInspector(id) {
@@ -160,49 +158,6 @@ export function initializeUiMultipleInspectors(runtime) {
       runtime.renderStatic();
       runtime.updateHud();
     });
-    const head = win.querySelector('.ihead');
-    if (head) {
-      let drag = null;
-      head.addEventListener('pointerdown', e => {
-        if (e.target.closest('button,input,select,textarea,label,option')) return;
-        focusBuildingInspector(b.id);
-        win.style.zIndex = String(runtime.state.buildingInspectorZ[b.id]);
-        const pos = runtime.state.buildingInspectorPos[b.id] || defaultBuildingInspectorPos(b.id, 0);
-        drag = {
-          id: e.pointerId,
-          sx: e.clientX,
-          sy: e.clientY,
-          left: pos.left,
-          top: pos.top
-        };
-        win.setPointerCapture?.(e.pointerId);
-        win.classList.add('dragging');
-        e.preventDefault();
-      });
-      head.addEventListener('pointermove', e => {
-        if (!drag || e.pointerId !== drag.id) return;
-        const left = runtime.clamp(Math.round(drag.left + (e.clientX - drag.sx)), 10, Math.max(10, window.innerWidth - win.offsetWidth - 10)),
-          top = runtime.clamp(Math.round(drag.top + (e.clientY - drag.sy)), 74, Math.max(74, window.innerHeight - win.offsetHeight - 10));
-        runtime.state.buildingInspectorPos[b.id] = {
-          left,
-          top
-        };
-        win.style.left = left + 'px';
-        win.style.top = top + 'px';
-      });
-      const endDrag = e => {
-        if (drag && e.pointerId === drag.id) {
-          drag = null;
-          win.classList.remove('dragging');
-        }
-      };
-      head.addEventListener('pointerup', endDrag);
-      head.addEventListener('pointercancel', endDrag);
-    }
-    win.addEventListener('pointerdown', () => {
-      focusBuildingInspector(b.id);
-      win.style.zIndex = String(runtime.state.buildingInspectorZ[b.id]);
-    });
   }
   function renderBuildingInspectors() {
     const layer = ensureBuildingInspectorLayer(),
@@ -211,7 +166,15 @@ export function initializeUiMultipleInspectors(runtime) {
       if (runtime.getBuilding(runtime.P, id)) valid.push(id);
     }
     runtime.state.openBuildingInspectors = valid;
-    layer.innerHTML = '';
+    for (const [id, entry] of windows) {
+      if (valid.includes(id)) continue;
+      entry.observer.disconnect();
+      entry.drag.cancel();
+      entry.win.remove();
+      windows.delete(id);
+      delete runtime.state.buildingInspectorPos[id];
+      delete runtime.state.buildingInspectorZ[id];
+    }
     if (!valid.length) {
       layer.classList.remove('show');
       return;
@@ -220,24 +183,53 @@ export function initializeUiMultipleInspectors(runtime) {
     valid.forEach((id, index) => {
       const b = runtime.getBuilding(runtime.P, id);
       if (!b) return;
-      if (!runtime.state.buildingInspectorPos[id]) runtime.state.buildingInspectorPos[id] = defaultBuildingInspectorPos(id, index);
       if (!runtime.state.buildingInspectorZ[id]) focusBuildingInspector(id);
-      const pos = runtime.state.buildingInspectorPos[id];
-      const win = document.createElement('section');
-      win.className = 'buildingInspectorWindow';
-      win.dataset.id = id;
-      win.style.left = pos.left + 'px';
-      win.style.top = pos.top + 'px';
+      let entry = windows.get(id);
+      if (!entry) {
+        const win = document.createElement('section');
+        win.className = 'buildingInspectorWindow';
+        win.dataset.id = id;
+        win.setAttribute('role', 'dialog');
+        const keepInside = () => {
+          runtime.state.buildingInspectorPos[id] = fitInspectorWindow(win, runtime.state.buildingInspectorPos[id]);
+        };
+        const drag = bindInspectorDrag(win, {
+          onMove: pos => { runtime.state.buildingInspectorPos[id] = pos; },
+        });
+        win.addEventListener('pointerdown', () => {
+          focusBuildingInspector(id);
+          win.style.zIndex = String(runtime.state.buildingInspectorZ[id]);
+        });
+        const observer = new ResizeObserver(keepInside);
+        entry = { win, drag, observer, keepInside };
+        windows.set(id, entry);
+        layer.appendChild(win);
+        observer.observe(win);
+      }
+      const win = entry.win;
       win.style.zIndex = String(runtime.state.buildingInspectorZ[id] || 9200 + index);
-      if (b.type === 'warcenter') win.classList.add('warcenterWide');
-      win.innerHTML = buildingInspectorCardHTML(b);
-      bindBuildingInspectorWindow(win, b);
-      layer.appendChild(win);
+      win.classList.toggle('warcenterWide', b.type === 'warcenter');
+      win.setAttribute('aria-label', (runtime.buildingDefinition?.(runtime.P,b.type) || runtime.BUILDINGS[b.type]).name);
+      // Keep pointer capture, open controls and the reading position during refresh.
+      const editing = win.contains(document.activeElement) &&
+        document.activeElement.matches('input,select,textarea,[contenteditable="true"]');
+      if (!win.classList.contains('dragging') && !editing) {
+        const scroll = win.querySelector('.inspectorCard')?.scrollTop || 0;
+        win.innerHTML = buildingInspectorCardHTML(b);
+        bindBuildingInspectorWindow(win, b);
+        win.querySelector('.inspectorCard').scrollTop = scroll;
+      }
+      fitInspectorWindow(win);
+      if (!runtime.state.buildingInspectorPos[id]) runtime.state.buildingInspectorPos[id] = defaultBuildingInspectorPos(id, index, win);
+      entry.keepInside();
     });
   }
   const oldRenderInspectorV4959 = runtime.renderInspector;
   runtime.renderInspector = function () {
-    if (runtime.state.selectedTowerId) return oldRenderInspectorV4959();
+    if (runtime.state.selectedTowerId || runtime.getBuilding(runtime.E, runtime.state.selectedBuilding)) {
+      renderBuildingInspectors();
+      return oldRenderInspectorV4959();
+    }
     const el = runtime.$('#inspector');
     if (el) {
       el.classList.remove('show');
@@ -291,6 +283,10 @@ export function initializeUiMultipleInspectors(runtime) {
       oldCloseBuildingInspectorV4959();
     } catch (_) {}
   };
+  const fitWindows = () => { for (const entry of windows.values()) entry.keepInside(); };
+  for (const event of ['resize', 'roadlords:ui-scale']) window.addEventListener(event, fitWindows);
+  window.visualViewport?.addEventListener('resize', fitWindows);
+  window.addEventListener('blur', () => { for (const entry of windows.values()) entry.drag.cancel(); });
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && !runtime.state.modal && runtime.state.openBuildingInspectors?.length) {
       const last = runtime.state.openBuildingInspectors[runtime.state.openBuildingInspectors.length - 1];

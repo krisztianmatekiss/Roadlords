@@ -117,6 +117,7 @@ export function initializeCombatRoadIntegration(runtime) {
         undElite: u.undElite,
         eliteVisual: u.eliteVisual,
         warEliteMult: u.warEliteMult,
+        temporaryVisual: u.temporary > 0 || !!u.temporaryVisual,
         roadFace: u.roadFace,
         death: runtime.ROAD.clock
       });

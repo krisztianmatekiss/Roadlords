@@ -10,10 +10,13 @@ export function installBuildCardDeck(R) {
   };
   new ResizeObserver(sizeDeck).observe(list);
   sizeDeck();
-  let key = null, preview = null, hideTimer = 0, keyboard = false;
+  const HOVER_DELAY = 1500;
+  let key = null, preview = null, hideTimer = 0, hoverTimer = 0, hovered = null, keyboard = false;
   const cardFor = type => [...list.querySelectorAll('.buildcard')].find(c => c.dataset.k === type);
+  function cancelHover() { clearTimeout(hoverTimer); hoverTimer = 0; hovered = null; }
   function close() {
     clearTimeout(hideTimer);
+    cancelHover();
     preview?.remove(); preview = null; key = null; keyboard = false;
   }
   function position(card) {
@@ -44,29 +47,41 @@ export function installBuildCardDeck(R) {
     const hitbox = document.createElement('span'); hitbox.className = 'previewHitbox'; preview.append(hitbox);
     preview.onclick = e => { e.preventDefault(); cardFor(type)?.click(); };
     preview.addEventListener('pointerenter', () => clearTimeout(hideTimer));
-    preview.addEventListener('pointerleave', () => { if (!keyboard) hideTimer = setTimeout(close, 100); });
     document.body.append(preview);
     position(card); fitCardText(preview);
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) preview.animate([{transform:'translateY(24px)',opacity:.5},{transform:'translateY(0)',opacity:1}], {duration:140,easing:'ease-out'});
   }
-  list.addEventListener('pointerover', e => {
-    const slot = e.target.closest('.buildSlot');
-    if (slot) show(slot.dataset.k);
-  });
-  list.addEventListener('pointerleave', () => { if (!keyboard) hideTimer = setTimeout(close, 100); });
-  list.addEventListener('focusin', e => { const card = e.target.closest('.buildcard'); if (card) show(card.dataset.k); });
+  list.addEventListener('focusin', e => { const card = e.target.closest('.buildcard'); if (card) show(card.dataset.k, {keyboard:true}); });
   list.addEventListener('focusout', e => { if (!preview?.contains(e.relatedTarget)) hideTimer = setTimeout(close, 100); });
   list.addEventListener('scroll', () => {
     if (keyboard && cardFor(key)) position(cardFor(key)); else close();
   }, {passive:true});
   list.addEventListener('mousedown', e => { if (e.target.closest('.buildcard')) e.preventDefault(); });
-  document.addEventListener('pointerdown', e => { if (preview && !preview.contains(e.target) && !e.target.closest('#buildList')) close(); }, true);
+  document.addEventListener('pointerdown', e => {
+    cancelHover();
+    if (preview && !preview.contains(e.target) && !e.target.closest('#buildList')) close();
+  }, true);
   document.addEventListener('pointermove', e => {
-    if (!keyboard || !preview) return;
-    const r = preview.getBoundingClientRect(), owner = cardFor(key)?.getBoundingClientRect();
     const inside = box => box && e.clientX >= box.left && e.clientX <= box.right && e.clientY >= box.top && e.clientY <= box.bottom;
-    if (!inside(r) && !inside(owner)) close();
+    if (preview) {
+      // The lower, click-through part is still visually part of the large card.
+      // Don't dismiss it just because its hitbox no longer receives pointer events.
+      if (inside(preview.getBoundingClientRect()) || inside(cardFor(key)?.getBoundingClientRect())) return;
+      close();
+    }
+    const slot = e.target.closest('#buildList .buildSlot');
+    if (!slot || e.pointerType === 'touch' || R.state.selectedBuild || R.state.modal ||
+        document.body.classList.contains('roadlords-menu-open')) { cancelHover(); return; }
+    if (hovered === slot.dataset.k) return;
+    cancelHover();
+    hovered = slot.dataset.k;
+    hoverTimer = setTimeout(() => {
+      const type = hovered;
+      hoverTimer = 0;
+      if (type) show(type);
+    }, HOVER_DELAY);
   }, {passive:true});
+  document.addEventListener('pointerleave', close);
   window.addEventListener('keydown', e => { if (e.key === 'Escape') close(); }, true);
   window.addEventListener('blur', close);
   window.addEventListener('resize', close);
@@ -84,7 +99,7 @@ export function installBuildCardDeck(R) {
     if (R.state.selectedBuild) close();
     else if (active) {
       close();
-      if (cardFor(active) && (!wasKeyboard || R.state.selectedBuild === active)) show(active, {keyboard:wasKeyboard});
+      if (cardFor(active)) show(active, {keyboard:wasKeyboard});
     }
     return out;
   };

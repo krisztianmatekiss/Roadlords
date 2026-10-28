@@ -1,0 +1,44 @@
+/* Limits follow the viewport, rather than a guessed 300px card height. */
+html body :is(#inspector.show, .buildingInspectorWindow) {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  max-width: var(--inspector-max-width, calc(100vw - 16px)) !important;
+  max-height: var(--inspector-max-height, calc(100dvh - 88px)) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+html body :is(#inspector.show, .buildingInspectorWindow) > .inspectorCard {
+  box-sizing: border-box !important;
+  max-height: calc(var(--inspector-max-height, 100dvh - 88px) - 2px) !important;
+  overflow: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #a48e53 #132219;
+  scroll-padding-top: 80px;
+}
+html body :is(#inspector.show, .buildingInspectorWindow) .ihead {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between;
+  gap: 12px !important;
+  min-height: 52px;
+  padding: 8px 0;
+  background: #17271e;
+  box-shadow: 0 5px 0 #17271e;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+html body :is(#inspector.show, .buildingInspectorWindow) .ihead > div:first-child { min-width: 0; }
+html body :is(#inspector.show, .buildingInspectorWindow) .ihead h3 { overflow-wrap: anywhere; }
+html body :is(#inspector.show, .buildingInspectorWindow) .ihead button {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  touch-action: manipulation;
+}
+html body :is(#inspector.show, .buildingInspectorWindow) .multiInspectorButtons { flex-shrink: 0; margin-left: 0; }
+html body :is(#inspector.show, .buildingInspectorWindow).dragging .ihead { cursor: grabbing; }

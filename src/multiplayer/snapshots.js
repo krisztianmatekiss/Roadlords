@@ -24,6 +24,7 @@ export function initializeMultiplayerSnapshots(runtime) {
     if (u.lightningReady) flags |= 256;
     if (u.hospitalSaved) flags |= 512;
     if (unitIsElite(u)) flags |= 1024;
+    if (u.temporary > 0) flags |= 2048;
     return [u.id, u.side === 'player' ? 0 : 1, u.key, round1V4974(u.lane), round1V4974(u.offset), round1V4974(u.hp), round1V4974(u.maxHp), round1V4974(u.shield), round1V4974(u.tempShield), flags, Math.max(0, Math.floor(Number(u.firstHitsRemaining) || 0)), u.alchemyEffect || '', Array.isArray(u.alchemyEffects) ? u.alchemyEffects : []];
   }
   function unpackUnitV4974(a) {
@@ -41,6 +42,7 @@ export function initializeMultiplayerSnapshots(runtime) {
       alive: !!(flags & 1),
       veteran: !!(flags & 2),
       eliteVisual: !!(flags & 1024),
+      temporaryVisual: !!(flags & 2048),
       phalanx: !!(flags & 4),
       permanentTavern: !!(flags & 8),
       blessingTime: flags & 16 ? 1 : 0,

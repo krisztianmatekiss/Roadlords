@@ -291,6 +291,8 @@ export function installBattleFigures(R) {
     if(!dead&&detail){g.strokeStyle=R.unitTeamFill(u);g.globalAlpha=.5;g.lineWidth=1;g.beginPath();g.ellipse(0,2,r,3.5,0,0,TAU);g.stroke();g.globalAlpha=1;}
     g.save();g.scale(figureFacing(u,pose),1);
     const hurt=dead?0:clamp(1-(R.ROAD.clock-(u.roadHurtAt??-99))/.16);g.translate(-Math.sin(hurt*Math.PI)*1.5,0);
+    // Only time-limited bodies are translucent; permanent summons remain solid.
+    if(u.temporary>0||u.temporaryVisual)g.globalAlpha*=.55;
     g.drawImage(image,...image.figureBounds);g.restore();
     if(!dead){
       if((detail||hurt>.4)&&u.hp<u.maxHp*.98){const top=paintedUndead(R,u)?(['und_lich','und_necromancer'].includes(u.key)?-75:-62):paintedOrcSiege(R,u)?(u.key==='orc_warg'?-65:-45):paintedOrcMystic(R,u)?(u.key==='orc_troll'?-72:-60):paintedKnight(R,u)?-61:paintedCaster(R,u)?-59:-51;g.fillStyle='#14251a';g.fillRect(-10,top,21,3);g.fillStyle=R.unitTeamFill(u);g.fillRect(-9,top+1,19*clamp(u.hp/u.maxHp),1.8);}

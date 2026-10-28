@@ -1,19 +1,19 @@
 # Emberi város – képelőnézet
 
-## Javított terv (v2)
+## Külső falkeret és három kapuikon (v3)
 
-A két felső bástya illesztése javítva. A régi kapujelzés eltűnt; a KAPU kapcsoló képelőnézete a bal alsó sarokban, a Q Mind fölött látható. A városbelső rácsa és épületei a PNG-ben pixelre azonosak az eredeti képernyőképpel.
+A teljes bástyák külön külső keretben helyezkednek el, a rács nem vág beléjük. Az eredeti 635 × 635 pixeles városbelső változatlan tartalommal, egyben beljebb került. Három körikon a Q Mind fölött, balról: nyitott, zárt, automata. A képen a zárt mód aktív.
 
-![Javított terv](human-surroundings-concept-v2.jpg)
+![Legújabb terv](human-surroundings-concept-v3.jpg)
 
-[PNG](human-surroundings-concept-v2.png)
+[PNG](human-surroundings-concept-v3.png)
 
 ## Jelenlegi játék
 
 ![Jelenlegi játék](current-game.jpg)
 
-## Első terv
+## Korábbi tervek
 
-![Első terv](human-surroundings-concept.jpg)
+[v2](human-surroundings-concept-v2.jpg) · [v1](human-surroundings-concept.jpg)
 
-Kizárólag képelőnézetek. Az élő játék és a main ág változatlan.
+Kizárólag képelőnézetek; az élő játék és a main ág változatlan.

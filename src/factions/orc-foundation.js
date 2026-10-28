@@ -3,6 +3,7 @@ import { MOVEMENT_BALANCE } from '../data/movement-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { ORC_BALANCE, GOBLIN_BOW_COPY } from '../data/combat-balance.js';
 import { ORC_TRAINING, trainingPrice } from '../data/unit-balance.js';
+import { attackSourceCanResolve } from '../combat/target-budget.js';
 export function initializeFactionsOrcFoundation(runtime) {
   const isOrc = c => c?.race === 'orc',
     orcKey = k => String(k).startsWith('orc_');
@@ -259,7 +260,7 @@ export function initializeFactionsOrcFoundation(runtime) {
   const oldAttack = runtime.attackUnit;
   runtime.attackUnit = function (u, t, opts = {}) {
     if (!orcKey(u.key)) return oldAttack(u, t, opts);
-    if (!u.alive || !t?.alive) return;
+    if (!attackSourceCanResolve(runtime,u) || !t?.alive) return;
     const c = runtime.cityForSide(u.side);
     u.attackCount = (u.attackCount || 0) + 1;
     const bloodbath = u.key === 'orc_berserker' && runtime.hasBranch(c, 'orc_bers', 'bloodbath') && u.hp < u.maxHp * .5;

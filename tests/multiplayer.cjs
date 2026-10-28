@@ -23,7 +23,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
     await host.evaluate(()=>{const R=__ROADLORDS__,u=R.state.units[0],v=R.state.units.find(v=>v.side!==u.side);R.attackUnit(u,v);});
     const second=await transferSnapshot();const row=second.units.find(r=>r[18]);assert(row);
     const anim=await guest.evaluate(id=>__ROADLORDS__.state.units.find(u=>u.id===id)?.roadAttack,row[0]);
-    assert(anim&&Number.isFinite(anim.hit));assert(Math.abs(anim.lane-(mirroring.L-row[18].lane))<.2);console.log('PASS Attack timing and projectile coordinates survive snapshot and mirroring');
+    assert(Array.isArray(row[18])&&anim&&Number.isFinite(anim.hit));assert(Math.abs(anim.lane-(mirroring.L-row[18][5]))<.2);assert.equal(anim.hit,row[18][2]);console.log('PASS Compact attack timing and projectile coordinates survive snapshot and mirroring');
     await host.evaluate(()=>__ROADLORDS_ROAD__.handle({type:'strategy',seq:999,data:{gateMode:'closed',race:__ROADLORDS__.E.race,unitColor:__ROADLORDS__.E.unitColor}}));
     assert.equal(await host.evaluate(()=>__ROADLORDS_ROAD__.MP.lastGuestSeq),999);console.log('PASS Existing host strategy handler accepts guest commands');
     assert.equal(errors.length,0);console.log('PASS No multiplayer protocol runtime errors');

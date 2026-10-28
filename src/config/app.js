@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.54.1',
-  label: 'V4.54.1 · GOBLIN ÉS AI GAZDASÁG',
-  title: 'Roadlords – Goblin és AI gazdaság',
+  version: '4.55.0',
+  label: 'V4.55.0 · TÖMEGHARC ÉS CÉLZÁS',
+  title: 'Roadlords – Tömegharc és célzás',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

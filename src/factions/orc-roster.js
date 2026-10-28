@@ -3,6 +3,8 @@ import { assetUrl } from '../assets/urls.js';
 import { ORC_BALANCE } from '../data/combat-balance.js';
 import { ORC_TRAINING, trainingPrice } from '../data/unit-balance.js';
 import { MOVEMENT_BALANCE } from '../data/movement-balance.js';
+import { attackSourceCanResolve } from '../combat/target-budget.js';
+import { packBattleAttack } from '../multiplayer/attack-codec.js';
 export function initializeFactionsOrcRoster(runtime) {
   const O = window.__ROADLORDS_ORCS__,
     isOrc = O.isOrc;
@@ -224,7 +226,7 @@ export function initializeFactionsOrcRoster(runtime) {
   };
   const oldAttack = runtime.attackUnit;
   runtime.attackUnit = function (u, t, opts = {}) {
-    if (!u?.alive || !t?.alive) return;
+    if (!attackSourceCanResolve(runtime,u) || !t?.alive) return;
     if (Math.random() < .25 * runtime.orcCursePower(u, 'blindness')) {
       u.attackCount = (u.attackCount || 0) + 1;
       runtime.consumeOpeningAttack(u);
@@ -328,13 +330,15 @@ export function initializeFactionsOrcRoster(runtime) {
         ...data,
         units: data.units.map(row => {
           const u = byId.get(row[0]);
-          const packed = [...row.slice(0, 13), u?.orcCurses ? Object.keys(u.orcCurses).filter(k => cursed(u, k)) : [], !!u?.orcSpearReady, u?.orcDefianceTime || 0, u?.orcCursePower || {}, {
+          const extra={
             positive: u?.orcPositive || {},
             cargo: (u?.orcCargo || []).reduce((n, e) => n + runtime.orcArmyWeight(e, runtime.cityForSide(u.side)), 0),
             feasts: u?.orcFeasts || 0,
             passengers: u?.orcCargo?.length || 0,
             statuses: runtime.unitStatusBadges(u)
-          }, u?.roadAttack || null, !!u?.roadMoving];
+          };
+          const metadata=extra.cargo||extra.feasts||extra.passengers||extra.statuses.length||Object.values(extra.positive).some(v=>v>0)?extra:null;
+          const packed = [...row.slice(0, 13), u?.orcCurses ? Object.keys(u.orcCurses).filter(k => cursed(u, k)) : [], !!u?.orcSpearReady, u?.orcDefianceTime || 0, u?.orcCursePower || {}, metadata, packBattleAttack(u?.roadAttack,runtime.ROAD.clock), !!u?.roadMoving];
           const faction = runtime.mpFactionUnitPayload?.(u);
           if(faction)packed.push(faction);
           return packed;

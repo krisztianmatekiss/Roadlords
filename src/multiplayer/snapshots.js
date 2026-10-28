@@ -1,5 +1,6 @@
 import { assetUrl } from '../assets/urls.js';
 import { unitIsElite } from '../data/unit-ranks.js';
+import { unpackBattleAttack } from './attack-codec.js';
 export function initializeMultiplayerSnapshots(runtime) {
   const MP_SNAPSHOT_MIN_MS = 120;
   const MP_MAX_BUFFERED_BYTES = 512 * 1024;
@@ -51,7 +52,7 @@ export function initializeMultiplayerSnapshots(runtime) {
       firstHitsRemaining: Number(a?.[10]) || 0,
       alchemyEffect: a?.[11] || null,
       alchemyEffects: Array.isArray(a?.[12]) ? [...a[12]] : [],
-      roadAttack: a?.[18] || null,
+      roadAttack: unpackBattleAttack(a?.[18],a?.[2]),
       roadMoving: !!a?.[19]
     };
   }

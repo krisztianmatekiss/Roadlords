@@ -1,4 +1,5 @@
 // Keep city health on the map and both army summaries in the existing top bar.
+import { BATTLE_UNIT_LIMIT } from '../economy/battle-population.js';
 export function installRoadCities(R) {
   const roster = document.createElement('section');
   roster.id = 'roadRoster';
@@ -47,7 +48,11 @@ export function installRoadCities(R) {
       fill.style.width = `${R.clamp(c.hp / Math.max(1, c.maxHp), 0, 1) * 100}%`;
       fill.style.backgroundColor = R.unitTeamFill({side});
       const own = side === 'player', units = R.state.units.filter(u => u.alive && u.side === side);
-      R.$(own ? '#playerArmy' : '#enemyArmy').textContent = `${R.ROAD.test ? units.length : R.fieldUnitCount(c)}/${R.ROAD.test ? R.ROAD.testCount : c.armyCap}`;
+      const army=R.$(own ? '#playerArmy' : '#enemyArmy');
+      army.textContent = `${R.ROAD.test ? units.length : R.fieldUnitCount(c)}/${R.ROAD.test ? R.ROAD.testCount : c.armyCap}`;
+      const population=R.battlePopulation?.(c)??units.length;
+      army.title=`Pályán lévő egységek és utasok: ${population} / ${BATTLE_UNIT_LIMIT}. Az idézett egységek is beleszámítanak.`;
+      if(!R.ROAD.test&&population>=BATTLE_UNIT_LIMIT)army.textContent+=' · MAX';
       R.$(own ? '#garrisonCount' : '#enemyGarrison').textContent = `${R.reserveCount(c)}/${c.garrisonCap}`;
       R.updateUnitMix(own ? 'playerArmyMix' : 'enemyArmyMix', units);
       R.updateUnitMix(own ? 'playerGarrisonMix' : 'enemyGarrisonMix', [...c.garrison, ...c.releaseQueue]);

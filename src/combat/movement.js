@@ -1,5 +1,4 @@
 // Local steering uses the battle grid; no all-pairs pathfinding is needed.
-const TAU = Math.PI * 2;
 const gapFor = (a, b) => a.tags.includes('heavy') || b.tags.includes('heavy') || a.cat === 'cavalry' || b.cat === 'cavalry' ? 25 : 21;
 const anchored = (u, clock) => u.roadAttack && clock < u.roadAttack.launch + .09;
 
@@ -9,17 +8,18 @@ export function installRoadMovement(R) {
     const dir = u.side === 'player' ? 1 : -1;
     const speed = R.effectiveMoveSpeed(u, R.cityForSide(u.side));
     let target = u.roadSeek;
-    if (!target?.alive || !R.roadCanPursue(u, target) || R.ROAD.clock >= (u.roadSeekAt || 0)) {
+    const linked = u.key === 'und_lich' ? new Set((u.undBeams||[]).map(b=>b.id)) : null;
+    if (!target?.alive || linked?.has(target.id) || !R.roadCanPursue(u, target) || R.ROAD.clock >= (u.roadSeekAt || 0)) {
       if (target?.alive) target.roadEngaged = Math.max(0, (target.roadEngaged || 0) - 1);
       target = null;
       let best = Infinity;
       R.roadVisit(u, Math.max(340, u.range + 60), v => {
-        if (v.side === u.side || !R.roadCanPursue(u,v)) return;
+        if (linked?.has(v.id) || !R.roadCanPursue(u,v)) return;
         const dx = v.lane - u.lane, dy = (v.offset || 0) - (u.offset || 0);
         // Prefer reachable, less occupied opponents instead of piling onto one soldier.
         const score = (dx * dx + dy * dy * 1.1) * (1 + (v.roadEngaged || 0) * .45);
         if (score < best) { best = score; target = v; }
-      });
+      },u.side==='player'?'enemy':'player');
       if (target) {
         if (target !== u.roadSeek) u.roadSlot = target.roadEngaged || 0;
         target.roadEngaged = (target.roadEngaged || 0) + 1;
@@ -47,16 +47,11 @@ export function installRoadMovement(R) {
     const distance = Math.hypot(dx, dy);
     if (distance < .5) return;
     let vx = dx / distance, vy = dy / distance;
-    let repelX = 0, repelY = 0, obstacle = 0, wall = false;
+    let repelX = 0, repelY = R.roadFriendlyBias(u), obstacle = 0, wall = false;
     R.roadVisit(u, 43, v => {
       if(v.side!==u.side&&(R.unitPassesEnemies?.(u)||R.unitPassesEnemies?.(v)))return;
       const ox = v.lane - u.lane, oy = (v.offset || 0) - (u.offset || 0);
       const d = Math.hypot(ox, oy) || .01, gap = gapFor(u, v);
-      if (v.side === u.side) {
-        // Preference only: friendly bodies never slow or block forward movement.
-        if (d < gap + 6) repelY -= oy / d * (gap + 6 - d) / (gap + 6) * .18;
-        return;
-      }
       const ahead = ox * vx + oy * vy, across = Math.abs(ox * vy - oy * vx);
       if (ahead > 0 && ahead < gap + 10 && across < gap * .85) {
         obstacle = Math.max(obstacle, (1 - across / gap) * (1 - Math.max(0, ahead - gap) / 10));
@@ -67,7 +62,7 @@ export function installRoadMovement(R) {
         repelX -= ox / d * strength;
         repelY -= oy / d * strength;
       }
-    });
+    },u.side==='player'?'enemy':'player');
     // Keep a personal passing side instead of sending every row to the road edge.
     if (!u.roadDetour) u.roadDetour = u.id % 2 ? 1 : -1;
     if (Math.abs(u.offset || 0) > R.ROAD.half - 28) u.roadDetour = -(Math.sign(u.offset) || 1);
@@ -94,7 +89,7 @@ export function installRoadMovement(R) {
       if (discriminant < 0) return;
       const entry = (dot-Math.sqrt(discriminant))/length2;
       if (entry >= 0 && entry < fraction) fraction = Math.max(0,entry-.001);
-    });
+    },u.side==='player'?'enemy':'player');
     dx *= fraction;dy *= fraction;
     const old = u.lane;
     R.setBattleLane(u, R.clamp(u.lane + dx, 8, R.PATH_LENGTH - 8));
@@ -110,19 +105,17 @@ export function installRoadMovement(R) {
         R.roadVisit(u, 28, v => {
           if (v.id <= u.id||v.side!==u.side&&(R.unitPassesEnemies?.(u)||R.unitPassesEnemies?.(v))) return;
           let dx = v.lane - u.lane, dy = (v.offset || 0) - (u.offset || 0), d = Math.hypot(dx, dy);
-          const friendly = u.side === v.side;
-          const gap = friendly ? 17 : gapFor(u, v);
+          const gap = gapFor(u, v);
           if (d >= gap) return;
-          if (d < .001) { const angle = ((u.id * 17 + v.id * 13) % 64) / 64 * TAU; dx = Math.cos(angle); dy = Math.sin(angle); d = 1; }
+          if (d < .001) { const angle = ((u.id * 17 + v.id * 13) % 64) / 64 * Math.PI*2; dx = Math.cos(angle); dy = Math.sin(angle); d = 1; }
           const mass = x => (anchored(x, R.ROAD.clock) ? .12 : 1) / (x.cat === 'siege' ? 2 : x.cat === 'cavalry' ? 1.5 : 1);
-          const a = mass(u), b = mass(v), push = Math.min(friendly ? .25 : 5, gap - d) / (a + b);
-          if (friendly) {dx = 0;dy = Math.abs(dy) < .01 ? (u.id%2?1:-1) : Math.sign(dy);d = 1;}
+          const a = mass(u), b = mass(v), push = Math.min(5, gap - d) / (a + b);
           const px = dx / d * push, py = dy / d * push;
           R.setBattleLane(u, R.clamp(u.lane - px * a, 8, R.PATH_LENGTH - 8));
           R.setBattleLane(v, R.clamp(v.lane + px * b, 8, R.PATH_LENGTH - 8));
           u.offset = R.clamp((u.offset || 0) - py * a, -R.ROAD.half, R.ROAD.half);
           v.offset = R.clamp((v.offset || 0) + py * b, -R.ROAD.half, R.ROAD.half);
-        });
+        },u.side==='player'?'enemy':'player');
       }
     }
   };

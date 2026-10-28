@@ -418,7 +418,7 @@ export function register(runtime) {
       }
       if (c.garrison.length && runtime.fieldQueueRoom(c) > 0) runtime.openWave(c);
       if (!c.releaseQueue.length || runtime.fieldUnitCount(c) >= c.armyCap) c.releaseAcc = 0;else c.releaseAcc = (c.releaseAcc || 0) + dt * runtime.gateReleaseRate(c);
-      while (c.releaseAcc >= 1 && c.releaseQueue.length && fitsUnitRoom(c.releaseQueue[0], c.armyCap - runtime.fieldUnitCount(c), runtime.orcArmyWeight(c.releaseQueue[0], c))) {
+      while (c.releaseAcc >= 1 && c.releaseQueue.length && (runtime.battlePopulationRoom?.(c)??Infinity)>=(runtime.battleEntrySeats?.(c.releaseQueue[0])??1) && fitsUnitRoom(c.releaseQueue[0], c.armyCap - runtime.fieldUnitCount(c), runtime.orcArmyWeight(c.releaseQueue[0], c))) {
         c.releaseAcc -= 1;
         runtime.releaseUnit(c, c.releaseQueue.shift());
       }

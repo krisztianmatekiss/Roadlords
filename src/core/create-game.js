@@ -1,5 +1,7 @@
 import { initializeHumanMapArtwork } from '../rendering/human-map-artwork.js';
 import { initializeUndeadExpansion } from '../factions/undead/expansion.js';
+import { installFlyingShotSnapshots } from '../multiplayer/flying-shots.js';
+import { installBattlePopulation } from '../economy/battle-population.js';
 import { installProductionFigures } from '../rendering/production-figures.js';
 import { initializeUndeadFoundation } from '../factions/undead/foundation.js';
 import { initializeOrcExpansion } from '../factions/orc-expansion.js';
@@ -284,5 +286,7 @@ export function createGame() {
   initializeUndeadUi(runtime);
   installBattleEffects(runtime);
   installProductionFigures(runtime);
+  installFlyingShotSnapshots(runtime);
+  installBattlePopulation(runtime);
   return runtime;
 }

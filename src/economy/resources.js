@@ -173,6 +173,7 @@ export function register(runtime) {
     return runtime.totalProductionRoom(c);
   };
   runtime.queueProduced = function queueProduced(c, entry, b = null) {
+    if(runtime.battleCanQueue&&!runtime.battleCanQueue(c,entry))return false;
     entry.waitTime = entry.waitTime || 0;
     entry.originBuildingId = b?.id || entry.originBuildingId || null;
     if (b && runtime.rallyAccepts(c, b)) {

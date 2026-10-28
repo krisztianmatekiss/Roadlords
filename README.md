@@ -1,4 +1,17 @@
-# Roadlords · V4.53.0
+# Roadlords · V4.55.0
+
+## V4.55.0 – Tömegharc, célzás és sereglimit
+
+- A távolságiak figyelembe veszik a már célpont felé tartó sebzést. Másik célpontot keresnek, vagy röviden visszatartják a lövést, ha már mindegyikre elegendő támadás tart. Pajzs, fizikai védelem és provokáció is számít; a becslés nem garantál találatot és nem futtatja előre a harcot.
+- A már elindult lövedék a lövő halála után is becsapódik, a valódi harcrendszerrel. A közelharci támadás és a lich sugárkapcsolása továbbra is élő támadót igényel. A vendég külön megkapja az elhunyt lövők megmaradt lövedékeit.
+- A saját egységek szabadon áthaladnak egymáson. Az enyhe oldalirányú helykeresés tömegtől függetlenül korlátozott; a lich mozgáskor nem ragad a már összekapcsolt célpontjához, miközben újat keres.
+- Normál játékban legfeljebb **750 aktív egység lehet oldalanként**, idézettekkel és szállított utasokkal együtt. A megszokott sereghelyszámítás ettől külön működik. Telítettségnél az új képzés nem von le költséget, a kapunál váró egységek megmaradnak; veszteség után újra kiengedhetők. A tesztkörnyezet mérés céljára túllépheti a plafont.
+- A közeli egységek keresése csapatonként külön térbeli listát használ. Saját egységek páronkénti ütköztetése megszűnt. Tömegben ritkább járásanimáció, kisebb rajzolási gyorsítótárképek és 64 MiB-os sprite-pixelkeret csökkenti a terhelést.
+- Multiplayerben a lejárt támadásanimációk kimaradnak az adatcsomagból, az aktív támadások tömör formában utaznak. A harc időzítése a hoston változatlan pontosságú; a vendég animációja ezredmásodperces időadatokat kap. Játékszabály-verzió: 7, mindkét játékos frissítsen.
+
+Ez a felmért javítási terv első, harcműködést és terhelést kezelő szakasza. Az egységárak/képzési idők következő balance-köre, a távolságiak külön nerfje, az új fejlesztések és a fajonkénti város/út látványtervei külön folytatást kapnak. A hirtelen halál továbbra is 20:00-kor kezdődik.
+
+Mérés: `npm run audit:battle`; részletek és korlátok: [Tömegharc](docs/mass-battle-4.55.md).
 
 ## V4.53.0 – Teljes emberi városi grafika
 

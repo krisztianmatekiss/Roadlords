@@ -59,7 +59,7 @@ export function initializeUndeadCombat(R) {
     const found = [];
     R.roadVisit(u, radius, (v) => {
       if (v.side === side && R.roadDistance(u, v) <= radius) found.push(v);
-    });
+    },side);
     return found;
   };
   const opposite = (side) => (side === 'player' ? 'enemy' : 'player');
@@ -340,10 +340,12 @@ export function initializeUndeadCombat(R) {
         return u.roadAim;
       if ((u.roadAimAt || 0) > R.ROAD.clock) return null;
       u.roadAimAt = R.ROAD.clock + 0.2;
-      const candidates = near(u, opposite(u.side), u.range).filter(
-        (v) => !ids.has(v.id) && R.roadCanPursue(u, v),
-      );
-      u.roadAim = candidates.sort((a, b) => R.roadDistance(a, u) - R.roadDistance(b, u))[0] || null;
+      let best=null,distance=Infinity;
+      R.roadVisit(u,u.range,v=>{
+        if(ids.has(v.id)||!R.roadCanPursue(u,v))return;
+        const d=R.roadDistance(u,v);if(d<=u.range&&d<distance){best=v;distance=d;}
+      },opposite(u.side));
+      u.roadAim = best;
       return u.roadAim;
     }
     return preferred(u, opps);

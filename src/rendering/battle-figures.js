@@ -241,10 +241,11 @@ function sprite(R, u, pose) {
   const summonKey=undead&&Number.isInteger(pose.summonFrame)?':summon:'+pose.summonFrame:'';
   const variant=raider?orcRaiderVariant(R,u):siege?orcSiegeVariant(u,pose):'';
   const kind=caster?shotKind(R,u):'',healKey=caster&&Number.isInteger(pose.healFrame)?':healing:'+pose.healFrame:'';
-  const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}${undead?':painted-undead':skeleton?':painted-skeleton':orc?':painted-orc':knight?':painted-knight':catapult?':painted-catapult':human?':painted-human':archer?':painted-archer':caster?':painted-caster:'+kind:raider?':painted-raider:'+variant:mystic?':painted-mystic':siege?':painted-siege:'+variant:''}${elite?":elite":""}${healKey}${summonKey}`;
-  let canvas=R.ROAD.sprites.get(key);if(canvas)return canvas;
+  const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}${undead?':painted-undead':skeleton?':painted-skeleton':orc?':painted-orc':knight?':painted-knight':catapult?':painted-catapult':human?':painted-human':archer?':painted-archer':caster?':painted-caster:'+kind:raider?':painted-raider:'+variant:mystic?':painted-mystic':siege?':painted-siege:'+variant:''}${elite?":elite":""}${healKey}${summonKey}${R.ROAD.lowDetail?':crowd':''}`;
+  let canvas=R.ROAD.sprites.get(key);if(canvas){R.ROAD.sprites.delete(key);R.ROAD.sprites.set(key,canvas);return canvas;}
   const style=FIGURES[u.key];if(!style)return null;
   canvas=document.createElement('canvas');canvas.width=canvas.height=undead?256:mystic&&u.key==='orc_troll'?384:mystic||siege?320:knight||catapult||human||archer||caster||raider||mystic?256:refined||painted?192:128;
+  if(R.ROAD.lowDetail)canvas.width=canvas.height=canvas.width/2;
   const bounds=undead?[-58,-88,128,128]:siege?(u.key==='orc_warg'?[-68,-86,148,148]:[-60,-70,136,136]):mystic?(u.key==='orc_troll'?[-112,-144,240,240]:[-82,-116,168,168]):raider?[-48,-80,112,112]:human||archer||caster?[-44,-76,112,112]:catapult?[-54,-78,112,112]:knight?[-54,-84,124,124]:orc?[-46,-70,92,92]:[-40,-66,80,80];canvas.figureBounds=bounds;
   const g=canvas.getContext('2d'),p=phase(pose),resolution=canvas.width/bounds[2];g.translate(-bounds[0]*resolution,-bounds[1]*resolution);g.scale(resolution,resolution);
   ellipse(g,1,2,style.mount||style.machine?18:style.size>1?15:10,3.5,'#18251e66');
@@ -254,7 +255,13 @@ function sprite(R, u, pose) {
   else if(catapult)canvas.figureRig=drawCatapult(g,R,color,p,elite,pose);
   else if(style.machine){machine(g,style,color,p);if(elite){line(g,-16,-18,16,-18,'#ebc66f',2.5);poly(g,[[-4,-26],[4,-26],[4,-21],[0,-18],[-4,-21]],'#d8ad50');}}
   else canvas.figureRig=undead?drawUndead(g,R,color,p,elite,pose,u.key):mystic?drawOrcMystic(g,R,color,p,elite,pose,u.key):raider?drawOrcRaider(g,R,color,p,elite,pose,u.key,variant):caster?drawHumanCaster(g,R,color,p,elite,pose,u.key,kind):archer?drawArcher(g,R,color,p,elite,pose):human?drawHumanInfantry(g,R,color,p,elite,pose.state==='walk',u.key):skeleton?drawSkeleton(g,R,color,p,elite,pose.state==='walk'):orc?drawOrcWarrior(g,R,color,p,elite,pose.state==='walk'):knight?drawKnight(g,R,color,p,elite,pose.state==='walk'):humanoid(g,style,color,p,refined,elite);g.restore();
-  if(R.ROAD.sprites.size>=768)R.ROAD.sprites.delete(R.ROAD.sprites.keys().next().value);
+  if(!R.ROAD.sprites.size)R.ROAD.spritePixels=0;
+  const pixels=canvas.width*canvas.height;
+  while(R.ROAD.sprites.size&&(R.ROAD.spritePixels+pixels>16*1024*1024||R.ROAD.sprites.size>=768)){
+    const oldest=R.ROAD.sprites.keys().next().value,removed=R.ROAD.sprites.get(oldest);
+    R.ROAD.spritePixels-=removed.width*removed.height;R.ROAD.sprites.delete(oldest);
+  }
+  R.ROAD.spritePixels=(R.ROAD.spritePixels||0)+pixels;
   R.ROAD.sprites.set(key,canvas);return canvas;
 }
 
@@ -274,7 +281,9 @@ export function installBattleFigures(R) {
   R.roadDrawUnit=function drawFigure(u,dead=false) {
     const p=R.pointAt(u.lane,u.offset||0),zoom=R.ROAD.zoom||1;
     if(p.x < -90||p.x>R.ROAD.w+90)return;
-    const age=dead?R.ROAD.clock-u.death:0,pose=R.battleFigurePose(u,R.ROAD.clock,dead),image=sprite(R,u,pose);
+    const age=dead?R.ROAD.clock-u.death:0,pose=R.battleFigurePose(u,R.ROAD.clock,dead);
+    if(R.ROAD.lowDetail&&(pose.state==='walk'||pose.state==='death'))pose.frame-=pose.frame%2;
+    const image=sprite(R,u,pose);
     if(!image)return;
     const detail=!R.ROAD.lowDetail;
     const g=R.ctx,scale=R.ROAD.h/600*zoom,style=FIGURES[u.key],r=style.mount||style.machine?18:style.size>1?15:10;
@@ -292,8 +301,8 @@ export function installBattleFigures(R) {
   };
   R.roadDrawShots=function drawShots() {
     const g=R.ctx;
-    for(const u of R.state.units){
-      const a=u.roadAttack;if(!u.alive||!a?.ranged||R.ROAD.clock<a.launch||R.ROAD.clock>=a.hit)continue;
+    for(const {u,a} of R.roadFlyingShots()){
+      if(!a?.ranged||R.ROAD.clock<a.launch||R.ROAD.clock>=a.hit)continue;
       const t=clamp((R.ROAD.clock-a.launch)/(a.hit-a.launch||.1));
       if(drawUndeadShot(R,u,a,t)||drawCatapultShot(R,u,a,t)||drawArcherShot(R,u,a,t)||drawCasterShot(R,u,a,t)||drawGoblinShot(R,u,a,t)||drawShamanShot(R,u,a,t)||drawWargShot(R,u,a,t))continue;
       const from=R.pointAt(a.lane,a.offset),to=R.pointAt(a.to,a.toOffset),rock=a.key==='catapult'||a.key==='orc_goblin',magic=R.UNITS[a.key]?.damageType==='magic';

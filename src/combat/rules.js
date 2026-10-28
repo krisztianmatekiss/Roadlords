@@ -1,6 +1,7 @@
 import { SPEAR_VOLLEY_RANGE, rangedRange } from '../data/ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { formatMetres, formatSpeed } from '../world/measurements.js';
+import { attackSourceCanResolve } from './target-budget.js';
 export function register(runtime) {
   runtime.unitImageTag = function unitImageTag(key, cls = 'unitPortrait') {
     const src = runtime.UNIT_IMAGES[key];
@@ -330,7 +331,7 @@ export function register(runtime) {
         }
         const target = runtime.preferredTarget(u, opps);
         if (target) {
-          if (sacred) continue;
+          if (sacred || u.roadHoldFire) continue;
           if (u.cooldown <= 0) {
             runtime.attackUnit(u, target);
             u.cooldown = u.cooldownTime;
@@ -370,6 +371,7 @@ export function register(runtime) {
   };
   runtime.spawnBattleUnitAt = function spawnBattleUnitAt(c, key, lane, offset = 0) {
     const u = runtime.releaseUnit(c, runtime.makeEntry(c, key));
+    if(!u)return null;
     u.lane = lane;
     u.offset = offset;
     u.cooldown = .2;
@@ -381,6 +383,7 @@ export function register(runtime) {
     if (combatDeath && target.key === 'knight' && runtime.hasLeg(runtime.cityForSide(target.side), 'knight_dismount')) {
       const c = runtime.cityForSide(target.side);
       const s = runtime.spawnBattleUnitAt(c, 'swordsman', target.lane, target.offset);
+      if(!s)return;
       s.hp = s.maxHp;
       if (target.tempClone) {
         s.tempClone = true;
@@ -645,7 +648,7 @@ export function register(runtime) {
     }
   };
   runtime.attackUnit = function attackUnit(u, t, opts = {}) {
-    if (!u.alive || !t?.alive) return;
+    if (!attackSourceCanResolve(runtime,u) || !t?.alive) return;
     const c = runtime.cityForSide(u.side),
       opening = runtime.consumeOpeningAttack(u);
     u.attackCount = (u.attackCount || 0) + 1;

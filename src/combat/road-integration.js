@@ -43,19 +43,22 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.roadCell = (x, y) => Math.floor(x / 64) * 32 + Math.floor((y + 512) / 64);
   runtime.roadOldPreferred = runtime.preferredTarget;
   runtime.preferredTarget = function (u, opps) {
+    u.roadHoldFire = false;
     const range = u.spearVolleyReady ? Math.max(SPEAR_VOLLEY_RANGE, u.range) : u.range;
-    if (u.roadAim?.alive && runtime.roadDistance(u, u.roadAim) <= range) return u.roadAim;
-    if ((u.roadAimAt || 0) > runtime.ROAD.clock) return null;
+    const covered = u.cooldown<=0 && !u.roadPending && u.roadAim?.alive && runtime.roadTargetCovered(u,u.roadAim);
+    if (u.roadAim?.alive && !covered && runtime.roadDistance(u, u.roadAim) <= range) return u.roadAim;
+    if (!covered && (u.roadAimAt || 0) > runtime.ROAD.clock) return null;
     u.roadAimAt = runtime.ROAD.clock + .16 + u.id % 5 * .013;
-    const candidates = [];
+    const candidates = [], available = [];
     runtime.roadVisit(u, range, v => {
       if (v.side !== u.side) {
         const dx = v.lane - u.lane,
           dy = (v.offset || 0) - (u.offset || 0);
-        if (dx * dx + dy * dy <= range * range) candidates.push(v);
+        if (dx * dx + dy * dy <= range * range) {candidates.push(v);if(!runtime.roadTargetCovered(u,v))available.push(v);}
       }
-    });
-    const t = runtime.roadOldPreferred(u, candidates);
+    },u.side==='player'?'enemy':'player');
+    const t = runtime.roadOldPreferred(u, available.length ? available : candidates);
+    u.roadHoldFire = !!t && !available.length && runtime.roadTargetCovered(u,t);
     u.roadAim = t;
     if (t) {
       u.roadTarget = t.id;
@@ -104,6 +107,7 @@ export function initializeCombatRoadIntegration(runtime) {
     const was = u?.alive,
       out = runtime.roadOldKill(u, combat);
     if (was && !u.alive) {
+      u.roadDiedAt = runtime.ROAD.clock;
       runtime.ROAD.dead.push({
         key: u.key,
         side: u.side,
@@ -173,7 +177,8 @@ export function initializeCombatRoadIntegration(runtime) {
     if (!runtime.ROAD.test) return runtime.roadOldTick(dt);
     if (runtime.ROAD.paused || runtime.state.ended) return;
     runtime.roadOldTick(dt);
-    if (!runtime.ROAD.counts[0] || !runtime.ROAD.counts[1]) {
+    const flying=runtime.ROAD.pending.some(p=>p.a.ranged&&p.u.key!=='und_lich'&&p.t.alive&&(p.u.alive||p.u.roadDiedAt>=p.a.launch));
+    if ((!runtime.ROAD.counts[0] || !runtime.ROAD.counts[1])&&!flying) {
       runtime.state.ended = true;
       runtime.state.running = false;
       runtime.ROAD.result = runtime.ROAD.counts[0] ? 'SAJÁT GYŐZELEM' : runtime.ROAD.counts[1] ? 'AZ ELLENFÉL GYŐZÖTT' : 'DÖNTETLEN';
@@ -368,6 +373,7 @@ export function initializeCombatRoadIntegration(runtime) {
         offset: -out.roadAttack.offset,
         toOffset: -out.roadAttack.toOffset
       };
+      for(const key of ['goblinFace','archerFace','casterFace','shamanFace','wargFace','undeadFace','catapultFace'])if(out.roadAttack[key])out.roadAttack[key]*=-1;
     }
     return out;
   };

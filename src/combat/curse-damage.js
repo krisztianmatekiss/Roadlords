@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { attackSourceCanResolve } from './target-budget.js';
 export function initializeCombatCurseDamage(runtime) {
   const O = window.__ROADLORDS_ORCS__;
   runtime.applyBurn = function (u, damage) {
@@ -33,12 +34,12 @@ export function initializeCombatCurseDamage(runtime) {
   };
   const oldAttack = runtime.attackUnit;
   runtime.attackUnit = function (u, t, opts = {}) {
-    if (!u?.alive || u.stunTime > 0) return;
+    if (!attackSourceCanResolve(runtime,u) || u.stunTime > 0 && runtime.roadProjectileSource !== u) return;
     return oldAttack(u, t, opts);
   };
   const oldStructure = runtime.attackStructure;
   runtime.attackStructure = function (u, t) {
-    if (!u?.alive || u.stunTime > 0) return;
+    if (!attackSourceCanResolve(runtime,u) || u.stunTime > 0 && runtime.roadProjectileSource !== u) return;
     return oldStructure(u, t);
   };
   const inherit = runtime.LEGENDARY.find(x => x.id === 'orc_inherit');

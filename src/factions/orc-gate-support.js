@@ -123,6 +123,7 @@ export function initializeFactionsOrcGateSupport(runtime) {
     if (t) {
       if (!fitsUnitRoom(e, tunnelRoom(c), runtime.orcArmyWeight(e, c))) return false;
       const u = runtime.releaseUnit(c, e);
+      if(!u)return false;
       u.lane = t.lane;
       u.cooldown = Math.max(u.cooldown, .2);
       const st = window.__ROADLORDS_MATCH_STATS__.statsOf(c);

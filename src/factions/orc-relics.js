@@ -362,6 +362,7 @@ export function initializeFactionsOrcRelics(runtime) {
         ...e,
         orcDisembarking: true
       });
+      if(!v)continue;
       v.lane = u.lane;
       v.cooldown = Math.max(v.cooldown, .2);
     }
@@ -710,8 +711,8 @@ export function initializeFactionsOrcRelics(runtime) {
     for (const row of rows || []) {
       if (!Array.isArray(row)) continue;
       const u = map.get(row[0]),
-        extra = row[17];
-      if (u && extra) {
+        extra = row[17] || {};
+      if (u) {
         u.orcPositive = extra.positive || {};
         u.orcCargoWeight = extra.cargo || 0;
         u.orcCargoCount = extra.passengers || 0;

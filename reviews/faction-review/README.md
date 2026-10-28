@@ -1,3 +1,32 @@
+# Roadlords — egyszerű fajáttekintés
+
+**[Az új, egyszerű Excel letöltése](Roadlords_Fajok_Egyszeru.xlsx?raw=true)** · kb. 89 KB.
+
+Három külön fül: **Emberek, Orkok, Élőhalottak**. Mindegyikben rövid bemutató, egységek, épületek, L4 ágak, Common és legendás fejlesztések, illetve az új ötletek.
+
+Csak **hat oszlop** van:
+
+| Csoport | Név | Jelenlegi működés / új ötlet | L4 ágak / halmozás | Javaslatom és indoka | Saját megjegyzésed |
+|---|---|---|---|---|---|
+| Meglévő vagy új tartalom típusa | Megnevezés | Hatás, ár, méret vagy feltétel | Választható ágak és ismételhetőség | Mit tartanék meg, törölnék vagy alakítanék át, és miért | Ide írhatsz |
+
+- A munkafüzetben **nincs hivatkozás, képlet, rejtett oszlop vagy külső adatkapcsolat**.
+- Az átfedéseket az adott sorban elmagyarázza; nem kell másik lapra ugrani.
+- A teljes 339 sor megmaradt: 283 meglévő tartalom és 56 értékelt ötletváltozat. A törlésre javasolt és egymást kizáró ötletek továbbra is jelöltek.
+- Nagyobb betűk, sortördelés, szűrhető fejléc és rögzített első két oszlop.
+- A becsült táblázatszélesség 100%-nál **1668 képpont**. A tényleges szélességet az Excel betűmegjelenítése és a rendszer méretezése is befolyásolja.
+- A javaslatok nincsenek beépítve a játékba. Az új számok kipróbálandó értékek.
+
+**[Ugyanez önálló HTML-fájlként](Roadlords_Fajok_Egyszeru.html?raw=true)**: letöltés után böngészőben megnyitható, három füllel, kereséssel és szűrőkkel. Nem igényel internetet. A HTML-ben írt megjegyzések nem mentődnek, tartós jegyzethez az Excelt használd.
+
+4.56.0 · 2026. október 28. A teljes lista és a három fül ellenőrizve; az Excel nem tartalmaz külső kapcsolatokat. A HTML szélességét 2840, 1920 és 1420 képpontos nézetben is ellenőriztük.
+
+Újraépítés: `python build_simple.py` (openpyxl és a mellékelt `review.json` szükséges).
+
+---
+
+<details><summary>Korábbi, sokoszlopos változat és részletes háttér</summary>
+
 # Roadlords — a három faj részletes áttekintése
 
 **4.56.0 · 2026. október 28. · Tervezési munkafüzet, nem beépített módosításcsomag.**
@@ -53,3 +82,6 @@ A jelenlegi alapárak és képzési adatok kedvezmények/terepbónuszok nélkül
 A munkafüzet visszaolvasását, teljes katalóguslefedettségét, azonosítóit, három lapját, szűrőit és belső hivatkozásait ellenőriztük. A HTML három fülét, keresését, szűrőit és fajok közötti navigációját böngészőben is kipróbáltuk.
 
 Gépi forrás: [runtime.json](runtime.json), [review.json](review.json). Újraépítés: `python build_workbook.py` (openpyxl szükséges).
+
+
+</details>

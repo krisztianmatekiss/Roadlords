@@ -1,5 +1,5 @@
-# Human city surroundings — fresh modular concept
+# Human city surroundings — perspective study
 
-![New wall concept](human-surroundings-concept-v4.jpg)
+![Side wall and gate revision](human-surroundings-concept-v5.jpg)
 
-A picture only. Original city grid and buildings preserved at native scale, shifted as one piece. New modular walls and complete corner bastions are outside the grid. Three circular open, closed, and automatic gate controls sit above Q Mind. The live game is unchanged.
+Picture only. Side walls show their stone faces and parapet walkways in an elevated game-camera view. A larger gate opens east toward the road. Original native city grid, buildings, HUD, and three round gate controls are preserved. Not integrated into the live game.

@@ -2,6 +2,7 @@ import { SPEAR_VOLLEY_RANGE, rangedRange } from '../data/ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { formatMetres, formatSpeed } from '../world/measurements.js';
 import { attackSourceCanResolve } from './target-budget.js';
+import { MAGE_SECONDARY_DAMAGE } from '../data/combat-balance.js';
 export function register(runtime) {
   runtime.unitImageTag = function unitImageTag(key, cls = 'unitPortrait') {
     const src = runtime.UNIT_IMAGES[key];
@@ -642,8 +643,8 @@ export function register(runtime) {
     if (runtime.hasBranch(c, 'magetower', 'fire_mages')) runtime.applyBurn(t, dmg);
     if (runtime.hasBranch(c, 'magetower', 'frost_mages')) runtime.applyFreeze(t);
     for (const v of runtime.state.units) if (v.alive && v.side !== u.side && v.id !== t.id && runtime.roadDistance(v, t) <= u.aoe) {
-      runtime.damageUnit(v, dmg * .7, u.damageType);
-      if (runtime.hasBranch(c, 'magetower', 'fire_mages')) runtime.applyBurn(v, dmg * .7);
+      runtime.damageUnit(v, dmg * MAGE_SECONDARY_DAMAGE, u.damageType);
+      if (runtime.hasBranch(c, 'magetower', 'fire_mages')) runtime.applyBurn(v, dmg * MAGE_SECONDARY_DAMAGE);
       if (runtime.hasBranch(c, 'magetower', 'frost_mages')) runtime.applyFreeze(v);
     }
   };

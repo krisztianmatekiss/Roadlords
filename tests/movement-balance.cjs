@@ -11,9 +11,9 @@ try{
   }return profile;});
  check('All 21 unit types move their displayed base distance in a real one-second movement step, on both sides',report.profile.length===42&&report.profile.every(u=>near(u.base,u.effective)&&near(u.distance,u.base)));
  const base=Object.fromEntries(report.profile.map(u=>[u.key,u.base]));
- check('Knight is 3.5x Swordsman and Warg Rider is 4x Orc Warrior; Goblin gets only a 12% bump',near(base.knight/base.swordsman,3.5)&&near(base.orc_warg/base.orc_warrior,4)&&base.orc_goblin===56);
+ check('Cavalry retains its accepted speed while every non-cavalry unit receives 25%' ,base.knight===147&&base.orc_warg===136&&base.orc_goblin===70);
  const unchanged={swordsman:42,spearman:40,archer:42,priest:38,catapult:24,mage:36,orc_warrior:34,orc_berserker:42,orc_shaman:38,orc_ram:20,orc_troll:26,und_skeleton:42,und_skeleton_archer:40,und_zombie:26,und_ghost:46,und_necromancer:36,und_vampire:50,und_lich:32};
- check('The other eighteen unit speeds retain their existing roles',Object.entries(unchanged).every(([k,v])=>base[k]===v));
+ check('The eighteen remaining units gain exactly 25% movement speed',Object.entries(unchanged).every(([k,v])=>near(base[k],v*1.25)));
  const result=await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,out={};R.roadResetCity(R.P,'human');R.roadResetCity(R.E,'orc');R.state.units=[];for(const t of R.towers)t.alive=false;R.roadRefreshFrontiers();
   const unit=(c,key,lane)=>{const u=R.releaseUnit(c,R.makeEntry(c,key));u.lane=lane;u.offset=0;u.roadHomeOffset=0;return u;};
   const knight=unit(R.P,'knight',4000),block=unit(R.E,'orc_warrior',4200),far=unit(R.E,'orc_goblin',4700);knight.roadSeek=far;knight.roadSeekAt=R.ROAD.clock+10;R.roadReindex();R.roadAdvance(knight,[block,far],2);out.sweep=knight.lane<=block.lane-24.9&&knight.lane>4000;

@@ -287,9 +287,9 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     check(
       'The HUD budgets full training demand while actual upkeep is charged separately',
       Math.abs(economy.flow.gain.wood - 4) < 1e-6 &&
-        Math.abs(economy.flow.use.wood - 3.56) < 1e-6 &&
+        Math.abs(economy.flow.use.wood - 3.52) < 1e-6 &&
         Math.abs(economy.net - 3.04) < 1e-6 &&
-        economy.cost === 13,
+        economy.cost === 16,
     );
     check(
       'The unique Anchor reduces local upkeep and rejects a second copy',
@@ -297,10 +297,10 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     );
     check(
       'Hatchery recruits start at half HP; the training legendary boosts cadence without producing free resources',
-      Math.abs(economy.time - 5 / 1.4) < 1e-6 &&
+      Math.abs(economy.time - 6.25 / 1.4) < 1e-6 &&
         economy.spawnRatio === 0.5 &&
         economy.overIncome === 4 &&
-        Math.abs(economy.overTime - 5 / 1.75) < 1e-6,
+        Math.abs(economy.overTime - 6.25 / 1.75) < 1e-6,
     );
     const deaths = await page.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__,
@@ -443,7 +443,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         reflected = R.UNITS.swordsman.hp - foe.hp;
       undReset();
       const n = undUnit('und_necromancer', 'player', 2200);
-      n.undSummonClock = 14.9;
+      n.undSummonClock = 18.65;
       R.updateBattle(0.1);
       const summons = R.state.units.filter((u) => u.undSummoned),
         summonInfo = {
@@ -458,7 +458,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       R.setBuildingLevel(R.P, 'und_necro_spawner', 4, 'eternal_army');
       R.P.legends.add('necro_leg_spirits');
       const eternal = undUnit('und_necromancer', 'player', 2200);
-      eternal.undSummonClock = 14.9;
+      eternal.undSummonClock = 18.65;
       R.updateBattle(0.1);
       const permanent =
         R.state.units.filter((u) => u.undSummoned).every((u) => u.key === 'und_ghost' && !u.temporary) &&
@@ -719,7 +719,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     report.branches = branches;
     check(
       'Both Graveyard branches produce Elite or two-for-one recruits through actual training',
-      branches.elite && branches.double.join() === '2,13',
+      branches.elite && branches.double.join() === '2,16',
     );
     check(
       'Morgue branches provide periodic poison, upgraded death poison, or a skeleton at the corpse',
@@ -757,6 +757,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       const c = R.E;
       return {
         buildings: c.buildings.map((b) => b.type),
+        militaryTypes: [...new Set(c.buildings.map(b=>R.BUILDINGS[b.type]?.unit).filter(Boolean))],
         souls: c.resources.wood,
         units: R.fieldUnitCount(c),
         reserves: R.reserveCount(c),
@@ -768,7 +769,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     check(
       'Undead AI builds a funded economy, legal mixed army and trains recruits over four simulated minutes',
       ai.buildings.filter((k) => k === 'und_well').length >= 3 &&
-        ai.buildings.includes('und_morgue') &&
+        ai.militaryTypes.length>=2 &&
         ai.units + ai.reserves > 0 &&
         ai.souls >= 0 &&
         ai.lost.length === 0 &&

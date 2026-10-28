@@ -66,7 +66,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
     if(key==='und_skeleton_archer'||key==='und_necromancer'){const at=R.undeadProjectilePoint(a,0),from=R.pointAt(a.lane,a.offset),s=Q.h/600*Q.zoom,tip=R.undeadLaunchPoint(key);result.origin=Math.abs(at.x-from.x-tip[0]*s)<1e-8&&Math.abs(at.y-from.y-tip[1]*s)<1e-8;}
     out.push(result);
    }
-   fixture();const necro=R.state.units.find(u=>u.key==='und_necromancer');R.state.units=[necro];necro.lane=4700;necro.offset=0;necro.undSummonClock=14.99;R.roadReindex();R.updateBattle(.02);const summons=R.state.units.filter(u=>u.undSummoned),summon={count:summons.length,keys:summons.every(u=>u.key==='und_skeleton'&&u.undNoArmySlot&&u.temporary>9.9),visual:!!necro.roadUndSummon};
+   fixture();const necro=R.state.units.find(u=>u.key==='und_necromancer');R.state.units=[necro];necro.lane=4700;necro.offset=0;necro.undSummonClock=18.74;R.roadReindex();R.updateBattle(.02);const summons=R.state.units.filter(u=>u.undSummoned),summon={count:summons.length,keys:summons.every(u=>u.key==='und_skeleton'&&u.undNoArmySlot&&u.temporary>9.9),visual:!!necro.roadUndSummon};
    return {attacks:out,summon};
   });report.combat=combat;
   check('Real arrow, spell and Vampire hits resolve once at their original damage timing',combat.attacks.slice(0,3).every(a=>a.early&&a.once)&&combat.attacks[0].damage===8&&combat.attacks[0].origin&&combat.attacks[1].damage===5&&combat.attacks[1].origin&&combat.attacks[2].damage===45&&Math.abs(combat.attacks[2].heal-13.5)<1e-8);

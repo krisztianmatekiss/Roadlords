@@ -41,16 +41,17 @@ const BASE_URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/
    // Only the explicitly approved balance changes may differ from the archive.
    if(expected.key==='knight')scale('speed',147/63);
    if(expected.key==='orc_warg')scale('speed',136/55);
-   if(expected.key==='orc_goblin')scale('speed',56/50);
+   if(expected.key==='orc_goblin')scale('speed',70/50);
+   if(!['knight','orc_warg','orc_goblin'].includes(expected.key))scale('speed',1.25);
    if(expected.key==='orc_shaman'){
     scale('damage',8/6);scale('buildingDamage',8/6);scale('cooldownTime',2.5/4.2);scale('range',300/120);
    }
    if(['archer','priest','catapult','mage','orc_goblin'].includes(expected.key))scale('range',2);
    if(expected.key==='orc_goblin'&&city.legends.includes('orc_gob_bow')){
-    scale('damage',1.4/2);scale('buildingDamage',1.4/2);scale('range',1.4/1.5);scale('cooldownTime',1/.6);
+    scale('damage',1.2/2);scale('buildingDamage',1.2/2);scale('range',1.2/1.5);scale('cooldownTime',1/.6);
     if(city.legends.includes('orc_momentum')){
      const damage=1+.1*(city.normal.orc_goblin_dmg||0);
-     scale('cooldownTime',(1+(damage*2-1)*.5)/(1+Math.max(0,damage*1.4-1)*.5));
+     scale('cooldownTime',(1+(damage*2-1)*.5)/(1+Math.max(0,damage*1.2-1)*.5));
     }
    }
    assert.deepEqual(actual,expected);

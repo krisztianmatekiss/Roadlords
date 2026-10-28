@@ -51,15 +51,15 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     }); report.result = result;
     const near = (a, b) => Math.abs(a - b) < 1e-6;
     check('Orc Warrior starts at 300 HP and existing HP upgrades/veterancy scale from that base', result.warrior.hp === 300 && near(result.veteran.hp, 517.5));
-    check('Goblin Archers gives exactly 40% damage and 40% range', near(result.bow.dmg, result.plainGoblin.dmg * 1.4) && near(result.bow.buildingDamage, result.plainGoblin.buildingDamage * 1.4) && near(result.bow.range, result.plainGoblin.range * 1.4));
+    check('Goblin Archers gives exactly 20% damage and 20% range', near(result.bow.dmg, result.plainGoblin.dmg * 1.2) && near(result.bow.buildingDamage, result.plainGoblin.buildingDamage * 1.2) && near(result.bow.range, result.plainGoblin.range * 1.2));
     check('Goblin Archers attacks 40% more slowly through a correctly increased attack interval', near(result.bow.cooldown, result.plainGoblin.cooldown / .6));
-    check('Goblin momentum uses the reduced relic bonus in both base and temporary attack-speed calculations', near(result.momentum.cooldown, result.plainGoblin.cooldown / .6 / 1.2) && near(result.invested.cooldown, result.plainGoblin.cooldown / .6 / 1.34) && near(result.dynamicAS, 1.55 / 1.34));
+    check('Goblin momentum uses the reduced relic bonus in both base and temporary attack-speed calculations', near(result.momentum.cooldown, result.plainGoblin.cooldown / .6 / 1.1) && near(result.invested.cooldown, result.plainGoblin.cooldown / .6 / 1.22) && near(result.dynamicAS, 1.4 / 1.22));
     check('Troll damage still resolves once at the actual attack impact', result.plain.early && result.plain.once);
     check('A normal Troll hit deals 110 to its target, 35 nearby and nothing beyond the 55-unit radius', result.plain.damage.join() === '110,35,0' && result.plain.hp === 3200);
     check('Troll damage upgrades and veterancy scale primary and secondary damage together', near(result.upgraded.damage[0], 198) && near(result.upgraded.damage[1], 63));
     check('Troll breeding still halves both primary and secondary damage', near(result.breeding.damage[0], 55) && near(result.breeding.damage[1], 17.5));
     check('The separate Earthshaker third hit retains full damage, expanded radius and stun', result.quake.damage.join() === '110,110,110' && result.quake.stun.every(t => near(t, 1)));
-    check('Player-facing descriptions match the 35 splash and the new Goblin damage/rate penalties', result.copy.troll.includes('35-öt') && result.copy.goblin.includes('+40% sebzés') && result.copy.goblin.includes('+40% hatótáv') && result.copy.goblin.includes('−40% támadási sebesség') && !result.copy.goblin.includes('+100%'));
+    check('Player-facing descriptions match the 35 splash and the new Goblin damage/rate penalties', result.copy.troll.includes('35-öt') && result.copy.goblin.includes('+20% sebzés') && result.copy.goblin.includes('+20% hatótáv') && result.copy.goblin.includes('−40% támadási sebesség') && !result.copy.goblin.includes('+100%'));
     const refunds=await page.evaluate(()=>{
       const R=__ROADLORDS_RUNTIME__,results=[];
       for(const [stacks,roll] of [[1,.119],[1,.121],[5,.599],[5,.601],[20,.65]]){

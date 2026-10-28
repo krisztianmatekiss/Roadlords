@@ -1,6 +1,6 @@
 import { rangedRange } from './ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
-import { trainingPrice } from './unit-balance.js';
+import { trainingPrice, ARMY_TEMPO } from './unit-balance.js';
 import { MOVEMENT_BALANCE } from './movement-balance.js';
 export function initializeDataUnitDefinitions(runtime) {
   runtime.UNITS = {
@@ -113,5 +113,5 @@ export function initializeDataUnitDefinitions(runtime) {
       aoe: 62
     }
   };
-  for (const unit of Object.values(runtime.UNITS)) unit.cost = trainingPrice(unit.cost);
+  for (const unit of Object.values(runtime.UNITS)) {unit.cost = trainingPrice(unit.cost);unit.train*=ARMY_TEMPO.trainingTime;}
 }

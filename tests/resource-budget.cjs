@@ -45,12 +45,12 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('HUD displays full demand immediately instead of previous spending history, with a source breakdown',result.hud.food==='−3,2/mp'&&result.hud.tip.includes('Katonagyártás: 3,2')&&!result.hud.tip.includes('30 játékmásodperc'));
   check('Factory feedback is budgeted and covers actual sustained production over 200 simulation seconds',near(result.network.use.food,3.2/.85)&&result.networkActual<=result.network.use.food&&result.networkActual>result.network.use.food*.95);
   check('Training speed and the no-food relic update the budget immediately',near(result.faster.use.food,3.52)&&result.noFood.use.food===0);
-  check('Both paid parallel barracks lines are included alongside the main line',near(result.parallel.use.food,1.6+8/7.5+7/9)&&result.parallel.use.wood>0&&result.parallel.use.stone>0);
+  check('Both paid parallel barracks lines are included alongside the main line',near(result.parallel.use.food,1.6+10/9.375+9/11.25)&&result.parallel.use.wood>0&&result.parallel.use.stone>0);
   check('Training discounts affect demand while one-time purchases do not',near(result.discounted.use.food,7.2/5)&&JSON.stringify(result.beforePurchase)===JSON.stringify(result.afterPurchase));
   check('Configured market export and matching import stay budgeted with empty stock or a full destination',near(result.marketEmpty.use.food,1)&&near(result.marketFull.use.food,1)&&near(result.marketEmpty.gain.wood,1.6)&&near(result.marketFull.gain.wood,1.6)&&result.actualMarket.use.food===0);
   check('Both wholesaler routes are budgeted independently',near(result.twoRoutes.use.food,6)&&near(result.twoRoutes.gain.wood,3.7)&&near(result.twoRoutes.gain.stone,3.7));
   check('Auto mercenaries budget their current offer per cooldown even when blocked; manual offers do not',near(result.merc.use.food,3)&&near(result.merc.use.wood,2)&&near(result.merc.use.stone,1)&&result.manualMerc.use.food===0);
-  check('Orc training is included at full demand and explicitly inactive camps contribute nothing',near(result.orc.use.food,11/8.5)&&result.inactive.use.food===0);
+  check('Orc training is included at full demand and explicitly inactive camps contribute nothing',near(result.orc.use.food,14/10.625)&&result.inactive.use.food===0);
   check('Multiplayer guest computes the same current budget without stale host spending averages',result.guestHud==='−1,3/mp');
   check('Unit production speed widget is removed and resource HUD has no runtime errors',!result.productionHud&&!report.errors.length);
  }finally{fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/resource-budget.json',JSON.stringify(report,null,2));await browser.close();}

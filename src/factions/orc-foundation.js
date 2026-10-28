@@ -85,6 +85,7 @@ export function initializeFactionsOrcFoundation(runtime) {
   };
   for (const [key, d] of Object.entries(units)) runtime.UNITS[key] = {
     ...d,
+    train:ORC_TRAINING[{orc_warrior:'orc_war',orc_berserker:'orc_bers',orc_goblin:'orc_gob'}[key]][0],
     cost: trainingPrice(d.cost),
     cat: 'infantry',
     damageType: 'physical',

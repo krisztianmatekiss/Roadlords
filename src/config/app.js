@@ -1,7 +1,7 @@
 export const APP = Object.freeze({
-  version: '4.55.0',
-  label: 'V4.55.0 · TÖMEGHARC ÉS CÉLZÁS',
-  title: 'Roadlords – Tömegharc és célzás',
+  version: '4.56.0',
+  label: 'V4.56.0 · EGYSÉGTEMPÓ ÉS BALANCE',
+  title: 'Roadlords – Egységtempó és balance',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',
 });

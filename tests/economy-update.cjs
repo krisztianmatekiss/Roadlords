@@ -29,14 +29,14 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    c=balanceReset('undead');c.resources.wood=1000;const spawn=put('und_graveyard');const before=c.resources.wood,ok=R.normalSpawn(c,spawn);const paid=before-c.resources.wood;
    return {start,prices,gone,defs,ordinary,boosted,soul,again,preview,unique,interest,clearing,pricing,spawn:{ok,paid}};
   });report.economy=result;
-  check('Undead start with 100 Souls and use all seven newly agreed training prices',result.start===100&&Object.values(result.prices).join()==='13,13,26,18,70,75,100');
+  check('Undead start with 100 Souls and use all seven newly agreed training prices',result.start===100&&Object.values(result.prices).join()==='16,16,33,23,88,94,125');
   check('Retired buildings and investment are absent; mandatory damage and cemetery reserve remain',result.gone&&!result.defs.normal.includes('gen_build_discount')&&result.defs.normal.includes('necromancer_common_damage')&&result.defs.normal.includes('gen_graveyard_capacity')&&result.defs.normal.length===25&&result.defs.legend.length===23);
   check('The two economy legendaries apply exactly 40% upkeep savings and 25% training speed',Math.abs(result.boosted.upkeep/result.ordinary.upkeep-.6)<1e-9&&Math.abs(result.boosted.time/result.ordinary.time-.8)<1e-9);
   check('Soul Might repeats as a legendary, follows live full thousands and displays the next stack',result.again&&result.soul.every((n,i)=>Math.abs(n-[1,1,1.02,1.02,1.04,1][i])<1e-9)&&result.preview.rows[0].before==='+2%'&&result.preview.rows[0].after==='+3%');
   check('Soul Anchor is unique in actual placement',result.unique);
   check('All four bank rates ignore abundance and compound without an added cap',result.interest.every(x=>Math.abs(x.actual-x.expected)<1e-7));
   check('Every faction pays the exact displayed 4x / 10x ruin cost and clears the plot',result.clearing.every(x=>x.ok&&x.empty&&x.paid.wood===x.price.wood&&x.paid.stone===x.price.stone&&x.price.wood===(x.type==='ruin'?100:1000)));
-  check('Actual skeleton training pays the new 13 Soul price once',result.spawn.ok&&result.spawn.paid===13);
+  check('Actual skeleton training pays the new 16 Soul price once',result.spawn.ok&&result.spawn.paid===16);
   const sd=await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__;balanceReset('human');R.roadResetCity(R.E,'orc');R.state.suddenStarted=false;delete R.state.suddenSides;R.state.ended=false;
    for(const t of R.towers){t.alive=true;t.hp=t.maxHp;t.sdActive=false;}

@@ -107,6 +107,7 @@ export function initializeFactionsOrcRoster(runtime) {
     runtime.UNITS[key] = {
       damageType: 'physical',
       ...d,
+      train:ORC_TRAINING[key][0],
       cost: trainingPrice(d.cost),
       race: 'orc'
     };

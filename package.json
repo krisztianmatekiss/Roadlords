@@ -1,6 +1,6 @@
 {
   "name": "roadlords",
-  "version": "4.55.0",
+  "version": "4.56.0",
   "description": "Roadlords modular browser game",
   "scripts": {
     "dev": "vite",
@@ -12,7 +12,8 @@
     "audit:ai": "node scripts/test.cjs scripts/audit-ai-economy.cjs",
     "test:multiplayer": "node scripts/test.cjs tests/multiplayer.cjs tests/multiplayer-rtc.cjs",
     "art:web": "node scripts/prepare-card-images.cjs",
-    "audit:battle": "node scripts/test.cjs scripts/audit-mass-battle.cjs"
+    "audit:battle": "node scripts/test.cjs scripts/audit-mass-battle.cjs",
+    "audit:tempo": "node scripts/test.cjs scripts/audit-army-tempo.cjs"
   },
   "repository": {
     "type": "git",

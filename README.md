@@ -1,4 +1,10 @@
-# Roadlords · V4.55.0
+# Roadlords · V4.56.0
+
+## V4.56.0 – Egységtempó és célzott balance
+
+A nem lovas egységek 25%-kal gyorsabbak; a két lovas sebessége megmarad. Minden egység képzési ideje és kerekített alapára további 25%-kal nő. A nekromanták 18,75 másodpercenként idéznek. A Goblin íjász legendás sebzés- és hatótávbónusza +20% lett, a mágus másodlagos területi találata 45%. A meglévő előnézetek, fogyasztási kijelzés és AI ugyanazokat az új adatokat használják.
+
+[Pontos, egységenkénti változáslista és ellenőrzés](docs/army-balance-4.56.md). A város/út látványterv a kérés szerint külön folytatásra marad; új grafika nem kerül be.
 
 ## V4.55.0 – Tömegharc, célzás és sereglimit
 

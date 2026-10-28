@@ -1,7 +1,7 @@
 import { UNDEAD_EXPANSION } from './undead-expansion.js';
 import { rangedRange } from './ranged-balance.js';
 import { UNDEAD_PLAN_BUILDINGS, UNDEAD_PLAN_UPGRADES } from './undead-plan.js';
-import { UNDEAD_TRAINING } from './unit-balance.js';
+import { UNDEAD_TRAINING, ARMY_TEMPO } from './unit-balance.js';
 import { UNDEAD_ECONOMY, UNDEAD_REMOVED_BUILDINGS, UNDEAD_TRAINING_PRICES } from './economy-balance.js';
 import { UNDEAD_BUILDING_COPY, UNDEAD_UPGRADE_COPY } from './undead-copy.js';
 export const UNDEAD_RACE = 'undead';
@@ -91,7 +91,7 @@ export const UNDEAD_UNITS = {
     damageType: 'magic',
     icon: '🪄',
     description:
-      '15 másodpercenként 3 Csontvázat idéz 10 másodpercre. Az idézett egységek nem foglalnak sereghelyet.',
+      `${ARMY_TEMPO.necroSummonInterval.toLocaleString('hu-HU')} másodpercenként 3 Csontvázat idéz 10 másodpercre. Az idézett egységek nem foglalnak sereghelyet.`,
   },
   und_vampire: {
     name: 'Vámpír',
@@ -128,6 +128,7 @@ export const UNDEAD_UNITS = {
 for (const [key, u] of Object.entries(UNDEAD_UNITS)) {
   u.aiRole = aiRoles[key.replace('und_', '')];
   u.souls = UNDEAD_TRAINING_PRICES[key];
+  u.train *= ARMY_TEMPO.trainingTime;
 }
 // Prices, upkeep and missing training times are initial balance values, not workbook values.
 const economics = {

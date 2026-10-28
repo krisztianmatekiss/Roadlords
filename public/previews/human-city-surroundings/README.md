@@ -1,15 +1,19 @@
-# Emberi város – összehasonlító képelőnézet
+# Emberi város – képelőnézet
 
-A 4.56.0 jelenlegi játékáról készült képernyőkép és egy külső környezetgrafikai látványterv. A városbelső (rács és épületek) a PNG-ben pixelre változatlan; a kezelőfelület is az eredeti. Kizárólag képek, a main ág és az élő játék változtatása nélkül.
+## Javított terv (v2)
+
+A két felső bástya illesztése javítva. A régi kapujelzés eltűnt; a KAPU kapcsoló képelőnézete a bal alsó sarokban, a Q Mind fölött látható. A városbelső rácsa és épületei a PNG-ben pixelre azonosak az eredeti képernyőképpel.
+
+![Javított terv](human-surroundings-concept-v2.jpg)
+
+[PNG](human-surroundings-concept-v2.png)
 
 ## Jelenlegi játék
 
 ![Jelenlegi játék](current-game.jpg)
 
-[PNG](current-game.png)
+## Első terv
 
-## Környezetgrafikai terv
+![Első terv](human-surroundings-concept.jpg)
 
-![Környezetgrafikai terv](human-surroundings-concept.jpg)
-
-[PNG](human-surroundings-concept.png)
+Kizárólag képelőnézetek. Az élő játék és a main ág változatlan.

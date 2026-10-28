@@ -1,5 +1,5 @@
-# Human city surroundings — perspective study
+# Human city surroundings — new gatehouse
 
-![Side wall and gate revision](human-surroundings-concept-v5.jpg)
+![Replacement gatehouse, larger upper bastions and exterior landscaping](human-surroundings-concept-v7.jpg)
 
-Picture only. Side walls show their stone faces and parapet walkways in an elevated game-camera view. A larger gate opens east toward the road. Original native city grid, buildings, HUD, and three round gate controls are preserved. Not integrated into the live game.
+Picture only. The previous turreted gate is fully replaced with a single rectangular limestone gatehouse and blue roof, opening east toward the road. Upper corner bastions are enlarged, lower bastions have full-height proportions, and grass, shrubs, stones, flowers and banners decorate the outer margins. City grid/buildings, top HUD and bottom card strip with the three round gate controls are preserved. The live game is unchanged.

@@ -30,7 +30,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   });report.combat=combat;
   check('Own combat deaths and summons heal only the nearest Undead; expiry gives no healing',combat.deathHeal.nearest===78&&combat.deathHeal.far===20&&combat.deathHeal.summon===106&&combat.deathHeal.expiry===106);
   check('Soul damage follows live full thousands, stacks, spending and debt',combat.stock.every((v,i)=>near(v,[10.2,10.4,10,10][i])));
-  check('Home movement stacks and ends across the halfway line',near(combat.home.inside,50.4)&&combat.home.outside===42);
+  check('Home movement stacks on the 25%-faster base and ends across the halfway line',near(combat.home.inside,63)&&combat.home.outside===52.5);
   check('Siege stacks affect towers and the capital once and restore unit values',near(combat.siege.tower,3.12)&&near(combat.siege.capital,4.16)&&combat.siege.damageAfter===10);
   check('Spawn shields stack on actual max HP for normal, Elite and wounded summoned units',near(combat.shield.normal,13.6)&&near(combat.shield.elite,20.4)&&near(combat.shield.summon,combat.shield.summonMax*.16)&&combat.shield.summonHp===combat.shield.summonMax*.5&&combat.shield.old===0);
   check('The first attack and its freeze are blocked; damage over time does not consume the ward',combat.ward.dot===80&&combat.ward.first===0&&combat.ward.second>0&&combat.ward.blocked&&combat.ward.used);

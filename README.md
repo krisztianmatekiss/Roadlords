@@ -1,4 +1,11 @@
-# Roadlords · V4.58.0
+# Roadlords · V4.58.1
+
+## V4.58.1 – AI-romeltakarítás
+
+- Az élőhalott AI romeltakarítással is felszabadítja az új épületek és kutak helyét, mielőtt működő kutat bontana. Kevés Léleknél a teljes szükséges terület eltakarítására és az épületre tesz félre; körönként egy eltakarítást vagy építkezést végez.
+- Mindhárom faj aktív AI-ja a tényleges eltakarítási árral számol az ősi romoknál. A feltárás megtartja a gazdasági tartalékot, nem előzi meg az indulást vagy a sürgős védekezést, és pontosan egy gyakori fejlesztést ad.
+- A romeltakarítás terve az adott város tényleges épületméretét használja, beleértve a kisebb L4-es Trollvermet és a tömörített Kunyhókat.
+- Új böngészős regressziós teszt ellenőrzi mindhárom fajt, az építkezés folytatását, a fizetést, a jutalmat és a multiplayerben letiltott AI-feltárást.
 
 ## V4.58.0 – Fajok, elitképzés és területhatár
 

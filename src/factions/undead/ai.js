@@ -62,9 +62,11 @@ export function initializeUndeadAi(R) {
     const c = R.E;
     if (!isUndead(c)) return makeRoom(type);
     const d = D[type];
-    if (!d || ['keep','und_well'].includes(type) || !c.unlocked.has(type) ||
-        (d.unique && R.hasBuilding(c,type)) || R.findCell(c,type) ||
-        c.resources.wood < R.buildPrice(c,type).wood) return false;
+    if (!d || type === 'keep' || !c.unlocked.has(type) ||
+        (d.unique && R.hasBuilding(c,type)) || R.findCell(c,type)) return false;
+    // Free terrain before considering demolition, including room for new Wells.
+    if (R.aiMutate(() => R.aiClearBlockingRuin(type))) return true;
+    if (type === 'und_well' || c.resources.wood < R.buildPrice(c,type).wood) return false;
     const wells = R.buildingOf(c,'und_well').filter(b=>!b.inactive);
     if (wells.length <= 2) return false;
     // A well upgrade can leave many old plots redundant. Reuse one only when
@@ -103,9 +105,17 @@ export function initializeUndeadAi(R) {
       demand = R.resourceFlowRates(c).use.wood;
     const tryBuild = (type) => {
       if (!c.unlocked.has(type)) return false;
-      let cell = R.findCell(c, type);
-      if (!cell && type !== 'und_well' && R.aiMakeRoomFor(type)) cell = R.findCell(c,type);
-      if (!cell) return false;
+      const cell = R.findCell(c, type);
+      if (!cell) {
+        if (R.aiMakeRoomFor(type)) return true;
+        const plan = R.v4918BlockingRuinPlan(type, { affordableOnly: false });
+        if (!plan) return false;
+        // Reserve for the whole footprint and the building; training must not
+        // spend every earned Soul while the AI waits to excavate its next plot.
+        c.undSaveSouls = plan.ruins.reduce((sum, [row,col]) =>
+          sum + R.terrainClearPrice(c, R.terrainAt(c,row,col).type).wood, R.buildPrice(c,type).wood);
+        return true;
+      }
       const price = R.placementPrice(c, type, ...cell).wood;
       if (c.resources.wood < price) {
         c.undSaveSouls = price;
@@ -121,6 +131,7 @@ export function initializeUndeadAi(R) {
     const committed = R.fieldUnitCount(c) + R.reserveCount(c);
     if (committed > c.armyCap * 0.75 && tryBuild('und_crypt')) return;
     if (gain < demand + Math.max(1, demand * 0.2) && tryBuild('und_well')) return;
+    if (R.aiExcavateAncient()) return;
     const military = Object.keys(D)
       .filter((k) => D[k].unit && c.unlocked.has(k) && (!D[k].unique || !num(k)))
       .sort((a, b) => num(a) - num(b) || D[a].souls - D[b].souls);

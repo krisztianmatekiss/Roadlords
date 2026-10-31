@@ -478,21 +478,18 @@ export function register(runtime) {
     }
     return null;
   };
-  runtime.v4918BlockingRuinPlan = function v4918BlockingRuinPlan(type) {
+  runtime.v4918BlockingRuinPlan = function v4918BlockingRuinPlan(type, { affordableOnly = true } = {}) {
     if (!type || !runtime.BUILDINGS[type]) return null;
     if (runtime.findCell(runtime.E, type)) return null;
     const occ = runtime.occupancy(runtime.E);
     let best = null;
     for (const rot of runtime.rotationOptions(type)) {
-      const shape = runtime.rotatedShape(type, rot);
       for (let row = 0; row < runtime.GRID; row++) {
         for (let col = 0; col < runtime.GRID; col++) {
           let hardBlocked = false;
           const ruins = [];
           const cells = [];
-          for (const [dr, dc] of shape) {
-            const r = row + dr,
-              c = col + dc;
+          for (const [r, c] of runtime.cityBuildingCells(runtime.E, { type, row, col, rotation: rot })) {
             if (r < 0 || c < 0 || r >= runtime.GRID || c >= runtime.GRID) {
               hardBlocked = true;
               break;
@@ -510,7 +507,7 @@ export function register(runtime) {
             }
             cells.push([r, c]);
           }
-          if (hardBlocked || !ruins.length || !ruins.some(([r, c]) => runtime.canPay(runtime.E, runtime.terrainClearPrice(runtime.E, runtime.terrainAt(runtime.E,r,c).type)))) continue;
+          if (hardBlocked || !ruins.length || affordableOnly && !ruins.some(([r, c]) => runtime.canPay(runtime.E, runtime.terrainClearPrice(runtime.E, runtime.terrainAt(runtime.E,r,c).type)))) continue;
           const fake = {
             type,
             row,

@@ -78,6 +78,12 @@ export function initializeAiCoordinatedWaves(runtime) {
         const committed = runtime.fieldUnitCount(runtime.E) + runtime.E.releaseQueue.reduce((n, e) => n + runtime.orcArmyWeight(e, runtime.E), 0) + Math.min(20, runtime.reserveCount(runtime.E));
         if (runtime.E.unlocked.has(capacityType) && committed > runtime.E.armyCap * .78) type = capacityType;
       }
+      // The growth planner can keep the legacy AI busy indefinitely. Give
+      // affordable excavation its own turn once opening/capacity needs are met.
+      if (!type && runtime.state.startChoices <= 0 && runtime.aiExcavateAncient(runtime.E._aiSaveType)) {
+        clearSave();
+        return;
+      }
       if (!type) {
         const needs = runtime.RES.map(r => ({
           r,

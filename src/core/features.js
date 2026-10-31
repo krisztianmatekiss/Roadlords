@@ -717,7 +717,8 @@ export function initializeCoreFeatures2(runtime) {
       const pick = candidates[0]?.t || null;
       return pick;
     }
-    function aiExcavateAncient4980(goal) {
+    runtime.aiExcavateAncient = function (goal = null) {
+      if (runtime.MP.enabled || runtime.state.pregame || runtime.state.ended) return false;
       const ruins = runtime.terrainCellsOfType(runtime.E, 'ancient'),
         price = runtime.terrainClearPrice(runtime.E,'ancient');
       if (!ruins.length || !runtime.canPay(runtime.E, price)) return false;
@@ -739,7 +740,7 @@ export function initializeCoreFeatures2(runtime) {
       ruins.sort((a, b) => score(b) - score(a));
       const [row, col] = ruins[0];
       return runtime.aiMutate(() => runtime.clearTerrain(runtime.E, row, col, true));
-    }
+    };
     function aiDecision4980() {
       const p = aiPlan4980();
       p.waitFor = null;
@@ -803,7 +804,7 @@ export function initializeCoreFeatures2(runtime) {
         if (!attempt(type, 'sustain_army')) wait(type, 'save_income');
         return;
       }
-      if (aiExcavateAncient4980(goal)) {
+      if (runtime.aiExcavateAncient(goal)) {
         record('ancient_pick', 'ancient');
         return;
       }

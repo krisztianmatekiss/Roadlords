@@ -404,10 +404,7 @@ export function initializeFactionsOrcFoundation(runtime) {
       return;
     }
     if (runtime.state.startChoices > 0) return;
-    const ancient = runtime.terrainCellsOfType(runtime.E, 'ancient');
-    if (ancient.length && runtime.E.resources.wood >= 145 && runtime.E.resources.stone >= 145) {
-      if (runtime.clearTerrain(runtime.E, ...ancient[0], true)) return;
-    }
+    if (runtime.aiExcavateAncient()) return;
     if (runtime.fieldUnitCount(runtime.E) + runtime.E.releaseQueue.length > runtime.E.armyCap * .75 || runtime.reserveCount(runtime.E) > runtime.E.garrisonCap * .7) {
       if (runtime.aiBuild('orc_hut')) return;
     }

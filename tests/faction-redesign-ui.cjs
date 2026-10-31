@@ -25,6 +25,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    R.state.openBuildingInspectors=[b.id];R.roadWar.scrollLeft=0;R.renderStatic();
   });
   const slider=p.locator('[data-overseer="overseer-ui"]');await slider.focus();await slider.press('End');
+  assert((await p.locator('.inspectorCard .idesc').textContent()).includes('−40–80%'),'L4 inspector description must show the selected-level rule, not the L1 rule');
   assert(await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return R.P.orcHasteSettings['overseer-ui']===1&&R.mpStrategy(R.P).orcHasteSettings['overseer-ui']===1;}));
   assert((await slider.locator('..').textContent()).includes('25%'));
   console.log('PASS The real L4 inspector slider updates birth HP and serializes its setting through the multiplayer strategy contract');

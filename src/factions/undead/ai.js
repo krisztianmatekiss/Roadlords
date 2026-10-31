@@ -66,6 +66,9 @@ export function initializeUndeadAi(R) {
         (d.unique && R.hasBuilding(c,type)) || R.findCell(c,type)) return false;
     // Free terrain before considering demolition, including room for new Wells.
     if (R.aiMutate(() => R.aiClearBlockingRuin(type))) return true;
+    // An intact excavation plot is a saving goal, not a reason to destroy a
+    // working Well just because clearing is temporarily unaffordable.
+    if (R.v4918BlockingRuinPlan(type, { affordableOnly: false })) return false;
     if (type === 'und_well' || c.resources.wood < R.buildPrice(c,type).wood) return false;
     const wells = R.buildingOf(c,'und_well').filter(b=>!b.inactive);
     if (wells.length <= 2) return false;

@@ -57,6 +57,12 @@ const { chromium } = require('playwright'), assert = require('node:assert/strict
    for(let n=0;n<6&&!R.buildingOf(c,'und_graveyard').length;n++)ruinTick();
    return R.buildingOf(c,'und_graveyard').length===1&&wells.every(id=>R.getBuilding(c,id));
   }));
+  check('Undead AI saves for blocked land instead of demolishing a funded Well when clearing is one Soul short',await page.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,c=ruinFixture('undead');for(let n=0;n<5;n++)ruinPut('und_well');R.setBuildingLevel(c,'und_well',4);
+   const occupied=R.occupancy(c);for(let row=0;row<R.GRID;row++)for(let col=0;col<R.GRID;col++)if(!occupied.has(R.idx(row,col)))R.setTerrain(c,row,col,'ruin');
+   c.resources=R.C(99,0,0);const before=JSON.stringify(c.buildings);ruinTick();
+   return JSON.stringify(c.buildings)===before&&c.resources.wood===99&&c.undSaveSouls>100;
+  }));
   check('Orc excavation uses the enemy city footprint for a reduced-size L4 Troll pit',await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=ruinFixture('orc');c.levels.orc_troll=4;c.l4Branches.orc_troll='breeding';R.P.l4Branches.orc_troll=null;
    const occupied=R.occupancy(c);for(let row=0;row<R.GRID;row++)for(let col=0;col<R.GRID;col++)if(!occupied.has(R.idx(row,col)))c.buildings.push({id:'hunt-'+row+'-'+col,type:'orc_hunt',row,col,rotation:0,level:1,progress:0});

@@ -418,11 +418,30 @@ export function initializeFactionsOrcFoundation(runtime) {
     if (rates.food < need.food * 1.2 && runtime.aiBuild('orc_hunt')) return;
     if ((rates.wood < need.wood * 1.2 || rates.stone < need.stone * 1.2) && runtime.aiBuild('orc_work')) return;
     if (runtime.RES.some(r => runtime.E.resources[r] > runtime.E.caps[r] * .9) && num('warehouse') < 4 && runtime.aiBuild('warehouse')) return;
-    const military = ['orc_war', 'orc_bers', 'orc_gob', 'orc_warg', 'orc_shaman', 'orc_ram', 'orc_troll'].filter(k => runtime.E.unlocked.has(k)).sort((a, b) => num(a) - num(b));
-    if (runtime.activeSpawners(runtime.E).length < 2 || runtime.E.resources.food > 30) {
-      for (const k of military) if (runtime.aiBuild(k)) return;
+    const spawners=runtime.activeSpawners(runtime.E).length,
+      observed=runtime.state.units.filter(u=>u.alive&&u.side==='player'),
+      rangedShare=observed.filter(u=>(u.tags||runtime.UNITS[u.key]?.tags||[]).includes('ranged')).length/Math.max(1,observed.length),
+      composition={orc_war:.32,orc_bers:.18,orc_gob:.22,orc_warg:.16+.2*rangedShare,orc_shaman:.08,orc_ram:.02,orc_troll:.04};
+    const military = Object.keys(composition).filter(k => runtime.E.unlocked.has(k)&&
+      (!['orc_ram','orc_troll'].includes(k)||spawners>=6)&&
+      (k!=='orc_shaman'||spawners>=3)).sort((a,b)=>composition[b]/(num(b)+1)-composition[a]/(num(a)+1));
+    const invest = (type, reason) => {
+      const cell=runtime.findCell(runtime.E,type);
+      if (!cell) return runtime.aiClearBlockingRuin(type);
+      const price=runtime.placementPrice(runtime.E,type,...cell);
+      if (runtime.RES.some(r=>price[r]>runtime.E.caps[r])) return type==='warehouse'?false:invest('warehouse','storage');
+      if (runtime.aiBuild(type)) {runtime.aiClearBuildSavings();return true;}
+      runtime.aiSaveForBuild(type,price,reason);
+      return true;
+    };
+    // A support building must get an actual purchase opportunity, not only
+    // the money left over after every affordable military building was bought.
+    if (runtime.activeSpawners(runtime.E).length>=3) {
+      for (const type of ['orc_arena','orc_overseer']) if (runtime.E.unlocked.has(type)&&!num(type)&&runtime.findCell(runtime.E,type)&&invest(type,'support')) return;
     }
-    for (const k of ['orc_arena', 'orc_overseer']) if (!num(k) && runtime.aiBuild(k)) return;
+    if (runtime.activeSpawners(runtime.E).length < 2 || runtime.E.resources.food > 30) {
+      for (const k of military) if (invest(k,'military')) return;
+    }
   };
   const oldScore = runtime.scoreAiChoiceV17;
   runtime.scoreAiChoiceV17 = function (o) {

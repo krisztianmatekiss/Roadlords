@@ -1,4 +1,10 @@
-# Roadlords · V4.58.1
+# Roadlords · V4.58.2
+
+## V4.58.2 – AI-döntések és erősítésküldés
+
+Az ork AI megtakarít a drágább termelőkre és a hasznos támogatókra; a seregarányokat és a Warglovasok prioritását a látható ellenséghez is igazítja. Az emberi és ork gazdasági cél figyeli a készleteket. Az élőhalottak támogatói korábban sorra kerülnek, a kútbontás és újraépítés eltérő küszöbei pedig többé nem indítanak gyors átépítési kört. Korábbi első támadás és külön frontvonali erősítésküldés segíti a folyamatos csatát.
+
+[Pontos viselkedés, összehasonlító szimuláció és korlátok](docs/ai-strategy-4.58.2.md).
 
 ## V4.58.1 – AI-romeltakarítás
 

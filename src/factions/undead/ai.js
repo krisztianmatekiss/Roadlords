@@ -34,7 +34,7 @@ export function initializeUndeadAi(R) {
                 .filter((x) => R.undInRange(c, b, x, b.level === 1 ? 1 : b.level === 2 ? 2 : 3))
                 .reduce((n, x) => n + D[x.type].upkeep, 0) * 30;
           if (type === 'und_corrupted_hatchery')
-            value += existing.filter((x) => D[x.type].unit && R.undInRange(c, b, x, 1)).length * 25;
+            value += existing.filter((x) => x.type!=='und_graveyard' && D[x.type].unit && R.undInRange(c, b, x, 1)).length * 25;
           if (d.unit)
             value +=
               existing.filter(
@@ -70,6 +70,7 @@ export function initializeUndeadAi(R) {
     // working Well just because clearing is temporarily unaffordable.
     if (R.v4918BlockingRuinPlan(type, { affordableOnly: false })) return false;
     if (type === 'und_well' || c.resources.wood < R.buildPrice(c,type).wood) return false;
+    if (R.state.time < (c.undeadState.aiRedevelopAfter || 0)) return false;
     const wells = R.buildingOf(c,'und_well').filter(b=>!b.inactive);
     if (wells.length <= 2) return false;
     // A well upgrade can leave many old plots redundant. Reuse one only when
@@ -82,13 +83,16 @@ export function initializeUndeadAi(R) {
         const cell = R.findCell(c,type);
         if (cell) {
           c.buildings.push({id:'ai-room-preview:'+well.id,type,row:cell[0],col:cell[1],rotation:cell[2],level:R.levelOf(c,type),progress:0});
-          fits = R.productionRates(c).wood >= R.resourceFlowRates(c).use.wood * 1.15 + 1;
+          // Keep more headroom than the normal Well-building threshold (20%).
+          // Otherwise the next turn rebuilds the Well this turn just removed.
+          fits = R.productionRates(c).wood >= R.resourceFlowRates(c).use.wood * 1.25 + 2;
         }
       } finally {
         c.buildings = original;
       }
       if (fits && R.demolish(c,well.id)) {
         c.undeadState.aiRedeveloped = (c.undeadState.aiRedeveloped || 0) + 1;
+        c.undeadState.aiRedevelopAfter = R.state.time + 15;
         return true;
       }
     }
@@ -135,6 +139,18 @@ export function initializeUndeadAi(R) {
     if (committed > c.armyCap * 0.75 && tryBuild('und_crypt')) return;
     if (gain < demand + Math.max(1, demand * 0.2) && tryBuild('und_well')) return;
     if (R.aiExcavateAncient()) return;
+    if (R.activeSpawners(c).length>=3 && R.state.time-(c.undeadState.aiLastSupportAt ?? -999)>=45) {
+      for (const type of ['und_soul_anchor','und_bone_forge','und_corrupted_hatchery','und_plague_chamber','und_rebirth_tomb']) {
+        if (!c.unlocked.has(type)||num(type)||gain<=demand+D[type].upkeep+2) continue;
+        const cell=R.findCell(c,type);if(!cell)continue;
+        if(type==='und_corrupted_hatchery') {
+          const preview={type,row:cell[0],col:cell[1],rotation:cell[2],level:R.levelOf(c,type)};
+          if(!R.activeSpawners(c).some(b=>b.type!=='und_graveyard'&&R.undInRange(c,preview,b,1)))continue;
+        }
+        const before=num(type);
+        if(tryBuild(type)){if(num(type)>before)c.undeadState.aiLastSupportAt=R.state.time;return;}
+      }
+    }
     const military = Object.keys(D)
       .filter((k) => D[k].unit && c.unlocked.has(k) && (!D[k].unique || !num(k)))
       .sort((a, b) => num(a) - num(b) || D[a].souls - D[b].souls);

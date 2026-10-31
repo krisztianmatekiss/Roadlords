@@ -17,7 +17,11 @@ export function initializeAiCoordinatedWaves(runtime) {
     const fill = runtime.occupancy(runtime.E).size / (runtime.GRID * runtime.GRID),
       space = fill < .72 ? 1 : fill < .88 ? .6 : .18;
     const growth = Math.min(15, 3.8 + runtime.state.time / 95 + sp * .45) * space;
-    return runtime.C((use.wood + (extra.wood || 0)) * 1.20 + growth, (use.stone + (extra.stone || 0)) * 1.20 + growth * .55, (use.food + (extra.food || 0)) * 1.25 + (sp ? Math.max(.6, Math.min(2, sp * .20)) : 0));
+    const margin = r => {
+      const capacity = Math.max(1, runtime.E.caps[r]), stock = runtime.E.resources[r] / capacity;
+      return stock >= .75 ? .15 : stock >= .5 ? .5 : 1;
+    };
+    return runtime.C((use.wood + (extra.wood || 0)) * 1.20 + growth * margin('wood'), (use.stone + (extra.stone || 0)) * 1.20 + growth * .55 * margin('stone'), (use.food + (extra.food || 0)) * 1.25 + (sp ? Math.max(.6, Math.min(2, sp * .20)) : 0) * margin('food'));
   }
   runtime.aiResourceTargets = desired;
   function save(type, price) {
@@ -33,13 +37,20 @@ export function initializeAiCoordinatedWaves(runtime) {
     runtime.E._aiSavePrice = null;
     runtime.E._aiSaveType = null;
     runtime.E._aiSaveSince = 0;
+    runtime.E._aiSaveReason = null;
   }
+  runtime.aiSaveForBuild = (type, price, reason) => { save(type, price); runtime.E._aiSaveReason = reason; };
+  runtime.aiClearBuildSavings = clearSave;
   const oldSpawn = runtime.normalSpawn;
   runtime.normalSpawn = function (c, b) {
-    if (c === runtime.E && !runtime.MP.enabled && c._aiSavePrice && !danger() && runtime.state.time - c._aiSaveSince < 35) {
+    const investment=['military','support'].includes(c._aiSaveReason);
+    if (c === runtime.E && !runtime.MP.enabled && c._aiSavePrice && !danger() && (investment || runtime.state.time - c._aiSaveSince < 35)) {
       const key = runtime.effectiveUnitKey(c, b),
         cost = runtime.primarySpawnCost(c, key, b);
-      if (runtime.RES.some(r => (c._aiSavePrice[r] || 0) > 0 && (cost[r] || 0) > 0 && c.resources[r] - (cost[r] || 0) < c._aiSavePrice[r])) return false;
+      if (runtime.RES.some(r => (c._aiSavePrice[r] || 0) > 0 && (cost[r] || 0) > 0 && c.resources[r] - (cost[r] || 0) < c._aiSavePrice[r])) {
+        if(!investment || runtime.state.time-(b.aiInvestmentTrainingAt ?? -Infinity)<Math.max(8,runtime.trainingTime(c,b)*2))return false;
+        const ok=oldSpawn(c,b);if(ok)b.aiInvestmentTrainingAt=runtime.state.time;return ok;
+      }
     }
     return oldSpawn(c, b);
   };
@@ -77,6 +88,14 @@ export function initializeAiCoordinatedWaves(runtime) {
         const capacityType = orc() ? 'orc_hut' : 'house';
         const committed = runtime.fieldUnitCount(runtime.E) + runtime.E.releaseQueue.reduce((n, e) => n + runtime.orcArmyWeight(e, runtime.E), 0) + Math.min(20, runtime.reserveCount(runtime.E));
         if (runtime.E.unlocked.has(capacityType) && committed > runtime.E.armyCap * .78) type = capacityType;
+      }
+      // Preserve the selected military/support investment across growth ticks.
+      // The faction planner still repairs current income before buying it.
+      if (!type && orc() && ['military','support'].includes(runtime.E._aiSaveReason) &&
+          runtime.E.unlocked.has(runtime.E._aiSaveType) && runtime.state.time-runtime.E._aiSaveSince < 90) {
+        runtime.E.aiThink=0;
+        oldAI(.7);
+        return;
       }
       // The growth planner can keep the legacy AI busy indefinitely. Give
       // affordable excavation its own turn once opening/capacity needs are met.
@@ -146,7 +165,8 @@ export function initializeAiCoordinatedWaves(runtime) {
       sp = runtime.activeSpawners(runtime.E).length;
     const room = runtime.fieldQueueRoom(runtime.E),
       deep = danger();
-    const target = Math.min(cap, Math.max(26, 22 + sp * 3 + Math.min(20, Math.floor(runtime.state.time / 90) * 2)));
+    const openingWave=!runtime.E._aiLastWave&&runtime.state.time>=120,
+      target = Math.min(cap, openingWave?Math.max(8,8+sp*2):Math.max(26, 22 + sp * 3 + Math.min(20, Math.floor(runtime.state.time / 90) * 2)));
     const entries = [...runtime.E.garrison, ...runtime.E.rallyReserve];
     let hp = 0;
     for (const e of entries) hp += runtime.statsFor(runtime.E, e).hp;
@@ -162,8 +182,9 @@ export function initializeAiCoordinatedWaves(runtime) {
     }))) : 1;
     const full = mainBlocked || rally > 0 && runtime.E.rallyCap - rally < rallyMin && !mainProducers.length;
     const strong = entries.length >= 12 && hp >= target * 170;
-    const launch = (total >= target || full || strong) && room >= Math.min(20, target * .65);
-    const defend = deep && total >= Math.min(8, target) && room >= Math.min(4, total);
+    const reinforce=runtime.fieldUnitCount(runtime.E)>=8&&total>=Math.max(6,Math.min(16,sp*2))&&runtime.state.time-(runtime.E._aiLastWave?.time||0)>=25;
+    const launch = (total >= target || full || strong || reinforce) && room >= Math.min(20, Math.min(total,target) * .65);
+    const defend = deep && total >= Math.min(4, target) && room >= Math.min(4, total);
     runtime.E._aiWaveTarget = target;
     if (runtime.E.gateMode === 'closed' && (launch || defend)) {
       if (runtime.E.rallyReserve.length) runtime.releaseRally(runtime.E);

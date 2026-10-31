@@ -1,6 +1,6 @@
 export const APP = Object.freeze({
-  version: '4.58.1',
-  label: 'V4.58.1 · FAJOK ÉS TERÜLETEK',
+  version: '4.58.2',
+  label: 'V4.58.2 · FAJOK ÉS TERÜLETEK',
   title: 'Roadlords – Fajok és területek',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',

@@ -441,7 +441,7 @@ export function register(runtime) {
     return Math.max(1, runtime.effectiveMoveSpeed(u, runtime.cityForSide(u.side)) / runtime.UNITS.knight.speed);
   };
   runtime.pushUnitChain = function pushUnitChain(target, dir, amount = 72) {
-    if (!target.alive || target.phalanx) return;
+    if (!target.alive || target.phalanx || runtime.spearBastion?.(target)) return;
     const side = target.side,
       same = runtime.state.units.filter(v => v.alive && v.side === side && v.id !== target.id).sort((a, b) => dir > 0 ? a.lane - b.lane : b.lane - a.lane);
     let newLane = runtime.clamp(target.lane + dir * amount, 12, runtime.PATH_LENGTH - 12);
@@ -450,7 +450,7 @@ export function register(runtime) {
       if (!ahead) continue;
       const gap = Math.abs(v.lane - newLane);
       if (gap < 28) {
-        if (v.phalanx) {
+        if (v.phalanx || runtime.spearBastion?.(v)) {
           newLane = v.lane - dir * 28;
           break;
         }
@@ -884,7 +884,7 @@ export function register(runtime) {
     let buildingDamage = (base.buildingDamage || base.damage) * damageMult,
       aoe = base.aoe || 0;
     if (key === 'swordsman') as += .15 * runtime.countNormal(c, 'sword_as');
-    if (key === 'spearman') range *= 1 + .10 * runtime.countNormal(c, 'spear_range');
+    // Spearman range is fixed; its common now reduces incoming melee damage.
     if (key === 'knight') speed *= 1 + .15 * runtime.countNormal(c, 'knight_move');
     if (key === 'archer') {
       range *= 1 + .10 * runtime.countNormal(c, 'archer_range');
@@ -925,7 +925,7 @@ export function register(runtime) {
       aoe *= 1 + .15 * runtime.countNormal(c, 'mage_aoe');
       if (runtime.hasBranch(c, 'magetower', 'fire_mages')) aoe *= 2;
     }
-    if (entry.veteran) {
+    if (entry.veteran || entry.undElite) {
       hp *= 1.5;
       dmg *= 1.5;
       buildingDamage *= 1.5;
@@ -964,8 +964,8 @@ export function register(runtime) {
     const c = runtime.cityForSide(u.side);
     let dmg = u.damage * mult * (u.blessingTime > 0 ? 2 : 1);
     if (runtime.hasLeg(c, 'melee_doctrine')) dmg *= u.tags.includes('melee') ? 2 : 0;
-    if (u.key === 'spearman' && (t.cat === 'cavalry' || t.tags.includes('heavy'))) {
-      let counter = runtime.hasBranch(c, 'spearhall', 'pike_wall') ? 4 : 2.5;
+    if (u.key === 'spearman' && (t.cat === 'cavalry' || t.cat === 'siege')) {
+      let counter = 2;
       if (u.phalanx && runtime.hasLeg(c, 'phalanx')) counter *= 2;
       dmg *= counter;
     }

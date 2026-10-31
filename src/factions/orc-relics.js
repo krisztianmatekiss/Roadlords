@@ -1,3 +1,4 @@
+import { ORC_REDESIGN } from '../data/faction-redesign.js';
 import { WARG_THROW_RANGE } from '../data/ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { ORC_BALANCE } from '../data/combat-balance.js';
@@ -548,8 +549,8 @@ export function initializeFactionsOrcRelics(runtime) {
     let army = 0,
       reserve = 0;
     for (const b of runtime.buildingOf(c, 'orc_hut')) {
-      army += runtime.v4LevelValue(b.level, [20, 30, 40, 60]);
-      reserve += runtime.v4LevelValue(b.level, [20, 30, 60, 60]);
+      army += runtime.v4LevelValue(b.level, ORC_REDESIGN.hut);
+      reserve += runtime.v4LevelValue(b.level, ORC_REDESIGN.hut);
     }
     const half = leg(c, 'crowded_huts') ? .5 : 1,
       command = runtime.hasBranch(c, 'keep', 'orc_command') ? 2 : 1;
@@ -742,8 +743,8 @@ export function initializeFactionsOrcRelics(runtime) {
     const rows = oldRows(c, b);
     if (b.type === 'orc_hut') {
       const half = leg(c, 'crowded_huts') ? .5 : 1,
-        a = runtime.v4LevelValue(b.level, [20, 30, 40, 60]) * half,
-        r = runtime.v4LevelValue(b.level, [20, 30, 60, 60]) * half;
+        a = runtime.v4LevelValue(b.level, ORC_REDESIGN.hut) * half,
+        r = runtime.v4LevelValue(b.level, ORC_REDESIGN.hut) * half;
       for (const row of rows) {
         if (row[0] === 'Sereglimit') row[1] = '+' + (leg(c, 'united_huts') ? c.orcHutMode === 'reserve' ? 0 : a + r : a);
         if (row[0] === 'Helyőrséglimit') row[1] = '+' + (leg(c, 'united_huts') ? c.orcHutMode === 'reserve' ? a + r : 0 : r);

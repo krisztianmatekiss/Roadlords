@@ -136,7 +136,6 @@ export function initializeUndeadAi(R) {
     }
     if (num('und_graveyard') >= 3) {
       for (const type of [
-        'und_soul_harvester',
         'und_bone_forge',
         'und_soul_anchor',
         'und_plague_chamber',
@@ -152,7 +151,11 @@ export function initializeUndeadAi(R) {
     if (!isUndead(R.E)) return score(o);
     const c = R.E;
     if (o.kind === 'building_upgrade' || o.kind === 'building_branch') {
-      if (o.id === 'keep') return 28;
+      if (o.id === 'keep') {
+        if(o.branch==='elite_dominion')return R.productionRates(c).wood>=R.resourceFlowRates(c).use.wood+R.undEconomy(c).totalUpkeep?30:8;
+        if(o.branch==='dead_realm')return 20+Math.min(12,R.countNormal(c,'und_territory')+R.buildingOf(c,'und_dark_tower').length*2+R.buildingOf(c,'und_garden_of_dead').length*3);
+        return 28;
+      }
       if (o.id === 'und_well') return 20 + R.buildingOf(c, 'und_well').length * 3;
       if (o.id === 'und_graveyard') return 16 + R.buildingOf(c, 'und_graveyard').length * 2;
       return 12 + R.buildingOf(c, o.id).length;

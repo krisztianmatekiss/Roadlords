@@ -42,3 +42,5 @@ html body :is(#inspector.show, .buildingInspectorWindow) .ihead button {
 }
 html body :is(#inspector.show, .buildingInspectorWindow) .multiInspectorButtons { flex-shrink: 0; margin-left: 0; }
 html body :is(#inspector.show, .buildingInspectorWindow).dragging .ihead { cursor: grabbing; }
+
+.overseerSlider{display:grid;gap:8px;padding:12px 0;color:#ead79c}.overseerSlider input{width:100%;min-width:0;accent-color:#cfad55}.overseerSlider output{white-space:normal;font-size:14px}

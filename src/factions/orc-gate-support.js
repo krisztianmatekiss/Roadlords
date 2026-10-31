@@ -1,3 +1,4 @@
+import { ORC_REDESIGN } from '../data/faction-redesign.js';
 import { assetUrl } from '../assets/urls.js';
 import { fitsUnitRoom, unitRoomCount } from '../economy/unit-capacity.js';
 export function initializeFactionsOrcGateSupport(runtime) {
@@ -101,7 +102,7 @@ export function initializeFactionsOrcGateSupport(runtime) {
   let production = null;
   function raid(c) {
     const r = active(c, 'orc_raider');
-    if (!r || !runtime.orcGateBonuses(c) || Math.random() >= runtime.v4LevelValue(r.level, [.05, .08, .12])) return;
+    if (!r || !runtime.orcGateBonuses(c) || Math.random() >= runtime.v4LevelValue(r.level, ORC_REDESIGN.raid)) return;
     let key = 'orc_warrior';
     if (r.level >= 4 && runtime.hasBranch(c, r.type, 'monsters') && Math.random() < .08) key = 'orc_troll';else if (r.level >= 2) {
       const n = Math.random();

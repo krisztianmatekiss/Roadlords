@@ -49,13 +49,13 @@ export function installRoadMovement(R) {
     let vx = dx / distance, vy = dy / distance;
     let repelX = 0, repelY = R.roadFriendlyBias(u), obstacle = 0, wall = false;
     R.roadVisit(u, 43, v => {
-      if(v.side!==u.side&&(R.unitPassesEnemies?.(u)||R.unitPassesEnemies?.(v)))return;
+      if(v.side!==u.side&&((R.unitPassesEnemies?.(u)||R.unitPassesEnemies?.(v))&&!R.spearBastion?.(u)&&!R.spearBastion?.(v)))return;
       const ox = v.lane - u.lane, oy = (v.offset || 0) - (u.offset || 0);
       const d = Math.hypot(ox, oy) || .01, gap = gapFor(u, v);
       const ahead = ox * vx + oy * vy, across = Math.abs(ox * vy - oy * vx);
       if (ahead > 0 && ahead < gap + 10 && across < gap * .85) {
         obstacle = Math.max(obstacle, (1 - across / gap) * (1 - Math.max(0, ahead - gap) / 10));
-        if (v.side !== u.side && v.phalanx) wall = true;
+        if (v.side !== u.side && (v.phalanx||R.spearBastion?.(v))) wall = true;
       }
       if (d < gap + 7) {
         const strength = Math.max(0, (gap + 7 - d) / (gap + 7));
@@ -103,7 +103,7 @@ export function installRoadMovement(R) {
       for (const u of R.state.units) {
         if (!u.alive) continue;
         R.roadVisit(u, 28, v => {
-          if (v.id <= u.id||v.side!==u.side&&(R.unitPassesEnemies?.(u)||R.unitPassesEnemies?.(v))) return;
+          if (v.id <= u.id||v.side!==u.side&&((R.unitPassesEnemies?.(u)||R.unitPassesEnemies?.(v))&&!R.spearBastion?.(u)&&!R.spearBastion?.(v))) return;
           let dx = v.lane - u.lane, dy = (v.offset || 0) - (u.offset || 0), d = Math.hypot(dx, dy);
           const gap = gapFor(u, v);
           if (d >= gap) return;

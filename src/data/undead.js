@@ -95,7 +95,7 @@ export const UNDEAD_UNITS = {
   },
   und_vampire: {
     name: 'Vámpír',
-    hp: 300,
+    hp: 600,
     damage: 45,
     cooldown: 1.25,
     speed: 50,

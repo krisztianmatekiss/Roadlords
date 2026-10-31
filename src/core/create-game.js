@@ -1,3 +1,4 @@
+import { initializeFactionRedesign } from '../factions/redesign.js';
 import { initializeHumanMapArtwork } from '../rendering/human-map-artwork.js';
 import { initializeUndeadExpansion } from '../factions/undead/expansion.js';
 import { installFlyingShotSnapshots } from '../multiplayer/flying-shots.js';
@@ -288,5 +289,6 @@ export function createGame() {
   installProductionFigures(runtime);
   installFlyingShotSnapshots(runtime);
   installBattlePopulation(runtime);
+  initializeFactionRedesign(runtime);
   return runtime;
 }

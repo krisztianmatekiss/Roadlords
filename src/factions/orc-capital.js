@@ -1,3 +1,4 @@
+import { ORC_REDESIGN } from '../data/faction-redesign.js';
 import { SPEAR_VOLLEY_RANGE, WARG_THROW_RANGE } from '../data/ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 export function initializeFactionsOrcCapital(runtime) {
@@ -86,7 +87,7 @@ export function initializeFactionsOrcCapital(runtime) {
   const oldRecompute = runtime.recomputeCity;
   runtime.recomputeCity = function (c, preserve = true) {
     const out = oldRecompute(c, preserve);
-    if (isOrc(c) && runtime.hasBranch(c, 'keep', 'orc_command')) c.garrisonCap *= 2;
+    if (isOrc(c) && runtime.hasBranch(c, 'keep', 'orc_command')) { c.garrisonCap *= 2; c.maxHp *= 2; c.hp *= 2; }
     if (conquest(c)) {
       c.gateMode = 'open';
       c.autoReleasing = false;
@@ -199,7 +200,7 @@ export function initializeFactionsOrcCapital(runtime) {
       for (let i = 0; i < list.length; i++) {
         while (list[left].lane < list[i].lane - 82.5) left++;
         while (right < list.length && list[right].lane <= list[i].lane + 82.5) right++;
-        list[i].orcPackMult = 1 + .02 * (right - left - 1);
+        list[i].orcPackMult = 1 + ORC_REDESIGN.pack * (right - left - 1);
       }
     }
   }

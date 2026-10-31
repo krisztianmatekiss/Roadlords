@@ -1,3 +1,4 @@
+import { territoryPower } from '../../data/faction-redesign.js';
 import { UNDEAD_UNITS as U, UNDEAD_RULES } from '../../data/undead.js';
 import { isUndead } from './foundation.js';
 import { ARMY_TEMPO } from '../../data/unit-balance.js';
@@ -159,6 +160,9 @@ export function initializeUndeadCombat(R) {
     const ctx = context,
       source = ctx?.source,
       hostile = source && source.side !== target.side;
+    const direct=R.redesignAttackContext;
+    const melee=ctx?.attack ? hostile&&!ctx.ranged&&!ctx.secondary : direct?.melee&&direct.source.side!==target.side;
+    if(target.key==='spearman'&&melee)amount*=1-Math.min(.75,.05*R.countNormal(own(target),'spear_range'));
     if(hostile&&!ctx.guarded)amount *= R.undDamageMultiplier?.(source,ctx)||1;
     if (
       ctx?.attack &&
@@ -419,7 +423,7 @@ export function initializeUndeadCombat(R) {
         if (
           garden &&
           R.isOwnHalf(local) &&
-          Math.random() < Math.min(1, 0.1 + 0.02 * R.countNormal(enemy, 'garden_chance'))
+          Math.random() < Math.min(1, (0.1 + 0.02 * R.countNormal(enemy, 'garden_chance')) * territoryPower(enemy))
         ) {
           const key =
             garden.level === 4
@@ -537,25 +541,17 @@ export function initializeUndeadCombat(R) {
         c.undeadState.towerClock -= towerTicks;
         const towers = R.buildingOf(c, 'und_dark_tower').filter((t) => !t.inactive);
         if (!towerTicks || !towers.length) continue;
-        let target = null;
-        for (const u of R.state.units)
-          if (
-            u.alive &&
-            u.side !== side &&
-            R.isOwnHalf({ side, lane: u.lane }) &&
-            (!target || advance(u) < advance(target))
-          )
-            target = u;
-        if (target && towerTicks)
-          for (const tower of towers)
-            if (!tower.inactive && target.alive)
-              withSource({ source: null, attack: true, ranged: false }, () =>
-                R.damageUnit(
-                  target,
-                  target.maxHp * at(tower.level, [0.01, 0.015, 0.02, 0.03]) * towerTicks,
-                  'magic',
-                ),
-              );
+        const targets = R.state.units.filter(u => u.alive && u.side !== side && R.isOwnHalf({side, lane:u.lane}));
+        targets.sort((a,b)=>advance(a)-advance(b)||a.id-b.id);
+        for (const tower of towers) {
+          let hit = 0;
+          for (const target of targets) {
+            if (!target.alive) continue;
+            withSource({source:null,attack:true,ranged:true},()=>R.damageUnit(target,
+              target.maxHp * at(tower.level,[.01,.015,.02,.03]) * towerTicks * territoryPower(c),'magic'));
+            if (++hit >= tower.level) break;
+          }
+        }
       }
     if (dirty) {
       R.state.units = R.state.units.filter((u) => u.alive);

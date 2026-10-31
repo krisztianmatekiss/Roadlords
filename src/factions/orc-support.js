@@ -1,3 +1,4 @@
+import { ORC_REDESIGN } from '../data/faction-redesign.js';
 import { assetUrl } from '../assets/urls.js';
 import { ORC_EXPANSION } from '../data/orc-expansion.js';
 export function initializeFactionsOrcSupport(runtime) {
@@ -14,7 +15,7 @@ export function initializeFactionsOrcSupport(runtime) {
   const active = (c, type) => isOrc(c) ? runtime.buildingOf(c, type).find(b => !b.inactive) : null;
   const thresholds = {
     orc_altar: [100, 90, 75, 50],
-    orc_totem: [500, 450, 400, 200]
+    orc_totem: ORC_REDESIGN.totem
   };
   const threshold = b => runtime.v4LevelValue(b.level, thresholds[b.type]);
   const defs = {
@@ -70,7 +71,7 @@ export function initializeFactionsOrcSupport(runtime) {
     const d = data(c);
     d.totemProgress += points;
     if (d.totemProgress >= threshold(b)) {
-      d.totemProgress = 0;
+      d.totemProgress -= threshold(b);
       d.totemRewards++;
     }
   }
@@ -81,8 +82,7 @@ export function initializeFactionsOrcSupport(runtime) {
     if (authoritative() && alive && !u.alive && combatDeath) {
       const own = runtime.cityForSide(u.side),
         enemy = u.side === 'player' ? runtime.E : runtime.P;
-      recordDeath(own, O.deathWeight(u));
-      if (runtime.hasLeg(enemy, 'orc_enemy_ancestors')) recordDeath(enemy, 1);
+      recordDeath(enemy, 1);
       if (active(enemy, 'orc_slave')) data(enemy).slaveKills++;
     }
     return out;
@@ -172,33 +172,18 @@ export function initializeFactionsOrcSupport(runtime) {
     leech(u, Math.max(0, before - target.hp));
     return out;
   };
-  const oldRoll = runtime.rollPickTier;
-  runtime.rollPickTier = (c, source) => source === 'orc_totem' ? {
-    tier: 'legendary',
-    subtype: null
-  } : oldRoll(c, source);
-  const oldOptions = runtime.makeChoiceOptions;
-  runtime.makeChoiceOptions = function (c, source, tier, subtype, exclude = []) {
-    if (source !== 'orc_totem') return oldOptions(c, source, tier, subtype, exclude);
-    const pool = runtime.eligibleLegendary(c).map(x => ({
-        ...x,
-        kind: 'legendary'
-      })),
-      fresh = pool.filter(x => !exclude.includes(runtime.choiceKey(x)));
-    return runtime.shuffle(fresh.length ? fresh : pool).slice(0, 4);
-  };
   const oldContext = runtime.choiceContextForPlayer;
   runtime.choiceContextForPlayer = function () {
     const context = oldContext();
     if (context.source === 'orc_totem') {
-      context.kicker = 'ŐSÖK TOTEME · LEGENDÁS JUTALOM';
-      context.desc = 'Válassz egyet a még elérhető legendások közül (legfeljebb 4 lehetőség).';
+      context.kicker = 'ŐSÖK TOTEME · JUTALOM';
+      context.desc = 'Válassz egy jutalmat.';
     }
     return context;
   };
   function dispatch(c) {
     const d = c.orcSupport;
-    if (!d?.totemRewards || !runtime.eligibleLegendary(c).length) return;
+    if (!d?.totemRewards) return;
     if (runtime.state.startChoices > 0 || runtime.state.modal || runtime.state.pendingChoices.length || runtime.MP.guestChoicePending) return;
     d.totemRewards--;
     if (c === runtime.P) runtime.queueChoice('orc_totem');else runtime.grantEnemyPick('orc_totem');

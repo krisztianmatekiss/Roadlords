@@ -283,7 +283,8 @@ export function installApplicationShell(game) {
       symbolizeResources(grid,game,codexRace);
       grid.querySelectorAll('.illustratedCard').forEach(fitCardText);
       const total = (codexTab === 'buildings' ? Object.entries(BUILDINGS) : codexTab === 'units' ? Object.entries(UNITS) : (codexTab === 'common' ? NORMAL : LEGENDARY).map(x => [x.id, x])).filter(([k, d]) => raceMatches(d, k)).length;
-      raceBar.querySelector('.orcNote').textContent = codexRace === 'undead' ? '7 egységváltozat · 20 épület · 29 gyakori és 20 legendás fejlesztés' : codexRace === 'orc' ? '7 egység · 19 épület · 30 gyakori és 26 legendás fejlesztés' : '';
+      const factionCount = entries => entries.filter(([k,d])=>raceMatches(d,k)).length;
+      raceBar.querySelector('.orcNote').textContent = codexRace==='human'?'':`${factionCount(Object.entries(UNITS))} egység · ${factionCount(Object.entries(BUILDINGS))} épület · ${NORMAL.filter(d=>raceMatches(d,d.id)).length} gyakori és ${LEGENDARY.filter(d=>raceMatches(d,d.id)).length} legendás fejlesztés`;
       countEl.textContent = `${rows.length} / ${total} bejegyzés`;
     }
     codexBody.querySelectorAll('.rlCodexTab').forEach(btn => btn.onclick = () => {

@@ -58,7 +58,7 @@ export function initializeAiEconomy(runtime) {
     u.warEliteMult = entry.warEliteMult || 1;
     u.armorShieldPct = entry.armorShieldPct || 0;
     u.armorMoveMult = entry.armorMoveMult || 1;
-    u.thornArmor = !!entry.thornArmor;
+    u.thornArmor = Number(entry.thornArmor)||0;
     if (entry.hospitalHpPct != null) u.hp = u.maxHp * entry.hospitalHpPct;
     if (u.armorMoveMult !== 1) {
       u.baseSpeed *= u.armorMoveMult;
@@ -81,7 +81,7 @@ export function initializeAiEconomy(runtime) {
         armorShieldPct: target.armorShieldPct || 0,
         shieldPct: target.armorShieldPct || 0,
         armorMoveMult: target.armorMoveMult || 1,
-        thornArmor: !!target.thornArmor
+        thornArmor: Number(target.thornArmor)||0
       }) : null,
       lane = target.lane;
     runtime.v45KillUnit(target, combatDeath);
@@ -96,8 +96,8 @@ export function initializeAiEconomy(runtime) {
     runtime.v45ApplyDirectHit(u, t, dmg, opts);
     const absorbed = Math.max(0, before - ((t?.shield || 0) + (t?.tempShield || 0)));
     if (absorbed > 0 && t?.thornArmor && u?.alive && u.tags?.includes('melee')) {
-      runtime.damageUnit(u, absorbed * .30, 'magic');
-      runtime.spark(u.lane, '✹ ' + Math.round(absorbed * .30), '#f4bd72');
+      runtime.damageUnit(u, absorbed * .30 * (Number(t.thornArmor)||1), 'magic');
+      runtime.spark(u.lane, '✹ ' + Math.round(absorbed * .30 * (Number(t.thornArmor)||1)), '#f4bd72');
     }
   };
   runtime.v45DrawUnit = runtime.drawUnit;

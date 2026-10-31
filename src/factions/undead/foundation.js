@@ -196,9 +196,9 @@ export function initializeUndeadFoundation(R) {
       damage = 1 + 0.1 * R.countNormal(c, family + '_common_damage');
     const summon =
       e.undSummoned && e.key === 'und_skeleton' ? 1 + 0.1 * R.countNormal(c, 'necro_common_summon_stats') : 1;
-    s.hp *= hp * summon * (e.undElite ? 1.5 : 1);
-    s.dmg *= damage * summon * (e.undElite ? 1.5 : 1);
-    s.buildingDamage *= damage * summon * (e.undElite ? 1.5 : 1);
+    s.hp *= hp * summon;
+    s.dmg *= damage * summon;
+    s.buildingDamage *= damage * summon;
     if (e.key === 'und_lich') s.buildingDamage = s.dmg * 5;
     return s;
   };

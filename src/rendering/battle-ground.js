@@ -35,4 +35,17 @@ export function drawBattleGround(R) {
     g.drawImage(R.ROAD.ground,0,0,512,49,left,0,512*zoom,margin);
     g.drawImage(R.ROAD.ground,0,551,512,49,left,bottom,512*zoom,margin);
   }
+  drawTerritoryBoundary(R);
+}
+
+export function drawTerritoryBoundary(R) {
+  const lane=R.territoryBoundary?.()??R.PATH_LENGTH/2,x=R.pointAt(lane,0).x;
+  if(x < -8 || x > R.ROAD.w+8)return;
+  const g=R.ctx;g.save();g.globalAlpha=1;g.shadowBlur=0;g.lineWidth=8;g.strokeStyle='#08110b';
+  g.beginPath();g.moveTo(x,0);g.lineTo(x,R.ROAD.h);g.stroke();g.lineWidth=3;
+  for(const [side,offset]of [['player',-2],['enemy',2]]){
+    g.strokeStyle=window.__ROADLORDS_UNIT_COLORS__?.colorFor(side)||(side==='player'?'#397fc1':'#c74949');
+    g.beginPath();g.moveTo(x+offset,0);g.lineTo(x+offset,R.ROAD.h);g.stroke();
+  }
+  g.restore();
 }

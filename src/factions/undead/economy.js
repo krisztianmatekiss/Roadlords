@@ -1,3 +1,4 @@
+import { KELTETO, levelValue, territoryPower } from '../../data/faction-redesign.js';
 import { UNDEAD_BUILDINGS as D, UNDEAD_UNITS as U, UNDEAD_RULES } from '../../data/undead.js';
 import { isUndead } from './foundation.js';
 import { UNDEAD_ECONOMY as B } from '../../data/economy-balance.js';
@@ -33,17 +34,18 @@ export function initializeUndeadEconomy(R) {
       const cost =
         D[b.type].upkeep *
         frugal *
+        (R.hasBranch(c, 'keep', 'elite_dominion') ? 2 : 1) *
         (1 - reduction) *
         (b.type === 'und_dark_tower' ? 1 + 0.25 * Math.max(0, towerCount - 1) : 1);
       upkeep.set(b.id, cost);
       if (D[b.type].unit) {
         const hatch = Math.max(
           0,
-          ...hatcheries.filter((h) => R.undInRange(c, h, b, 1)).map((h) => at(h.level, [0.4, 0.6, 0.8, 1])),
+          ...hatcheries.filter((h) => b.type !== 'und_graveyard' && R.undInRange(c, h, b, 1)).map((h) => levelValue(h.level, KELTETO.speed)),
         );
         speed.set(b.id, {
           mult: production * (1 + (R.hasLeg(c, 'gen_military_speed') ? B.trainingBonus : 0)) * (1 + hatch),
-          hurt: hatch > 0,
+          skeletonChance: hatch ? levelValue(KELTETO.speed.indexOf(hatch) + 1, KELTETO.skeleton) : 0,
         });
       }
     }
@@ -151,13 +153,6 @@ export function initializeUndeadEconomy(R) {
     if (!state || state.lostBuildingIds.includes(id)) return;
     state.lostBuildingIds.push(id);
     if (state.lostBuildingIds.length > 256) state.lostBuildingIds.shift();
-    if (R.hasBranch(c, 'keep', 'death_squad')) {
-      const keys = [...new Set([...c.unlocked].map((type) => D[type]?.unit).filter(Boolean))];
-      if (keys.includes('und_skeleton') && R.hasLeg(c, 'skeleton_leg_archer'))
-        keys.push('und_skeleton_archer');
-      if (!keys.length) keys.push('und_skeleton');
-      for (let i = 0; i < 10; i++) R.undQueueFree(c, R.pick(keys));
-    }
   };
   R.undQueueFree = (c, key, extra = {}) => {
     const entry = R.makeEntry(c, key, extra);
@@ -229,13 +224,11 @@ export function initializeUndeadEconomy(R) {
       R.hasBranch(c, b.type, 'elite_skeletons') &&
       c.buildings.filter((x) => x.type === 'und_graveyard' && x.id !== b.id && R.aiBuildingsTouch(c, b, x))
         .length >= 3;
-    const hurt = R.undEconomy(c).speed.get(b.id)?.hurt;
+    const skeletonChance = R.undEconomy(c).speed.get(b.id)?.skeletonChance || 0;
     for (let i = 0; i < count; i++) {
-      const key =
-        base === 'und_skeleton' && R.hasLeg(c, 'skeleton_leg_archer') && Math.random() < 0.5
-          ? 'und_skeleton_archer'
-          : base;
-      const extra={originBuildingId:b.id,undElite:elite,undSpawnHp:hurt ? .5 : 1};
+      const key = skeletonChance && Math.random() < skeletonChance ? 'und_skeleton' :
+        base === 'und_skeleton' && R.hasLeg(c, 'skeleton_leg_archer') && Math.random() < .5 ? 'und_skeleton_archer' : base;
+      const extra={originBuildingId:b.id,producerMade:true,undElite:elite,undSpawnHp:1};
       R.queueProduced(c,R.makeEntry(c,key,extra),b);
       if(R.hasLeg(c,'und_twin_training')&&Math.random()<.3)R.undQueueFree(c,key,extra);
     }
@@ -287,8 +280,8 @@ export function initializeUndeadEconomy(R) {
   const ownHalf = R.isOwnHalf;
   R.isOwnHalf = (u) => {
     const c = R.cityForSide(u.side);
-    if (!isUndead(c) || !R.hasBranch(c, 'keep', 'dead_realm')) return ownHalf(u);
-    const advance = (Math.min(100, Math.floor(Math.max(0, c.resources.wood) / 100)) * R.PATH_LENGTH) / 200;
+    if (!isUndead(c)) return ownHalf(u);
+    const advance = R.undTerritoryAdvance?.(c) || 0;
     return u.side === 'player'
       ? u.lane <= R.PATH_LENGTH / 2 + advance
       : u.lane >= R.PATH_LENGTH / 2 - advance;

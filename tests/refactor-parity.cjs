@@ -26,38 +26,25 @@ const BASE_URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/
    }));
    assert.deepEqual(errors,[],`Runtime errors in ${url}`);await page.close();
   }
-  const expectedCities=structuredClone(results[0].cities),basics=new Set(['lumber','stonecutter','farm','warehouse','barracks','house','orc_work','orc_hunt','orc_war','orc_hut']);
-  for(const city of expectedCities)for(const b of city.buildings)if(b.paidCost)for(const r of ['wood','stone','food'])b.paidCost[r]=Math.ceil((b.paidCost[r]||0)*(basics.has(b.type)?1.25:1.4)/5)*5;
-  assert.deepEqual(results[1].cities,expectedCities);assert.deepEqual(results[1].fixture,results[0].fixture);
-  console.log('PASS Archived and current games retain identical full city layouts and legal upgrades with approved construction-price deltas for their shared content pool (seed 42)');
+  // The 4.58 redesign intentionally changes the draft pool, L4s and generated cities.
+  // Exact pre-redesign upgrade/stat snapshots would assert obsolete game rules.
   assert.equal(results[1].units.length,results[0].units.length);
-  const centreShift=(results[1].pathLength-results[0].pathLength)/2;
+  assert.equal(results[1].units.length,1000);
   assert.equal(results[1].pathLength,results[0].pathLength*2);
-  for(let i=0;i<results[0].units.length;i++){
-   const expected={...results[0].units[i]},actual=results[1].units[i],city=results[0].cities[expected.side==='player'?0:1];
-   const scale=(key,factor)=>{if(expected[key]!==undefined){assert(Math.abs(actual[key]-expected[key]*factor)<1e-5,`${expected.key} ${key}: approved balance delta`);expected[key]=actual[key];}};
-   // The approved doubled road translates the same initial formation to its new midpoint.
-   expected.lane=Math.round((expected.lane+centreShift)*1e6)/1e6;
-   // Only the explicitly approved balance changes may differ from the archive.
-   if(expected.key==='knight')scale('speed',147/63);
-   if(expected.key==='orc_warg')scale('speed',136/55);
-   if(expected.key==='orc_goblin')scale('speed',70/50);
-   if(!['knight','orc_warg','orc_goblin'].includes(expected.key))scale('speed',1.25);
-   if(expected.key==='orc_shaman'){
-    scale('damage',8/6);scale('buildingDamage',8/6);scale('cooldownTime',2.5/4.2);scale('range',300/120);
+  for(const result of results){
+   assert.equal(new Set(result.units.map(u=>u.id)).size,1000);
+   for(const side of ['player','enemy']){
+    const army=result.units.filter(u=>u.side===side);assert.equal(army.length,500);
+    assert(army.every(u=>u.alive&&u.hp>0&&u.maxHp>=u.hp&&u.damage>=0&&u.speed>0&&u.range>0&&u.lane>=0&&u.lane<=result.pathLength));
    }
-   if(['archer','priest','catapult','mage','orc_goblin'].includes(expected.key))scale('range',2);
-   if(expected.key==='orc_goblin'&&city.legends.includes('orc_gob_bow')){
-    scale('damage',1.2/2);scale('buildingDamage',1.2/2);scale('range',1.2/1.5);scale('cooldownTime',1/.6);
-    if(city.legends.includes('orc_momentum')){
-     const damage=1+.1*(city.normal.orc_goblin_dmg||0);
-     scale('cooldownTime',(1+(damage*2-1)*.5)/(1+Math.max(0,damage*1.2-1)*.5));
-    }
-   }
-   assert.deepEqual(actual,expected);
   }
-  assert.deepEqual(results[1].counts,results[0].counts);
-  console.log('PASS All 1000 initial units preserve their formation and stats, translated to the doubled road midpoint');
-  fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/refactor-parity.json',JSON.stringify({passed:2,seed:42,units:1000,scope:"City and unit preservation with approved V4.24 / V4.28 balance deltas and V4.34 road midpoint translation; movement and splash damage validated separately"},null,2));
+  console.log('PASS Archive and redesigned game both start real 500-vs-500 battles with unique, live actors on their respective roads');
+  const retired=new Set(['hospital','towercommand','alchemist','academy','orc_altar','und_soul_harvester']);
+  for(const city of results[1].cities){
+   assert(city.buildings.every(b=>!retired.has(b.type)),'Endgame fixture must not restore retired buildings');
+   assert(!city.legends.includes('tavern_chain')&&!city.legends.includes('orc_enemy_ancestors'));
+  }
+  console.log('PASS Redesigned full endgame cities and legal upgrade pools exclude retired buildings and obsolete relics');
+  fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/refactor-parity.json',JSON.stringify({passed:2,seed:42,units:1000,scope:'Archive startup and army-size contract; new endgame fixture legality. Intentional balance changes are checked by faction-redesign, movement, combat and economy tests.'},null,2));
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

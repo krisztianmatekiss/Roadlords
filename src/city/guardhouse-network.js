@@ -83,7 +83,8 @@ export function initializeCityGuardhouseNetwork(runtime) {
           targets = runtime.state.units.filter(u => u.alive && u.side !== side && (side === 'player' ? u.lane <= st.range * .5 : u.lane >= runtime.PATH_LENGTH - st.range * .5)).sort((a, b) => side === 'player' ? a.lane - b.lane : b.lane - a.lane);
         if (!targets.length) continue;
         if (e.key === 'priest' && runtime.hasLeg(c, 'sacred_vow')) continue;
-        runtime.damageUnit(targets[0], st.dmg * .5, runtime.UNITS[e.key].damageType);
+        const power=runtime.hasBranch(c,'guardhouse','arrow_bastion')?Math.max(1,...runtime.buildingOf(c,'guardhouse').filter(g=>runtime.v491GuardhouseNetwork(c,g).wall).map(g=>runtime.townhallPower?.(c,g)||1)):1;
+        runtime.damageUnit(targets[0], st.dmg * .5 * power, runtime.UNITS[e.key].damageType);
         e.garrisonCd = st.cooldown;
       }
     }

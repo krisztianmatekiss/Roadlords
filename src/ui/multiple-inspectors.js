@@ -75,7 +75,7 @@ export function initializeUiMultipleInspectors(runtime) {
     return 'Elérte a legmagasabb technológiai szintet.';
   }
   function buildingInspectorSpecialHTML(b) {
-    let html = '';
+    let html = runtime.redesignBuildingControls?.(runtime.P,b)||'';
     if (b.type === 'market') html += runtime.marketControlsHTML(runtime.P, b);else if (b.type === 'rally') html += runtime.rallyControlsHTML(runtime.P);else if (b.type === 'warcenter') html += runtime.warcenterControlsHTML(runtime.P);
     if (b.type === 'academy' && window.__ROADLORDS_V4953__?.academyControlsHTML) html += window.__ROADLORDS_V4953__.academyControlsHTML(runtime.P);
     if (b.type === 'keep' && runtime.hasLeg(runtime.P, 'capital_studies') && window.__ROADLORDS_V4953__?.capitalStudyControlsHTML) html += window.__ROADLORDS_V4953__.capitalStudyControlsHTML(runtime.P);

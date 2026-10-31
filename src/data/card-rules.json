@@ -40,5 +40,9 @@
   "und_army_leech": "A ténylegesen életerőt sebző támadások és Lich-sugarak sebzésének 20%-ából gyógyít. A már meglévő életlopáshoz hozzáadódik; pajzsba csapódó sebzésből nem gyógyít.",
   "und_first_guard": "Egységenként az első támadási találatot és annak állapothatásait is kivédi. A területi találat is számít. A méreg és égés önálló sebzése nem fogyasztja el. A frissen megjelenő egység új védelmet kap.",
   "und_raise_enemy": "A harci halál helyén, az eredeti egységtípus új, saját példánya jelenik meg 50% maximális HP-val. A korábbi tulajdonos fejlesztéseit nem másolja. Élőhalottnak számít, és saját csapatszínt kap.",
-  "gen_military_speed": "Minden katonai épület képzési sebességére hat. Egyszer választható."
+  "gen_military_speed": "Minden katonai épület képzési sebességére hat. Egyszer választható.",
+  "und_territory": "A területnövelés halmozódik. Mindkét fél növelése ugyanazt a határvonalat tolja el; a határ nem lépheti át a pálya végét.",
+  "und_elite_birth": "Az elit esély hozzáadódik a többi forráshoz. Kiképzett, idézett és feltámasztott egységre is hat. Az elit állapot egyszeri +50% életerőt és sebzést ad, nem halmozódik önmagával.",
+  "keep/elite_dominion": "Csak a termelőkből készülő egységek kapják az 50%-os esélyt. Az épületek folyamatos fenntartása duplázódik, a katonák képzési ára nem.",
+  "keep/dead_realm": "A saját térfélhez kötött bónusz értékét duplázza. Nem duplázza az egységek alapstatisztikáit vagy a tornyok célpontszámát."
 }

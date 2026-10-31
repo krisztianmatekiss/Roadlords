@@ -3,7 +3,7 @@ import { ARMY_TEMPO } from '../data/unit-balance.js';
 import { MAGE_SECONDARY_DAMAGE } from '../data/combat-balance.js';
 export const UNIT_COPY = {
   swordsman: {role:'Közelharcos', ability:'Olcsó gyalogság az első sorba.'},
-  spearman: {role:'Páncéltörő gyalogos', ability:'Lovasság és nehéz egységek ellen erős.', details:['A közelharcosok többségénél messzebbre ér el.']},
+  spearman: {role:'Lovasság elleni gyalogos', ability:'Lovasság és ostromfegyverek ellen +100% sebzés.', details:['A közelharcosok többségénél messzebbre ér el.']},
   archer: {role:'Távolsági gyalogos', ability:'Biztonságos távolságból lövi az ellenséget.', details:['Közelről gyengébben sebez.']},
   knight: {role:'Lovasság', ability:'Gyors, nagy életerejű közelharcos.'},
   priest: {role:'Gyógyító', ability:'A közeli sérült szövetségeseket gyógyítja.'},

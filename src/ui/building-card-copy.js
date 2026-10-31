@@ -66,6 +66,7 @@ export function createBuildingCardCopy(R) {
   }
   const fmt = n => Number(n).toLocaleString('hu-HU', {maximumFractionDigits: 1, useGrouping: false});
   function describe(race, type, level, d, rows) {
+    if(R.redesignDescriptions?.[type])return R.redesignDescriptions[type](null,level);
     const value = name => rows.find(([label]) => label === name)?.[1] || '';
     const number = name => Number(value(name).match(/[+−-]?\d+(?:[,.]\d+)?/)?.[0]?.replace(',', '.').replace('−', '-'));
     if (type === 'keep') return `${value('Életerő')} HP; ${value('Termelés').replace(' nyersanyagonként', ' fa, kő és élelem')}; ${race === 'undead' ? '' : value('Tároló') + ' tároló; '}${value('Sereghely')} sereghely; kapu: ${value('Kapu')}.`;

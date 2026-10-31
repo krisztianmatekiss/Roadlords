@@ -201,8 +201,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     });
     report.data = data;
     check(
-      'The workbook registers exactly 18 buildings, 7 unit variants, 25 common and 23 legendary upgrades',
-      data.total === 18 && data.units === 7 && data.normal === 25 && data.legend === 23,
+      'The workbook registers 17 buildings, 7 unit variants, 26 common and 24 legendary upgrades',
+      data.total === 17 && data.units === 7 && data.normal === 26 && data.legend === 24,
     );
     check(
       'Faction-specific draft pools do not leak Human or Orc cards; every common has a numeric preview',
@@ -296,11 +296,11 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       economy.anchorCost === 0.25 && economy.strongest === 0.25 && Math.abs(economy.reduced - 0.05) < 1e-6,
     );
     check(
-      'Hatchery recruits start at half HP; the training legendary boosts cadence without producing free resources',
-      Math.abs(economy.time - 6.25 / 1.4) < 1e-6 &&
-        economy.spawnRatio === 0.5 &&
+      'Graveyards ignore the Hatchery; recruits retain full HP and the training legendary boosts cadence',
+      Math.abs(economy.time - 6.25) < 1e-6 &&
+        economy.spawnRatio === 1 &&
         economy.overIncome === 4 &&
-        Math.abs(economy.overTime - 6.25 / 1.75) < 1e-6,
+        Math.abs(economy.overTime - 6.25 / 1.25) < 1e-6,
     );
     const deaths = await page.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__,
@@ -349,8 +349,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       Math.abs(deaths.interest - 1051.407) < 0.001 && deaths.survivesNine && deaths.starved,
     );
     check(
-      'Retired economy buildings are absent and Death Squad creates exactly ten free recruits',
-      deaths.burned && deaths.free === 10,
+      'Retired economy buildings are absent and the removed Death Squad no longer rewards demolition',
+      deaths.burned && deaths.free === 0,
     );
     const hit = await page.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__;
@@ -550,7 +550,6 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       }
       const ratio = revived.undSpawnHp;
       undReset();
-      undPut('und_soul_harvester', 0, 0);
       undPut('und_garden_of_dead', 0, 2);
       const victim = undUnit('swordsman', 'enemy', 1200),
         stock = R.P.resources.wood;
@@ -563,9 +562,9 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       const harvested = R.P.resources.wood - stock,
         conversion = R.state.units.find((u) => u.alive && u.side === 'player');
       R.setBuildingLevel(R.P, 'keep', 4, 'dead_realm');
-      R.P.resources.wood = 10000;
-      const expanded = R.isOwnHalf({ side: 'player', lane: R.PATH_LENGTH - 1 });
-      R.P.resources.wood = 0;
+      R.P.normal.und_territory = 25;
+      const expanded = R.isOwnHalf({ side: 'player', lane: R.PATH_LENGTH * .75 });
+      R.P.normal.und_territory = 0;
       const contracted = !R.isOwnHalf({ side: 'player', lane: R.PATH_LENGTH * 0.75 });
       return {
         forged,
@@ -586,8 +585,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     );
     check('Rebirth Tomb revives at half HP once per actor', recovery.ratio === 0.5 && recovery.once);
     check(
-      'Harvesters earn on enemy deaths; Garden converts the corpse in place; Dead Realm follows stored Souls',
-      recovery.harvested === 1 &&
+      'Removed Harvesters give no Souls; Garden converts the corpse in place; territorial upgrades move the boundary',
+      recovery.harvested === 0 &&
         recovery.converted === 'und_skeleton' &&
         recovery.lane === 1200 &&
         recovery.expanded &&

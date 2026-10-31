@@ -44,7 +44,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         factory: R.LEGENDARY.find(x => x.id === 'factory_network').description
       };
     }); report.audit = audit;
-    check('All 63 common and 87 legendary descriptions have final, jargon-free copy', audit.coverage.join() === '63,87,150' && audit.text);
+    check('All 63 common and 83 legendary descriptions have final, jargon-free copy', audit.coverage.join() === '63,83,146' && audit.text);
     check('All faction building roles, branches and Undead levels use concise text without workbook dumps or internal jargon', audit.conciseBuildings && audit.conciseBranches && audit.undeadCopy);
     check('All common cards provide a numeric preview without changing cities, units, towers or RNG', audit.pure && audit.rows);
     check('Human damage and priest healing previews use actual unit stats', audit.sword.rows.some(r => r.before === '12' && r.after === '13,2') && audit.priest.rows.some(r => r.before === '30' && r.after === '33'));
@@ -99,7 +99,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       const p = b.querySelector('p'), s = getComputedStyle(p); b.scrollTop = b.scrollHeight;
       return getComputedStyle(b).overflowY === 'auto' && s.webkitLineClamp === 'none' && s.whiteSpace === 'normal' && b.querySelector('.upgradeComparison').getBoundingClientRect().bottom <= b.getBoundingClientRect().bottom + 1;
     })));
-    await show(['sword_execute', 'magic_order', 'tavern_chain', 'strategic_superiority'], 'legendary');
+    await show(['sword_execute', 'magic_order', 'campaign_feast', 'strategic_superiority'], 'legendary');
     await page.screenshot({ path: 'artifacts/upgrade-copy-legends.png' });
     await page.setViewportSize({ width: 800, height: 900 });
     await show(['orc_blessing', 'orc_bleed', 'orc_leech', 'orc_crit']);

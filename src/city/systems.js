@@ -495,7 +495,7 @@ export function register(runtime) {
     const r = runtime.buildingOf(c, 'rally')[0];
     if (!r) return 0;
     const base = r.level >= 4 && runtime.hasBranch(c, 'rally', 'war_rally') ? 100 : runtime.v4LevelValue(r.level, [15, 25, 40, 40]);
-    return base + runtime.guardhouseBonus(c, 'rally');
+    return base * (runtime.townhallPower?.(c,r)||1) + runtime.guardhouseBonus(c, 'rally');
   };
   runtime.activeSpawners = function activeSpawners(c) {
     return runtime.spawnerBuildings(c);
@@ -615,18 +615,15 @@ export function register(runtime) {
       army = runtime.v4LevelValue(kl, [50, 100, 200, 400]);
     if (runtime.hasBranch(c, 'keep', 'empire')) storage = 1600;
     for (const b of c.buildings) {
-      if (b.type === 'warehouse') storage += runtime.v4LevelValue(b.level, [150, 300, 600, 1500]);
+      if (b.type === 'warehouse') storage += runtime.v4LevelValue(b.level, [150, 300, 600, 1500]) * (runtime.townhallPower?.(c,b)||1);
       if (b.type === 'house') {
         let val = runtime.v4LevelValue(b.level, [10, 15, 20, 40]);
-        const hall = runtime.buildingOf(c, 'townhall')[0];
-        if (hall && runtime.inBuildingRange(hall, b, 2)) {
-          if (runtime.hasBranch(c, 'townhall', 'metropolis')) val *= 3;else val *= runtime.v4LevelValue(hall.level, [1.5, 1.75, 2, 2]);
-          if (runtime.hasBranch(c, 'townhall', 'fortress_city')) gar += 10;
-        }
+        val *= runtime.townhallPower?.(c,b)||1;
         army += val;
       }
     }
     if (runtime.hasLeg(c, 'large_garrison')) gar *= 2;
+    storage *= runtime.marketStorageMultiplier?.(c)||1;
     c.caps = runtime.C(storage, storage, storage);
     runtime.RES.forEach(r => c.resources[r] = Math.min(c.resources[r], c.caps[r]));
     c.garrisonCap = Math.round(gar);

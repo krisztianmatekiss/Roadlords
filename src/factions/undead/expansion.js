@@ -1,3 +1,4 @@
+import { territoryPower } from '../../data/faction-redesign.js';
 import { UNDEAD_UNITS as U, UNDEAD_RULES } from '../../data/undead.js';
 import { isUndead } from './foundation.js';
 import { UNDEAD_ECONOMY } from '../../data/economy-balance.js';
@@ -22,7 +23,7 @@ export function initializeUndeadExpansion(R){
     return u;
   };
   const move=R.effectiveMoveSpeed;
-  R.effectiveMoveSpeed=(u,c)=>move(u,c)*(R.undFactionUnit(u)&&R.isOwnHalf(u)?1+.1*R.countNormal(c,'und_home_march'):1);
+  R.effectiveMoveSpeed=(u,c)=>move(u,c)*(R.undFactionUnit(u)&&R.isOwnHalf(u)?1+.1*R.countNormal(c,'und_home_march')*territoryPower(c):1);
   const structure=R.roadRealStructure;
   R.roadRealStructure=(u,target)=>{
     if(!R.undFactionUnit(u))return structure(u,target);

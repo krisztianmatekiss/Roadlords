@@ -14,10 +14,10 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   await p.locator('[data-codex-building="keep"] [data-codex-level="3"]').click();
   check('Level selection displays the selected values rather than repeating previous levels',await p.locator('[data-codex-building="keep"] .rlCodexContent').textContent().then(s=>s.includes('80000')&&!s.includes('20000')&&!s.includes('40000')));
   await p.locator('#codexRace').selectOption('orc');
-  check('Every Orc building uses the new full card, with accessible level and branch controls',await p.locator('#rlCodexPanel .cardFrameImage').count()===19&&await p.locator('#rlCodexPanel [data-codex-building]').count()===19);
+  check('Every Orc building uses the new full card, with accessible level and branch controls',await p.locator('#rlCodexPanel .cardFrameImage').count()===18&&await p.locator('#rlCodexPanel [data-codex-building]').count()===18);
   await p.screenshot({path:'artifacts/cards-orc-codex.png'});
   await p.locator('#rlCodexPanel [data-tab="legendary"]').click();
-  check('All 28 Orc relics have full frames, including newly illustrated missing relics and two additions',await p.locator('#rlCodexPanel .rlCodexCard').count()===28&&await p.locator('#rlCodexPanel .cardFrameImage').count()===28);
+  check('All 27 active Orc relics have full frames, including newly illustrated missing relics and two additions',await p.locator('#rlCodexPanel .rlCodexCard').count()===27&&await p.locator('#rlCodexPanel .cardFrameImage').count()===27);
   await p.keyboard.press('Escape');
   await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.MP.lobby.style.display='none';document.body.classList.remove('roadlords-menu-open');R.state.running=false;window.__ROADLORDS_ORCS__.setRace(R.P,'orc')});
   for(const [width,height]of [[1366,768],[1920,1080],[3195,1380],[800,900]]){

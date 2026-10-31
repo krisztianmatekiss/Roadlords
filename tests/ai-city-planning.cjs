@@ -44,13 +44,13 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       const R = __ROADLORDS_RUNTIME__, c = aiFixture('human'), before = JSON.stringify(c.resources);
       return R.findCell(c, 'rally') === null && R.findCell(c, 'armorsmith') === null && !R.aiBuild('academy') && JSON.stringify(c.resources) === before;
     }));
-    check('Normal taverns remain usable without adjacent producers because their wave buff is global', await page.evaluate(() => {
+    check('Taverns now require an adjacent producer rather than relying on a removed global wave buff', await page.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__, c = R.E; const cell = R.findCell(c, 'tavern');
-      return cell && R.canPlace(c, 'tavern', ...cell);
+      return cell === null;
     }));
-    check('Global benefits remain buildable even when their optional adjacency bonus has no target', await page.evaluate(() => {
+    check('Warehouses retain global storage, while a retired Tavern branch cannot restore its global buff', await page.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__, c = R.E; c.legends.add('supply_hub'); c.levels.tavern = 4; c.l4Branches.tavern = 'regulars';
-      return !!R.findCell(c, 'warehouse') && !!R.findCell(c, 'tavern');
+      return !!R.findCell(c, 'warehouse') && R.findCell(c, 'tavern')===null;
     }));
     check('Reservations are soft: the final legal house plot remains buildable in a full city', await page.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__, c = aiFixture('human'); aiPut('rally', 2, 4);

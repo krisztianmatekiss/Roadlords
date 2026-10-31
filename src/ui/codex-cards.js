@@ -9,23 +9,23 @@ import { upgradeScene } from '../rendering/upgrade-card-art.js';
 
 const BUILDING_RULES = {
   orc_overseer: 'Több Hajcsártábor nem gyorsítja tovább ugyanazt a tábort. A kezdő sérülés gyógyítható.',
-  orc_arena: 'A veterán esély alapból nem adódik össze. A veterán +50% életerőt és sebzést kap.',
+  orc_arena: 'A veterán esély alapból nem adódik össze. Az elit +50% életerőt és sebzést kap.',
   orc_raider: 'L1: Harcos. L2: 65% Harcos, 35% Dühöngő. L3: 55% Harcos, 30% Dühöngő, 15% Warglovas. Az erősítés nem hív újabb erősítést.',
   orc_tunnel: 'Torony nélkül a kaput használja. Az egységek továbbra is foglalnak sereghelyet.',
   orc_altar: 'A feláldozott egységek nem vonulnak ki.',
-  orc_totem: 'A saját egységek harci halála és az oltári áldozat ad halálpontot. Egy Troll 4 pontot ér, más egység 1-et. Az ellenségek halála alapból nem ad pontot. Csak megépített, aktív Totem gyűjt; bontáskor az összegyűlt pontok megmaradnak. Legfeljebb 4 legendás ajánlatból választhatsz.',
+  orc_totem: 'Minden harcban megölt ellenség egynek számít. A jutalom normál választás: gyakori, épület vagy legendás is lehet. Csak megépített, aktív Totem gyűjt.',
   orc_slave: 'A korábbi ölések is számítanak a tábor megépítésekor és fejlesztésekor.',
   hospital: 'Egységenként egyszer működik. Szabad helyőrségi férőhely szükséges.',
-  tavern: 'A főkapun és a Gyülekezőtérből kiengedett egységekre hat.',
+  tavern: 'A szomszédos termelők egységeire hat. Több Kocsma nem adódik össze. A nyitó bónusz a támadások elhasználásáig tart.',
   library: 'A fel nem használt újrasorsolás a választás végén elvész.',
   guardhouse: 'Összekapcsolt Őrházakon át is eléri a városfalat vagy Gyülekezőteret.',
   und_dark_tower: 'Minden további Sötét Őrtorony +25%-kal növeli az összes ilyen torony alapfenntartását.',
   und_soul_anchor: 'Önmagára nem hat. Egyedi épület: egyszerre egy építhető.',
-  und_corrupted_hatchery: 'Több Keltető közül csak a legerősebb hatása érvényes. A kezdő sérülés teljesen gyógyítható.',
+  und_corrupted_hatchery: 'Több Keltető közül csak a legerősebb hat. A Csontváz a kívánt egység helyett, annak áráért készül. Temetőkre nem hat.',
   und_rebirth_tomb: 'Egységenként egyszer működik.',
   und_bone_forge: 'Csak harci halál számít. Az idézett Csontvázak halála is számít, az idővel eltűnésük nem.',
   und_plague_chamber: 'A saját élőhalott egységek életerőt sebző támadási találatai mérgeznek, beleértve az idézett egységeket és a területi támadások külön eltalált célpontjait. Kitért vagy teljesen pajzzsal kivédett találat nem mérgez. A méreg, égés és sugár folyamatos sebzése nem támadási találat. Több Pestiskamra hatása összeadódik.',
-  und_corrupted_hatchery: 'A kezdő sérülés gyógyítható. Több Keltető közül csak a legerősebb hat.',
+  und_corrupted_hatchery: 'Több Keltető közül csak a legerősebb hat. A Csontváz a kívánt egység helyett, annak áráért készül. Temetőkre nem hat.',
 };
 
 const ruleDetails = text => text ? `<details class="lexBranches"><summary>Részletek</summary><p>${effectText(text)}</p></details>` : '';

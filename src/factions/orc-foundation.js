@@ -1,3 +1,4 @@
+import { ORC_REDESIGN, levelValue } from '../data/faction-redesign.js';
 import { rangedRange } from '../data/ranged-balance.js';
 import { MOVEMENT_BALANCE } from '../data/movement-balance.js';
 import { assetUrl } from '../assets/urls.js';
@@ -163,8 +164,8 @@ export function initializeFactionsOrcFoundation(runtime) {
     oldRecompute(c, preserve);
     if (!isOrc(c)) return;
     for (const b of runtime.buildingOf(c, 'orc_hut')) {
-      c.armyCap += runtime.v4LevelValue(b.level, [20, 30, 40, 60]);
-      c.garrisonCap += runtime.v4LevelValue(b.level, [20, 30, 60, 60]);
+      c.armyCap += runtime.v4LevelValue(b.level, ORC_REDESIGN.hut);
+      c.garrisonCap += runtime.v4LevelValue(b.level, ORC_REDESIGN.hut);
     }
   };
   function slaveWorkMult(c, b) {
@@ -175,7 +176,7 @@ export function initializeFactionsOrcFoundation(runtime) {
     return runtime.C(slaveWorkMult(c, b) * (b.level === 4 ? runtime.branchOf(c, b.type) === 'stone' ? 4 : 6 : lv) * (runtime.adjacentTerrain(c, b, 'forest') ? runtime.hasLeg(c, 'orc_ancient_deposits') ? 3 : 2 : 1), slaveWorkMult(c, b) * (b.level === 4 ? runtime.branchOf(c, b.type) === 'stone' ? 6 : 4 : lv) * (runtime.adjacentTerrain(c, b, 'quarry') ? runtime.hasLeg(c, 'orc_ancient_deposits') ? 3 : 2 : 1));
   }
   function huntRate(c, b) {
-    return slaveWorkMult(c, b) * runtime.v4LevelValue(b.level, [.5, 1, 1.5, 3]) * (1 + (runtime.touchesWall(b) ? .5 : 0) + (runtime.orcGateBonuses(c) ? .5 : 0));
+    return slaveWorkMult(c, b) * runtime.v4LevelValue(b.level, ORC_REDESIGN.hunt) * (1 + (runtime.touchesWall(b) ? .5 : 0) + (runtime.orcGateBonuses(c) ? .5 : 0));
   }
   const oldRates = runtime.productionRates;
   runtime.productionRates = function (c) {
@@ -202,7 +203,7 @@ export function initializeFactionsOrcFoundation(runtime) {
     if (b.inactive) return Infinity;
     const times = ORC_TRAINING,
       lv = supportLevel(c, b, 'orc_overseer');
-    return runtime.v4LevelValue(b.level, times[b.type] || [10]) * (lv ? 1 - runtime.v4LevelValue(lv, [.2, .3, .4, runtime.hasBranch(c, 'orc_overseer', 'ruthless') ? .8 : .4]) : 1);
+    return runtime.v4LevelValue(b.level, times[b.type] || [10]) * (runtime.orcHasteProfile?.(c, b).time ?? (lv ? 1 - runtime.v4LevelValue(lv, [.2, .3, .4, .4]) : 1));
   };
   const oldStats = runtime.statsFor;
   runtime.statsFor = function (c, e) {
@@ -229,9 +230,9 @@ export function initializeFactionsOrcFoundation(runtime) {
     const b = c.buildings.find(x => x.id === extra.originBuildingId);
     if (b) {
       const arenas = runtime.adjacentBuildings(c, b).filter(x => x.type === 'orc_arena' && !x.inactive),
-        chance = runtime.hasBranch(c, 'orc_arena', 'academies') ? Math.min(1, arenas.length * .25) : Math.max(0, ...arenas.map(x => runtime.v4LevelValue(x.level, [.1, .15, .25, .4])));
+        chance = Math.max(0, ...arenas.map(x => levelValue(x.level, ORC_REDESIGN.arena)));
       if (chance && Math.random() < chance) e.veteran = true;
-      if (supportLevel(c, b, 'orc_overseer')) e.orcBirthHp = runtime.hasBranch(c, 'orc_overseer', 'ruthless') ? .25 : .8;
+      if (supportLevel(c, b, 'orc_overseer')) e.orcBirthHp = runtime.orcHasteProfile?.(c, b).hp ?? .8;
     }
     return e;
   };

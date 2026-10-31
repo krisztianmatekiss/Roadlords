@@ -65,10 +65,10 @@ export function initializeCityLibraryAndGuild(runtime) {
   function libraryFreePerChoice(c) {
     const b = runtime.buildingOf(c, LIBRARY)[0];
     if (!b) return 0;
-    return b.level <= 1 ? 1 : b.level === 2 ? 2 : 3;
+    return (b.level <= 1 ? 1 : b.level === 2 ? 2 : 3) * (runtime.townhallPower?.(c,b)||1);
   }
   function researchStacks(c) {
-    return Math.min(40, Math.max(0, c.libraryResearchRerolls || 0));
+    return Math.min(40, Math.max(0, c.libraryResearchRerolls || 0)) * (runtime.townhallPower?.(c,runtime.buildingOf(c,LIBRARY)[0])||1);
   }
   function researchMult(c) {
     return 1 + researchStacks(c) * .01;
@@ -156,7 +156,7 @@ export function initializeCityLibraryAndGuild(runtime) {
     }
     if (runtime.P.bans <= 0) return;
     runtime.P.bans--;
-    if (runtime.hasBranch(runtime.P, LIBRARY, LIB_FORBIDDEN)) runtime.applyChoice(runtime.P, o, false);
+    if (runtime.hasBranch(runtime.P, LIBRARY, LIB_FORBIDDEN)) for(let copy=0;copy<(runtime.townhallPower?.(runtime.P,runtime.buildingOf(runtime.P,LIBRARY)[0])||1);copy++) runtime.applyChoice(runtime.P, o, false);
     runtime.P.banned.add(o.id);
     const used = c.opts.filter((_, j) => j !== i).map(runtime.choiceKey);
     const replacement = runtime.makeChoiceOptions(runtime.P, c.source, c.tier, c.subtype, used).find(x => !used.includes(runtime.choiceKey(x)) && !runtime.P.banned.has(x.id));
@@ -170,7 +170,7 @@ export function initializeCityLibraryAndGuild(runtime) {
     const previousBranch = o?.kind === 'building_branch' ? runtime.branchOf(c, o.id) : null;
     const out = oldApplyChoiceV4941(c, o, countEvent);
     if (o?.kind === 'building_branch' && o.id === LIBRARY && o.branch === LIB_FORBIDDEN && previousBranch !== LIB_FORBIDDEN) {
-      c.bans = (c.bans || 0) + 5;
+      c.bans = (c.bans || 0) + 5 * (runtime.townhallPower?.(c,runtime.buildingOf(c,LIBRARY)[0])||1);
       if (c === runtime.P) runtime.toast('Tiltott tudás · +5 kitiltás.');
     }
     return out;
@@ -223,7 +223,7 @@ export function initializeCityLibraryAndGuild(runtime) {
       return;
     }
     c.mastersGuildProgress = 0;
-    if (b.level >= 4 && runtime.hasBranch(c, MASTERS, MASTER_CHOICE_BRANCH)) triggerMasterChoice(c);else giveRandomMasterUpgrade(c);
+    for(let copy=0;copy<(runtime.townhallPower?.(c,b)||1);copy++) { if (b.level >= 4 && runtime.hasBranch(c, MASTERS, MASTER_CHOICE_BRANCH)) triggerMasterChoice(c);else giveRandomMasterUpgrade(c); }
   }
   const oldTickV4941 = runtime.tick;
   runtime.tick = function (dt) {

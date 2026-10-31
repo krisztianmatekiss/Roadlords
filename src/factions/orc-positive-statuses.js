@@ -3,7 +3,7 @@ import { ORC_EXPANSION } from '../data/orc-expansion.js';
 export function initializeFactionsOrcPositiveStatuses(runtime) {
   const O = window.__ROADLORDS_ORCS__;
   const defs = {
-    veteran: ['Veterán', '★', '#f3d577', '+50% életerő és sebzés. Minden faj egysége lehet veterán.'],
+    veteran: ['Elit', '★', '#f3d577', '+50% életerő és sebzés. Minden faj egysége lehet veterán.'],
     elite: ['Elit', '◆', '#f3d577', 'Tartósan megerősített egység, arany rangjelzéssel.'],
     power: ['Erő', '⚔', '#8be6a6', '+20% sebzés. Azonos állapotokból csak a legerősebb hat.'],
     haste: ['Fürgeség', '»', '#8be6a6', '+20% támadási sebesség.'],

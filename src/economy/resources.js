@@ -79,12 +79,13 @@ export function register(runtime) {
   };
   runtime.produceResources = function produceResources(c, dt) {
     runtime.beginResourceSample38(c, dt);
-    const rates = runtime.productionRates(c);
+    const rates = runtime.productionRates(c), marketOverflow = runtime.C();
     for (const r of runtime.RES) {
       const add = rates[r] * dt,
         room = Math.max(0, c.caps[r] - c.resources[r]);
       c.resources[r] += Math.min(add, room);
       const overflow = Math.max(0, add - room);
+      marketOverflow[r] = overflow;
       if (overflow && runtime.hasLeg(c, 'overproduction')) {
         c.overflowProgress = (c.overflowProgress || 0) + overflow;
         const n = Math.floor(c.overflowProgress / 500);
@@ -95,6 +96,7 @@ export function register(runtime) {
       }
     }
     runtime.updateMarketRoutes(c, dt);
+    runtime.convertMarketOverflow?.(c, marketOverflow);
   };
   runtime.importedResources = function importedResources(c) {
     if (!runtime.hasBranch(c, 'market', 'war_suppliers')) return new Set();

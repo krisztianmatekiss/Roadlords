@@ -23,10 +23,7 @@ export function initializeCitySupportSynergies(runtime) {
   }
   function houseArmyBonus(c, b) {
     let val = runtime.v4LevelValue(b.level, [10, 15, 20, 40]);
-    const hall = runtime.buildingOf(c, 'townhall')[0];
-    if (hall && runtime.inBuildingRange(hall, b, 2)) {
-      if (runtime.hasBranch(c, 'townhall', 'metropolis')) val *= 3;else val *= runtime.v4LevelValue(hall.level, [1.5, 1.75, 2, 2]);
-    }
+    val *= runtime.townhallPower?.(c,b)||1;
     return val;
   }
   const chainDef = {
@@ -152,13 +149,7 @@ export function initializeCitySupportSynergies(runtime) {
   runtime.renderBuildList = function () {
     const out = oldRenderBuildListV4948();
     const card = runtime.$('#buildList .buildcard[data-k="tavern"]');
-    if (card) {
-      card.querySelectorAll('.tavernLimitChip').forEach(x => x.remove());
-      const chip = document.createElement('span');
-      chip.className = 'uniquechip tavernLimitChip';
-      chip.textContent = `KOCSMA ${runtime.buildingOf(runtime.P, 'tavern').length}/${tavernLimit(runtime.P)}`;
-      card.appendChild(chip);
-    }
+    card?.querySelectorAll('.tavernLimitChip').forEach(x=>x.remove());
     return out;
   };
   const oldRenderRelicsV4948 = runtime.renderRelics;

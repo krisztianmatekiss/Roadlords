@@ -1,4 +1,10 @@
-# Roadlords · V4.57.0
+# Roadlords · V4.58.0
+
+## V4.58.0 – Fajok, elitképzés és területhatár
+
+A megbeszélt emberi, ork és élőhalott épületváltozások, az egységes elit állapot és a két csapatszínű területhatár bekerültek. Az új Nekropolisz két ága a saját térfelet erősíti, illetve dupla épületfenntartásért 50% elitképzést ad. Az önálló, minden egységkeletkezésre ható +20%-os elit legendással a termelők esélye 70%, az idézetteké és feltámasztottaké 20%. A Vámpír alap HP-ja 600.
+
+[Pontos változások és ellenőrzés](docs/faction-redesign-4.58.md). A korábban nyitva hagyott balance-kérdések és az új aktív egységképességek külön folytatásra maradnak.
 
 ## V4.57.0 – Ablakkezelés, kártya-előnézet és bontókalapács
 

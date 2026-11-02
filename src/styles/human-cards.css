@@ -5,6 +5,10 @@
   z-index:3!important;fill:none;stroke:var(--card-border);stroke-width:1.1;
   opacity:.9;filter:drop-shadow(0 0 1px #000);
 }
+html body .illustratedCard[data-frame="common"]:has(>.humanFrameAccent) { --card-border:#9baab5; }
+html body .illustratedCard[data-frame="common"]:has(>.humanFrameAccent) .cardFrameImage { filter:saturate(.5); }
+html body .illustratedCard[data-frame="legendary"]:has(>.humanFrameAccent) .cardFrameImage { filter:sepia(.18) saturate(1.25) brightness(1.06); }
+html body .illustratedCard[data-frame="legendary"]:has(>.humanFrameAccent) .humanFrameAccent { stroke-width:1.4; }
 html body .illustratedCard:has(>.humanFrameAccent) .cardTextBackdrop { display:none; }
 html body .illustratedCard:has(>.humanFrameAccent) .cardScene {
   left:6.5%!important;top:11.7%!important;width:87%!important;height:46.3%!important;
@@ -12,6 +16,7 @@ html body .illustratedCard:has(>.humanFrameAccent) .cardScene {
 }
 html body .illustratedCard:has(>.humanFrameAccent) .constructionPrice { right:8%;bottom:43%; }
 html body .illustratedCard:has(>.humanFrameAccent) .uniqueBuildingMark { top:13.5%;right:8.5%; }
+html body .illustratedCard:has(>.humanFrameAccent) .cardPortraitTraits { bottom:43%;left:8%;right:8%; }
 
 html body .cardFace:has(>.humanFrameAccent) .rlCodexTitle,
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard:has(>.humanFrameAccent) h3,
@@ -30,6 +35,7 @@ html body :is(#buildList .buildcard,.buildCardPreview).illustratedCard:has(>.hum
   background:none!important;border:0!important;box-shadow:none!important;
 }
 html body .illustratedCard:has(>.humanFrameAccent) :is(.cardFooter,.choiceFooter) {
+  position:absolute!important;
   left:13%!important;right:auto!important;width:74%!important;bottom:2%!important;
   height:3%!important;font-size:2.8cqw!important;text-align:center!important;
 }

@@ -71,6 +71,54 @@
       "columns": 4,
       "rows": 4,
       "sha256": "581188a517c8a09d843a958b5966c7d0a8e4a0b097f1593a2ff8585bb736e17d"
+    },
+    "human-cards-02": {
+      "file": "art/human/cards/atlas-02.png",
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "8ac3dbd6b0e76bcd1d10e4c0075b61d9936993ccf523c81a2ac99d4f9d1dd0ef"
+    },
+    "human-cards-03": {
+      "file": "art/human/cards/atlas-03.png",
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "a617517c208f75ed527618c5553dc8b2204189ebc425bd891ac6dd86be0ffc8b"
+    },
+    "human-cards-04": {
+      "file": "art/human/cards/atlas-04.png",
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "6131ba3425d38a3240f1a5b18b72ca7a6139b82acbb92fdee0c64668354a2eb8"
+    },
+    "human-cards-05": {
+      "file": "art/human/cards/atlas-05.png",
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "5a31df2419beab47c0f7eb593ec501a65c26c7d6809092a1409428417f342638"
+    },
+    "human-cards-06": {
+      "file": "art/human/cards/atlas-06.png",
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "ab7e132b3d2555ad776c4b31c2eb2210d18c9e97091bd656ff6ed996f9b09c45"
+    },
+    "human-cards-07": {
+      "file": "art/human/cards/atlas-07.png",
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 4,
+      "sha256": "688603482e767d197efffec6a672c69643c709257cc5cbd9aead493096a6d5b3"
     }
   },
   "scenes": {
@@ -486,6 +534,846 @@
         902,
         313,
         352
+      ]
+    },
+    "human-normal:spawn_speed": {
+      "source": "human-cards-02",
+      "index": 7,
+      "rect": [
+        1156.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:production": {
+      "source": "human-cards-02",
+      "index": 8,
+      "rect": [
+        4.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:all_damage": {
+      "source": "human-cards-02",
+      "index": 9,
+      "rect": [
+        388.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:swordsman_dmg": {
+      "source": "human-cards-02",
+      "index": 10,
+      "rect": [
+        772.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:swordsman_hp": {
+      "source": "human-cards-02",
+      "index": 11,
+      "rect": [
+        1156.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:sword_as": {
+      "source": "human-cards-02",
+      "index": 12,
+      "rect": [
+        4.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:spear_dmg": {
+      "source": "human-cards-02",
+      "index": 13,
+      "rect": [
+        388.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:spear_hp": {
+      "source": "human-cards-02",
+      "index": 14,
+      "rect": [
+        772.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:spear_range": {
+      "source": "human-cards-02",
+      "index": 15,
+      "rect": [
+        1156.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:archer_dmg": {
+      "source": "human-cards-03",
+      "index": 0,
+      "rect": [
+        4.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:archer_hp": {
+      "source": "human-cards-03",
+      "index": 1,
+      "rect": [
+        388.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:archer_range": {
+      "source": "human-cards-03",
+      "index": 2,
+      "rect": [
+        772.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:knight_dmg": {
+      "source": "human-cards-03",
+      "index": 3,
+      "rect": [
+        1156.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:knight_hp": {
+      "source": "human-cards-03",
+      "index": 4,
+      "rect": [
+        4.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:knight_move": {
+      "source": "human-cards-03",
+      "index": 5,
+      "rect": [
+        388.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:priest_dmg": {
+      "source": "human-cards-03",
+      "index": 6,
+      "rect": [
+        772.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:priest_hp": {
+      "source": "human-cards-03",
+      "index": 7,
+      "rect": [
+        1156.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:catapult_dmg": {
+      "source": "human-cards-03",
+      "index": 8,
+      "rect": [
+        4.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:catapult_hp": {
+      "source": "human-cards-03",
+      "index": 9,
+      "rect": [
+        388.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:cat_build": {
+      "source": "human-cards-03",
+      "index": 10,
+      "rect": [
+        772.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:mage_dmg": {
+      "source": "human-cards-03",
+      "index": 11,
+      "rect": [
+        1156.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:mage_hp": {
+      "source": "human-cards-03",
+      "index": 12,
+      "rect": [
+        4.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:mage_aoe": {
+      "source": "human-cards-03",
+      "index": 13,
+      "rect": [
+        388.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:frugal_training": {
+      "source": "human-cards-03",
+      "index": 14,
+      "rect": [
+        772.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:tower_crews": {
+      "source": "human-cards-03",
+      "index": 15,
+      "rect": [
+        1156.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:gate_discipline": {
+      "source": "human-cards-04",
+      "index": 0,
+      "rect": [
+        4.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:building_discount": {
+      "source": "human-cards-04",
+      "index": 1,
+      "rect": [
+        388.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-normal:tower_regen": {
+      "source": "human-cards-04",
+      "index": 2,
+      "rect": [
+        772.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:chain_spawn": {
+      "source": "human-cards-04",
+      "index": 3,
+      "rect": [
+        1156.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:siege_doctrine": {
+      "source": "human-cards-04",
+      "index": 4,
+      "rect": [
+        4.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:melee_doctrine": {
+      "source": "human-cards-04",
+      "index": 5,
+      "rect": [
+        388.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:factory_network": {
+      "source": "human-cards-04",
+      "index": 6,
+      "rect": [
+        772.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:double_assault": {
+      "source": "human-cards-04",
+      "index": 7,
+      "rect": [
+        1156.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:no_food": {
+      "source": "human-cards-04",
+      "index": 8,
+      "rect": [
+        4.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:mobilization": {
+      "source": "human-cards-04",
+      "index": 9,
+      "rect": [
+        388.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:mono_veteran": {
+      "source": "human-cards-04",
+      "index": 10,
+      "rect": [
+        772.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:sacred_vow": {
+      "source": "human-cards-04",
+      "index": 11,
+      "rect": [
+        1156.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:cavalry_charge": {
+      "source": "human-cards-04",
+      "index": 12,
+      "rect": [
+        4.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:phalanx": {
+      "source": "human-cards-04",
+      "index": 13,
+      "rect": [
+        388.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:mage_ward": {
+      "source": "human-cards-04",
+      "index": 14,
+      "rect": [
+        772.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:archer_skirmish": {
+      "source": "human-cards-04",
+      "index": 15,
+      "rect": [
+        1156.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:momentum": {
+      "source": "human-cards-05",
+      "index": 0,
+      "rect": [
+        4.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:long_training": {
+      "source": "human-cards-05",
+      "index": 1,
+      "rect": [
+        388.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:glass_cannon": {
+      "source": "human-cards-05",
+      "index": 2,
+      "rect": [
+        772.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:last_line": {
+      "source": "human-cards-05",
+      "index": 3,
+      "rect": [
+        1156.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:specialization": {
+      "source": "human-cards-05",
+      "index": 4,
+      "rect": [
+        4.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:wide_choice": {
+      "source": "human-cards-05",
+      "index": 5,
+      "rect": [
+        388.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:double_choice": {
+      "source": "human-cards-05",
+      "index": 6,
+      "rect": [
+        772.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:full_garrison_economy": {
+      "source": "human-cards-05",
+      "index": 7,
+      "rect": [
+        1156.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:large_garrison": {
+      "source": "human-cards-05",
+      "index": 8,
+      "rect": [
+        4.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:road_rush": {
+      "source": "human-cards-05",
+      "index": 9,
+      "rect": [
+        388.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:overproduction": {
+      "source": "human-cards-05",
+      "index": 10,
+      "rect": [
+        772.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:instant_l3": {
+      "source": "human-cards-05",
+      "index": 11,
+      "rect": [
+        1156.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:arm_the_people": {
+      "source": "human-cards-05",
+      "index": 12,
+      "rect": [
+        4.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:mage_proliferation": {
+      "source": "human-cards-05",
+      "index": 13,
+      "rect": [
+        388.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:mage_triple": {
+      "source": "human-cards-05",
+      "index": 14,
+      "rect": [
+        772.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:holy_wave": {
+      "source": "human-cards-05",
+      "index": 15,
+      "rect": [
+        1156.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:holy_retribution": {
+      "source": "human-cards-06",
+      "index": 0,
+      "rect": [
+        4.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:catapult_range_as": {
+      "source": "human-cards-06",
+      "index": 1,
+      "rect": [
+        388.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:catapult_knockback": {
+      "source": "human-cards-06",
+      "index": 2,
+      "rect": [
+        772.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:sword_execute": {
+      "source": "human-cards-06",
+      "index": 3,
+      "rect": [
+        1156.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:sword_whirlwind": {
+      "source": "human-cards-06",
+      "index": 4,
+      "rect": [
+        4.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:spear_pierce": {
+      "source": "human-cards-06",
+      "index": 5,
+      "rect": [
+        388.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:spear_brace": {
+      "source": "human-cards-06",
+      "index": 6,
+      "rect": [
+        772.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:archer_close_combat": {
+      "source": "human-cards-06",
+      "index": 7,
+      "rect": [
+        1156.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:knight_dismount": {
+      "source": "human-cards-06",
+      "index": 8,
+      "rect": [
+        4.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:bloodlust": {
+      "source": "human-cards-06",
+      "index": 9,
+      "rect": [
+        388.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:marking_arrow": {
+      "source": "human-cards-06",
+      "index": 10,
+      "rect": [
+        772.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:artillery_sighting": {
+      "source": "human-cards-06",
+      "index": 11,
+      "rect": [
+        1156.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:supply_hub": {
+      "source": "human-cards-06",
+      "index": 12,
+      "rect": [
+        4.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:castle_defenders": {
+      "source": "human-cards-06",
+      "index": 13,
+      "rect": [
+        388.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:combined_assault": {
+      "source": "human-cards-06",
+      "index": 14,
+      "rect": [
+        772.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:tower_salvo": {
+      "source": "human-cards-06",
+      "index": 15,
+      "rect": [
+        1156.0,
+        772.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:tower_rebuild": {
+      "source": "human-cards-07",
+      "index": 0,
+      "rect": [
+        4.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:stockpile_production": {
+      "source": "human-cards-07",
+      "index": 1,
+      "rect": [
+        388.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:campaign_feast": {
+      "source": "human-cards-07",
+      "index": 2,
+      "rect": [
+        772.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:house_militia": {
+      "source": "human-cards-07",
+      "index": 3,
+      "rect": [
+        1156.0,
+        4.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:armor_extended_range": {
+      "source": "human-cards-07",
+      "index": 4,
+      "rect": [
+        4.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:magic_order": {
+      "source": "human-cards-07",
+      "index": 5,
+      "rect": [
+        388.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:rally_cavalry_rush": {
+      "source": "human-cards-07",
+      "index": 6,
+      "rect": [
+        772.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:capital_studies": {
+      "source": "human-cards-07",
+      "index": 7,
+      "rect": [
+        1156.0,
+        260.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:high_keep": {
+      "source": "human-cards-07",
+      "index": 8,
+      "rect": [
+        4.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:royal_district": {
+      "source": "human-cards-07",
+      "index": 9,
+      "rect": [
+        388.0,
+        516.0,
+        376.0,
+        248.0
+      ]
+    },
+    "human-legendary:strategic_superiority": {
+      "source": "human-cards-07",
+      "index": 10,
+      "rect": [
+        772.0,
+        516.0,
+        376.0,
+        248.0
       ]
     }
   }

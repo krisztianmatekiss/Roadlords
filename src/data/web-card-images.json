@@ -17,6 +17,66 @@
     "originalBytes": 3798800,
     "webBytes": 2811704
   },
+  "art/human/cards/atlas-02.png": {
+    "file": "web-images/8ac3dbd6b0e76bcd1d10-q96.webp",
+    "sourceSha256": "8ac3dbd6b0e76bcd1d10e4c0075b61d9936993ccf523c81a2ac99d4f9d1dd0ef",
+    "sha256": "115ac1ce15b937d7562f9b0d96aa003ae41e3f9e6c1568ca2a602dc8e20e1ea5",
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 3614875,
+    "webBytes": 941636,
+    "encoding": "webp-quality-96"
+  },
+  "art/human/cards/atlas-03.png": {
+    "file": "web-images/a617517c208f75ed5276-q96.webp",
+    "sourceSha256": "a617517c208f75ed527618c5553dc8b2204189ebc425bd891ac6dd86be0ffc8b",
+    "sha256": "f1e1d34b18ed17bf87bb1791eacb424a54b83394d1e0f7cf87640a03c58f46ba",
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 3604688,
+    "webBytes": 913560,
+    "encoding": "webp-quality-96"
+  },
+  "art/human/cards/atlas-04.png": {
+    "file": "web-images/6131ba3425d38a3240f1-q96.webp",
+    "sourceSha256": "6131ba3425d38a3240f1a5b18b72ca7a6139b82acbb92fdee0c64668354a2eb8",
+    "sha256": "07d64e272d6e4c953dfb39344ae30874a9bbb9596d921a26adf29dcbbb9a37e6",
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 3640199,
+    "webBytes": 926528,
+    "encoding": "webp-quality-96"
+  },
+  "art/human/cards/atlas-05.png": {
+    "file": "web-images/5a31df2419beab47c0f7-q96.webp",
+    "sourceSha256": "5a31df2419beab47c0f7eb593ec501a65c26c7d6809092a1409428417f342638",
+    "sha256": "e62026295468ee227f29482d709de2ee548f81eeec7ee44ca69c7102ab019625",
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 3604918,
+    "webBytes": 914030,
+    "encoding": "webp-quality-96"
+  },
+  "art/human/cards/atlas-06.png": {
+    "file": "web-images/ab7e132b3d2555ad776c-q96.webp",
+    "sourceSha256": "ab7e132b3d2555ad776c4b31c2eb2210d18c9e97091bd656ff6ed996f9b09c45",
+    "sha256": "b49cc72475f9c2c2e324e27902fa7a4cd18161bf8c35dd8c5071f411820fb478",
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 3600683,
+    "webBytes": 906464,
+    "encoding": "webp-quality-96"
+  },
+  "art/human/cards/atlas-07.png": {
+    "file": "web-images/688603482e767d197eff-q96.webp",
+    "sourceSha256": "688603482e767d197efffec6a672c69643c709257cc5cbd9aead493096a6d5b3",
+    "sha256": "0382c6da0027f9911e34aa9ae9d19f9da954a413fe7aeb66769a2eff939c184a",
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 3664134,
+    "webBytes": 920082,
+    "encoding": "webp-quality-96"
+  },
   "art/orc-upgrades-atlas.png": {
     "file": "web-images/28ccf126b691b12443f2.webp",
     "sourceSha256": "28ccf126b691b12443f2bfd7d8c4837d84a6af69775dcbe352e5cb0c8d719203",

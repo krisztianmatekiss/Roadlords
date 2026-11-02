@@ -14,7 +14,8 @@ export const escapeText = (s) => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 export function cardFrameUrl(id, kind, race) {
-  if(race==='human'&&['building','building_upgrade','building_branch'].includes(kind)&&hasUpgradeScene('human-building:'+id))return assetUrl(upgradeArt.sources['human-frame'].file);
+  const humanBuilding=['building','building_upgrade','building_branch'].includes(kind);
+  if(race==='human'&&(kind==='unit'||hasUpgradeScene(`human-${humanBuilding?'building':kind}:${id}`)))return assetUrl(upgradeArt.sources['human-frame'].file);
   if(race==='undead'&&kind==='legendary'&&hasUpgradeScene(id))return assetUrl(upgradeArt.sources['undead-legend-frame'].file);
   if (kind==='unit' || race==='undead' && kind==='normal') return commonFrameUrl(race);
   if (race==='orc' && hasUpgradeScene(id)) return assetUrl(kind==='legendary' ? 'cards/orc/upgrades/orc_transfusion.webp' : 'cards/orc/upgrades/orc_as.webp');
@@ -203,6 +204,7 @@ export function installCardPresentation(R) {
         art.insertAdjacentHTML('beforeend', productionFootprint(R,producerCity,o.id));
         card.insertAdjacentHTML('beforeend', uniqueBuildingMark(R,producerCity,o.id));
       }
+      else if(o.kind==='normal'||o.kind==='legendary')card.dataset.frame=o.kind==='normal'?'common':'legendary';
       card.classList.add('illustratedCard');
       card.dataset.race=R.P.race;
       card.insertAdjacentHTML('afterbegin', cardTextBackdrop);

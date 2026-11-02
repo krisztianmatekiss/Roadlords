@@ -1,4 +1,13 @@
-# Roadlords · V4.58.3
+# Roadlords · V4.58.4
+
+## V4.58.4 – Emberi gyakori és legendás kártyaképek
+
+- Mind a 28 aktív emberi gyakori és 56 legendás fejlesztés saját festett fantasy illusztrációt kapott. A 84 kép a kártya hatását jeleníti meg; az épületek meglévő képei megmaradtak.
+- Az új emberi keretcsalád acélszínű gyakori és arany legendás változata a választóképernyőn, lexikonban és aktív fejlesztéseknél is ugyanazt a képet használja. Az egységkártyák kerete a gyakori lapokhoz igazodik, a meglévő portrékkal.
+- Az eredeti képek helye: `public/art/human/cards/`. A böngésző a hat képtábla összesen 5,52 MB-os, jó minőségű WebP-változatát tölti; a 21,73 MB-os PNG-eredetik és az ellenőrzőösszegek megmaradnak. A kártyák ugyanazon képtábla külön nézeteit használják.
+- Ellenőrzés: teljes 84-es képlefedettség, helyes kártya–kép párosítás, képdekódolás és képminőség, szövegillesztés, közös megjelenítés a valódi választásnál és aktív fejlesztéseknél, valamint a korábbi képbetöltési és kártyatesztek.
+
+[Előnézet az új fejlesztésképekről](public/previews/human-upgrade-art-4.58.4.png).
 
 ## V4.58.3 – Új emberi épületkártyakeret
 

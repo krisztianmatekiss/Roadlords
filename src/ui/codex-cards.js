@@ -40,9 +40,10 @@ export function createCodexCards(R) {
   function face({ id, kind, race, name, category, art, body, meta = '', price = '', footprint = '', mark = '', metaInBody = false }) {
     const src = cardFrameUrl(id, kind, race);
     const unitKey=kind==='unit'?id:kind==='normal'?R.PICK_UNIT_IMAGES[id]:null;
+    const caption=race==='human'?`<span class="cardFooter">${kind==='legendary'?'LEGENDÁS':kind==='normal'?'GYAKORI':kind==='unit'?'EGYSÉG':mark?'EGYEDI ÉPÜLET':'ÉPÜLET'}</span>`:'';
     return symbolizeResourceHtml(`<div class="cardFace illustratedCard ${src ? 'hasCardFrame' : ''}" data-race="${race}" data-frame="${category || 'support'}">${frameImage(src)}${upgradeScene(R,id,kind,race)}${unitKey?unitTraitIcons(R,unitKey,null,'cardPortraitTraits'):''}${cardTextBackdrop}
       <header class="rlCodexCardHead"><span class="rlCodexIcon">${src ? '' : art}${footprint}</span><div class="rlCodexTitle"><h3>${esc(name)}</h3></div></header>
-      ${price}${mark}${metaInBody ? '' : `<div class="rlCodexMeta">${meta}</div>`}<div class="rlCodexContent">${body}${metaInBody ? `<div class="productionMeta">${meta}</div>` : ''}</div></div>`,R,race);
+      ${price}${mark}${metaInBody ? '' : `<div class="rlCodexMeta">${meta}</div>`}<div class="rlCodexContent">${body}${metaInBody ? `<div class="productionMeta">${meta}</div>` : ''}</div>${caption}</div>`,R,race);
   }
   function extraRules(type,race,level) {
     if(!['warcenter','academy','alchemist','merc_tent'].includes(type))return ruleDetails(BUILDING_RULES[type]);

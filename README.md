@@ -1,4 +1,14 @@
-# Roadlords · V4.58.2
+# Roadlords · V4.58.3
+
+## V4.58.3 – Új emberi épületkártyakeret
+
+- Új, vékony acél–arany keret mind a 23 aktív emberi épülethez, a hozzájuk tartozó fejlesztés- és L4-kártyákon is.
+- A leírás a keret saját, nagyobb alsó paneljére kerül; a külön barna fedőlap és a felesleges második képréteg eltűnt az emberi épületkártyákról.
+- Közös illesztés a választóképernyőn, lexikonban, építési sávban és a nagyított előnézeten. Zöld gazdasági, vörös katonai és kék támogató betétek; a költség és területjelölés a képen marad.
+- A helyi keret változatlan képpontokat őrző WebP-változata 1,48 MB, a korábbi 1,99 MB helyett. A régi, már nem hivatkozott webes keret kikerült.
+- Ellenőrzés: szövegillesztés 800/1366/1920 szélességen; kártyaillesztés 1280×800, 1600×1000, 1920×1080 és 2840×2180 méreten; építési előnézet 75/100/150%-os felületmérettel; kezdeti képletöltés és képdekódolás.
+
+[Képernyőkép az új keretről](public/previews/human-cards-4.58.3.png).
 
 ## V4.58.2 – AI-döntések és erősítésküldés
 

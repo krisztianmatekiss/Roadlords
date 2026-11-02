@@ -54,13 +54,13 @@
     "webBytes": 2544016
   },
   "cards/human/frame.png": {
-    "file": "web-images/5b42a8c4837f51a24a37.webp",
-    "sourceSha256": "5b42a8c4837f51a24a37f1c0ea9ce865d911b891994340b22fdd45eb2c702338",
-    "sha256": "83c681b953b44335790ebb66b1675574a6b458b68585ec68171a56b3ddeb7750",
+    "file": "web-images/c81b3cf0115cfd748cfa.webp",
+    "sourceSha256": "c81b3cf0115cfd748cfa068350c9bbb20c5810caa587f318a76a053ab42c844d",
+    "sha256": "6becbb3a68fb68195fbf4dbf2471b0d7626ae6378cc70466a064d25738017632",
     "width": 1024,
     "height": 1536,
-    "originalBytes": 3132789,
-    "webBytes": 1994270
+    "originalBytes": 2310771,
+    "webBytes": 1481834
   },
   "cards/undead/buildings/keep.png": {
     "file": "web-images/59f0acb0b8d059a3f9e9.webp",

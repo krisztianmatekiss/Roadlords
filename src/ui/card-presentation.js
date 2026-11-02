@@ -37,8 +37,16 @@ export function cardFrameUrl(id, kind, race) {
   const file = manifest.cards[`${building ? 'building' : 'upgrade'}:${key}`];
   return file ? assetUrl('cards/orc/' + file) : '';
 }
-export const frameImage = (src, eager = false) => src
-  ? `${src.endsWith('/cards/human/frame.png')?'<svg class="humanFrameAccent" viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden="true"><path d="M3 6V144M97 6V144M12 22.5H88M12 104H88"/><path d="m5 3 2 3-2 3-2-3Zm90 0 2 3-2 3-2-3ZM5 141l2 3-2 3-2-3Zm90 0 2 3-2 3-2-3Z"/></svg>':''}<img class="cardFrameImage" ${cardImageSource(src)} alt="" loading="${eager ? 'eager' : 'lazy'}" decoding="async" draggable="false"><img class="cardIllustration" ${cardImageSource(src)} alt="" loading="${eager ? 'eager' : 'lazy'}" decoding="async" draggable="false">` : '';
+export function frameImage(src, eager = false) {
+  if (!src) return '';
+  const human=src.endsWith('/cards/human/frame.png'), loading=eager?'eager':'lazy';
+  const accent=human?'<svg class="humanFrameAccent" viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden="true"><path d="M2.9 17V86M97.1 17V86M2.9 95V139M97.1 95V139"/></svg>':'';
+  const frame=`<img class="cardFrameImage" ${cardImageSource(src)} alt="" loading="${loading}" decoding="async" draggable="false">`;
+  // Human cards have their own empty aperture and integrated writing panel.
+  // Only older full-card illustrations need a second clipped image layer.
+  const illustration=human?'':`<img class="cardIllustration" ${cardImageSource(src)} alt="" loading="${loading}" decoding="async" draggable="false">`;
+  return accent+frame+illustration;
+}
 
 export const cardTextBackdrop = '<span class="cardTextBackdrop" aria-hidden="true"></span>';
 

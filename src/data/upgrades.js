@@ -215,7 +215,7 @@ export function initializeDataUpgrades(runtime) {
     id: 'cavalry_charge',
     icon: '🐎',
     name: 'Roham',
-    description: 'Lovasság minden 60 megtett lane-egység után +10% sebzést gyűjt a következő támadására.',
+    description: 'A Lovag minden megtett 100 m után +25% sebzést gyűjt a következő támadására. Maximum: +200%.',
     eligible: s => runtime.unitAvailable(s, 'knight')
   }, {
     id: 'swordsman_triple',

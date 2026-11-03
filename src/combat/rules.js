@@ -1,6 +1,6 @@
 import { SPEAR_VOLLEY_RANGE, rangedRange } from '../data/ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
-import { formatMetres, formatSpeed } from '../world/measurements.js';
+import { formatMetres, formatSpeed, WORLD_UNITS_PER_METRE } from '../world/measurements.js';
 import { attackSourceCanResolve } from './target-budget.js';
 import { MAGE_SECONDARY_DAMAGE } from '../data/combat-balance.js';
 export function register(runtime) {
@@ -972,7 +972,7 @@ export function register(runtime) {
     if (t.rangedMarkTime > 0 && u.tags.includes('ranged')) dmg *= 1.5;
     if (u.key === 'archer' && runtime.hasLeg(c, 'marking_arrow')) t.rangedMarkTime = 4;
     if (u.key === 'knight' && runtime.hasLeg(c, 'cavalry_charge')) {
-      dmg *= 1 + Math.min(2, .25 * Math.floor(u.chargeDist / 50));
+      dmg *= 1 + Math.min(2, .25 * Math.floor(u.chargeDist / (100 * WORLD_UNITS_PER_METRE)));
       u.chargeDist = 0;
     }
     dmg *= runtime.momentumMult(u);
@@ -1008,7 +1008,7 @@ export function register(runtime) {
       u.chargeReady = false;
     }
     if (u.key === 'knight' && runtime.hasLeg(c, 'cavalry_charge')) {
-      dmg *= 1 + Math.min(2, .25 * Math.floor(u.chargeDist / 50));
+      dmg *= 1 + Math.min(2, .25 * Math.floor(u.chargeDist / (100 * WORLD_UNITS_PER_METRE)));
       u.chargeDist = 0;
     }
     if (u.key === 'catapult' && runtime.hasLeg(c, 'artillery_sighting')) {

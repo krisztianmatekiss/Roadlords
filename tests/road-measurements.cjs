@@ -13,6 +13,24 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   }
   await p.keyboard.press('Escape');
   check('Range and movement upgrade previews use the same scale without changing the actual units',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.roadResetCity(R.P,'human');R.renderChoice(['archer_range','knight_move'].map(id=>({...R.NORMAL.find(x=>x.id===id),kind:'normal'})),'PRÓBA','Próba','',false);const cards=R.$$('#choiceList .choice');return cards[0].querySelector('.upgradeBefore').textContent==='30 m'&&cards[0].querySelector('.upgradeAfter').textContent==='33 m'&&cards[1].querySelector('.upgradeBefore').textContent==='14,7 m/s'&&cards[1].querySelector('.upgradeAfter').textContent==='16,91 m/s'}));
+  const charge=await p.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__;R.state.running=false;R.roadResetCity(R.P,'human');R.P.legends.add('cavalry_charge');
+   const u=R.releaseUnit(R.P,{key:'knight'}),target=R.releaseUnit(R.E,{key:'swordsman'}),rows=[];
+   for(const distance of [50,999.999,1000,1999.999,2000,8000,20000]){
+    u.chargeDist=distance;const unitDamage=R.attackBaseDamage(u,target)/u.damage,unitReset=u.chargeDist===0;
+    const tower={id:'charge-proof',side:'enemy',tier:1,lane:u.lane+20,hp:1e9,alive:true};u.chargeDist=distance;R.roadRealStructure(u,tower);
+    rows.push({distance,unitDamage,structureDamage:(1e9-tower.hp)/(u.damage*.25),reset:unitReset&&u.chargeDist===0});
+   }
+   const description=R.upgradeCopyPreview(R.P,{...R.LEGENDARY.find(x=>x.id==='cavalry_charge'),kind:'legendary'}).description;
+   R.state.units=[];return {rows,description};
+  });
+  check('Cavalry charge advances at each full 100 metres against units and towers, caps at 200 percent and consumes the charge',charge.rows.every((r,i)=>Math.abs(r.unitDamage-[1,1,1.25,1.25,1.5,3,3][i])<1e-6&&Math.abs(r.structureDamage-r.unitDamage)<1e-6&&r.reset)&&charge.description.includes('100 m'));
+  check('Castle Defenders requires all three own road towers and ignores both castle towers',await p.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,alive=R.towers.map(t=>t.alive);R.roadResetCity(R.P,'human');R.P.legends.add('castle_defenders');
+   const own=R.towers.filter(t=>t.side==='player'),road=own.filter(t=>!t.gateTower),gate=own.filter(t=>t.gateTower),wave=()=>{const e={key:'swordsman'};R.waveBuffs(R.P,[e]);return !!e.veteran;};
+   try{own.forEach(t=>t.alive=true);const all=wave();gate.forEach(t=>t.alive=false);const noGate=wave();road[0].alive=false;gate.forEach(t=>t.alive=true);return road.length===3&&gate.length===2&&all&&noGate&&!wave()&&R.LEGENDARY.find(x=>x.id==='castle_defenders').description.includes('2 vártorony');}
+   finally{R.towers.forEach((t,i)=>t.alive=alive[i]);}
+  }));
   check('Actual unit inspectors include metres and m/s for both normal and Undead units',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;const normal=R.unitStatsHTML(R.P,'archer');R.roadResetCity(R.P,'undead');const undead=R.unitStatsHTML(R.P,'und_ghost');return normal.includes('30 m')&&normal.includes('5,25 m/s')&&undead.includes('3 m')&&undead.includes('5,75 m/s')}));
   check('Battle descriptions convert distances once and leave city-grid cells and percentage bonuses intact',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.renderChoice([{id:'metric-copy-proof',kind:'legendary',name:'Próba',description:'Hatótáv: 82,5. +75 hatótáv. A 2 mezőn belüli épületek +20% termelést kapnak.'}],'PRÓBA','Próba','',false);const c=R.$('#choiceList .choiceBody');return c.textContent.includes('8,25 m')&&c.textContent.includes('+7,5 m')&&c.textContent.includes('2 mezőn')&&c.textContent.includes('+20%')}));
   const travel=await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.MP.enabled=false;R.MP.lobby.style.display='none';document.body.classList.remove('roadlords-menu-open');R.state.running=false;R.state.pregame=false;R.state.modal=false;R.$('#choiceOverlay').classList.add('hidden');R.state.units=[];R.roadResetCity(R.P,'human');R.roadResetCity(R.E,'orc');for(const t of R.towers)t.alive=false;R.roadRefreshFrontiers();const u=R.releaseUnit(R.P,R.makeEntry(R.P,'swordsman'));u.lane=R.PATH_LENGTH/2;u.offset=u.roadHomeOffset=0;R.state.units=[u];R.roadReindex();const start=u.lane;R.roadAdvance(u,[],1);R.state.units=[];return u.lane-start});
@@ -28,7 +46,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('Tower upgrades update both the visible band and inspector to the actual increased range',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,t=R.selectedTowerV496();R.P.normal.tower_crews=1;R.renderTowerInspectorV496(t);R.renderBattle(0);return Math.abs(R.roadTowerRangeGeometry(t).range-178.2)<1e-6&&R.$('#towerRangeStat').textContent==='17,82 m'&&R.canvas.dataset.towerRange==='Hatótáv: 17,82 m'}));
   await p.screenshot({path:'artifacts/enlarged-tower-metres.png'});
   check('Closing the tower inspector removes the selected range overlay',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.$('#closeInspector').click();R.renderBattle(0);return !R.state.selectedTowerId&&!R.canvas.dataset.towerRange}));
-  check('Both peers advertise the doubled path length and reject a mismatched old map',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,sent=[];let closed=false;R.MP.conn={open:true,send:p=>sent.push(p),close:()=>closed=true};R.mpSend({type:'hello'});R.mpHandle({type:'hello',pathLength:9600,gameRules:9,race:'human',name:'Új játékos',factionProtocol:2});const accepted=!closed;R.mpHandle({type:'hello',race:'human',name:'Régi játékos',factionProtocol:2});return sent[0].pathLength===9600&&accepted&&closed&&R.MP.lobby.querySelector('.mpLobbyError').textContent.includes('pályaverzió')}));
+  check('Both peers advertise the doubled path length and reject a mismatched old map',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,sent=[];let closed=false;R.MP.conn={open:true,send:p=>sent.push(p),close:()=>closed=true};R.mpSend({type:'hello'});R.mpHandle({type:'hello',pathLength:9600,gameRules:10,race:'human',name:'Új játékos',factionProtocol:2});const accepted=!closed;R.mpHandle({type:'hello',race:'human',name:'Régi játékos',factionProtocol:2});return sent[0].pathLength===9600&&accepted&&closed&&R.MP.lobby.querySelector('.mpLobbyError').textContent.includes('pályaverzió')}));
   check('No map, measurement, tower selection or multiplayer-version runtime errors',report.errors.length===0);
  }finally{fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/road-measurements.json',JSON.stringify(report,null,2));await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

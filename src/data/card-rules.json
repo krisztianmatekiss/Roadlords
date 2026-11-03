@@ -44,5 +44,6 @@
   "und_territory": "A területnövelés halmozódik. Mindkét fél növelése ugyanazt a határvonalat tolja el; a határ nem lépheti át a pálya végét.",
   "und_elite_birth": "Az elit esély hozzáadódik a többi forráshoz. Kiképzett, idézett és feltámasztott egységre is hat. Az elit állapot egyszeri +50% életerőt és sebzést ad, nem halmozódik önmagával.",
   "keep/elite_dominion": "Csak a termelőkből készülő egységek kapják az 50%-os esélyt. Az épületek folyamatos fenntartása duplázódik, a katonák képzési ára nem.",
-  "keep/dead_realm": "A saját térfélhez kötött bónusz értékét duplázza. Nem duplázza az egységek alapstatisztikáit vagy a tornyok célpontszámát."
+  "keep/dead_realm": "A saját térfélhez kötött bónusz értékét duplázza. Nem duplázza az egységek alapstatisztikáit vagy a tornyok célpontszámát.",
+  "castle_defenders": "Csak a három úttorony állapota számít. A két vártorony külön építmény; elvesztésük nem kapcsolja ki a hatást."
 }

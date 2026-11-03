@@ -1,4 +1,10 @@
-# Roadlords · V4.58.4
+# Roadlords · V4.58.5
+
+## V4.58.5 – Elsöprő roham és Várvédők
+
+- Az Elsöprő roham 100 méterenként ad +25% sebzést a Lovag következő támadására, legfeljebb +200%-ig. Egységek és építmények ellen ugyanaz a távolság számít.
+- A Várvédők leírása egyértelműsíti: a három úttorony szükséges, a két vártorony állapota külön számít, nem kapcsolja ki a hatást.
+- A megváltozott harci szabály miatt a multiplayer frissített játékszabály-verziót kér mindkét játékostól.
 
 ## V4.58.4 – Emberi gyakori és legendás kártyaképek
 

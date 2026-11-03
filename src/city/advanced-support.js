@@ -218,7 +218,7 @@ export function initializeCityAdvancedSupport(runtime) {
   };
   runtime.v42Legend('cavalry_charge', {
     name: 'Elsöprő roham',
-    description: 'A Lovag minden megtett 50 útegység után +25% sebzést gyűjt a következő támadására, legfeljebb +200%-ig.'
+    description: 'A Lovag minden megtett 100 m után +25% sebzést gyűjt a következő támadására. Maximum: +200%.'
   });
   runtime.v42Legend('long_training', {
     name: 'Harctéri kiképzés',
@@ -268,7 +268,7 @@ export function initializeCityAdvancedSupport(runtime) {
     id: 'castle_defenders',
     icon: '🏰',
     name: 'Várvédők',
-    description: 'Amíg mindhárom saját úttorony áll, a helyőrségből kiengedett egységek Veteránként vonulnak ki.',
+    description: 'Amíg mindhárom saját úttornyod áll, a helyőrségből elit egységek vonulnak ki. A 2 vártorony nem számít bele.',
     eligible: s => runtime.hasSpawner(s)
   }, {
     id: 'combined_assault',

@@ -47,8 +47,8 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('Guest reconstructs a resolved Troll ground impact once',await guest.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,Q=R.ROAD,u=R.state.units.find(u=>u.key==='orc_troll');u.lane=Q.camera+350;u.offset=0;u.roadAttack={start:Q.clock-.4,hit:Q.clock-.01,launch:Q.clock-.1,end:Q.clock+.2,lane:u.lane,offset:0,to:u.lane+25,toOffset:0,ranged:false,resolved:true,radius:55};R.roadEffects.impacts=[];R.roadEffects.seen.clear();R.roadDrawEffects();R.roadDrawEffects();return R.roadEffects.impacts.filter(f=>f.kind==='slam').length===1}));
   const visual=await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return R.mpFactionUnitPayload({key:'und_necromancer',roadUndSummon:{start:R.ROAD.clock,end:R.ROAD.clock+.75}})});
   check('Active summoning poses share the existing optional multiplayer metadata',!!visual.roadUndSummon&&visual.roadUndSummon.end>visual.roadUndSummon.start);
-  const version=await guest.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,sent=[];let closed=false;R.MP.conn={open:true,send:data=>sent.push(data),close:()=>closed=true};R.mpSend({type:'hello'});R.mpHandle({type:'hello',pathLength:R.PATH_LENGTH,gameRules:2,factionProtocol:2,race:'orc'});return {rules:sent[0].gameRules,closed}});
-  check('Multiplayer prevents mixing the old and new range rules',version.rules===9&&version.closed);
+  const version=await guest.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,sent=[];let closed=false;R.MP.conn={open:true,send:data=>sent.push(data),close:()=>closed=true};R.mpSend({type:'hello'});R.mpHandle({type:'hello',pathLength:R.PATH_LENGTH,gameRules:9,factionProtocol:2,race:'orc'});return {rules:sent[0].gameRules,closed}});
+  check('Multiplayer prevents mixing the old and new range rules',version.rules===10&&version.closed);
   check('No runtime errors in production rendering or combat',report.errors.length===0);
  }finally{fs.writeFileSync('artifacts/production-figures-and-range.json',JSON.stringify(report,null,2));await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

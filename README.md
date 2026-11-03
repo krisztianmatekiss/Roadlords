@@ -1,4 +1,12 @@
-# Roadlords · V4.58.6
+# Roadlords · V4.58.7
+
+## V4.58.7 – Egységes emberi és ork egységillusztrációk
+
+- Mind a hét emberi és hét ork egységlap ugyanazokat a festett illusztrációkat használja, amelyek a meglévő fejlesztéslapokon szerepelnek. A felszerelés, a karakterek és a képi világ így közvetlenül egyezik a többi kártyával.
+- A fejlesztésképek a kártyák képmezőjét töltik ki. Az ork forrásképek saját kerete, címsávja és alsó szövegdoboza kimarad a kivágásból. Ugyanez az illusztráció jelenik meg az egységinformációs panelen is.
+- A jelenlegi élőhalott egységképek és a csatatéri figurák megmaradtak. Új képfájl nem készült; a már használt kártyaképeket és képtáblákat használjuk újra.
+
+[Emberi egységlapok](public/previews/human-unit-illustrations-4.58.7.png) · [Ork egységlapok](public/previews/orc-unit-illustrations-4.58.7.png) · [A három frakció összehasonlítása](public/previews/unit-card-comparison-4.58.7.png)
 
 ## V4.58.6 – Élőhalott legendások és emberi egységportrék
 

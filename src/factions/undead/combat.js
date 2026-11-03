@@ -112,7 +112,7 @@ export function initializeUndeadCombat(R) {
   const halfPoison = (u, beforeHp) => {
     if (u.alive && u.key === 'und_zombie' && isUndead(own(u)) &&
       !u.undHalfPoisonUsed && leg(u, 'zombie_leg_half_poison') &&
-      beforeHp > u.maxHp * .5 && u.hp <= u.maxHp * .5) {
+      beforeHp > u.hp && u.hp <= u.maxHp * .5) {
       u.undHalfPoisonUsed = true;
       R.undZombiePoisonBurst(u);
     }

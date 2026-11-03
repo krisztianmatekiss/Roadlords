@@ -43,6 +43,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    c=reset();c.legends.add('zombie_leg_half_poison');z=unit(c,'und_zombie');a=unit(R.E,'swordsman',5020);z.shield=100;R.damageUnit(z,50,'magic');const shield=!z.undHalfPoisonUsed&&!a.orcPoison;z.shield=0;R.damageUnit(z,200,'magic');
    check('Shield absorption does not trigger half HP; a lethal blow only emits the normal death burst',shield&&a.orcPoison===4&&!z.undHalfPoisonUsed);
    const fresh=unit(c,'und_zombie');R.damageUnit(fresh,50,'magic');check('New actors have their own independent poison charge',fresh.undHalfPoisonUsed&&a.orcPoison===8);
+   const wounded=unit(c,'und_zombie');wounded.hp=50;R.damageUnit(wounded,1,'magic');check('A zombie resurrected at half HP can spend its fresh charge on its first wound',wounded.undHalfPoisonUsed&&a.orcPoison===12);
    c=reset();c.legends.add('und_ranged_adaptation');let adapted=unit(c,'und_skeleton'),archer=unit(R.E,'archer',5020);archer.damage=1;
    for(let i=0;i<10;i++)R.roadRealAttack(archer,adapted);
    check('Ten actual ranged hits grant additive 10 percent birth HP, not exponential growth',near(adapted.maxHp,110)&&near(adapted.undRangedHpBonus,10),{hp:adapted.hp,max:adapted.maxHp,bonus:adapted.undRangedHpBonus});

@@ -1,4 +1,6 @@
 import { initializeFactionRedesign } from '../factions/redesign.js';
+import { initializeUndeadTerritoryLegends } from '../factions/undead/territory-legends.js';
+import { installHumanUnitPortraits } from '../rendering/human-unit-portraits.js';
 import { initializeHumanMapArtwork } from '../rendering/human-map-artwork.js';
 import { initializeUndeadExpansion } from '../factions/undead/expansion.js';
 import { installFlyingShotSnapshots } from '../multiplayer/flying-shots.js';
@@ -290,5 +292,7 @@ export function createGame() {
   installFlyingShotSnapshots(runtime);
   installBattlePopulation(runtime);
   initializeFactionRedesign(runtime);
+  initializeUndeadTerritoryLegends(runtime);
+  installHumanUnitPortraits(runtime);
   return runtime;
 }

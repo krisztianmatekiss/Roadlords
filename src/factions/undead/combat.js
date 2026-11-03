@@ -104,6 +104,19 @@ export function initializeUndeadCombat(R) {
     target.orcPoison = (target.orcPoison || 0) + stacks;
     if (isUndead(c)) target.undPoisonSource = R.sideForCity(c);
   };
+  R.undZombiePoisonBurst = (u) => {
+    const c = own(u), poison = 4 + count(u, 'zombie_common_poison');
+    for (const v of near(u, opposite(u.side), 30)) R.undPoison(v, poison, c);
+    R.undRecordPoisonBurst?.(u);
+  };
+  const halfPoison = (u, beforeHp) => {
+    if (u.alive && u.key === 'und_zombie' && isUndead(own(u)) &&
+      !u.undHalfPoisonUsed && leg(u, 'zombie_leg_half_poison') &&
+      beforeHp > u.maxHp * .5 && u.hp <= u.maxHp * .5) {
+      u.undHalfPoisonUsed = true;
+      R.undZombiePoisonBurst(u);
+    }
+  };
   const mirror = (u) => {
     if (u.undMirror || !leg(u, 'ghost_leg_mirror')) return;
     const clone = R.undSpawn(own(u), 'und_ghost', u.lane + (u.id % 2 ? 12 : -12), (u.offset || 0) + 12, {
@@ -209,7 +222,11 @@ export function initializeUndeadCombat(R) {
           );
       }
     }
+    const beforeHp = target.hp;
     const actual = damage(target, amount, type);
+    halfPoison(target,beforeHp);
+    if (target.alive && ctx?.attack && ctx.ranged && (!source || hostile) &&
+      isUndead(own(target)) && leg(target, 'und_ranged_adaptation')) R.undGainRangedHp?.(target);
     if (hostile && actual > 0) {
       if (source.key === 'und_vampire') steal(source, actual);
       R.undAfterDamage?.(source,actual,ctx);
@@ -283,20 +300,12 @@ export function initializeUndeadCombat(R) {
   R.updateTowers = (dt) => withSource({ source: null, attack: true, ranged: true }, () => tower(dt));
   R.garrisonFire = (dt) => withSource({ source: null, attack: true, ranged: true }, () => garrison(dt));
   const statuses = R.updateUnitStatuses;
+  R.poisonTickInterval = u => u.undPoisonSource && R.hasLeg(R.cityForSide(u.undPoisonSource),'und_fast_poison') ? .5 : 1;
+  R.poisonTickMultiplier = u => u.undPoisonSource ? R.undEconomy(R.cityForSide(u.undPoisonSource)).poisonMult : 1;
   R.updateUnitStatuses = (u, dt) => {
-    if (u.undPoisonSource && u.orcPoison > 0 && u.alive) {
-      const mult = R.undEconomy(R.cityForSide(u.undPoisonSource)).poisonMult;
-      let time = (u.orcPoisonClock || 0) + dt,
-        stacks = u.orcPoison,
-        extra = 0;
-      while (time >= 1 && stacks > 0) {
-        extra += (mult - 1) * stacks;
-        stacks--;
-        time--;
-      }
-      if (extra > 0) u.hp = Math.max(1, u.hp - extra);
-    }
-    return statuses(u, dt);
+    const beforeHp=u.hp,out=statuses(u,dt);
+    halfPoison(u,beforeHp);
+    return out;
   };
   const speed = R.effectiveMoveSpeed;
   R.effectiveMoveSpeed = (u, c) => speed(u, c) * Math.max(0.1, 1 - (u.undWitherSlow || 0));
@@ -396,8 +405,7 @@ export function initializeUndeadCombat(R) {
           if (state.skeletonDeaths % at(b.level, [10, 8, 6, 4]) === 0) R.undQueueFree(c, 'und_zombie');
       }
       if (u.key === 'und_zombie') {
-        const poison = 4 + count(u, 'zombie_common_poison');
-        for (const v of near(u, opposite(side), 30)) R.undPoison(v, poison, c);
+        R.undZombiePoisonBurst(u);
         if (R.hasBranch(c, 'und_morgue', 'dismantling'))
           R.undSpawn(c, 'und_skeleton', deadLane, deadOffset, {
             undSummoned: !!u.undSummoned,
@@ -419,7 +427,7 @@ export function initializeUndeadCombat(R) {
         for (const harvester of R.buildingOf(enemy, 'und_soul_harvester'))
           R.undAddSouls(enemy, at(harvester.level, [1, 2, 3, 4]));
         const garden = R.buildingOf(enemy, 'und_garden_of_dead')[0],
-          local = { side: R.sideForCity(enemy), lane: deadLane };
+          local = { side: R.sideForCity(enemy), lane: deadLane, offset: deadOffset };
         if (
           garden &&
           R.isOwnHalf(local) &&
@@ -541,7 +549,7 @@ export function initializeUndeadCombat(R) {
         c.undeadState.towerClock -= towerTicks;
         const towers = R.buildingOf(c, 'und_dark_tower').filter((t) => !t.inactive);
         if (!towerTicks || !towers.length) continue;
-        const targets = R.state.units.filter(u => u.alive && u.side !== side && R.isOwnHalf({side, lane:u.lane}));
+        const targets = R.state.units.filter(u => u.alive && u.side !== side && R.isOwnHalf({side, lane:u.lane, offset:u.offset}));
         targets.sort((a,b)=>advance(a)-advance(b)||a.id-b.id);
         for (const tower of towers) {
           let hit = 0;
@@ -597,6 +605,9 @@ export function initializeUndeadCombat(R) {
           undReborn: !!u.undReborn,
           undMirror: !!u.undMirror,
           undFrenzy: u.undFrenzy || 0,
+          undHalfPoisonUsed: !!u.undHalfPoisonUsed,
+          undRangedHpBonus: u.undRangedHpBonus || 0,
+          undRangedGrowthAt: u.undRangedGrowthAt ?? -100,
           undBeams: u.undBeams || [],
           undWitherSlow: u.undWitherSlow || 0,
           orcPoison: u.orcPoison || 0,

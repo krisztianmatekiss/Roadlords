@@ -452,9 +452,10 @@ export function initializeFactionsOrcRelics(runtime) {
     } else u.orcRegenClock = 0;
     if (u.orcPoison > 0) {
       u.orcPoisonClock = (u.orcPoisonClock || 0) + dt;
-      while (u.orcPoisonClock >= 1 && u.orcPoison > 0 && u.alive) {
-        u.orcPoisonClock--;
-        u.hp = Math.max(1, u.hp - u.orcPoison);
+      const poisonInterval = runtime.poisonTickInterval?.(u) || 1;
+      while (u.orcPoisonClock >= poisonInterval && u.orcPoison > 0 && u.alive) {
+        u.orcPoisonClock -= poisonInterval;
+        u.hp = Math.max(1, u.hp - u.orcPoison * (runtime.poisonTickMultiplier?.(u) || 1));
         u.orcPoison--;
       }
     }

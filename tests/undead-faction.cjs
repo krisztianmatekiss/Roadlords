@@ -201,8 +201,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     });
     report.data = data;
     check(
-      'The workbook registers 17 buildings, 7 unit variants, 26 common and 24 legendary upgrades',
-      data.total === 17 && data.units === 7 && data.normal === 26 && data.legend === 24,
+      'The workbook registers 17 buildings, 7 unit variants, 26 common and 29 legendary upgrades',
+      data.total === 17 && data.units === 7 && data.normal === 26 && data.legend === 29,
     );
     check(
       'Faction-specific draft pools do not leak Human or Orc cards; every common has a numeric preview',

@@ -77,6 +77,16 @@
     "webBytes": 920082,
     "encoding": "webp-quality-96"
   },
+  "art/human/units-atlas.png": {
+    "file": "web-images/b44fb05d911bf0f157e2-q96.webp",
+    "sourceSha256": "b44fb05d911bf0f157e271a0eb065e57b649377c750386abc854216ddc73dc0f",
+    "sha256": "5cd9c3b961669675febfc8b8e29a24ba47b9554f826c9a4d950435d6d5e303d2",
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 2886777,
+    "webBytes": 665480,
+    "encoding": "webp-quality-96"
+  },
   "art/orc-upgrades-atlas.png": {
     "file": "web-images/28ccf126b691b12443f2.webp",
     "sourceSha256": "28ccf126b691b12443f2bfd7d8c4837d84a6af69775dcbe352e5cb0c8d719203",
@@ -103,6 +113,26 @@
     "height": 1086,
     "originalBytes": 3508018,
     "webBytes": 2436096
+  },
+  "art/undead/fast-poison.png": {
+    "file": "web-images/e6a68a4f167e6fccf0c6-q96.webp",
+    "sourceSha256": "e6a68a4f167e6fccf0c6015d213ce41e9df40199ddc9f32a4f5496b294840418",
+    "sha256": "145f81b9294c1b6bd58c9177bed3b879647265faf1464d39b216d6f515cd02d1",
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 2598212,
+    "webBytes": 573922,
+    "encoding": "webp-quality-96"
+  },
+  "art/undead/territory-legends-atlas.png": {
+    "file": "web-images/7a16c3bca7d35d0b8fe1-q96.webp",
+    "sourceSha256": "7a16c3bca7d35d0b8fe1fb4eb3a6630b94500ffab220b82fd6e92d9b7d64ac21",
+    "sha256": "0d4c19cc0e496b3ff303db790ad00ce3e7ecb95f9582d3e328fcef0409404aea",
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 2936844,
+    "webBytes": 672174,
+    "encoding": "webp-quality-96"
   },
   "art/undead/unit-relics-atlas.png": {
     "file": "web-images/581188a517c8a09d843a.webp",

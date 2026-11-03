@@ -23,6 +23,7 @@ export function installTowerPresentation(R) {
     g.fillRect(-22,25,44*R.clamp(t.hp/t.maxHp,0,1),5);
     if(selected){g.strokeStyle='#ffe397';g.lineWidth=2;g.setLineDash([4,3]);g.strokeRect(-22,-29,44,63);}
     g.restore();
+    R.drawUndeadTowerDecay?.(t);
     const short=v=>v>=1000?`${(v/1000).toLocaleString('hu-HU',{maximumFractionDigits:1})}k`:String(Math.ceil(v));
     const lower=t.gateTower&&(t.lateral||0)>0,label=`${short(t.hp)} / ${short(t.maxHp)}`;
     const hpY=p.y+(lower?38*s+10:-28*s-12);

@@ -1,5 +1,5 @@
 // Retain generated PNG originals. Older assets use lossless WebP; the new
-// painted Human upgrade atlases use high-quality WebP for fast card browsing.
+// painted upgrade atlases use high-quality WebP for fast card browsing.
 const fs=require('node:fs/promises'),path=require('node:path'),crypto=require('node:crypto'),sharp=require('sharp');
 (async()=>{
  const atlas=JSON.parse(await fs.readFile('src/data/upgrade-art-manifest.json','utf8'));
@@ -7,11 +7,11 @@ const fs=require('node:fs/promises'),path=require('node:path'),crypto=require('n
  async function collect(dir){for(const e of await fs.readdir('public/'+dir,{withFileTypes:true})){const p=dir+'/'+e.name;if(e.isDirectory())await collect(p);else if(p.endsWith('.png'))files.add(p)}}
  await collect('cards');await fs.mkdir('public/web-images',{recursive:true});const images={};let originalBytes=0,webBytes=0;
  for(const source of [...files].sort()){
-  const bytes=await fs.readFile('public/'+source),sha=crypto.createHash('sha256').update(bytes).digest('hex'),paintedHuman=/^art\/human\/cards\/atlas-\d+\.png$/.test(source),file='web-images/'+sha.slice(0,20)+(paintedHuman?'-q96':'')+'.webp';
-  try{await fs.access('public/'+file)}catch{await sharp(bytes).webp(paintedHuman?{quality:96,smartSubsample:true,effort:6}:{lossless:true,effort:4}).toFile('public/'+file)}
+  const bytes=await fs.readFile('public/'+source),sha=crypto.createHash('sha256').update(bytes).digest('hex'),paintedAtlas=/^art\/human\/cards\/atlas-\d+\.png$/.test(source)||['art/undead/territory-legends-atlas.png','art/undead/fast-poison.png','art/human/units-atlas.png'].includes(source),file='web-images/'+sha.slice(0,20)+(paintedAtlas?'-q96':'')+'.webp';
+  try{await fs.access('public/'+file)}catch{await sharp(bytes).webp(paintedAtlas?{quality:96,smartSubsample:true,effort:6}:{lossless:true,effort:4}).toFile('public/'+file)}
   const web=await fs.readFile('public/'+file),meta=await sharp(web).metadata();
   if(web.length>=bytes.length)continue;
-  images[source]={file,sourceSha256:sha,sha256:crypto.createHash('sha256').update(web).digest('hex'),width:meta.width,height:meta.height,originalBytes:bytes.length,webBytes:web.length,...(paintedHuman?{encoding:'webp-quality-96'}:{})};
+  images[source]={file,sourceSha256:sha,sha256:crypto.createHash('sha256').update(web).digest('hex'),width:meta.width,height:meta.height,originalBytes:bytes.length,webBytes:web.length,...(paintedAtlas?{encoding:'webp-quality-96'}:{})};
   originalBytes+=bytes.length;webBytes+=web.length;
  }
  await fs.writeFile('src/data/web-card-images.json',JSON.stringify(images,null,2)+'\n');

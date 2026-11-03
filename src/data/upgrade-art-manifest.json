@@ -119,6 +119,30 @@
       "columns": 4,
       "rows": 4,
       "sha256": "688603482e767d197efffec6a672c69643c709257cc5cbd9aead493096a6d5b3"
+    },
+    "undead-territory": {
+      "file": "art/undead/territory-legends-atlas.png",
+      "width": 1536,
+      "height": 1024,
+      "columns": 2,
+      "rows": 2,
+      "sha256": "7a16c3bca7d35d0b8fe1fb4eb3a6630b94500ffab220b82fd6e92d9b7d64ac21"
+    },
+    "human-unit-portraits": {
+      "file": "art/human/units-atlas.png",
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 2,
+      "sha256": "b44fb05d911bf0f157e271a0eb065e57b649377c750386abc854216ddc73dc0f"
+    },
+    "undead-fast-poison": {
+      "file": "art/undead/fast-poison.png",
+      "width": 1536,
+      "height": 1024,
+      "columns": 1,
+      "rows": 1,
+      "sha256": "e6a68a4f167e6fccf0c6015d213ce41e9df40199ddc9f32a4f5496b294840418"
     }
   },
   "scenes": {
@@ -1374,6 +1398,56 @@
         516.0,
         376.0,
         248.0
+      ]
+    },
+    "und_grave_islands": {
+      "source": "undead-territory",
+      "index": 0,
+      "rect": [
+        4,
+        4,
+        760,
+        504
+      ]
+    },
+    "und_withered_foundations": {
+      "source": "undead-territory",
+      "index": 1,
+      "rect": [
+        772,
+        4,
+        760,
+        504
+      ]
+    },
+    "zombie_leg_half_poison": {
+      "source": "undead-territory",
+      "index": 2,
+      "rect": [
+        4,
+        516,
+        760,
+        504
+      ]
+    },
+    "und_ranged_adaptation": {
+      "source": "undead-territory",
+      "index": 3,
+      "rect": [
+        772,
+        516,
+        760,
+        504
+      ]
+    },
+    "und_fast_poison": {
+      "source": "undead-fast-poison",
+      "index": 0,
+      "rect": [
+        0,
+        0,
+        1536,
+        1024
       ]
     }
   }

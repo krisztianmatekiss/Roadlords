@@ -30,6 +30,17 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    check(`${count} Human ${tab} cards decode their matching illustrations and retain readable live text`,result.rows.length===count&&result.rows.every(c=>c.scene===`human-${kind}:${c.id}`&&c.frame.endsWith('/cards/human/frame.png')&&c.fit));
    if(tab==='common')report.commonStroke=result.rows[0].stroke;if(tab==='legendary')report.legendaryStroke=result.rows[0].stroke;
   }
+  await p.locator('#rlCodexPanel [data-tab="units"]').click();await p.waitForTimeout(100);
+  const unitPortraits=await p.evaluate(async()=>{
+   const cards=[...document.querySelectorAll('#rlCodexPanel [data-codex-unit]')],urls=new Set();
+   const rows=cards.map(c=>{const portrait=c.querySelector('.humanUnitPortrait');urls.add(portrait?.querySelector('image')?.getAttribute('href'));return {key:c.dataset.codexUnit,art:portrait?.dataset.humanUnitPortrait,frame:c.querySelector('.cardFrameImage')?.getAttribute('src'),inspector:__ROADLORDS_RUNTIME__.unitImageTag(c.dataset.codexUnit).includes('data-human-unit-portrait')};});
+   await Promise.all([...urls].map(async src=>{const image=new Image();image.src=src;await image.decode();if(image.naturalWidth!==1536||image.naturalHeight!==1024)throw Error('Incorrect Human portrait atlas');}));
+   return {rows,html:cards.map(c=>c.querySelector('.cardFace').outerHTML)};
+  });
+  check('All seven Human unit cards and inspector portraits decode the new portraits inside their Human common frame',unitPortraits.rows.length===7&&unitPortraits.rows.every(c=>c.key===c.art&&c.inspector&&c.frame.endsWith('/cards/human/frame.png')));
+  await p.evaluate(html=>{const grid=document.createElement('div');grid.id='humanUnitGallery';grid.style.cssText='position:absolute;left:0;top:0;z-index:100000;width:1440px;padding:20px;box-sizing:border-box;background:#122019;display:grid;grid-template-columns:repeat(4,1fr);gap:16px';grid.innerHTML=html.join('');document.body.append(grid);window.dispatchEvent(new Event('roadlords:ui-scale'));},unitPortraits.html);
+  await p.waitForTimeout(100);await p.locator('#humanUnitGallery').screenshot({path:'artifacts/human-unit-portraits-4.58.6.png'});await p.evaluate(()=>document.querySelector('#humanUnitGallery').remove());
+  await p.locator('#rlCodexPanel [data-tab="legendary"]').click();await p.waitForTimeout(100);
   check('Existing Human building illustrations stay on their original two atlases',inventory.building.every(id=>['human-buildings','human-support-buildings'].includes(manifest.scenes['human-building:'+id].source)));
   check('Common and legendary Human cards have distinct steel and gold frame inlays',report.commonStroke!==report.legendaryStroke);
   await p.evaluate(html=>{const grid=document.createElement('div');grid.id='humanArtGallery';grid.style.cssText='position:absolute;left:0;top:0;z-index:100000;width:1440px;padding:20px;box-sizing:border-box;background:#122019;display:grid;grid-template-columns:repeat(4,1fr);gap:16px';grid.innerHTML=html.join('');document.body.append(grid);window.dispatchEvent(new Event('roadlords:ui-scale'));},gallery);

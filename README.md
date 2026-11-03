@@ -1,4 +1,19 @@
-# Roadlords · V4.58.5
+# Roadlords · V4.58.6
+
+## V4.58.6 – Élőhalott legendások és emberi egységportrék
+
+- Öt új élőhalott legendás lap, saját képekkel, előfeltételekkel és lexikonrészletekkel:
+  - **Sírszigetek:** az ellenséges térfélen, harcban eleső Zombi 8 méter sugarú saját területet hagy hátra 6 másodpercre. Minden saját térfélhez kötött hatás működik rajta. Közeli foltok frissülnek; térben indexelt, korlátozott számú folt kezeli a nagy csatákat.
+  - **Elsorvasztott alapok:** saját területen az ellenséges úttornyok 60 HP/mp sebzést kapnak. A várkapu két tornya és a főváros kimarad, több sziget nem többszörözi a sebzést. A Nekropolisz területi L4 ága a szigetek sugarát és a sorvasztást is duplázza.
+  - **Repedő rothadás:** a Zombi egyszer, egy túlélt sebzés után 50% HP-ra vagy az alá esve kibocsátja rendes halálkori mérgét. Halálakor továbbra is mérgez; gyógyítás nem tölti újra.
+  - **Holtak alkalmazkodása:** minden betaláló ellenséges távolsági támadás a megjelenéskori Max HP 1%-át adja az egység maximális és aktuális HP-jához. A pajzstalálat számít, kitérés, folyamatos méreg/égés és sugársebzés nem. A növekmény megmarad későbbi statfrissítésnél, új életben újrakezdődik.
+  - **Heves méreg:** a saját mérgezés 0,5 másodpercenként sebez és veszít egy méregpontot. Ugyanannyi összsebzés, feleannyi idő alatt.
+- Animált méregkitörés, textúrázott, csapatszínnel jelölt sírszigetek, sorvadó tornyokon repedések, HP-növekedéskor rövid zöld fény. A gazdagép számolja a sebzést; a vendég a tükrözött állapotot és effekteket kapja.
+- Mind a hét emberi egység új, festett kártya- és lexikonportrét kapott. A Lándzsás pajzs nélküli; a Lovag nyeregben ül. Az egységinformációs panel is ugyanazt a portrét használja.
+- Új képek: `public/art/human/units-atlas.png`, `public/art/undead/territory-legends-atlas.png`, `public/art/undead/fast-poison.png`. Az eredeti PNG-k megmaradnak; a böngészős, jó minőségű WebP-változatok együtt 1,91 MB-osak.
+- Új harci, időzítési, megjelenítési és valós multiplayer-állapotküldési ellenőrzések. A kompatibilis multiplayer-szabályverzió: 11.
+
+[Új emberi portrék](public/previews/human-unit-portraits-4.58.6.png) · [Új élőhalott lapok](public/previews/undead-territory-cards-4.58.6.png) · [Csatatéri effektek](public/previews/undead-territory-battle-4.58.6.png)
 
 ## V4.58.5 – Elsöprő roham és Várvédők
 

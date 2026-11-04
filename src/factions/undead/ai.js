@@ -13,7 +13,7 @@ export function initializeUndeadAi(R) {
     let best = null,
       score = -Infinity;
     for (const rotation of R.rotationOptions(type)) {
-      const shape = R.rotatedShape(type, rotation);
+      const shape = R.cityBuildingCells(c, {type, row:0, col:0, rotation});
       for (let row = 0; row < R.GRID; row++)
         for (let col = 0; col < R.GRID; col++) {
           if (

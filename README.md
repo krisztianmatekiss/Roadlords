@@ -1,4 +1,8 @@
-# Roadlords · V4.59.0
+# Roadlords · V4.60.0
+
+## V4.60.0 – Paklik és kapuvezérlés
+
+Bal alul 2×2 ikonos építési korongok (Q/W/E/R), alattuk a saját pakli; jobb felül az ellenfél paklija. Mindhárom faj saját hátlapot kapott. A saját választott lap átfordulva a pakliba repül, az ellenfél választása pedig csak látható városnál mutatkozik be, majd a felső pakliba zsugorodik. A kapu három gombja a felső sáv közepére került; játékosi alapállapot: automata.
 
 ## V4.59.0 – Élőhalott bővítés
 

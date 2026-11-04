@@ -23,7 +23,7 @@ export function initializeVersionAndScaling() {
       ? Math.min(2, Math.max(1, Math.min(innerWidth / 1920, innerHeight / 1080)))
       : Number(mode) / 100;
     document.body.dataset.uiScale = mode;
-    document.body.dataset.uiCompact = String(innerWidth / scale <= 1350);
+    document.body.dataset.uiCompact = String(innerWidth / scale <= 1470);
     const narrow = innerWidth / scale <= 720;
     document.body.dataset.uiNarrow = String(narrow);
     document.documentElement.style.setProperty('--ui-scale', scale);

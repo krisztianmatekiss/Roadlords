@@ -40,23 +40,8 @@ export function initializeUiInitialControls(runtime) {
     runtime.$('#playerGate')?.classList.remove('menu-open');
   });
   runtime.playerGate = runtime.$('#playerGate');
-  if (runtime.playerGate) {
-    const toggleGateMenu = e => {
-      if (e?.target?.closest?.('[data-gate]')) return;
-      e?.stopPropagation?.();
-      runtime.playerGate.classList.toggle('menu-open');
-    };
-    runtime.playerGate.addEventListener('click', toggleGateMenu);
-    runtime.playerGate.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleGateMenu(e);
-      }
-    });
-    document.addEventListener('click', e => {
-      if (!runtime.playerGate.contains(e.target)) runtime.playerGate.classList.remove('menu-open');
-    });
-  }
+  runtime.playerGate?.removeAttribute('role');
+  runtime.playerGate?.removeAttribute('tabindex');
   runtime.rotateBtn = runtime.$('#rotateBuild');
   if (runtime.rotateBtn) runtime.rotateBtn.onclick = runtime.rotateSelectedBuild;
   runtime.$('#playerGrid').addEventListener('contextmenu', e => {

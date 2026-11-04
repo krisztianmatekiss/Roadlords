@@ -1,3 +1,4 @@
+import { categoryMarkup } from './command-icons.js';
 import { assetUrl } from '../assets/urls.js';
 export function initializeUiHotkeys(runtime) {
   const style = document.createElement('style');
@@ -35,7 +36,8 @@ export function initializeUiHotkeys(runtime) {
       const key = categoryKeys[tab.dataset.cat];
       if (!key) return;
       const label = tab.dataset.cat === 'all' ? 'Mind' : tab.dataset.cat === 'economy' ? 'Gazdaság' : tab.dataset.cat === 'military' ? 'Hadsereg' : 'Támogatás';
-      tab.innerHTML = `<span class="tabHotkey">${key}</span>${label}`;
+      tab.innerHTML = categoryMarkup(tab.dataset.cat,key,label);
+      tab.setAttribute('aria-label',`${label} · ${key}`);
       tab.title = `${key} · ${label}`;
     });
     runtime.$$('#buildList .buildcard').forEach((card, i) => {

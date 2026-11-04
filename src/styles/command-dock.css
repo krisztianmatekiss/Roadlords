@@ -1,0 +1,58 @@
+/* Category coins and the local deck share the original dock footprint. */
+html body #app .catalog{grid-template-columns:128px minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important;gap:8px!important}
+html body #app .catalog>.decktitle{display:none!important}
+.commandRail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-height:0;gap:5px;padding:2px 0}
+html body #app .commandRail .tabs{display:grid!important;grid-template-columns:repeat(2,49px)!important;gap:8px!important;align-content:start!important;justify-content:center!important;width:100%!important;height:auto!important;grid-column:auto!important;grid-row:auto!important}
+html body[data-ui-scale] #app .commandRail .tab{position:relative;width:49px!important;height:49px!important;min-height:49px!important;padding:9px!important;border-radius:50%!important;border:2px solid #596357!important;background:radial-gradient(circle at 35% 25%,#667160,#18231c 65%,#080e0b)!important;color:#ecd7a3!important;box-shadow:inset 0 0 0 2px #0c1512,inset 0 0 0 4px #99a48b55,0 3px 4px #000b!important;overflow:visible!important;transition:filter .15s,box-shadow .15s}
+html body[data-ui-scale] #app .commandRail .tab[data-cat="economy"]{background:radial-gradient(circle at 35% 25%,#7c6732,#302711 68%,#130e05)!important;border-color:#947739!important}
+html body[data-ui-scale] #app .commandRail .tab[data-cat="military"]{background:radial-gradient(circle at 35% 25%,#a5483e,#471918 68%,#180909)!important;border-color:#aa6052!important}
+html body[data-ui-scale] #app .commandRail .tab[data-cat="support"]{background:radial-gradient(circle at 35% 25%,#4b689a,#18263e 68%,#080e1c)!important;border-color:#6889b0!important}
+html body[data-ui-scale] #app .commandRail .tab.active{border-color:#ffe5a0!important;box-shadow:inset 0 0 0 2px #362913,inset 0 0 0 4px #cdb16b99,0 0 10px #eacb6b66!important;filter:brightness(1.2)}
+.commandRail .tab>svg{display:block;width:100%;height:100%;filter:drop-shadow(0 1px 1px #000)}
+html body #app .commandRail .tabHotkey{position:absolute;right:-3px;bottom:-3px;margin:0;width:19px;height:19px;padding:0;border:1px solid #d8bc70;border-radius:50%;font:900 12px/1 system-ui;background:#101712;color:#ffe8ae;box-shadow:0 1px 4px #000}
+html body #app .catalog>.buildnav{grid-column:2!important;grid-row:1!important;min-width:0!important;height:100%!important;align-items:center!important}
+html body .deckButton{position:relative;isolation:isolate;border:0!important;background:none!important;cursor:pointer;color:#ffe4a0;display:flex;align-items:center;justify-content:center;padding:0!important;box-shadow:none!important;flex-shrink:0}
+html body #relicBtn{width:108px!important;min-height:63px!important;height:63px!important;gap:9px;align-self:center;overflow:visible!important}
+.deckStack{position:relative;display:block;width:37px;height:57px;flex-shrink:0;filter:drop-shadow(0 2px 3px #0009)}
+.deckLayer{position:absolute;inset:0;border-radius:5px;overflow:hidden;background:#151a18;outline:1px solid #ba985c55}
+.deckLayer.layer0{transform:translate(-5px,2px) rotate(-10deg)}
+.deckLayer.layer1{transform:translate(0,0) rotate(-3deg)}
+.deckLayer.layer2{transform:translate(5px,-1px) rotate(5deg)}
+.factionDeckBack{display:block;width:100%;height:100%;overflow:hidden}
+.deckCaption{font:800 9px/1 system-ui;letter-spacing:.08em;writing-mode:vertical-rl}
+html body #relicBtn>b{position:absolute;right:3px;bottom:6px;font:800 13px/1 system-ui;color:#ffe6a7;text-shadow:0 2px 3px #000}
+html body[data-ui-scale] #app .topbar .run #enemyDeckBtn{width:43px!important;min-width:43px!important;height:43px!important;margin:0 4px;overflow:visible}
+#enemyDeckBtn .deckStack{width:25px;height:38px}
+#enemyDeckBtn>b{position:absolute;right:-4px;bottom:-2px;min-width:17px;padding:2px 3px;border:1px solid #ac8f53;border-radius:9px;background:#101b15;font:800 10px/1 system-ui!important;color:#ffe4a0}
+.deckButton:hover .deckLayer.layer2,.deckButton:focus-visible .deckLayer.layer2{filter:brightness(1.3)}
+html body .deckButton:focus-visible{outline:2px solid #ffe2a3!important;outline-offset:5px}
+html body #app #roadRoster{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;gap:7px!important}
+#gateControls{display:flex;gap:3px;align-items:center;justify-content:center;align-self:center}
+html body #app #gateControls button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:35px;min-width:35px;height:40px;padding:2px!important;border-radius:7px;border:1px solid #59645b;background:linear-gradient(#303a32,#141d17);color:#839087;cursor:pointer;filter:grayscale(1);box-shadow:inset 0 1px #ffffff0a;font:700 8px/1 system-ui}
+#gateControls svg{width:22px;height:24px}
+html body #app #gateControls button.active{filter:none;border-color:#dfbd65;color:#ffe4a0;background:linear-gradient(#69542a,#302714);box-shadow:inset 0 1px #fff3,0 0 7px #e9c56844}
+html body #app #gateControls [data-gate="open"].active{color:#a1f5b8;border-color:#66ad7f;background:linear-gradient(#325942,#173125)}
+html body #app #gateControls [data-gate="closed"].active{color:#ffb2a3;border-color:#c67b6c;background:linear-gradient(#6b3e36,#371d1a)}
+html body #app .roadWorld #playerGate{cursor:default!important}
+html body #app #playerGate .gateModeIcon{display:none!important}
+.enemyPickReveal{position:fixed;z-index:70;pointer-events:none;transform-origin:center;filter:drop-shadow(0 14px 18px #000a)}
+.enemyPickReveal>.rlCodexCard{width:100%;padding:0!important;margin:0!important;border:0!important;background:none!important;box-shadow:none!important}
+.enemyPickReveal .cardFace{width:100%;height:100%;aspect-ratio:2/3}
+.enemyPickReveal :is(nav,details,.relicOwnedCount){display:none!important}
+.enemyPickReveal .rlCodexContent{overflow:hidden!important}
+.deckReceived .deckStack{animation:deck-receive .6s ease-out}
+@keyframes deck-receive{35%{filter:brightness(1.8) drop-shadow(0 0 8px #efda84);transform:scale(1.12)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.deckReceived .deckStack{animation:none}.commandRail .tab{transition:none!important}}
+html body[data-ui-compact="true"] #app #gateControls button{width:29px;min-width:29px;height:25px;gap:0;font-size:7px}
+html body[data-ui-compact="true"] #app #gateControls svg{width:16px;height:16px}
+html body[data-ui-compact="true"] #app .topbar .run #enemyDeckBtn{height:26px!important;min-width:31px!important;width:31px!important}
+body[data-ui-compact="true"] #enemyDeckBtn .deckStack{width:17px;height:25px}
+.deckChoiceFlight{position:fixed;z-index:10020;pointer-events:none;transform-origin:center;perspective:1000px;filter:drop-shadow(0 12px 15px #0008)}
+.deckFlipInner{position:relative;width:100%;height:100%;transform-style:preserve-3d}
+.deckFlightFront,.deckFlightBack{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;border-radius:3%;transform:translateZ(.1px)}
+.deckFlightBack{transform:rotateY(180deg);background:#101511}
+:is(.deckChoiceFlight,.enemyPickReveal) .rlCodexCard{width:100%!important;height:100%!important;padding:0!important;margin:0!important;border:0!important;background:none!important;box-shadow:none!important;min-height:0!important}
+:is(.deckChoiceFlight,.enemyPickReveal) .cardFace{width:100%;height:100%;aspect-ratio:2/3}
+:is(.deckChoiceFlight,.enemyPickReveal) :is(nav,details){display:none!important}
+#relicList [data-deck-building] .lexLevels{display:none}
+#relicList .deckBuildingBranch{font:500 15px/1.35 "Roadlords Copy",Georgia,serif;color:#c8d5c8;margin:10px 4px}

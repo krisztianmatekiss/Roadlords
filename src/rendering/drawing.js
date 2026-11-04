@@ -95,12 +95,12 @@ export function register(runtime) {
         closed: 'Zárt',
         auto: 'Automata'
       };
-    runtime.$$('[data-gate]').forEach(b => b.classList.toggle('active', b.dataset.gate === runtime.P.gateMode));
+    runtime.$$('[data-gate]').forEach(b => {const selected=b.dataset.gate===runtime.P.gateMode;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});
     const pg = runtime.$('#playerGate'),
       pi = runtime.$('#gateModeIcon');
     if (pg) {
       pg.dataset.mode = runtime.P.gateMode;
-      pg.title = `Kapu: ${names[runtime.P.gateMode]} · kattints a váltáshoz`;
+      pg.title = `Kapu: ${names[runtime.P.gateMode]}`;
     }
     if (pi) pi.textContent = icons[runtime.P.gateMode] || '↻';
     const eg = runtime.$('#enemyGate'),

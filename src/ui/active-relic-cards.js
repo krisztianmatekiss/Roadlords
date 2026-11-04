@@ -10,8 +10,8 @@ export function installActiveRelicCards(R) {
       [...c.legends].reduce((n,id)=>n+Math.max(1,Number(c.legendaryStacks?.[id])||0),0);
     return out;
   };
-  R.renderRelics = () => {
-    const list = R.$('#relicList'), c = R.P;
+  R.renderRelics = (c = R.P) => {
+    const list = R.$('#relicList');
     list.replaceChildren();
     const owned = [
       ...Object.entries(c.normal).filter(([,n])=>n>0).map(([id,n])=>[R.NORMAL.find(o=>o.id===id),'normal',n]),
@@ -34,7 +34,14 @@ export function installActiveRelicCards(R) {
       }
       list.append(card);fitCardText(card.querySelector('.cardFace'));
     }
-    if (!list.childElementCount) list.textContent = 'Még nincs ereklyéd.';
+    for(const [type,entry]of Object.entries(c.deckBuildings||{})){
+      if(!R.BUILDINGS[type])continue;
+      const template=document.createElement('template');template.innerHTML=cards.building(type,c.race||'human',c);
+      const card=template.content.firstElementChild;card.dataset.deckBuilding=type;
+      const badge=document.createElement('span');badge.className='relicOwnedCount';badge.textContent=`L${R.levelOf(c,type)}`;card.prepend(badge);
+      list.append(card);fitCardText(card.querySelector('.cardFace'));
+    }
+    if (!list.childElementCount) list.textContent = 'Még nincs lap a pakliban.';
   };
   new ResizeObserver(()=>{
     if (!R.$('#relicOverlay').classList.contains('hidden'))

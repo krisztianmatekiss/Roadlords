@@ -57,20 +57,21 @@ export function createCodexCards(R) {
       : definitions(race,type).description;
     return `<details class="lexBranches"><summary>Működés</summary><p>${effectText(rules).replace(/\n/g,'<br>')}</p></details>`;
   }
-  function building(type, race) {
-    const d = definitions(race, type), level = levels.get(`${race}:${type}`) || 1;
-    const bs = branches(race, type), { cost, description } = metrics(race, type, level);
+  function building(type, race, city = null) {
+    const d = definitions(race, type), level = city ? R.levelOf(city,type) : levels.get(`${race}:${type}`) || 1;
+    const bs = branches(race, type), { cost, description } = metrics(race, type, level, city);
     // Branched L4 has no single value: show its two actual alternatives below the card.
     const max = bs.length ? 3 : race === 'undead' || R.V4_SIMPLE_L4.has(type) ? 4 : 3;
-    const text = description, art = R.cardBuildingImageTag(type, 'lexBuildingImg', race);
-    const reference=cityFor(race,type,level)[0];
+    const selected=city&&level===4?bs.find(b=>b.id===R.branchOf(city,type)):null;
+    const text = selected?.description || description, art = R.cardBuildingImageTag(type, 'lexBuildingImg', race);
+    const reference=city || cityFor(race,type,level)[0];
     const body = (d.unit ? productionFacts(R, reference, type, level) : type === 'keep' ? capitalFacts(R,race,level) : `<p>${effectText(text)}</p>`)+(race==='undead'?buildingUpkeep(R,type,reference):'');
     const meta = '';
     const price = type === 'keep' ? '' : constructionPrice(R, cost, race);
     return `<article class="rlCodexCard" data-codex-building="${type}" data-race="${race}">${face({id:type,kind:'building',race,name:race === 'orc' && type === 'keep' ? 'Ork főépület' : d.name,category:d.category,art,body,meta,price,mark:uniqueBuildingMark(R,reference,type),footprint:productionFootprint(R,reference,type),metaInBody:!!d.unit})}
       <nav class="lexLevels" aria-label="${esc(d.name)} szintje">${Array.from({length:max}, (_, i) => `<button type="button" data-codex-level="${i+1}" aria-pressed="${level === i+1}">L${i+1}</button>`).join('')}</nav>
-      ${bs.length ? `<details class="lexBranches"><summary>L4 ágak</summary>${bs.map(b => `<div class="rlBranch"><b>${esc(b.name)}</b><p>${effectText(b.description)}</p>${ruleDetails(cardRules[type+'/'+b.id])}</div>`).join('')}</details>` : ''}
-      ${extraRules(type,race,level)}</article>`;
+      ${bs.length && !city ? `<details class="lexBranches"><summary>L4 ágak</summary>${bs.map(b => `<div class="rlBranch"><b>${esc(b.name)}</b><p>${effectText(b.description)}</p>${ruleDetails(cardRules[type+'/'+b.id])}</div>`).join('')}</details>` : ''}
+      ${selected?`<p class="deckBuildingBranch"><b>${esc(selected.name)}</b> · ${effectText(selected.description)}</p>`:''}${extraRules(type,race,level)}</article>`;
   }
   function upgrade(item, kind, race, city = null) {
     const key = R.PICK_UNIT_IMAGES[item.id], src = R.PICK_IMAGES[item.id];

@@ -24,12 +24,12 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     await p.locator('#rlOpenCodex').click();
     await p.locator('#codexRace').selectOption('undead');
     check(
-      'Undead encyclopedia lists all 17 active buildings with faction art and Soul prices',
-      (await p.locator('#rlCodexPanel .rlCodexCard').count()) === 17 &&
+      'Undead encyclopedia lists all 21 active buildings with faction art and Soul prices',
+      (await p.locator('#rlCodexPanel .rlCodexCard').count()) === 21 &&
         (await p.locator('#rlCodexPanel .undeadBuildingArt').count()) === 0 &&
-        (await p.locator('#rlCodexPanel .cardFrameImage').count()) === 17 &&
+        (await p.locator('#rlCodexPanel .cardFrameImage').count()) === 21 &&
         (await p.locator('[data-codex-building="und_necro_spawner"] .cardFrameImage').count()) === 1 &&
-        (await p.locator('#rlCodexPanel .constructionPrice[aria-label*="55 Lélek"] img[alt="Lélek"]').count()) > 0 &&
+        (await p.locator('#rlCodexPanel .constructionPrice[aria-label*="220 Lélek"] img[alt="Lélek"]').count()) > 0 &&
         (await p
           .locator('#rlCodexPanel')
           .innerText()
@@ -47,7 +47,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     for (const [tab, count] of [
       ['units', 7],
       ['common', 26],
-      ['legendary', 29],
+      ['legendary', 34],
     ]) {
       await p.locator('#rlCodexPanel [data-tab="' + tab + '"]').click();
       check(
@@ -66,7 +66,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         const elements = [...document.querySelectorAll('#choiceList .choice')];
         const cards = elements.map(c => c.querySelector('.choiceBody').textContent);
         R.$('#choiceOverlay').classList.add('hidden');
-        return cards[0].includes('+8 Lélek/mp') && elements[0].querySelector('.upkeepFact').textContent.includes('−0,5') && elements[0].querySelector('.upkeepFact img').alt==='Lélek' &&
+        return cards[0].includes('+32 Lélek/mp') && elements[0].querySelector('.upkeepFact').textContent.includes('−2') && elements[0].querySelector('.upkeepFact img').alt==='Lélek' &&
           cards[1].includes('+80 sereghely') && cards[2].includes('90%-kal kevesebb') &&
           elements[2].querySelector('.choiceBody .effect-positive').textContent === '90%' &&
           cards.every(s => !s.includes('L1:') && !s.includes('Másik L4'));

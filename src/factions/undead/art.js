@@ -1,3 +1,4 @@
+import { cardImageSource } from '../../assets/card-loading.js';
 import { assetUrl } from '../../assets/urls.js';
 import { UNDEAD_BUILDINGS as D, UNDEAD_UNITS as U, UNDEAD_UPGRADES } from '../../data/undead.js';
 import { isUndead } from './foundation.js';
@@ -35,7 +36,13 @@ export function initializeUndeadArt(R) {
     return `<svg class="${cls} undeadUnitPortrait" data-unit-portrait="${key}" viewBox="${x} ${y} 384 512" preserveAspectRatio="xMidYMin slice" role="img" aria-label="${U[key].name}"><image href="${portraits}" width="1536" height="1024"/></svg>`;
   };
   const image = (type, cls, rotation = 0) => {
-    const turn=((rotation%4)+4)%4, variant=cityArt.variants[0];
+    const turn=((rotation%4)+4)%4;
+    const slot=type==='und_well'?4:D[type].cityArtIndex;
+    if(slot!==undefined){
+      const x=slot%3*512,y=Math.floor(slot/3)*512;
+      return `<svg class="${cls} undeadBuildingArt" data-undead-building="${type}" data-art-rotation="${turn}" viewBox="${x} ${y} 512 512" preserveAspectRatio="xMidYMid meet" overflow="hidden" role="img" aria-label="${D[type].name}"><image ${cardImageSource(assetUrl('art/undead/convergence-city.png'),'href')} width="1536" height="1024"/></svg>`;
+    }
+    const variant=cityArt.variants[0];
     const [x,y,w,h]=variant.rects[D[type].atlas];
     const clip=`und-city-${type}-${turn}`;
     const base=R.shapeBounds(type,0),horizontal=base.w>base.h&&h>w;

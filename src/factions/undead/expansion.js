@@ -52,12 +52,12 @@ export function initializeUndeadExpansion(R){
         if(isUndead(c)){
           const stacks=R.countNormal(c,'und_death_mend');
           if(stacks){const ally=nearest(u,v=>v.side===u.side&&R.undFactionUnit(v));if(ally)R.healUnit(ally,ally.maxHp*.05*stacks);}
-          if(R.undFactionUnit(u))for(const [id,key]of [['und_rise_skeleton','und_skeleton'],['und_rise_archer','und_skeleton_archer']]){
+          if(!u.undCorpseClaim && R.undFactionUnit(u))for(const [id,key]of [['und_rise_skeleton','und_skeleton'],['und_rise_archer','und_skeleton_archer']]){
             if(R.hasLeg(c,id)&&Math.random()<.25)spawn(c,key,u,{undSummoned:!!u.undSummoned,undNoArmySlot:!!u.undNoArmySlot});
           }
         }
         for(const enemy of [R.P,R.E])if(isUndead(enemy)&&R.sideForCity(enemy)!==u.side){
-          if(R.hasLeg(enemy,'und_raise_enemy')&&R.UNITS[u.key]&&Math.random()<.2)spawn(enemy,u.key,u,{undConverted:true,undSpawnHp:.5});
+          if(!u.undCorpseClaim && R.hasLeg(enemy,'und_raise_enemy')&&R.UNITS[u.key]&&Math.random()<.2)spawn(enemy,u.key,u,{undConverted:true,undSpawnHp:.5});
           if(R.hasLeg(enemy,'und_death_chain')){
             const target=nearest(u,v=>v.side===u.side);
             if(target)R.undDeathChainHit(target,target.maxHp*.2);

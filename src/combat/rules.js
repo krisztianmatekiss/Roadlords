@@ -381,7 +381,7 @@ export function register(runtime) {
   runtime.killUnit = function killUnit(target, combatDeath = true) {
     if (!target.alive) return;
     target.alive = false;
-    if (combatDeath && target.key === 'knight' && runtime.hasLeg(runtime.cityForSide(target.side), 'knight_dismount')) {
+    if (combatDeath && !target.undCorpseClaim && target.key === 'knight' && runtime.hasLeg(runtime.cityForSide(target.side), 'knight_dismount')) {
       const c = runtime.cityForSide(target.side);
       const s = runtime.spawnBattleUnitAt(c, 'swordsman', target.lane, target.offset);
       if(!s)return;
@@ -559,6 +559,8 @@ export function register(runtime) {
     const before = target.hp,
       c = runtime.cityForSide(target.side);
     if (type === 'physical' && target.key === 'knight' && runtime.hasBranch(c, 'stable', 'armored_knights')) amount *= .5;
+    // Reached only after faction dodges and complete damage wards resolve.
+    amount = runtime.undSuccessfulHitDamage?.(target, amount, type) ?? amount;
     let hit = Math.min(target.tempShield || 0, amount);
     target.tempShield -= hit;
     amount -= hit;

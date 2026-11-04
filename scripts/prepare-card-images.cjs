@@ -7,7 +7,7 @@ const fs=require('node:fs/promises'),path=require('node:path'),crypto=require('n
  async function collect(dir){for(const e of await fs.readdir('public/'+dir,{withFileTypes:true})){const p=dir+'/'+e.name;if(e.isDirectory())await collect(p);else if(p.endsWith('.png'))files.add(p)}}
  await collect('cards');await fs.mkdir('public/web-images',{recursive:true});const images={};let originalBytes=0,webBytes=0;
  for(const source of [...files].sort()){
-  const bytes=await fs.readFile('public/'+source),sha=crypto.createHash('sha256').update(bytes).digest('hex'),paintedAtlas=/^art\/human\/cards\/atlas-\d+\.png$/.test(source)||['art/undead/territory-legends-atlas.png','art/undead/fast-poison.png','art/human/units-atlas.png'].includes(source),file='web-images/'+sha.slice(0,20)+(paintedAtlas?'-q96':'')+'.webp';
+  const bytes=await fs.readFile('public/'+source),sha=crypto.createHash('sha256').update(bytes).digest('hex'),paintedAtlas=/^art\/human\/cards\/atlas-\d+\.png$/.test(source)||['art/undead/territory-legends-atlas.png','art/undead/fast-poison.png','art/human/units-atlas.png','art/human/unit-clarity.png','art/undead/convergence-cards.png','art/undead/convergence-city.png'].includes(source),file='web-images/'+sha.slice(0,20)+(paintedAtlas?'-q96':'')+'.webp';
   try{await fs.access('public/'+file)}catch{await sharp(bytes).webp(paintedAtlas?{quality:96,smartSubsample:true,effort:6}:{lossless:true,effort:4}).toFile('public/'+file)}
   const web=await fs.readFile('public/'+file),meta=await sharp(web).metadata();
   if(web.length>=bytes.length)continue;

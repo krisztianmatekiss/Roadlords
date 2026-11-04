@@ -46,8 +46,8 @@ const { chromium } = require('playwright'), assert = require('node:assert/strict
    const R=__ROADLORDS_RUNTIME__,c=ruinFixture('undead'),occupied=R.occupancy(c);
    for(let row=0;row<R.GRID;row++)for(let col=0;col<R.GRID;col++)if(!occupied.has(R.idx(row,col)))R.setTerrain(c,row,col,'ruin');
    c.resources=R.C(99,0,0);const before=c.buildings.length;ruinTick();
-   if(!(c.undSaveSouls>=100+R.buildPrice(c,'und_well').wood)||c.resources.wood!==99||c.buildings.length!==before)return false;
-   c.resources.wood=c.undSaveSouls;ruinTick();if(R.buildingOf(c,'und_well').length)return false;
+   if(!(c.undSaveSouls===400+R.buildPrice(c,'und_well').wood)||c.resources.wood!==99||c.buildings.length!==before)return false;
+   c.resources.wood=c.undSaveSouls;for(let n=0;n<4;n++){ruinTick();if(R.buildingOf(c,'und_well').length)return false;}
    ruinTick();return R.buildingOf(c,'und_well').length===1&&c.buildings.length===before+1;
   }));
   check('Undead AI clears a multi-cell Graveyard plot without demolishing its Wells',await page.evaluate(()=>{

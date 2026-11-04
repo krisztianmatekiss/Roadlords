@@ -24,10 +24,11 @@ export function createBuildingCardCopy(R) {
     R.recomputeCity(c, false);
     return [c, b];
   }
-  function metrics(race, type, level) {
-    const key = `${race}:${type}:${level}`;
+  function metrics(race, type, level, city = null) {
+    const compact = race==='undead' && type==='und_well' && city && R.hasLeg(city,'und_compact_wells');
+    const key = `${race}:${type}:${level}:${!!compact}`;
     if (cache.has(key)) return cache.get(key);
-    const d = definitions(race, type), [c, b] = cityFor(race, type, level);
+    const d = compact ? R.buildingDefinition(city,type) : definitions(race, type), [c, b] = cityFor(race, type, level);
     let rows;
     if (type === 'keep') {
       const rates = R.productionRates(c);

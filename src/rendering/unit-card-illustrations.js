@@ -3,8 +3,8 @@ import illustrations from '../data/unit-card-illustrations.json';
 import { cardImageSource } from '../assets/card-loading.js';
 import { assetUrl } from '../assets/urls.js';
 
-// Unit cards reuse their faction's approved upgrade paintings, including the
-// exact equipment and character design. The battle sprite renderer is separate.
+// Faction paintings share the same card presentation. Four Human units have
+// dedicated scenes for clearer silhouettes; battle sprites remain separate.
 export function installUnitCardIllustrations(R) {
   const previous=R.unitImageTag;
   R.unitImageTag=(key,cls='unitPortrait')=>{

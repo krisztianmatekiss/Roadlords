@@ -150,7 +150,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       for (const [type, r, c] of [
         ['und_soul_bank', 0, 0],
         ['und_well', 0, 3],
-        ['und_graveyard', 0, 4],
+        ['und_graveyard', 0, 5],
       ]) {
         const out = R.placeBuilding(R.E, type, r, c);
         if (!out.ok) throw Error(out.reason);

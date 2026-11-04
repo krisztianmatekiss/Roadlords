@@ -1,4 +1,6 @@
 import { UNDEAD_BUILDINGS as D, UNDEAD_UNITS as U } from '../../data/undead.js';
+import { UNDEAD_CONVERGENCE as B } from '../../data/undead-convergence.js';
+import { levelValue } from '../../data/faction-redesign.js';
 import { isUndead } from './foundation.js';
 export function initializeUndeadAi(R) {
   const find = R.findCell;
@@ -107,6 +109,14 @@ export function initializeUndeadAi(R) {
     if (c.aiThink > 0) return;
     c.aiThink = 0.8;
     R.enemyGateAI();
+    if(R.hasBuilding(c,'und_otherworld_portal')){
+      const state=c.undeadState,level=R.levelOf(c,'und_otherworld_portal');
+      const cost=levelValue(level,B.portalUpkeep)+Math.floor((state.portalUptime||0)/B.portalIncreaseEvery)*B.portalIncrease;
+      const budget=R.resourceFlowRates(c);
+      const others=budget.use.wood-(c.undPortalEnabled?cost:0);
+      const enable=c.resources.wood>cost*20&&budget.gain.wood>others+cost+2;
+      if(enable!==!!c.undPortalEnabled){c.undPortalEnabled=enable;R.recomputeCity(c,true);}
+    }
     const num = (type) => R.buildingOf(c, type).length,
       gain = R.productionRates(c).wood,
       demand = R.resourceFlowRates(c).use.wood;
@@ -140,7 +150,7 @@ export function initializeUndeadAi(R) {
     if (gain < demand + Math.max(1, demand * 0.2) && tryBuild('und_well')) return;
     if (R.aiExcavateAncient()) return;
     if (R.activeSpawners(c).length>=3 && R.state.time-(c.undeadState.aiLastSupportAt ?? -999)>=45) {
-      for (const type of ['und_soul_anchor','und_bone_forge','und_corrupted_hatchery','und_plague_chamber','und_rebirth_tomb']) {
+      for (const type of ['und_soul_anchor','und_bone_forge','und_corrupted_hatchery','und_plague_chamber','und_rebirth_tomb','und_border_obelisk','und_soul_rift','und_soul_blade','und_otherworld_portal']) {
         if (!c.unlocked.has(type)||num(type)||gain<=demand+D[type].upkeep+2) continue;
         const cell=R.findCell(c,type);if(!cell)continue;
         if(type==='und_corrupted_hatchery') {
@@ -148,6 +158,12 @@ export function initializeUndeadAi(R) {
           if(!R.activeSpawners(c).some(b=>b.type!=='und_graveyard'&&R.undInRange(c,preview,b,1)))continue;
         }
         const before=num(type);
+        if(type==='und_soul_blade'){
+          const hits=R.state.units.reduce((n,u)=>n+(u.alive&&u.side==='enemy'&&u.tags.includes('melee')?1/Math.max(.1,u.cooldownTime||1):0),0);
+          if(!hits||gain<demand+hits*levelValue(R.levelOf(c,type),B.bladeCost)+D[type].upkeep+3)continue;
+        }
+        if(type==='und_soul_rift'&&gain<demand+R.undRiftProfile(c,{level:R.levelOf(c,type)}).cost/B.riftInterval+D[type].upkeep+3)continue;
+        if(type==='und_otherworld_portal'&&gain<demand+8)continue;
         if(tryBuild(type)){if(num(type)>before)c.undeadState.aiLastSupportAt=R.state.time;return;}
       }
     }

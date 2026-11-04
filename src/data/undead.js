@@ -1,4 +1,5 @@
 import { UNDEAD_EXPANSION } from './undead-expansion.js';
+import { UNDEAD_CONVERGENCE as CONVERGENCE, UNDEAD_CONVERGENCE_BUILDINGS } from './undead-convergence.js';
 import { rangedRange } from './ranged-balance.js';
 import { UNDEAD_PLAN_BUILDINGS, UNDEAD_PLAN_UPGRADES } from './undead-plan.js';
 import { UNDEAD_TRAINING, ARMY_TEMPO } from './unit-balance.js';
@@ -133,7 +134,7 @@ for (const [key, u] of Object.entries(UNDEAD_UNITS)) {
 // Prices, upkeep and missing training times are initial balance values, not workbook values.
 const economics = {
   keep: [0, 0],
-  und_well: [55, 0.5],
+  und_well: [CONVERGENCE.wellPrice, CONVERGENCE.wellUpkeep],
   und_crypt: [70, 0.4],
   und_graveyard: [60, 0.46],
   und_morgue: [100, 0.72],
@@ -236,6 +237,9 @@ export const UNDEAD_BUILDINGS = Object.fromEntries(
     ];
   }).filter(Boolean),
 );
+Object.assign(UNDEAD_BUILDINGS, UNDEAD_CONVERGENCE_BUILDINGS);
+UNDEAD_BUILDINGS.und_well.shape=[[0,0],[0,1],[1,0],[1,1]];
+UNDEAD_BUILDINGS.und_well.levels=CONVERGENCE.wellIncome.map(n=>`+${n} Lélek/mp.`);
 export const UNDEAD_UPGRADES = UNDEAD_PLAN_UPGRADES.filter(row => row.A !== 'gen_build_discount').map((row) => ({
   id: row.A,
   name: /^(HP|Sebzés) \+10%$/.test(row.D) ? row.C + ' · ' + row.D.replace('HP', 'Életerő') : row.D,

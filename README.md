@@ -1,4 +1,10 @@
-# Roadlords · V4.58.7
+# Roadlords · V4.59.0
+
+## V4.59.0 – Élőhalott bővítés
+
+Négy új legendás harci hatás, Sűrített lélekkutak, Lélekpenge, Sírhatárkő, Lélekhasadék és kapcsolható Túlvilági portál. A Lélekkút 2×2-es lett; az új emberi egységképek jobban megkülönböztetik a kardost, lándzsást, papot és mágust.
+
+[Szabályok és kezdeti balanszértékek](docs/undead-convergence-4.59.md) · [Új élőhalott lapok](public/previews/undead-convergence-4.59.png) · [Megkülönböztethető emberi egységlapok](public/previews/human-unit-clarity-4.59.png). Multiplayerhez mindkét játékos frissítse az oldalt.
 
 ## V4.58.7 – Egységes emberi és ork egységillusztrációk
 

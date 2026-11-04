@@ -1,16 +1,107 @@
 {
-  "swordsman": {"scene":"human-normal:swordsman_dmg"},
-  "spearman": {"scene":"human-normal:spear_dmg"},
-  "archer": {"scene":"human-normal:archer_dmg"},
-  "knight": {"scene":"human-normal:knight_move"},
-  "priest": {"scene":"human-normal:priest_dmg"},
-  "catapult": {"scene":"human-normal:catapult_dmg"},
-  "mage": {"scene":"human-normal:mage_dmg"},
-  "orc_warrior": {"file":"cards/orc/upgrades/orc_veteran_kills.webp","reference":"orc_veteran_kills","width":768,"height":1152,"rect":[39,156,690,732]},
-  "orc_berserker": {"file":"cards/orc/upgrades/orc_bers_blood.webp","reference":"orc_bers_blood","width":768,"height":1152,"rect":[39,156,690,732]},
-  "orc_goblin": {"file":"cards/orc/upgrades/orc_goblin_common.webp","reference":"orc_goblin_common","width":768,"height":1152,"rect":[39,156,690,732]},
-  "orc_warg": {"file":"cards/orc/upgrades/orc_warg_common.webp","reference":"orc_warg_common","width":768,"height":1152,"rect":[39,156,690,732]},
-  "orc_shaman": {"file":"cards/orc/upgrades/orc_dispel.webp","reference":"orc_dispel","width":768,"height":1152,"rect":[39,156,690,732]},
-  "orc_troll": {"file":"cards/orc/upgrades/orc_troll_common.webp","reference":"orc_troll_common","width":768,"height":1152,"rect":[39,156,690,732]},
-  "orc_ram": {"file":"cards/orc/upgrades/orc_ram_common.webp","reference":"orc_ram_common","width":768,"height":1152,"rect":[39,156,690,732]}
+  "swordsman": {
+    "scene": "human-unit-clarity:swordsman"
+  },
+  "spearman": {
+    "scene": "human-unit-clarity:spearman"
+  },
+  "archer": {
+    "scene": "human-normal:archer_dmg"
+  },
+  "knight": {
+    "scene": "human-normal:knight_move"
+  },
+  "priest": {
+    "scene": "human-unit-clarity:priest"
+  },
+  "catapult": {
+    "scene": "human-normal:catapult_dmg"
+  },
+  "mage": {
+    "scene": "human-unit-clarity:mage"
+  },
+  "orc_warrior": {
+    "file": "cards/orc/upgrades/orc_veteran_kills.webp",
+    "reference": "orc_veteran_kills",
+    "width": 768,
+    "height": 1152,
+    "rect": [
+      39,
+      156,
+      690,
+      732
+    ]
+  },
+  "orc_berserker": {
+    "file": "cards/orc/upgrades/orc_bers_blood.webp",
+    "reference": "orc_bers_blood",
+    "width": 768,
+    "height": 1152,
+    "rect": [
+      39,
+      156,
+      690,
+      732
+    ]
+  },
+  "orc_goblin": {
+    "file": "cards/orc/upgrades/orc_goblin_common.webp",
+    "reference": "orc_goblin_common",
+    "width": 768,
+    "height": 1152,
+    "rect": [
+      39,
+      156,
+      690,
+      732
+    ]
+  },
+  "orc_warg": {
+    "file": "cards/orc/upgrades/orc_warg_common.webp",
+    "reference": "orc_warg_common",
+    "width": 768,
+    "height": 1152,
+    "rect": [
+      39,
+      156,
+      690,
+      732
+    ]
+  },
+  "orc_shaman": {
+    "file": "cards/orc/upgrades/orc_dispel.webp",
+    "reference": "orc_dispel",
+    "width": 768,
+    "height": 1152,
+    "rect": [
+      39,
+      156,
+      690,
+      732
+    ]
+  },
+  "orc_troll": {
+    "file": "cards/orc/upgrades/orc_troll_common.webp",
+    "reference": "orc_troll_common",
+    "width": 768,
+    "height": 1152,
+    "rect": [
+      39,
+      156,
+      690,
+      732
+    ]
+  },
+  "orc_ram": {
+    "file": "cards/orc/upgrades/orc_ram_common.webp",
+    "reference": "orc_ram_common",
+    "width": 768,
+    "height": 1152,
+    "rect": [
+      39,
+      156,
+      690,
+      732
+    ]
+  }
 }

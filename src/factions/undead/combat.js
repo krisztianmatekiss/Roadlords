@@ -34,7 +34,7 @@ export function initializeUndeadCombat(R) {
     }
   };
   const rememberGhost = (u) => {
-    if (!context?.attack || u?.key !== 'und_ghost' && !R.undHasFirstWard?.(u)) return;
+    if (!context?.attack || u?.key !== 'und_ghost' && !R.undHasFirstWard?.(u) && !R.undNightProtected?.(u)) return;
     restoreGhost(context, u);
     context.ghostStatus ||= new Map();
     if (!context.ghostStatus.has(u))
@@ -74,7 +74,7 @@ export function initializeUndeadCombat(R) {
       ) >= UNDEAD_RULES.technicalSummonLimit
     )
       return null;
-    const e = R.makeEntry(c, key, extra),
+    const e = R.makeEntry(c, key, {...extra,undFieldSpawn:true}),
       u = R.releaseUnit(c, e);
     if (!u) return null;
     R.setBattleLane(u, R.clamp(lane, 8, R.PATH_LENGTH - 8));
@@ -127,6 +127,10 @@ export function initializeUndeadCombat(R) {
     if (clone) clone.temporary = 10;
   };
   R.undTryDodge = (u, amount = 0, source = null, secondary = false) => {
+    if(R.undNightProtected?.(u)){
+      if(context?.ghostStatus?.has(u)){context.ghostEvaded ||= new Map();context.ghostEvaded.set(u,context.ghostStatus.get(u));}
+      u.orcLastEvaded=true;return true;
+    }
     if(R.undConsumeFirstWard?.(u)){
       if(context?.ghostStatus?.has(u)){context.ghostEvaded ||= new Map();context.ghostEvaded.set(u,context.ghostStatus.get(u));}
       u.orcLastEvaded=true;return true;
@@ -149,6 +153,7 @@ export function initializeUndeadCombat(R) {
       withSource({ source: u, attack: true, secondary: true }, () =>
         R.damageUnit(source, amount * 0.5, 'magic'),
       );
+    R.undOnGhostEvade?.(u,source);
     return true;
   };
   const steal = (u, n) => {
@@ -169,6 +174,7 @@ export function initializeUndeadCombat(R) {
   const damage = R.damageUnit;
   R.damageUnit = (target, amount, type) => {
     if (!target?.alive || !(amount > 0)) return 0;
+    if(R.undNightProtected?.(target) && !context?.attack)return 0;
     rememberGhost(target);
     const ctx = context,
       source = ctx?.source,
@@ -222,8 +228,11 @@ export function initializeUndeadCombat(R) {
           );
       }
     }
-    const beforeHp = target.hp;
-    const actual = damage(target, amount, type);
+    const beforeHp = target.hp, previousHit = ctx?.bladeHit;
+    if(ctx && !previousHit)ctx.bladeHit={};
+    let actual;
+    try{actual=damage(target, amount, type);}
+    finally{if(ctx && !previousHit)delete ctx.bladeHit;}
     halfPoison(target,beforeHp);
     if (target.alive && ctx?.attack && ctx.ranged && (!source || hostile) &&
       isUndead(own(target)) && leg(target, 'und_ranged_adaptation')) R.undGainRangedHp?.(target);
@@ -245,6 +254,14 @@ export function initializeUndeadCombat(R) {
     )
       R.undPoison(source, 2, own(target));
     return actual;
+  };
+  // A redirected portion and its original hit share one payment. Dodges in
+  // older faction wrappers never reach this final, successful-hit hook.
+  R.undSuccessfulHitDamage=(target,amount)=>{
+    const ctx=context,hit=ctx?.bladeHit;
+    if(!hit||!ctx.attack)return amount;
+    hit.mult ??= R.undSoulBladeMultiplier?.(ctx.source,target,ctx,amount)||1;
+    return amount*hit.mult;
   };
   R.undDeathChainHit=(target,amount)=>withSource({source:null,attack:false,kind:'death_chain'},()=>R.damageUnit(target,amount,'magic'));
   const connect = (u, target) => {
@@ -382,6 +399,7 @@ export function initializeUndeadCombat(R) {
   const kill = R.killUnit;
   R.killUnit = (u, combat = true) => {
     if (!u?.alive) return;
+    if(combat && R.undNightProtected?.(u)){u.hp=Math.max(1,u.hp);return;}
     if (combat && u.hp > 0 && (u.key === 'und_ghost' || R.undHasFirstWard?.(u)) && context?.attack) {
       rememberGhost(u);
       if (R.undTryDodge(u, context.source?.damage || 0, context.source, context.secondary)) return;
@@ -391,10 +409,12 @@ export function initializeUndeadCombat(R) {
       side = u.side,
       deadLane = u.lane,
       deadOffset = u.offset || 0;
+    if(combat)R.undClaimInfection?.(u,credit);
     const out = kill(u, combat);
-    if (u.alive) return out;
+    if (u.alive) {delete u.undCorpseClaim;return out;}
     dirty = true;
     if (!combat) return out;
+    R.undResolveInfection?.(u,credit);
     R.undOnCombatDeath?.(u);
     // Every extra life is a fresh actor; its once-only tomb flag survives upgrades.
     if (U[u.key] && isUndead(c)) {
@@ -406,7 +426,7 @@ export function initializeUndeadCombat(R) {
       }
       if (u.key === 'und_zombie') {
         R.undZombiePoisonBurst(u);
-        if (R.hasBranch(c, 'und_morgue', 'dismantling'))
+        if (!u.undCorpseClaim && R.hasBranch(c, 'und_morgue', 'dismantling'))
           R.undSpawn(c, 'und_skeleton', deadLane, deadOffset, {
             undSummoned: !!u.undSummoned,
             undNoArmySlot: !!u.undNoArmySlot,
@@ -414,12 +434,12 @@ export function initializeUndeadCombat(R) {
           });
       }
       let reborn = false;
-      if (u.key === 'und_lich' && Math.random() < Math.min(1, 0.03 * count(u, 'lich_common_respawn'))) {
+      if (!u.undCorpseClaim && u.key === 'und_lich' && Math.random() < Math.min(1, 0.03 * count(u, 'lich_common_respawn'))) {
         R.undQueueFree(c, u.key, { ...R.permanentUnitData(u), undSpawnHp: 1 });
         reborn = true;
       }
       const tomb = R.buildingOf(c, 'und_rebirth_tomb')[0];
-      if (!reborn && tomb && !u.undReborn && Math.random() < at(tomb.level, [0.25, 0.3, 0.4, 0.5]))
+      if (!u.undCorpseClaim && !reborn && tomb && !u.undReborn && Math.random() < at(tomb.level, [0.25, 0.3, 0.4, 0.5]))
         R.undQueueFree(c, u.key, { ...R.permanentUnitData(u), undReborn: true, undSpawnHp: 0.5 });
     }
     for (const enemy of [R.P, R.E])
@@ -429,7 +449,7 @@ export function initializeUndeadCombat(R) {
         const garden = R.buildingOf(enemy, 'und_garden_of_dead')[0],
           local = { side: R.sideForCity(enemy), lane: deadLane, offset: deadOffset };
         if (
-          garden &&
+          !u.undCorpseClaim && garden &&
           R.isOwnHalf(local) &&
           Math.random() < Math.min(1, (0.1 + 0.02 * R.countNormal(enemy, 'garden_chance')) * territoryPower(enemy))
         ) {

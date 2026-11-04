@@ -8,9 +8,10 @@ const sceneFor = id => manifest.scenes[({und_elite_birth:'und_first_guard',und_t
 export const commonFrameUrl = race => assetUrl(race==='human' ? manifest.sources['human-frame'].file : race==='orc' ? 'cards/orc/upgrades/orc_as.webp' : manifest.sources['common-frame'].file);
 export function upgradeScene(R, id, kind, race) {
   const humanBuilding=race==='human'&&['building','building_upgrade','building_branch'].includes(kind);
-  const sceneId=race==='human'?`human-${humanBuilding?'building':kind}:${id}`:id;
+  const undeadBuilding=race==='undead'&&['building','building_upgrade','building_branch'].includes(kind);
+  const sceneId=undeadBuilding?`undead-building:${id}`:race==='human'?`human-${humanBuilding?'building':kind}:${id}`:id;
   const scene=sceneFor(sceneId);
-  if (scene && (race==='human' || kind!=='building' && kind!=='unit')) {
+  if (scene && (race==='human' || undeadBuilding || kind!=='building' && kind!=='unit')) {
     const source=manifest.sources[scene.source],w=source.width/source.columns,h=source.height/source.rows;
     // A nested SVG viewport selects a tile without modifying the generated original.
     const [x,y,viewWidth,viewHeight]=scene.rect || [(scene.index%source.columns)*w,Math.floor(scene.index/source.columns)*h,w,h];

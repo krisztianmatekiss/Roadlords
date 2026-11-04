@@ -12,7 +12,7 @@ export const UNDEAD_BUILDING_COPY = {
   },
   und_well: {
     description: 'Folyamatosan Lelket termel.',
-    levels: [1, 2, 4, 8].map((n) => `+${n} Lélek/mp.`),
+    levels: [4, 8, 16, 32].map((n) => `+${n} Lélek/mp.`),
   },
   und_crypt: {
     description: 'Növeli a sereg létszámkorlátját.',

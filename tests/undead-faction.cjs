@@ -27,14 +27,14 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     await page.locator('#raceContinue').click();
     await page.waitForFunction(()=>__ROADLORDS_RUNTIME__.state.pregame);
     check(
-      'The real solo race selector initializes Undead against Orcs with 100 Souls and 2000 capital HP',
+      'The real solo race selector initializes Undead against Orcs with 280 Souls and 2000 capital HP',
       await page.evaluate(() => {
         const R = __ROADLORDS_RUNTIME__;
         return (
           R.P.race === 'undead' &&
           R.E.race === 'orc' &&
           R.P.hp === 2000 &&
-          R.P.resources.wood === 100 &&
+          R.P.resources.wood === 280 &&
           R.P.resources.stone === 0 &&
           R.P.resources.food === 0
         );
@@ -201,8 +201,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     });
     report.data = data;
     check(
-      'The workbook registers 17 buildings, 7 unit variants, 26 common and 29 legendary upgrades',
-      data.total === 17 && data.units === 7 && data.normal === 26 && data.legend === 29,
+      'The workbook registers 21 buildings, 7 unit variants, 26 common and 34 legendary upgrades',
+      data.total === 21 && data.units === 7 && data.normal === 26 && data.legend === 34,
     );
     check(
       'Faction-specific draft pools do not leak Human or Orc cards; every common has a numeric preview',
@@ -229,7 +229,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       const R = __ROADLORDS_RUNTIME__,
         c = undReset(),
         well = undPut('und_well', 0, 0),
-        grave = undPut('und_graveyard', 0, 1);
+        grave = undPut('und_graveyard', 0, 2);
       const price = R.placementPrice(c, 'und_well', 0, 2).wood;
       c.normal.gen_build_discount = 2;
       R.recomputeCity(c, true);
@@ -245,7 +245,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       R.normalSpawn(c, grave);
       const cost = stock - c.resources.wood;
       c.resources.wood = 10000;
-      const anchor = undPut('und_soul_anchor', 1, 0);
+      const anchor = undPut('und_soul_anchor', 2, 0);
       const anchorCost = R.undEconomy(c).upkeep.get(well.id);
       const duplicate = R.placeBuilding(c,'und_soul_anchor',0,3);
       if (duplicate.ok) throw Error('Unique Anchor duplicated');
@@ -254,7 +254,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       R.recomputeCity(c, true);
       const reduced = R.undEconomy(c).upkeep.get(well.id);
       undPut('und_corrupted_hatchery', 3, 2);
-      const producer = undPut('und_graveyard', 3, 1);
+      const producer = undPut('und_graveyard', 2, 2);
       const time = R.trainingTime(c, producer);
       c.resources.wood = 500;
       R.normalSpawn(c, producer);
@@ -282,24 +282,24 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     report.economy = economy;
     check(
       'Actual placement uses the new Soul prices and ignores the removed investment upgrade as cards',
-      economy.price === 55 && economy.discount === 55,
+      economy.price === 220 && economy.discount === 220,
     );
     check(
       'The HUD budgets full training demand while actual upkeep is charged separately',
-      Math.abs(economy.flow.gain.wood - 4) < 1e-6 &&
-        Math.abs(economy.flow.use.wood - 3.52) < 1e-6 &&
-        Math.abs(economy.net - 3.04) < 1e-6 &&
+      Math.abs(economy.flow.gain.wood - 7) < 1e-6 &&
+        Math.abs(economy.flow.use.wood - 5.02) < 1e-6 &&
+        Math.abs(economy.net - 4.54) < 1e-6 &&
         economy.cost === 16,
     );
     check(
       'The unique Anchor reduces local upkeep and rejects a second copy',
-      economy.anchorCost === 0.25 && economy.strongest === 0.25 && Math.abs(economy.reduced - 0.05) < 1e-6,
+      economy.anchorCost === 1 && economy.strongest === 1 && Math.abs(economy.reduced - 0.2) < 1e-6,
     );
     check(
       'Graveyards ignore the Hatchery; recruits retain full HP and the training legendary boosts cadence',
       Math.abs(economy.time - 6.25) < 1e-6 &&
         economy.spawnRatio === 1 &&
-        economy.overIncome === 4 &&
+        economy.overIncome === 7 &&
         Math.abs(economy.overTime - 6.25 / 1.25) < 1e-6,
     );
     const deaths = await page.evaluate(() => {

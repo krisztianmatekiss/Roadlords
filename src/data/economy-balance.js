@@ -1,4 +1,5 @@
 // V4.54: construction slows expansion; training times and terrain rewards stay intact.
+import { UNDEAD_CONVERGENCE } from './undead-convergence.js';
 import { ARMY_TEMPO } from './unit-balance.js';
 export const ECONOMY_BALANCE = Object.freeze({
   basicBuildingPrice: 1.25,
@@ -8,7 +9,7 @@ export const ECONOMY_BALANCE = Object.freeze({
   suddenDeathAt: 20 * 60,
 });
 export const UNDEAD_ECONOMY = Object.freeze({
-  startingSouls: 100,
+  startingSouls: UNDEAD_CONVERGENCE.startingSouls,
   abundancePerStack: .05,
   frugalReduction: .4,
   trainingBonus: .25,

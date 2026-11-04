@@ -2,6 +2,7 @@ import { KELTETO, levelValue, territoryPower } from '../../data/faction-redesign
 import { UNDEAD_BUILDINGS as D, UNDEAD_UNITS as U, UNDEAD_RULES } from '../../data/undead.js';
 import { isUndead } from './foundation.js';
 import { UNDEAD_ECONOMY as B } from '../../data/economy-balance.js';
+import { UNDEAD_CONVERGENCE as C } from '../../data/undead-convergence.js';
 export function initializeUndeadEconomy(R) {
   const { at, soulPrice } = window.__ROADLORDS_UNDEAD__,
     cache = new WeakMap();
@@ -11,7 +12,7 @@ export function initializeUndeadEconomy(R) {
     );
   const active = (c, type) => R.buildingOf(c, type).filter((b) => !b.inactive);
   R.undEconomy = (c) => {
-    const key = `${c.undRevision || 0}:${c.buildings.map((b) => `${b.id}:${b.level}:${!!b.inactive}`).join(',')}`;
+    const key = `${c.undRevision || 0}:${!!c.undPortalEnabled}:${Math.floor((c.undeadState?.portalUptime||0)/C.portalIncreaseEvery)}:${c.buildings.map((b) => `${b.id}:${b.level}:${!!b.inactive}`).join(',')}`;
     const memo = cache.get(c);
     if (memo?.key === key) return memo.value;
     const buildings = c.buildings.filter((b) => !b.inactive && D[b.type]),
@@ -31,8 +32,11 @@ export function initializeUndeadEconomy(R) {
           .filter((a) => a.id !== b.id && R.undInRange(c, a, b, at(a.level, [1, 2, 3, 3])))
           .map((a) => (a.level === 4 ? 0.9 : 0.5)),
       );
+      const rawCost=b.type==='und_otherworld_portal'
+        ? c.undPortalEnabled ? at(b.level,C.portalUpkeep)+Math.floor((c.undeadState?.portalUptime||0)/C.portalIncreaseEvery)*C.portalIncrease : 0
+        : D[b.type].upkeep * (b.type==='und_well'&&R.hasLeg(c,'und_compact_wells') ? .5 : 1);
       const cost =
-        D[b.type].upkeep *
+        rawCost *
         frugal *
         (R.hasBranch(c, 'keep', 'elite_dominion') ? 2 : 1) *
         (1 - reduction) *
@@ -102,7 +106,7 @@ export function initializeUndeadEconomy(R) {
     const e = R.undEconomy(c);
     let income = at(R.levelOf(c, 'keep'), UNDEAD_RULES.capitalIncome);
     for (const b of e.buildings)
-      if (b.type === 'und_well') income += at(b.level, [1, 2, 4, 8]) * e.production;
+      if (b.type === 'und_well') income += at(b.level, C.wellIncome) * (R.hasLeg(c,'und_compact_wells') ? .5 : 1) * e.production;
 
     return soulPrice(income * e.abundance);
   };

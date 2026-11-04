@@ -34,7 +34,7 @@ export function initializeUndeadTerritoryLegends(R) {
   function index(c) {
     const state = c.undeadState;
     if (!state) return null;
-    const power = territoryPower(c), old = indexes.get(state);
+    const power = R.undTerritoryScale?.(c) || territoryPower(c), old = indexes.get(state);
     if (old && old.revision === state.graveRevision && old.power === power) return old;
     const cells = new Map(), radius = B.radius * power;
     for (const zone of zones(c)) {
@@ -70,7 +70,7 @@ export function initializeUndeadTerritoryLegends(R) {
     return side ? side === u.side : baseHalf(u);
   };
   R.undActiveIslands = () => cities().flatMap(c => zones(c).filter(z=>z.expires>now()).map(z=>({
-    ...position(c,z),radius:B.radius*territoryPower(c),side:R.sideForCity(c),expires:z.expires,
+    ...position(c,z),radius:B.radius*(R.undTerritoryScale?.(c)||territoryPower(c)),side:R.sideForCity(c),expires:z.expires,
   })));
   function addIsland(u) {
     const c = R.cityForSide(u.side);

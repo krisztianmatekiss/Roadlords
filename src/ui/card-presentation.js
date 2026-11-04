@@ -19,6 +19,10 @@ export function cardFrameUrl(id, kind, race) {
   if(race==='undead'&&kind==='legendary'&&hasUpgradeScene(id))return assetUrl(upgradeArt.sources['undead-legend-frame'].file);
   if (kind==='unit' || race==='undead' && kind==='normal') return commonFrameUrl(race);
   if (race==='orc' && hasUpgradeScene(id)) return assetUrl(kind==='legendary' ? 'cards/orc/upgrades/orc_transfusion.webp' : 'cards/orc/upgrades/orc_as.webp');
+  if(race==='undead'&&humanBuilding&&hasUpgradeScene(`undead-building:${id}`)) {
+    const reference=id==='und_soul_rift'?'und_necro_spawner':'und_soul_anchor';
+    return assetUrl('cards/undead/'+undeadManifest.cards[`building:${reference}`]);
+  }
   if (race === 'undead') {
     const building = ['building','building_upgrade','building_branch'].includes(kind);
     const file = undeadManifest.cards[`${building ? 'building' : 'upgrade'}:${id}`];
@@ -76,8 +80,8 @@ export function productionFacts(R, c, type, level, {before = null, compact = fal
   return `<div class="productionFacts${compact ? ' compact' : ''}"><div><span class="producerUnitName">${compact ? 'Képzés' : escapeText(R.UNITS[key].name)}${unitTraitIcons(R,key,c,'inlineTraits')}</span> <b>◷ ${escapeText(previous + fmt(time))} mp</b></div><div><span>Egységár</span> <b>${escapeText(cost)}</b></div></div>`;
 }
 
-export function buildingUpkeep(R,type) {
-  const amount=window.__ROADLORDS_UNDEAD__.buildings[type]?.upkeep;
+export function buildingUpkeep(R,type,c=R.P) {
+  const amount=R.buildingDefinition(c,type)?.upkeep;
   return type==='keep' || amount === undefined ? '' : `<div class="pickUpkeep inText upkeepFact"><span>Fenntartás</span><b class="effect-negative">−${amount.toLocaleString('hu-HU')} ${resourceIcon(R,'soul','undead')}/mp</b></div>`;
 }
 
@@ -181,7 +185,7 @@ export function installCardPresentation(R) {
       let producerCity=R.P;
       if (['building', 'building_upgrade'].includes(o.kind)) {
         const level = o.kind === 'building_upgrade' ? R.upgradeTargetLevel(R.P, o.id) : R.levelOf(R.P, o.id);
-        const model = R.cardBuildingCopy.metrics(R.P.race, o.id, level);
+        const model = R.cardBuildingCopy.metrics(R.P.race, o.id, level, R.P);
         body.innerHTML = producer ? productionFacts(R, R.P, o.id, level, {before: o.kind === 'building_upgrade' ? R.levelOf(R.P,o.id) : null}) : o.id==='keep' ? capitalFacts(R,R.P.race,level) : `<p>${effectText(model.description)}</p>`;
       }
       if (o.kind === 'building_branch') {
@@ -236,7 +240,7 @@ export function installCardPresentation(R) {
     R.$$('#buildList .buildcard').forEach(card => {
       const type = card.dataset.k, src = cardFrameUrl(type, 'building', R.P.race);
       const d = R.BUILDINGS[type], level = R.levelOf(R.P, type);
-      const model = R.cardBuildingCopy.metrics(R.P.race, type, level);
+      const model = R.cardBuildingCopy.metrics(R.P.race, type, level, R.P);
       card.classList.add('illustratedBuildCard', 'illustratedCard');
       card.dataset.race=R.P.race;card.dataset.frame=d.category||'support';
       if (src) card.classList.add('hasCardFrame');

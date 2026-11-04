@@ -51,6 +51,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   check('Undead redevelopment has a real cooldown and cannot demolish Wells on consecutive turns',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=strategyReset('undead');for(let row=0;row<R.GRID;row++)for(let col=0;col<R.GRID;col++)if(!R.occupancy(c).has(R.idx(row,col))){c.resources=R.C(1e6,0,0);if(!R.placeBuilding(c,'und_well',row,col,0,true).ok)return false;}R.setBuildingLevel(c,'und_well',4);c.resources=R.C(1e6,0,0);
    if(!R.aiMakeRoomFor('und_graveyard')||!R.aiBuild('und_graveyard'))return false;
+   for(let n=0;n<3;n++)if(!R.aiBuild('und_graveyard'))return false;
    if(R.aiMakeRoomFor('und_graveyard')||c.undeadState.aiRedeveloped!==1)return false;
    R.state.time+=15;return R.aiMakeRoomFor('und_graveyard')&&c.undeadState.aiRedeveloped===2;
   }));

@@ -51,7 +51,7 @@ export function initializeUndeadUi(R) {
     R.$('#woodGain').title =
       'Állandó Lélektermelés. A halálok után járó Lélek és a bankkamat külön, eseménykor érkezik.';
     R.$('#woodUse').title =
-      `Teljes üzemi igény:\nKatonaképzés: ${format(flow.sources.production.wood)} Lélek/mp\nÉpületek fenntartása: ${format(flow.sources.upkeep.wood)} Lélek/mp\nA nyersanyaghiány és a megtelt sereg nem csökkenti a tervezett igényt.`;
+      `Teljes üzemi igény:\nKatonaképzés: ${format(flow.sources.production.wood)} Lélek/mp\nÉpületek fenntartása: ${format(flow.sources.upkeep.wood)} Lélek/mp${flow.sources.convergence?.wood ? `\nIdézés és Lélekpenge: ${format(flow.sources.convergence.wood)} Lélek/mp` : ''}\nA nyersanyaghiány és a megtelt sereg nem csökkenti a tervezett igényt.`;
   };
   const hud = R.updateHud;
   R.updateHud = (...a) => {

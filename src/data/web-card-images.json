@@ -77,6 +77,16 @@
     "webBytes": 920082,
     "encoding": "webp-quality-96"
   },
+  "art/human/unit-clarity.png": {
+    "file": "web-images/9250b8dcecef1f9c01b9-q96.webp",
+    "sourceSha256": "9250b8dcecef1f9c01b9d0e18fcc0ea8bdfff4403f48d8f2cc4002f77b793395",
+    "sha256": "254b0d5110dcdfd6783b0f9d27907a6492569594412ac432edd81d983c8c8af5",
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 3566508,
+    "webBytes": 891364,
+    "encoding": "webp-quality-96"
+  },
   "art/human/units-atlas.png": {
     "file": "web-images/b44fb05d911bf0f157e2-q96.webp",
     "sourceSha256": "b44fb05d911bf0f157e271a0eb065e57b649377c750386abc854216ddc73dc0f",
@@ -104,6 +114,26 @@
     "height": 1086,
     "originalBytes": 3538148,
     "webBytes": 2629296
+  },
+  "art/undead/convergence-cards.png": {
+    "file": "web-images/b55bf41eef6dd4cf02c0-q96.webp",
+    "sourceSha256": "b55bf41eef6dd4cf02c0f324612e772758a92b55e3459e57af138ceb279c6cd4",
+    "sha256": "a84c671c20dffbee2230ce15a5a439c92539c48a06a9d2baad16c513337a5070",
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 3545075,
+    "webBytes": 876642,
+    "encoding": "webp-quality-96"
+  },
+  "art/undead/convergence-city.png": {
+    "file": "web-images/bac5e156bd6fcf99782f-q96.webp",
+    "sourceSha256": "bac5e156bd6fcf99782f11fe03f926f3b82be8e342c63b0dada0934e81408aa0",
+    "sha256": "bd2bf81a1f3106e156e61b2b9fba464123ed98c1f6a65c8facb0f33d2cc679bc",
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 2185245,
+    "webBytes": 402360,
+    "encoding": "webp-quality-96"
   },
   "art/undead/expansion-atlas.png": {
     "file": "web-images/dd3c0d169fecaebb802c.webp",

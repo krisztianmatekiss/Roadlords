@@ -125,7 +125,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       const madeRoom=R.aiMakeRoomFor('und_graveyard'),built=R.aiBuild('und_graveyard');
       const funded={madeRoom,built,wells:R.buildingOf(c,'und_well').length,before,gain:R.productionRates(c).wood,use:R.resourceFlowRates(c).use.wood,replaced:c.undeadState.aiRedeveloped};
       c.resources.wood=0;const unchanged=JSON.stringify(c.buildings);const noCash=!R.aiMakeRoomFor('und_graveyard')&&JSON.stringify(c.buildings)===unchanged;
-      c=fullWells();R.setBuildingLevel(c,'und_well',1);for(const [i,b]of R.buildingOf(c,'und_well').entries())b.inactive=i>=4;R.recomputeCity(c,true);
+      c=fullWells();R.setBuildingLevel(c,'und_well',1);for(const [i,b]of R.buildingOf(c,'und_well').entries())b.inactive=i>=1;R.recomputeCity(c,true);
       const leanBefore=JSON.stringify(c.buildings),noSupply=!R.aiMakeRoomFor('und_graveyard')&&JSON.stringify(c.buildings)===leanBefore;
       return {funded,noCash,noSupply};
     });report.redevelopment=redevelopment;

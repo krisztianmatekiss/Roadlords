@@ -54,6 +54,7 @@ export function initializeFactionsOrcMilitaryBranches(runtime) {
   };
   const oldShape = runtime.rotatedShape;
   runtime.rotatedShape = function (t, r = 0) {
+    if (t === 'und_well' && runtime.hasLeg(shapeCity || runtime.P, 'und_compact_wells')) return [[0, 0]];
     if (t === 'orc_hut' && runtime.hasLeg(shapeCity || runtime.P, 'orc_crowded_huts')) return [[0, 0]];
     return t === 'orc_troll' && breeding(shapeCity || runtime.P) ? [[0, 0], [0, 1], [1, 0], [1, 1]] : oldShape(t, r);
   };

@@ -71,7 +71,9 @@ export function initializeUndeadFoundation(R) {
       ...o,
       eligible: (c) =>
         isUndead(c) &&
-        (!o.expansion || c.buildings.some(b=>R.BUILDINGS[b.type]?.unit)) &&
+        (!o.expansion || o.requires==='well' || c.buildings.some(b=>R.BUILDINGS[b.type]?.unit)) &&
+        (o.requires !== 'well' || R.hasBuilding(c,'und_well')) &&
+        (o.requires !== 'poison' || available(c,'und_zombie') || R.hasBuilding(c,'und_plague_chamber')) &&
         (unit
           ? available(c, unit)
           : o.id === 'garden_chance'
@@ -268,9 +270,9 @@ export function initializeUndeadFoundation(R) {
           .filter((b) => !lost.has(b.id))
           .map((b) => {
             const old = byId.get(b.id);
-            if (!old) return b;
+            if (!old) return b.type==='und_soul_rift'?{...b,undRiftClock:0}:b;
             const copy = { ...b };
-            for (const key of ['undHp', 'undStarve']) if (old[key] !== undefined) copy[key] = old[key];
+            for (const key of ['undHp', 'undStarve', 'undRiftClock']) if (old[key] !== undefined) copy[key] = old[key];
             return copy;
           }),
       };

@@ -46,7 +46,7 @@ export function createCodexCards(R) {
       ${price}${mark}${metaInBody ? '' : `<div class="rlCodexMeta">${meta}</div>`}<div class="rlCodexContent">${body}${metaInBody ? `<div class="productionMeta">${meta}</div>` : ''}</div>${caption}</div>`,R,race);
   }
   function extraRules(type,race,level) {
-    if(!['warcenter','academy','alchemist','merc_tent'].includes(type))return ruleDetails(BUILDING_RULES[type]);
+    if(!['warcenter','academy','alchemist','merc_tent'].includes(type))return ruleDetails(cardRules[type] || BUILDING_RULES[type]);
     const [c]=cityFor(race,type,level);
     const rules=type==='warcenter'
       ? [['mass','Tömegtermelés'],['economy','Takarékos'],['elite','Elit']].map(([mode,name])=>{
@@ -64,7 +64,7 @@ export function createCodexCards(R) {
     const max = bs.length ? 3 : race === 'undead' || R.V4_SIMPLE_L4.has(type) ? 4 : 3;
     const text = description, art = R.cardBuildingImageTag(type, 'lexBuildingImg', race);
     const reference=cityFor(race,type,level)[0];
-    const body = (d.unit ? productionFacts(R, reference, type, level) : type === 'keep' ? capitalFacts(R,race,level) : `<p>${effectText(text)}</p>`)+(race==='undead'?buildingUpkeep(R,type):'');
+    const body = (d.unit ? productionFacts(R, reference, type, level) : type === 'keep' ? capitalFacts(R,race,level) : `<p>${effectText(text)}</p>`)+(race==='undead'?buildingUpkeep(R,type,reference):'');
     const meta = '';
     const price = type === 'keep' ? '' : constructionPrice(R, cost, race);
     return `<article class="rlCodexCard" data-codex-building="${type}" data-race="${race}">${face({id:type,kind:'building',race,name:race === 'orc' && type === 'keep' ? 'Ork főépület' : d.name,category:d.category,art,body,meta,price,mark:uniqueBuildingMark(R,reference,type),footprint:productionFootprint(R,reference,type),metaInBody:!!d.unit})}

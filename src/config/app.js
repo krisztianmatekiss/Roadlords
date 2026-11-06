@@ -1,6 +1,6 @@
 export const APP = Object.freeze({
-  version: '4.61.0',
-  label: 'V4.61.0 · KÖZÖS AI ÉS ÚJ PICKRITMUS',
+  version: '4.61.1',
+  label: 'V4.61.1 · AI NÉZŐI MÓD JAVÍTÁS',
   title: 'Roadlords – Fajok és területek',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',

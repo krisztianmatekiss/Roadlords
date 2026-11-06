@@ -1,4 +1,11 @@
-# Roadlords · V4.61.0
+# Roadlords · V4.61.1
+
+## V4.61.1 – AI nézői mód javítása
+
+- A bal AI városa követi az építkezést, fejlesztéseket és romeltakarítást; változatlan városnál nincs újrarajzolás.
+- A bal AI választott lapjai a látható városából felugranak, majd megfordulva a szokásos bal alsó pakliba repülnek. A jobb AI animációja ettől függetlenül működik.
+- Az alsó nézői gombsáv kikerült. A szünet és gyorsítás a felső sávban, a két pakli a normál helyén érhető el; a kamerabillentyűk továbbra is működnek.
+- Az elgörgetett város választásai nem jelennek meg utólag.
 
 ## V4.61.0 – Közös AI és új pickritmus
 

@@ -3,14 +3,7 @@
 .spectatorRaces { display:flex; align-items:center; justify-content:center; gap:18px; margin-bottom:16px; }
 .spectatorRaces label { display:grid; gap:8px; flex:1; color:#e7ddbc; font-weight:700; }
 .spectatorRaces select { width:100%; padding:10px; background:#172820; color:#f6e7bc; border:1px solid #9e8244; border-radius:8px; font:inherit; }
-#spectatorControls[hidden] { display:none!important; }
-#spectatorControls { display:none; }
-body.spectator-mode .command>.catalog { display:none!important; }
-body.spectator-mode #spectatorControls { display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between; margin:18px calc(var(--road-minimap-width) + 26px) 18px 24px; padding:16px 20px; border:1px solid #9d8449; border-radius:12px; background:#11231be8; color:#e8deba; }
-#spectatorControls>div:first-child { display:grid; gap:10px; }
-#spectatorControls strong { color:#edcf80; font-size:22px; }
-.spectatorButtons { display:flex; flex-wrap:wrap; gap:8px; }
-.spectatorButtons button { padding:10px 14px; border-radius:8px; border:1px solid #887447; background:#233a2c; color:#f4e5b9; font:700 15px system-ui; cursor:pointer; }
-.spectatorButtons button:hover { background:#3b5037; }
+/* Retain the normal bottom-left deck and its position, without build controls. */
+body.spectator-mode .commandRail .tabs { visibility:hidden; pointer-events:none; }
+body.spectator-mode .catalog>.buildnav { visibility:hidden; pointer-events:none; }
 body.spectator-mode :is(#gateControls,#demolitionTool) { visibility:hidden; pointer-events:none; }
-@media(max-width:1100px) { body.spectator-mode #spectatorControls { margin-left:8px; padding:10px; gap:12px; }.spectatorButtons button{padding:8px;} }

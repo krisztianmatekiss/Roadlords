@@ -39,21 +39,23 @@ export function installCommandDock(R){
    event.preventDefault();event.stopImmediatePropagation();R.$('#relicOverlay').classList.add('hidden');
   }
  },true);
- const visible=()=>{
+ const visible=(c=R.E)=>{
   if(!R.$('#relicOverlay').classList.contains('hidden')||document.hidden||R.state.modal||R.state.pregame||R.state.ended||R.ROAD.test||document.body.classList.contains('roadlords-menu-open'))return false;
-  const city=R.$('.roadEnemyCity'),war=R.roadWar;if(!city||!war)return false;
+  const city=R.$(c===R.P?'#playerGrid':'#enemyGrid')?.closest('.cityzone'),war=R.roadWar;if(!city||!war)return false;
   const style=getComputedStyle(city);if(style.display==='none'||style.visibility==='hidden')return false;
   const a=city.getBoundingClientRect(),b=war.getBoundingClientRect();
   return Math.min(a.right,b.right,innerWidth)-Math.max(a.left,b.left,0)>Math.min(80,a.width*.2)&&
    Math.min(a.bottom,b.bottom,innerHeight)-Math.max(a.top,b.top,0)>40;
  };
- R.enemyPickCityVisible=visible;
- const queue=[],ownFlights=new Set(),observedPicks=new WeakMap();let current=null,guestReady=false;
+ R.enemyPickCityVisible=()=>visible(R.E);
+ const reveals=[{side:'player',deck:own,queue:[],current:null},{side:'enemy',deck:enemy,queue:[],current:null}];
+ const ownFlights=new Set(),observedPicks=new WeakMap();let guestReady=false;
  const flipFace=(html,race)=>`<div class="deckFlipInner"><div class="deckFlightFront">${html}</div><div class="deckFlightBack">${deckBack(race)}</div></div>`;
  const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
- function clearReveal(){
-  queue.length=0;if(!current)return;
-  const old=current;current=null;clearTimeout(old.timer);old.animation?.cancel();old.element.remove();
+ function clearReveal(reveal){
+  if(!reveal){reveals.forEach(clearReveal);return;}
+  reveal.queue.length=0;if(!reveal.current)return;
+  const old=reveal.current;reveal.current=null;clearTimeout(old.timer);old.element.getAnimations({subtree:true}).forEach(a=>a.cancel());old.element.remove();
  }
  function face(event,c){
   if(event.kind==='normal'||event.kind==='legendary'){
@@ -62,23 +64,24 @@ export function installCommandDock(R){
   }
   return R.BUILDINGS[event.id]?cards.building(event.id,c.race,c):'';
  }
- function playNext(){
-  if(current||!queue.length)return;if(!visible()){queue.length=0;return;}
-  const event=queue.shift(),html=face(event,R.E);if(!html){playNext();return;}
-  const element=document.createElement('div');element.id='enemyPickReveal';element.className='enemyPickReveal';
-  element.setAttribute('aria-hidden','true');element.innerHTML=flipFace(html,R.E.race);document.body.append(element);
-  const city=R.$('.roadEnemyCity').getBoundingClientRect(),war=R.roadWar.getBoundingClientRect();
+ function playNext(reveal){
+  const {queue,side,deck}=reveal,c=side==='player'?R.P:R.E;
+  if(reveal.current||!queue.length)return;if(!visible(c)){queue.length=0;return;}
+  const event=queue.shift(),html=face(event,c);if(!html){playNext(reveal);return;}
+  const element=document.createElement('div');element.id=side+'PickReveal';element.className='enemyPickReveal';
+  element.setAttribute('aria-hidden','true');element.innerHTML=flipFace(html,c.race);document.body.append(element);
+  const city=R.$(side==='player'?'#playerGrid':'#enemyGrid').closest('.cityzone').getBoundingClientRect(),war=R.roadWar.getBoundingClientRect();
   const width=Math.min(244,innerWidth*.23,(war.height-24)/1.5),height=width*1.5;
   const left=Math.max(8,Math.min(innerWidth-width-8,city.left+(city.width-width)/2));
   const top=Math.max(war.top+8,Math.min(war.bottom-height-8,city.top+city.height*.12));
   Object.assign(element.style,{width:`${width}px`,height:`${height}px`,left:`${left}px`,top:`${top}px`});
   fitCardText(element.querySelector('.cardFace'));
-  const active=current={element,timer:0,animation:null};
+  const active=reveal.current={element,timer:0,animation:null};
   if(!reduced())active.animation=element.animate([{transform:'translateY(42px) scale(.3)',opacity:0},{transform:'translateY(0) scale(1)',opacity:1}],{duration:350,easing:'cubic-bezier(.16,1,.3,1)'});
   active.timer=setTimeout(()=>{
-   if(current!==active)return;if(!visible()){clearReveal();return;}
-   const target=enemy.getBoundingClientRect(),box=element.getBoundingClientRect();
-   const finish=()=>{if(current!==active)return;element.remove();current=null;enemy.classList.remove('deckReceived');void enemy.offsetWidth;enemy.classList.add('deckReceived');playNext();};
+   if(reveal.current!==active)return;if(!visible(c)){clearReveal(reveal);return;}
+   const target=deck.getBoundingClientRect(),box=element.getBoundingClientRect();
+   const finish=()=>{if(reveal.current!==active)return;element.remove();reveal.current=null;deck.classList.remove('deckReceived');void deck.offsetWidth;deck.classList.add('deckReceived');playNext(reveal);};
    if(reduced()){finish();return;}
    element.querySelector('.deckFlipInner').animate([{transform:'rotateY(0deg)'},{transform:'rotateY(0deg)',offset:.2},{transform:'rotateY(180deg)'}],{duration:620,easing:'ease-in-out',fill:'forwards'});
    active.animation=element.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${target.left+target.width/2-box.left-box.width/2}px,${target.top+target.height/2-box.top-box.height/2}px) scale(.07)`,opacity:.2}],{duration:620,easing:'cubic-bezier(.5,0,.8,.55)',fill:'forwards'});
@@ -86,13 +89,14 @@ export function installCommandDock(R){
   },reduced()?2300:2900);
  }
  function receive(c,before){
-  if(c!==R.E)return;
+  if(c!==R.E&&!(c===R.P&&R.spectator?.active))return;
+  const reveal=reveals[c===R.P?0:1];
   before=Math.max(before,observedPicks.get(c)||0);
   observedPicks.set(c,Math.max(before,c.pickSerial||0));
-  for(const event of c.pickEvents||[])if(event.seq>before&&PICK_KINDS.has(event.kind)&&visible()){
-   if(queue.length<4)queue.push(event);
+  for(const event of c.pickEvents||[])if(event.seq>before&&PICK_KINDS.has(event.kind)&&visible(c)){
+   if(reveal.queue.length<4)reveal.queue.push(event);
   }
-  playNext();
+  playNext(reveal);
   if((c.pickSerial||0)>before&&!R.$('#relicOverlay').classList.contains('hidden'))R.renderRelics(viewSide==='player'?R.P:R.E);
  }
  const apply=R.applyChoice;
@@ -140,10 +144,11 @@ export function installCommandDock(R){
  const reset=R.roadResetCity;
  R.roadResetCity=(...args)=>{clearReveal();clearOwn();guestReady=false;if(args[0])observedPicks.delete(args[0]);const out=reset(...args);if(R.MP.enabled&&args[0]){args[0].gateMode='auto';args[0].autoReleasing=false;}backs();return out;};
  const hud=R.updateHud;
- R.updateHud=(...args)=>{const out=hud(...args);backs();if(current&&!visible())clearReveal();if(document.body.classList.contains('roadlords-menu-open'))clearOwn();return out;};
- R.roadWar.addEventListener('scroll',()=>{if(current&&!visible())clearReveal();},{passive:true});
+ const cancelHidden=()=>{for(const reveal of reveals)if(reveal.current&&!visible(reveal.side==='player'?R.P:R.E))clearReveal(reveal);};
+ R.updateHud=(...args)=>{const out=hud(...args);backs();cancelHidden();if(document.body.classList.contains('roadlords-menu-open'))clearOwn();return out;};
+ R.roadWar.addEventListener('scroll',cancelHidden,{passive:true});
  window.addEventListener('resize',()=>{clearReveal();clearOwn();},{passive:true});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)clearReveal();});
- R.$('#enemyCityPin').addEventListener('click',()=>{if(current&&!visible())clearReveal();});
- R.cancelEnemyPickReveal=clearReveal;backs();
+ R.$('#enemyCityPin').addEventListener('click',cancelHidden);
+ R.cancelEnemyPickReveal=()=>clearReveal(reveals[1]);backs();
 }

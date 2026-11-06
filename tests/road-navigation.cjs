@@ -19,6 +19,19 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   const before=await geometry();await setScroll(0);const left=await geometry();await setScroll(3000);const right=await geometry();
   check('Enemy city is pinned at full size at both ends of the scroll, enabled by default',await page.locator('#enemyCityPin').getAttribute('aria-pressed')==='true'&&Math.abs(left.cityRight-left.warRight)<2&&Math.abs(right.cityRight-right.warRight)<2&&Math.abs(left.cityWidth-left.citySize)<1);
   check('Pinning preserves the previous battlefield and canvas dimensions',before.warHeight===left.warHeight&&before.canvasWidth===right.canvasWidth&&before.canvasHeight===right.canvasHeight);
+  check('Own-city pin is directly beside the enemy pin and starts unlocked',await page.evaluate(()=>document.querySelector('#ownCityPin').nextElementSibling.id==='enemyCityPin'&&document.querySelector('#ownCityPin').getAttribute('aria-pressed')==='false'));
+  await page.locator('#ownCityPin').click();await setScroll(3000);
+  check('Both live cities remain pinned to their respective screen edges in tests',await page.evaluate(()=>{
+   const a=document.querySelector('#playerGrid').closest('.cityzone').getBoundingClientRect(),b=document.querySelector('#enemyGrid').closest('.cityzone').getBoundingClientRect(),w=document.querySelector('.war').getBoundingClientRect();
+   return Math.abs(a.left-w.left)<2&&Math.abs(b.right-w.right)<2&&b.left-a.right>=150&&document.querySelectorAll('#playerGrid').length===1;
+  }));
+  await page.setViewportSize({width:800,height:900});await page.waitForTimeout(120);await setScroll(4000);
+  check('Two pinned cities leave a clear central road even on a narrow screen',await page.evaluate(()=>{
+   const a=document.querySelector('.roadOwnCity').getBoundingClientRect(),b=document.querySelector('.roadEnemyCity').getBoundingClientRect(),w=document.querySelector('.war').getBoundingClientRect();return a.left>=w.left-2&&b.right<=w.right+2&&b.left-a.right>=150;
+  }));
+  await page.setViewportSize({width:1440,height:960});await page.waitForTimeout(120);
+  await page.locator('#ownCityPin').click();await setScroll(3000);
+  check('Unlocking the own city restores its original scrolling world position',await page.evaluate(()=>document.querySelector('.roadOwnCity').getBoundingClientRect().right<document.querySelector('.war').getBoundingClientRect().left));
   const toolbar=await page.locator('#roadHud').boundingBox(),war=await page.locator('.war').boundingBox();
   check('Test controls and FPS live below the battlefield, without covering combat',toolbar.y>=war.y+war.height&&await page.locator('#roadPause').isVisible()&&await page.locator('#roadFps').isVisible());
   await setScroll(0);await page.locator('#enemyCityPin').click();const off=await geometry();
@@ -42,6 +55,11 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   await page.keyboard.press('f');await page.waitForTimeout(80);
   const front=await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,war=R.roadWar.getBoundingClientRect(),city=document.querySelector('.roadEnemyCity').getBoundingClientRect(),canvas=R.canvas.getBoundingClientRect();return {x:canvas.x+R.pointAt(3312.5).x,center:(war.x+city.x-24)/2};});
   check('F centers the main actual combat group in the free road, not a stray duel or the map midpoint',Math.abs(front.x-front.center)<3);
+  await page.locator('#ownCityPin').click();await page.keyboard.press('f');await page.waitForTimeout(80);
+  check('Front focus uses the clear road between both pinned cities',await page.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,a=document.querySelector('.roadOwnCity').getBoundingClientRect(),b=document.querySelector('.roadEnemyCity').getBoundingClientRect(),canvas=R.canvas.getBoundingClientRect();return Math.abs(canvas.x+R.pointAt(3312.5).x-(a.right+b.left)/2)<3;
+  }));
+  await page.locator('#ownCityPin').click();
   // Replace active attacks with a siege well away from the midpoint.
   await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,Q=__ROADLORDS_ROAD__;R.state.units=R.state.units.slice(0,4);for(const u of R.state.units){u.roadAim=null;u.roadAttack={end:Q.state.clock+1,to:1500};}});
   await page.keyboard.press('f');await page.waitForTimeout(80);

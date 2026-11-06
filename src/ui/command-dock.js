@@ -150,5 +150,6 @@ export function installCommandDock(R){
  window.addEventListener('resize',()=>{clearReveal();clearOwn();},{passive:true});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)clearReveal();});
  R.$('#enemyCityPin').addEventListener('click',cancelHidden);
+ R.$('#ownCityPin').addEventListener('click',cancelHidden);
  R.cancelEnemyPickReveal=()=>clearReveal(reveals[1]);backs();
 }

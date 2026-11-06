@@ -38,14 +38,20 @@ export function installSpectatorMode(R) {
     if(R.spectator.active&&!empire&&R.hasBranch(c,'keep','empire')&&c._aiPickDue!=null){c._aiPickDue=R.state.time+(c._aiPickDue-R.state.time)/2;nextPick();}
     return out;
   };
-  R.startSpectator=({left='human',right='orc'}={})=>{
+  let starting=false;
+  R.startSpectator=async({left='human',right='orc'}={})=>{
     if(!R.FACTIONS[left]||!R.FACTIONS[right])throw new RangeError('Ismeretlen nép');
+    if(starting)return false;
+    starting=true;let ready;
+    try{ready=await R.loadProductionBattleArt([left,right]);}finally{starting=false;}
+    if(!ready){R.toast('Az egységképek nem töltődtek be. Próbáld újra.');return false;}
     R.state.running=false;R.MP.conn?.close();R.MP.peerClient?.destroy();clearInterval(R.MP.snapshotTimer);
     Object.assign(R.MP,{enabled:false,role:'solo',started:true,peer:false,guestChoicePending:false});
     Object.assign(R.spectator,{active:true,left,right});
     leftSignature='';
     Object.assign(R.state,{time:0,units:[],unitSerial:1,ended:false,modal:false,pregame:false,startChoices:0,pendingChoices:[],choiceContext:null,roadTest:false,speed:1,timedPickCount:0,nextPick:R.PICK_BASE_SECONDS,selectedBuild:null,selectedBuilding:null,selectedTowerId:null,banMode:false});
-    Object.assign(R.ROAD,{test:false,paused:false,clock:0,pending:[],dead:[],result:'',camera:0,zoom:1});
+    Object.assign(R.ROAD,{test:false,testRoster:null,testCount:0,initial:null,paused:false,clock:0,pending:[],dead:[],result:'',camera:0,zoom:1,figureStyle:'painted',spritePixels:0});
+    R.ROAD.sprites.clear();
     R.ROAD.metrics={steps:0,damage:0,attacks:0,tickMs:0,renderMs:0,fps:0};R.acc=0;
     for(const [c,race]of [[R.P,left],[R.E,right]]){
       R.roadResetCity(c,race);R.generateTerrain(c,12);R.recomputeCity(c,false);
@@ -60,6 +66,7 @@ export function installSpectatorMode(R) {
     for(let n=0;n<4;n++)for(const c of [R.P,R.E])R.aiGrantPick(c,'start');
     R.state.running=true;R.roadWar.scrollLeft=0;R.renderStatic();R.updateHud();R.roadResize();refresh();
     R.message('AI vs AI · A/D: pályamozgatás · F: front · Szóköz: szünet',4);
+    return true;
   };
   const update=R.updateHud;R.updateHud=(...args)=>{const out=update(...args);refresh();return out;};
   const finish=R.finish;R.finish=win=>{const out=finish(win);if(R.spectator.active){R.$('#endTitle').textContent=(win?'Bal':'Jobb')+' oldali AI győzelme';refresh();}return out;};

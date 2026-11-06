@@ -94,7 +94,8 @@ export function register(runtime) {
     runtime.$('#roadFigureToggle').setAttribute('aria-pressed',String(runtime.ROAD.figureStyle!=='simple'));
     runtime.ROAD.zoom = roster === 'figures' ? 1.75 : ['knight','catapult','infantry','archer','casters','orc-raiders','orc-mystics','orc-siege','undead-figures'].includes(roster)||count === 50 ? 1.25 : 1;
     if(mixedFigures||['catapult','casters','orc-mystics','orc-siege','undead-figures'].includes(roster)){
-      const available=runtime.roadWar.clientWidth-(runtime.ROAD.enemyPinned?runtime.ROAD.city+24:0)-32;
+      const bounds=runtime.roadViewportBounds();
+      const available=bounds.right-bounds.left-32;
       const span=(mixedFigures?880:roster==='catapult'?catapultGap:650)+(mixedFigures?180:80)*runtime.ROAD.h/600;
       runtime.ROAD.zoom=[1.25,1,.75].find(zoom=>span*zoom<=available)||.75;
     }

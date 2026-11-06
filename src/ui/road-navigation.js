@@ -1,40 +1,43 @@
 // Camera controls use wall time, so navigation also works while combat is paused.
 export function installRoadNavigation(R) {
   const war = R.roadWar, world = R.roadWorld;
-  const enemy = world.querySelector('.cityzone:last-child');
-  enemy.classList.add('roadEnemyCity');
-  const pane = document.createElement('div');
-  pane.className = 'roadEnemyPane';
-  pane.setAttribute('aria-hidden', 'true');
-  world.insertBefore(pane, enemy);
-  const toggle = document.createElement('button');
-  toggle.id = 'enemyCityPin';
-  toggle.type = 'button';
-  toggle.className = 'btn active';
-  toggle.setAttribute('aria-controls', 'enemyGrid');
-  toggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V9h4V4h3v5h2V4h3v5h4v12zM10 21v-6h4v6M3 12h18"/><path d="m17 2 4 4m-2-2-4 4"/></svg>';
-  R.$('.run').prepend(toggle);
-  R.ROAD.enemyPinned = true;
+  const own=R.$('#playerGrid').closest('.cityzone'),enemy=R.$('#enemyGrid').closest('.cityzone');
+  own.classList.add('roadOwnCity');enemy.classList.add('roadEnemyCity');
+  Object.assign(R.ROAD,{ownPinned:false,enemyPinned:true});
+  const toggles=[];
+  for(const [side,label]of [['own','Saját'],['enemy','Ellenfél']]){
+    const pane=document.createElement('div');pane.className=side==='own'?'roadOwnPane':'roadEnemyPane';pane.setAttribute('aria-hidden','true');
+    world.insertBefore(pane,enemy);
+    const toggle=document.createElement('button');toggle.id=side==='own'?'ownCityPin':'enemyCityPin';toggle.type='button';toggle.className='btn cityPin';
+    toggle.setAttribute('aria-controls',side==='own'?'playerGrid':'enemyGrid');
+    toggle.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V9h4V4h3v5h2V4h3v5h4v12zM10 21v-6h4v6M3 12h18"/><path d="m17 2 4 4m-2-2-4 4"/></svg>';
+    toggles.push(toggle);
+    const update=()=>{
+      const pinned=R.ROAD[side+'Pinned'];world.classList.toggle(side==='own'?'own-city-pinned':'enemy-city-pinned',pinned);
+      toggle.classList.toggle('active',pinned);toggle.setAttribute('aria-pressed',String(pinned));
+      toggle.title=`${label} városának rögzítése: ${pinned?'be · Kattints a feloldáshoz':'ki · Kattints a rögzítéshez'}`;
+      toggle.setAttribute('aria-label',toggle.title);positionCity();
+    };
+    toggle.onclick=()=>{R.ROAD[side+'Pinned']=!R.ROAD[side+'Pinned'];update();};update();
+  }
+  R.$('.run').prepend(...toggles);
   function positionCity() {
-    if (!R.ROAD.enemyPinned) return;
-    const inset = Math.max(0, world.offsetWidth - war.scrollLeft - war.clientWidth);
-    world.style.setProperty('--enemy-city-inset', `${inset}px`);
+    if(R.ROAD.ownPinned)world.style.setProperty('--own-city-inset',`${war.scrollLeft}px`);
+    if(R.ROAD.enemyPinned)world.style.setProperty('--enemy-city-inset',`${Math.max(0,world.offsetWidth-war.scrollLeft-war.clientWidth)}px`);
+    // Two pinned cities must leave an unobstructed strip of road on small screens.
+    const both=R.ROAD.ownPinned&&R.ROAD.enemyPinned,scale=both?Math.min(1,Math.max(1,war.clientWidth-160)/(2*R.ROAD.city)):1;
+    world.classList.toggle('both-cities-pinned',both);
+    world.style.setProperty('--pinned-city-scale',String(scale));
+    world.style.setProperty('--pinned-city-width',`${R.ROAD.city*scale}px`);
+    world.style.setProperty('--pinned-city-top',`${R.ROAD.h*49/600+R.ROAD.city*(1-scale)/2}px`);
   }
   R.roadPositionPinnedCity = positionCity;
-  function updatePin() {
-    world.classList.toggle('enemy-city-pinned', R.ROAD.enemyPinned);
-    toggle.classList.toggle('active', R.ROAD.enemyPinned);
-    toggle.setAttribute('aria-pressed', String(R.ROAD.enemyPinned));
-    toggle.title = R.ROAD.enemyPinned
-      ? 'Ellenfél városának rögzítése: be · Kattints a feloldáshoz'
-      : 'Ellenfél városának rögzítése: ki · Kattints a rögzítéshez';
-    toggle.setAttribute('aria-label', toggle.title);
-    positionCity();
-  }
-  toggle.onclick = () => { R.ROAD.enemyPinned = !R.ROAD.enemyPinned; updatePin(); };
+  R.roadViewportBounds=()=>{
+    const both=R.ROAD.ownPinned&&R.ROAD.enemyPinned,city=both?Math.min(R.ROAD.city,Math.max(1,war.clientWidth-160)/2):R.ROAD.city;
+    return {left:R.ROAD.ownPinned?city+24:0,right:war.clientWidth-(R.ROAD.enemyPinned?city+24:0)};
+  };
   war.addEventListener('scroll', positionCity, {passive: true});
   new ResizeObserver(positionCity).observe(war);
-  updatePin();
 
   // The densest group of current attacks is the front, including a tower siege.
   // Before contact, use the gap between the two advancing armies.
@@ -63,7 +66,7 @@ export function installRoadNavigation(R) {
   }
   R.roadFocusFront = () => {
     const lane = frontLane();
-    const visibleWidth = Math.max(1, war.clientWidth - (R.ROAD.enemyPinned ? R.ROAD.city + 24 : 0));
+    const bounds=R.roadViewportBounds(),center=(bounds.left+bounds.right)/2;
     const z = R.ROAD.zoom, w = R.ROAD.w;
     // Invert the renderer's camera mapping, including its clamped end sections.
     let lo = 0, hi = Math.max(0, war.scrollWidth - war.clientWidth);
@@ -72,7 +75,7 @@ export function installRoadNavigation(R) {
       const view = R.clamp(scroll - R.ROAD.city, 0, R.PATH_LENGTH - w);
       const camera = view + (w - w / z) / 2;
       const screenX = R.ROAD.city + view - scroll + (lane - camera) * z;
-      if (screenX > visibleWidth / 2) lo = scroll; else hi = scroll;
+      if (screenX > center) lo = scroll; else hi = scroll;
     }
     war.scrollLeft = (lo + hi) / 2;
   };

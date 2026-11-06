@@ -1,4 +1,12 @@
-# Roadlords · V4.61.1
+# Roadlords · V4.61.2
+
+## V4.61.2 – Új egységgrafikák és városrögzítés
+
+- A Tesztek menüben csak a teljes AI–AI meccs maradt, külön népválasztással. A mód ugyanazt a képzést, gazdaságot, pickeket, harcot és seregkorlátot használja, mint a normál játék.
+- Indulás előtt betölti és dekódolja a kiválasztott népek új egységmodelljeit. Letöltési hibánál a menüben marad és újrapróbálható; régi modellekkel nem indul el.
+- A saját város külön rögzíthető a felső sávban, az ellenfélváros gombja mellett. Mindkettő bekapcsolható; szűk ablakban a két nézet mérete igazodik, hogy közöttük út is maradjon. Az F a szabad útrészre központosít.
+- A normál seregkapacitás mellett oldalanként 750 aktív egység a felső korlát. Az idézések és a szállított egységek is számítanak; az AI–AI módra is érvényes.
+- A Pages publikálási lépés várakozási határa 20 perc, az előző kiadás közzétételének időtúllépése miatt.
 
 ## V4.61.1 – AI nézői mód javítása
 

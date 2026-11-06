@@ -1,5 +1,4 @@
-import { MIXED_FIGURE_TRIALS, loadMixedFigureTrialArt } from '../config/figure-trials.js';
-// Battle experiments live behind one main-menu entry.
+// Full matches use the live game; retired figure demos have no menu entries.
 export function installTestMenu(R) {
   const lobby=R.MP.lobby,main=lobby.querySelector('.menuMain'),card=lobby.querySelector('.mpLobbyCard');
   const opener=document.createElement('button');
@@ -21,24 +20,18 @@ export function installTestMenu(R) {
       else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
     }
   });
-  for(const [roster,{id,label}] of Object.entries(MIXED_FIGURE_TRIALS)){
-    const options={count:100,roster},description='Mind a hét egységtípus, új grafikák és valódi képességek.';
-    const item=document.createElement('div'),button=document.createElement('button'),note=document.createElement('p');
-    button.id=id;button.type='button';button.className='menuButton';button.textContent=label;
-    button.onclick=async()=>{
-      button.disabled=true;
-      const results=await loadMixedFigureTrialArt(R,roster);
-      button.disabled=false;
-      if(!results.every(Boolean)){R.toast('Az egységek képe nem töltődött be. Frissítsd az oldalt.');return;}
-      close(false);R.roadStartTest(undefined,options);
-    };
-    note.textContent=description;item.append(button,note);list.appendChild(item);
-  }
   const spectator=document.createElement('div');spectator.className='spectatorSetup';
   const races='<option value="human">Emberek</option><option value="orc">Orkok</option><option value="undead">Élőhalottak</option>';
   spectator.innerHTML=`<h3>AI vs AI · Teljes meccs</h3><div class="spectatorRaces"><label>Bal oldali AI<select id="spectatorLeftRace">${races}</select></label><span aria-hidden="true">VS</span><label>Jobb oldali AI<select id="spectatorRightRace">${races}</select></label></div><button id="roadAiVsAiMenu" type="button" class="menuButton">MECCS INDÍTÁSA · NÉZŐKÉNT</button><p>Két önálló AI, normál kezdővárosokkal, gazdasággal és fejlesztésválasztással.</p>`;
   spectator.querySelector('#spectatorRightRace').value='orc';
-  spectator.querySelector('button').onclick=()=>{close(false);R.startSpectator({left:spectator.querySelector('#spectatorLeftRace').value,right:spectator.querySelector('#spectatorRightRace').value});};
+  spectator.querySelector('button').onclick=async()=>{
+    const button=spectator.querySelector('button'),selectors=[...spectator.querySelectorAll('select')];
+    if(button.disabled)return;
+    const label=button.textContent,config={left:selectors[0].value,right:selectors[1].value};
+    button.disabled=true;button.setAttribute('aria-busy','true');button.textContent='EGYSÉGKÉPEK BETÖLTÉSE…';selectors.forEach(s=>s.disabled=true);
+    try{if(await R.startSpectator(config))close(false);}
+    finally{button.disabled=false;button.removeAttribute('aria-busy');button.textContent=label;selectors.forEach(s=>s.disabled=false);}
+  };
   list.append(spectator);
   main.appendChild(opener);lobby.appendChild(panel);
 }

@@ -41,10 +41,18 @@ html body .roadWorld .gate{top:50%!important;transform:translateY(-50%)!importan
 html body #roadHud{display:none;position:static;transform:none;width:auto;max-width:none;margin:0 auto;padding:8px 0;border:0;border-radius:0;background:none;box-shadow:none;pointer-events:auto}
 html body.road-test:not(.roadlords-menu-open) #roadHud{display:flex}
 html body #app .roadWorld.enemy-city-pinned .roadEnemyCity{right:var(--enemy-city-inset,0px)!important}
+html body #app .roadWorld.own-city-pinned .roadOwnCity{left:var(--own-city-inset,0px)!important}
+html body #app .roadWorld.both-cities-pinned :is(.roadOwnCity,.roadEnemyCity){transform:scale(var(--pinned-city-scale,1))!important;top:var(--pinned-city-top)!important}
+.both-cities-pinned .roadOwnCity{transform-origin:left top}
+.both-cities-pinned .roadEnemyCity{transform-origin:right top}
+.roadOwnPane{display:none;position:absolute;top:0;bottom:0;left:var(--own-city-inset,0px);width:var(--road-city-size,440px);z-index:4;background:#354332;border-right:1px solid #a58b4a;box-shadow:10px 0 20px #0006;pointer-events:none}
+.own-city-pinned .roadOwnPane{display:block}
+html body #app .both-cities-pinned :is(.roadOwnPane,.roadEnemyPane){width:var(--pinned-city-width)}
 .roadEnemyPane{display:none;position:absolute;top:0;bottom:0;right:var(--enemy-city-inset,0px);width:440px;z-index:4;background:#14231b;border-left:1px solid #a58b4a;box-shadow:-10px 0 20px #0006;pointer-events:none}
 .enemy-city-pinned .roadEnemyPane{display:block}
-#enemyCityPin{flex-shrink:0;padding:6px;line-height:0}
-#enemyCityPin svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-#enemyCityPin[aria-pressed="false"]{color:#8b9b90}
+.cityPin{flex-shrink:0;padding:6px;line-height:0}
+.cityPin svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+#ownCityPin svg{transform:scaleX(-1)}
+.cityPin[aria-pressed="false"]{color:#8b9b90}
 /* The opening spans the road's vertical axis; keep the wall thickness intact. */
 html body #app .roadWorld .gate{height:clamp(156px,8.13vw,312px)!important}

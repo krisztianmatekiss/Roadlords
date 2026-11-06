@@ -228,11 +228,7 @@ export function initializeUndeadCombat(R) {
           );
       }
     }
-    const beforeHp = target.hp, previousHit = ctx?.bladeHit;
-    if(ctx && !previousHit)ctx.bladeHit={};
-    let actual;
-    try{actual=damage(target, amount, type);}
-    finally{if(ctx && !previousHit)delete ctx.bladeHit;}
+    const beforeHp = target.hp, actual=damage(target, amount, type);
     halfPoison(target,beforeHp);
     if (target.alive && ctx?.attack && ctx.ranged && (!source || hostile) &&
       isUndead(own(target)) && leg(target, 'und_ranged_adaptation')) R.undGainRangedHp?.(target);
@@ -254,14 +250,6 @@ export function initializeUndeadCombat(R) {
     )
       R.undPoison(source, 2, own(target));
     return actual;
-  };
-  // A redirected portion and its original hit share one payment. Dodges in
-  // older faction wrappers never reach this final, successful-hit hook.
-  R.undSuccessfulHitDamage=(target,amount)=>{
-    const ctx=context,hit=ctx?.bladeHit;
-    if(!hit||!ctx.attack)return amount;
-    hit.mult ??= R.undSoulBladeMultiplier?.(ctx.source,target,ctx,amount)||1;
-    return amount*hit.mult;
   };
   R.undDeathChainHit=(target,amount)=>withSource({source:null,attack:false,kind:'death_chain'},()=>R.damageUnit(target,amount,'magic'));
   const connect = (u, target) => {

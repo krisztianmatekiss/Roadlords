@@ -212,12 +212,15 @@ export function initializeUndeadEconomy(R) {
     if (c.resources.wood < 0 || b.inactive) return false;
     const base = D[b.type]?.unit;
     if (!base) return false;
-    // Saving for construction must not indefinitely starve military production.
-    // When affordable, allow at least one training cycle every 12 game seconds.
-    if (c === R.E && !R.MP.enabled && c.undSaveSouls &&
-        R.state.time - (c.undeadState.lastPaidTraining ?? -12) < 12 &&
-        c.resources.wood - U[base].souls < c.undSaveSouls)
-      return false;
+    // Economy repairs must accumulate their full price. An expensive Vampire
+    // every 12 seconds can otherwise consume more than the spare Soul income
+    // forever, preventing the Well that would fund that very army. Military
+    // investments still permit periodic recruitment; invasions lift the reserve.
+    if ((R.aiControlsCity?.(c) ?? c === R.E) && !R.MP.enabled && c.undSaveSouls &&
+        !R.aiUnderAttack?.(c) && c.resources.wood - U[base].souls < c.undSaveSouls) {
+      const investment=['military','support'].includes(c._aiSaveReason);
+      if(!investment || R.state.time-(c.undeadState.lastPaidTraining??-12)<Math.max(12,R.trainingTime(c,b)*2))return false;
+    }
     const cost = R.unitCost(c, base),
       count = R.productionBatchSize(c, b);
     if (R.productionRoomFor(c, b) < count || !R.canPay(c, cost)) return false;

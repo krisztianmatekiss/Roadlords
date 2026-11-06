@@ -368,16 +368,6 @@ export function initializeFactionsOrcRoster(runtime) {
     }
     return out;
   };
-  const oldScore = runtime.scoreAiChoiceV17;
-  runtime.scoreAiChoiceV17 = function (o) {
-    if (isOrc(runtime.E) && o.kind === 'building' && newBuildings[o.id]) return {
-      orc_warg: 11,
-      orc_shaman: 10,
-      orc_ram: 9,
-      orc_troll: 10
-    }[o.id];
-    return oldScore(o);
-  };
   O.curses = curseNames;
   O.applyCurse = applyCurse;
   O.critMult = critMult;

@@ -8,7 +8,7 @@ export function initializeUndeadConvergence(R) {
   const active=(c,type)=>c.buildings.filter(b=>b.type===type&&!b.inactive);
   const clock=()=>R.ROAD.clock;
   const authoritative=()=>!(R.MP.enabled&&R.MP.role==='guest');
-  const shadowQueue=[],profiles=new WeakMap(),territoryProfiles=new WeakMap();
+  const shadowQueue=[],territoryProfiles=new WeakMap();
   R.undConvergenceFx=(c,kind,lane,offset=0,duration=.7)=>{
     if(!c.undeadState)return;
     const side=R.sideForCity(c),state=c.undeadState;
@@ -74,21 +74,6 @@ export function initializeUndeadConvergence(R) {
       R.attackUnit(u,attacker,{free:true,shadowCounter:true});
     }
   }
-  R.undBladeProfile=c=>{
-    const key=c.undRevision||0,previous=profiles.get(c);
-    if(previous?.key===key&&previous.buildings===c.buildings)return previous;
-    const blades=active(c,'und_soul_blade');
-    const out={key,buildings:c.buildings,bonus:blades.reduce((n,b)=>n+at(b.level,B.bladeBonus),0),cost:blades.reduce((n,b)=>n+at(b.level,B.bladeCost),0)};
-    profiles.set(c,out);return out;
-  };
-  R.undSoulBladeMultiplier=(u,target,ctx,amount)=>{
-    if(!authoritative()||!u?.alive||!undead(own(u))||!ctx?.attack||ctx.ranged||ctx.secondary||
-      !u.tags.includes('melee')||target.side===u.side||!(amount>0))return 1;
-    const c=own(u),p=R.undBladeProfile(c);
-    if(!p.cost||c.resources.wood+1e-9<p.cost)return 1;
-    if(!R.pay(c,R.C(p.cost,0,0)))return 1;
-    u.undBladeFlashAt=R.state.time;return 1+p.bonus;
-  };
   const realAttack=R.roadRealAttack;
   R.roadRealAttack=(u,t,opts)=>{
     if(u?.alive&&t?.alive&&u.key==='und_vampire'&&u.stunTime<=0)u.undNightSpent=true;
@@ -98,9 +83,7 @@ export function initializeUndeadConvergence(R) {
   R.roadRealStructure=(u,t)=>{
     if(!u.alive||u.stunTime>0||!(t?.alive||t?.capital))return structure(u,t);
     if(u.key==='und_vampire')u.undNightSpent=true;
-    const mult=R.undSoulBladeMultiplier(u,t,{attack:true,ranged:!u.tags.includes('melee')||!!u.roadAttack?.orcSpear},u.damage);
-    const damage=u.damage,building=u.buildingDamage;u.damage*=mult;u.buildingDamage*=mult;
-    try{return structure(u,t);}finally{u.damage=damage;u.buildingDamage=building;}
+    return structure(u,t);
   };
   const status=R.updateUnitStatuses;
   R.updateUnitStatuses=(u,dt)=>{
@@ -111,7 +94,7 @@ export function initializeUndeadConvergence(R) {
   const payload=R.mpFactionUnitPayload;
   R.mpFactionUnitPayload=u=>{
     const data=payload(u);
-    return data?{...data,temporary:u.temporary||0,undNightSpent:!!u.undNightSpent,undShadowReadyAt:u.undShadowReadyAt||0,undBladeFlashAt:u.undBladeFlashAt??-100}:data;
+    return data?{...data,temporary:u.temporary||0,undNightSpent:!!u.undNightSpent,undShadowReadyAt:u.undShadowReadyAt||0}:data;
   };
   // Ownership is queried for many actors each frame; scan city buildings only
   // when a placement, level or multiplayer city snapshot changes its revision.
@@ -162,8 +145,6 @@ export function initializeUndeadConvergence(R) {
   R.resourceFlowRates=c=>{
     const result=flow(c);if(!undead(c))return result;
     let extra=active(c,'und_soul_rift').reduce((n,b)=>n+R.undRiftProfile(c,b).cost/B.riftInterval,0);
-    const blade=R.undBladeProfile(c);
-    if(blade.cost)for(const u of R.state.units)if(u.alive&&u.side===R.sideForCity(c)&&u.tags.includes('melee'))extra+=blade.cost/Math.max(.1,u.cooldownTime||1);
     result.use.wood+=extra;result.sources.convergence=R.C(extra,0,0);return result;
   };
   function castRifts(c,dt){

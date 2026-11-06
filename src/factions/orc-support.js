@@ -250,21 +250,6 @@ export function initializeFactionsOrcSupport(runtime) {
     }
     return best;
   };
-  let aiWait = 0;
-  const oldAI = runtime.enemyBuildAI;
-  runtime.enemyBuildAI = function (dt) {
-    if (!runtime.MP.enabled && isOrc(runtime.E) && !runtime.state.pregame && (aiWait -= dt) <= 0) {
-      aiWait = 3;
-      if (runtime.activeSpawners(runtime.E).length >= 3) for (const key of ['orc_totem', 'orc_slave', 'orc_altar']) if (runtime.E.unlocked.has(key) && !runtime.hasBuilding(runtime.E, key) && runtime.aiBuild(key)) return;
-    }
-    return oldAI(dt);
-  };
-  const oldScore = runtime.scoreAiChoiceV17;
-  runtime.scoreAiChoiceV17 = o => isOrc(runtime.E) && o.kind === 'building' && defs[o.id] ? {
-    orc_totem: 9,
-    orc_slave: 9,
-    orc_altar: 6
-  }[o.id] : oldScore(o);
   O.supportData = data;
   O.supportThreshold = threshold;
   Object.assign(window.__ROADLORDS__, {

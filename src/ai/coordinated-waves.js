@@ -44,7 +44,7 @@ export function initializeAiCoordinatedWaves(runtime) {
   const oldSpawn = runtime.normalSpawn;
   runtime.normalSpawn = function (c, b) {
     const investment=['military','support'].includes(c._aiSaveReason);
-    if (c === runtime.E && !runtime.MP.enabled && c._aiSavePrice && !danger() && (investment || runtime.state.time - c._aiSaveSince < 35)) {
+    if ((runtime.aiControlsCity?.(c) ?? c === runtime.E) && !runtime.MP.enabled && c._aiSavePrice && !(runtime.aiUnderAttack?.(c) ?? danger()) && (investment || runtime.state.time - c._aiSaveSince < 35)) {
       const key = runtime.effectiveUnitKey(c, b),
         cost = runtime.primarySpawnCost(c, key, b);
       if (runtime.RES.some(r => (c._aiSavePrice[r] || 0) > 0 && (cost[r] || 0) > 0 && c.resources[r] - (cost[r] || 0) < c._aiSavePrice[r])) {

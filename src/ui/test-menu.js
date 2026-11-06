@@ -34,5 +34,11 @@ export function installTestMenu(R) {
     };
     note.textContent=description;item.append(button,note);list.appendChild(item);
   }
+  const spectator=document.createElement('div');spectator.className='spectatorSetup';
+  const races='<option value="human">Emberek</option><option value="orc">Orkok</option><option value="undead">Élőhalottak</option>';
+  spectator.innerHTML=`<h3>AI vs AI · Teljes meccs</h3><div class="spectatorRaces"><label>Bal oldali AI<select id="spectatorLeftRace">${races}</select></label><span aria-hidden="true">VS</span><label>Jobb oldali AI<select id="spectatorRightRace">${races}</select></label></div><button id="roadAiVsAiMenu" type="button" class="menuButton">MECCS INDÍTÁSA · NÉZŐKÉNT</button><p>Két önálló AI, normál kezdővárosokkal, gazdasággal és fejlesztésválasztással.</p>`;
+  spectator.querySelector('#spectatorRightRace').value='orc';
+  spectator.querySelector('button').onclick=()=>{close(false);R.startSpectator({left:spectator.querySelector('#spectatorLeftRace').value,right:spectator.querySelector('#spectatorRightRace').value});};
+  list.append(spectator);
   main.appendChild(opener);lobby.appendChild(panel);
 }

@@ -50,12 +50,12 @@ const { chromium } = require('playwright'), assert = require('node:assert/strict
    c.resources.wood=c.undSaveSouls;for(let n=0;n<4;n++){ruinTick();if(R.buildingOf(c,'und_well').length)return false;}
    ruinTick();return R.buildingOf(c,'und_well').length===1&&c.buildings.length===before+1;
   }));
-  check('Undead AI clears a multi-cell Graveyard plot without demolishing its Wells',await page.evaluate(()=>{
+  check('Undead AI completes a multi-cell military plot without demolishing its Wells',await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=ruinFixture('undead');for(let n=0;n<3;n++)ruinPut('und_well');
    const occupied=R.occupancy(c);for(let row=0;row<R.GRID;row++)for(let col=0;col<R.GRID;col++)if(!occupied.has(R.idx(row,col)))R.setTerrain(c,row,col,'ruin');
    c.resources.wood=5000;const wells=R.buildingOf(c,'und_well').map(b=>b.id);
-   for(let n=0;n<6&&!R.buildingOf(c,'und_graveyard').length;n++)ruinTick();
-   return R.buildingOf(c,'und_graveyard').length===1&&wells.every(id=>R.getBuilding(c,id));
+   for(let n=0;n<6&&!R.activeSpawners(c).length;n++)ruinTick();
+   return R.activeSpawners(c).length===1&&wells.every(id=>R.getBuilding(c,id));
   }));
   check('Undead AI saves for blocked land instead of demolishing a funded Well when clearing is one Soul short',await page.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=ruinFixture('undead');for(let n=0;n<5;n++)ruinPut('und_well');R.setBuildingLevel(c,'und_well',4);

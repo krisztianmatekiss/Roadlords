@@ -26,8 +26,9 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    const first=R.normalSpawn(c,b),blocked=!R.normalSpawn(c,b);R.state.time+=Math.max(8,R.trainingTime(c,b)*2)+.01;
    return first&&blocked&&R.normalSpawn(c,b);
   }));
-  check('Orc Arena receives a purchase turn and actually touches existing producers',await p.evaluate(()=>{
-   const R=__ROADLORDS_RUNTIME__,c=strategyOrc();c.unlocked.add('orc_arena');c.resources=R.C(10000,10000,10000);strategyTick();
+  check('An improved Orc Arena is purchased for its actual recruitment benefit and touches producers',await p.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,c=strategyOrc();c.unlocked.add('orc_arena');c.levels.orc_arena=4;c.resources=R.C(10000,10000,10000);strategyTick();
+   for(let n=0;n<3&&!R.hasBuilding(c,'orc_arena');n++){c.resources=R.C(10000,10000,10000);strategyTick();}
    const arena=R.buildingOf(c,'orc_arena')[0];return !!arena&&R.activeSpawners(c).some(b=>R.aiSupportAffects(c,arena,b));
   }));
   check('Visible ranged enemies increase investment in Warg riders through a real AI decision',await p.evaluate(()=>{
@@ -41,9 +42,10 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    const R=__ROADLORDS_RUNTIME__,c=strategyReset('human');strategyPut('barracks');c._aiLastWave={time:R.state.time-26};
    R.state.units=Array.from({length:8},(_,id)=>({id,key:'swordsman',alive:true,side:'enemy',lane:1000}));c.garrison=Array.from({length:6},()=>R.makeEntry(c,'swordsman'));c.gateMode='closed';R.enemyGateAI();return c.gateMode==='open'&&c.releaseQueue.length===6;
   }));
-  check('Undead support investment is considered before another duplicate military producer',await p.evaluate(()=>{
-   const R=__ROADLORDS_RUNTIME__,c=strategyReset('undead');c.unlocked.add('und_bone_forge');for(let n=0;n<5;n++)strategyPut('und_well');R.setBuildingLevel(c,'und_well',4);for(let n=0;n<3;n++)strategyPut('und_graveyard');c.resources=R.C(10000,0,0);strategyTick();
-   return R.buildingOf(c,'und_bone_forge').length===1&&R.buildingOf(c,'und_graveyard').length===3;
+  check('Undead support investment receives a turn as its army grows, without a forced faction build order',await p.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,c=strategyReset('undead');c.unlocked.add('und_bone_forge');for(let n=0;n<5;n++)strategyPut('und_well');R.setBuildingLevel(c,'und_well',4);for(let n=0;n<3;n++)strategyPut('und_graveyard');
+   for(let n=0;n<10&&!R.hasBuilding(c,'und_bone_forge');n++){c.resources=R.C(10000,0,0);strategyTick();}
+   return R.buildingOf(c,'und_bone_forge').length===1;
   }));
   check('Undead AI does not buy a Hatchery that would affect only excluded Graveyards',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=strategyReset('undead');c.unlocked.add('und_corrupted_hatchery');for(let n=0;n<5;n++)strategyPut('und_well');R.setBuildingLevel(c,'und_well',4);for(let n=0;n<3;n++)strategyPut('und_graveyard');c.resources=R.C(10000,0,0);strategyTick();return !R.hasBuilding(c,'und_corrupted_hatchery');

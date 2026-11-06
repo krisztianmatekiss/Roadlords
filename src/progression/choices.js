@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { PICK_RULES } from './pick-rules.js';
 export function register(runtime) {
   runtime.choiceUnitArt = function choiceUnitArt(o) {
     const key = runtime.PICK_UNIT_IMAGES[o.id],
@@ -60,12 +61,11 @@ export function register(runtime) {
     runtime.pickInputGuard.until = runtime.pickInputGuard.armedAt + runtime.PICK_INPUT_GUARD_MS;
   };
   runtime.baseRandomLegendaryChance = function baseRandomLegendaryChance(c) {
-    return .03 * (runtime.hasLeg(c, 'wide_choice') ? 2 : 1);
+    return runtime.hasLeg(c, 'wide_choice') ? PICK_RULES.wideLegendaryChance : PICK_RULES.legendaryChance;
   };
   runtime.choiceShouldBeLegendary = function choiceShouldBeLegendary(c, source, forceNormal = false) {
     if (forceNormal || source === 'start' || source === 'ancient') return false;
-    const next = c.pickCount + 1;
-    if (next % 10 === 0) return true;
+    if ((c.legendaryDrought || 0) >= PICK_RULES.guaranteedOffer - 1) return true;
     return Math.random() < runtime.baseRandomLegendaryChance(c);
   };
   runtime.branchOf = function branchOf(c, type) {
@@ -173,8 +173,9 @@ export function register(runtime) {
       tier: 'common',
       subtype: null
     };
-    const legendaryChance = runtime.hasLeg(c, 'wide_choice') ? .10 : .05;
-    let tier = (c.legendaryDrought || 0) >= 10 ? 'legendary' : Math.random() < legendaryChance ? 'legendary' : Math.random() < .25 / (1 - legendaryChance) ? 'rare' : 'common';
+    const legendaryChance = runtime.hasLeg(c, 'wide_choice') ? PICK_RULES.wideLegendaryChance : PICK_RULES.legendaryChance;
+    const buildingChance = runtime.state.time < PICK_RULES.earlyUntil ? PICK_RULES.earlyBuildingChance : PICK_RULES.buildingChance;
+    let tier = (c.legendaryDrought || 0) >= PICK_RULES.guaranteedOffer - 1 ? 'legendary' : Math.random() < legendaryChance ? 'legendary' : Math.random() < buildingChance / (1 - legendaryChance) ? 'rare' : 'common';
     if (tier === 'legendary' && !runtime.eligibleLegendary(c).length) tier = runtime.buildingUnlockPool(c).length || runtime.buildingUpgradePool(c).length ? 'rare' : 'common';
     if (tier === 'rare' && !runtime.buildingUnlockPool(c).length && !runtime.buildingUpgradePool(c).length) tier = 'common';
     if (tier === 'legendary') c.legendaryDrought = 0;else c.legendaryDrought = (c.legendaryDrought || 0) + 1;
@@ -260,7 +261,7 @@ export function register(runtime) {
     let kicker = source === 'start' ? `KEZDŐ ÉPÜLETVÁLASZTÁS · ${5 - runtime.state.startChoices}/4` : source === 'ancient' ? 'ŐSI ROM · GYAKORI JUTALOM' : source === 'tower' ? `TORONYJUTALOM · ${runtime.rarityLabel(tier, subtype)}` : runtime.rarityLabel(tier, subtype),
       title = source === 'start' ? 'Válassz egy épületet' : legendary ? 'Válassz legendás ereklyét' : tier === 'rare' ? subtype === 'upgrade' ? 'Válassz épületfejlesztést' : 'Válassz új épületet' : 'Válassz fejlesztést';
     if (doubleTake) title = 'Válassz KÉT fejlesztést';
-    const desc = source === 'start' ? 'A játékidő még nem fut. Az első négy választás csak új épületet old fel.' : source === 'ancient' ? 'Az ősi rom jutalma mindig gyakori fejlesztés.' : legendary ? '5% alap esély; tíz legendás nélküli alkalom után a következő garantált.' : tier === 'rare' ? subtype === 'upgrade' ? `Mind a(z) ${n} lap meglévő épülettípust fejleszt.` : `Mind a(z) ${n} lap új épületet old fel.` : `Mind a(z) ${n} lap halmozható, kisebb fejlesztés.`;
+    const desc = source === 'start' ? 'A játékidő még nem fut. Az első négy választás csak új épületet old fel.' : source === 'ancient' ? 'Az ősi rom jutalma mindig gyakori fejlesztés.' : legendary ? '5% alap esély; 19 legendás nélküli alkalom után a 20. garantált.' : tier === 'rare' ? subtype === 'upgrade' ? `Mind a(z) ${n} lap meglévő épülettípust fejleszt.` : `Mind a(z) ${n} lap új épületet old fel.` : `Mind a(z) ${n} lap halmozható, kisebb fejlesztés.`;
     return {
       source,
       tier,
@@ -328,7 +329,7 @@ export function register(runtime) {
       o,
       score: runtime.scoreAiChoiceV17(o)
     })).sort((a, b) => b.score - a.score);
-    if (runtime.E.rerolls > 0 && scored(options)[0].score < 6) {
+    if (!runtime.aiChooseOptions && runtime.E.rerolls > 0 && scored(options)[0].score < 6) {
       const old = options.map(runtime.choiceKey),
         rerolled = runtime.makeChoiceOptions(runtime.E, source, tier, subtype, old);
       if (rerolled.length) {
@@ -336,7 +337,7 @@ export function register(runtime) {
         runtime.E.rerolls--;
       }
     }
-    if (tier === 'common' && runtime.E.bans > 0) {
+    if (!runtime.aiChooseOptions && tier === 'common' && runtime.E.bans > 0) {
       const ranked = scored(options);
       if (ranked.at(-1)?.score < 2.2) {
         const bad = ranked.at(-1).o,
@@ -348,7 +349,7 @@ export function register(runtime) {
         if (replacement) options[index] = replacement;
       }
     }
-    const ordered = scored(options).map(x => x.o),
+    const ordered = runtime.aiChooseOptions ? runtime.aiChooseOptions(options, { source, tier, subtype }) : scored(options).map(x => x.o),
       doubleTake = tier !== 'legendary' && runtime.hasLeg(runtime.E, 'double_choice') && ((runtime.E.nonLegendaryPicks || 0) + 1) % 3 === 0;
     runtime.applyChoice(runtime.E, ordered[0], true);
     runtime.aiRememberChoice(ordered[0]);

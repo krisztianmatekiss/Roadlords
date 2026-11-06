@@ -11,7 +11,7 @@ import { installProductionFigures } from '../rendering/production-figures.js';
 import { initializeUndeadFoundation } from '../factions/undead/foundation.js';
 import { initializeOrcExpansion } from '../factions/orc-expansion.js';
 import { initializeUndeadEconomy } from '../factions/undead/economy.js';
-import { initializeUndeadAi } from '../factions/undead/ai.js';
+import { initializeUndeadCityPlanning } from '../factions/undead/city-planning.js';
 import { initializeUndeadArt } from '../factions/undead/art.js';
 import { initializeUndeadUi } from '../factions/undead/ui.js';
 import { initializeUndeadCombat } from '../factions/undead/combat.js';
@@ -146,6 +146,7 @@ import { initializeUiBattleStatus } from '../ui/battle-status.js';
 import { initializeExpansionBalance } from '../economy/expansion-balance.js';
 import { initializeUiChoiceCards } from '../ui/choice-cards.js';
 import { initializeCombatRoadIntegration } from '../combat/road-integration.js';
+import { installSharedAiPlanner } from '../ai/shared-planner.js';
 
 export function createGame() {
   const runtime = Object.create(null);
@@ -281,7 +282,7 @@ export function createGame() {
   installUnitMovementBalance(runtime);
   initializeExpansionBalance(runtime);
   initializeUndeadEconomy(runtime);
-  initializeUndeadAi(runtime);
+  initializeUndeadCityPlanning(runtime);
   initializeUndeadArt(runtime);
   initializeHumanMapArtwork(runtime);
   initializeCombatRoadIntegration(runtime);
@@ -296,5 +297,6 @@ export function createGame() {
   initializeUndeadTerritoryLegends(runtime);
   initializeUndeadConvergence(runtime);
   installUnitCardIllustrations(runtime);
+  installSharedAiPlanner(runtime);
   return runtime;
 }

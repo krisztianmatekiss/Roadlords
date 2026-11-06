@@ -5,7 +5,6 @@ export const UNDEAD_CONVERGENCE = Object.freeze({
   startingSouls: 280,
   wellPrice: 220, wellUpkeep: 2, wellIncome: [4,8,16,32],
   shadowCooldown: 8,
-  bladeBonus: [.01,.02,.03,.05], bladeCost: [1,2,3,4],
   borderMetres: [5,10,15,20], borderAmplification: [.05,.1,.15,.2],
   riftInterval: 45, riftCounts: [4,6,9,18], riftLifetime: [30,40,50,60], riftPrice: [80,120,180,360],
   riftLongCount: 9, riftLongLifetime: 120, riftLongPrice: 180,
@@ -18,8 +17,6 @@ const building=(name,shape,souls,upkeep,category,levels,cityArtIndex,extra={})=>
   race:'undead',icon:'☠',description:levels[0],sourceId:'convergence',...extra,
 });
 export const UNDEAD_CONVERGENCE_BUILDINGS={
-  und_soul_blade:building('Lélekpenge',[[0,0]],160,.6,'support',
-    B.bladeBonus.map((n,i)=>`Sikeres közelharci találatonként +${fmt(n*100)}% sebzés ${B.bladeCost[i]} Lélekért.`),0),
   und_border_obelisk:building('Sírhatárkő',[[0,0]],140,.7,'support',
     B.borderMetres.map((n,i)=>`+${n} m saját térfél és +${fmt(B.borderAmplification[i]*100)}% térfélnövelés.`),1),
   und_soul_rift:building('Lélekhasadék',square,480,1.5,'military',

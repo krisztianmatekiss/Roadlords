@@ -178,17 +178,6 @@ export function initializeFactionsOrcGateSupport(runtime) {
     }
     return score > 0 ? best : null;
   };
-  let wait = 0;
-  const oldAI = runtime.enemyBuildAI;
-  runtime.enemyBuildAI = function (dt) {
-    if (!runtime.MP.enabled && O.isOrc(runtime.E) && !runtime.state.pregame && (wait -= dt) <= 0) {
-      wait = 3;
-      if (runtime.activeSpawners(runtime.E).length >= 3) for (const key of ['orc_raider', 'orc_tunnel']) if (runtime.E.unlocked.has(key) && !runtime.hasBuilding(runtime.E, key) && runtime.aiBuild(key)) return;
-    }
-    return oldAI(dt);
-  };
-  const oldScore = runtime.scoreAiChoiceV17;
-  runtime.scoreAiChoiceV17 = o => O.isOrc(runtime.E) && o.kind === 'building' && ['orc_raider', 'orc_tunnel'].includes(o.id) ? 10 : oldScore(o);
   const oldRows = runtime.buildingEffectRows;
   runtime.buildingEffectRows = function (c, b) {
     if (b.type === 'orc_raider') return [['Erősítés esélye', `${runtime.v4LevelValue(b.level, [5, 8, 12])}%`], ['Kapu', runtime.orcGateBonuses(c) ? 'Erősítés aktív' : 'Az erősítéshez nyisd ki'], ['Érkező egységek', runtime.hasBranch(c, b.type, 'horde') ? '2 azonos egység' : '1 egység']];

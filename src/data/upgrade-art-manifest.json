@@ -1474,16 +1474,6 @@
         1024
       ]
     },
-    "undead-building:und_soul_blade": {
-      "source": "undead-convergence",
-      "index": 0,
-      "rect": [
-        4,
-        4,
-        504,
-        333.3333333333333
-      ]
-    },
     "undead-building:und_border_obelisk": {
       "source": "undead-convergence",
       "index": 1,

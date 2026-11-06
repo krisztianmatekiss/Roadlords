@@ -1,4 +1,18 @@
-# Roadlords · V4.60.0
+# Roadlords · V4.61.0
+
+## V4.61.0 – Közös AI és új pickritmus
+
+- Egy közös építési és fejlesztésválasztási tervező mindhárom frakciónak. A régi ork és élőhalott építési sorrendek és külön pontozók kikerültek.
+- A tervező a tényleges árakkal, fenntartással, képzéssel, hatásokkal és helyfoglalással számol. A városmásolaton végzett becslés a meglévő sereget és a lehetséges kombinációkat is figyelembe veszi.
+- Gazdasági kezdés, fenntartható beruházások, támogatók működő elhelyezése, többmezős romeltakarítás végigvitele és célzott újrapörgetés.
+- Az első 8 percben 50% épület/épületfejlesztés, 45% common, 5% legendás alap esély; utána 25% / 70% / 5%. A Bő választék legendás esélye továbbra is 10%.
+- 19 legendás nélküli ajánlat után a 20. garantált legendás. A négy kezdő épületválasztás, az ősi rom közvetlen common jutalma és az újrapörgetés nem növeli a számlálót.
+- A Tesztek alatt teljes AI–AI nézői mód indítható, külön választható bal és jobb oldali néppel. A két AI önállóan gazdálkodik és választ; szünet, gyorsítás, új meccs és főmenü elérhető.
+- A Lélekpenge kikerült az épületek, kártyák és harci hatások közül.
+- Nincs személyiség, döntési előzményfelület vagy automatikus meccsnapló. A mérőprogramok kizárólag fejlesztői ellenőrzések.
+
+Részletek: [közös AI és ellenőrzés](docs/shared-ai-4.61.md).
+
 
 ## V4.60.0 – Paklik és kapuvezérlés
 

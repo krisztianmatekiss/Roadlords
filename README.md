@@ -1,4 +1,15 @@
-# Roadlords · V4.61.2
+# Roadlords · V4.62.0
+
+## V4.62.0 – Helyzetfelismerő AI
+
+- A veszélyt a tényleges útpálya, térfélhatár, életben maradt tornyok, érkező támadók és otthoni védők alapján értékeli. Nem számolja védelemnek az ellenséges sereg mellett már elvonult saját támadóerőt.
+- A portált lekapcsolja, ha mögötte védtelen támadás alakul ki; az utánpótlás a kapunál jelenik meg. Üres kivonulásra és teli sereg mellett nem fizet fenntartást. A kapcsolás a valós módosított költséggel és visszakapcsolási várakozással működik.
+- A kezdő gazdaság a következő építkezést és a várható képzési fogyasztást is finanszírozza. Közvetlen veszély esetén a kis tartalékot is kiküldi, és előrébb veszi a védelmi termelést.
+- A raktár nem kötelező: konkrét beruházás kapacitásigénye vagy ténylegesen hasznos működési tartalék indokolhatja. A túltermelés önmagában nem eredményez korlátlan raktárépítést.
+- A nem halmozódó támogatókhoz új, még nem megfelelően támogatott célpontot keres. Haszontalan támogatónak romot sem takarít.
+- Az ősi rom nem fogyaszthatja el a gazdasági javítás keretét. A többmezős bontás összköltségét külön kezeli az egyszerre szükséges kapacitástól. Teli városban szükség esetén finanszírozott termelőhelyet szabadíthat fel fölösleges másolatok helyén.
+
+Részletek és mérések: [AI-felülvizsgálat](docs/ai-review-4.62.md).
 
 ## V4.61.2 – Új egységgrafikák és városrögzítés
 

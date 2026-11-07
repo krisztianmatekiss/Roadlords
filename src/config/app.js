@@ -1,6 +1,6 @@
 export const APP = Object.freeze({
-  version: '4.61.2',
-  label: 'V4.61.2 · ÚJ EGYSÉGGRAFIKÁK ÉS VÁROSRÖGZÍTÉS',
+  version: '4.62.0',
+  label: 'V4.62.0 · HELYZETFELISMERŐ AI',
   title: 'Roadlords – Fajok és területek',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',

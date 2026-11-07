@@ -81,7 +81,8 @@ export function installAiEvaluation(R) {
     if (b) {
       const taverns = R.buildingOf(c, 'tavern').filter(t => R.aiBuildingsTouch(c, t, b));
       if (taverns.length) {
-        const t = taverns.reduce((a, x) => x.level > a.level ? x : a);
+        const strength=t=>levelValue(t.level,TAVERN.bonus)*(R.townhallPower?.(c,t)||1);
+        const t = taverns.reduce((a, x) => strength(x)>strength(a)?x:a);
         damage *= 1 + levelValue(t.level, TAVERN.bonus) * Math.min(1, levelValue(t.level, TAVERN.hits) / 8) * (R.townhallPower?.(c, t) || 1);
       }
       const arenaChance = Math.max(0, ...R.buildingOf(c, 'orc_arena').filter(a => !a.inactive && R.aiBuildingsTouch(c, a, b)).map(a => levelValue(a.level, ORC_REDESIGN.arena)));
@@ -149,7 +150,9 @@ export function installAiEvaluation(R) {
     const prices = R.aiFactionBuildings(c).filter(type=>type!=='keep'&&c.unlocked.has(type)).map(type=>R.buildPrice(c,type));
     const constructionCost = prices.reduce((n,price)=>n+R.RES.reduce((sum,r)=>sum+(price[r]||0),0),0) / Math.max(1,prices.length);
     const purchaseCap=Object.fromEntries(R.RES.map(r=>[r,Math.max(0,...prices.map(price=>price[r]||0))]));
-    return { gain: flow.gain, use: flow.use, units, power, features, constructionCost, purchaseCap, armyCap: c.armyCap,
+    const economicPrices=R.aiFactionBuildings(c).filter(type=>c.unlocked.has(type)&&BUILDING_MECHANICS[type]?.produces).map(type=>R.buildPrice(c,type));
+    const constructionReserve=Object.fromEntries(R.RES.map(r=>{const values=economicPrices.map(p=>p[r]||0).filter(n=>n>0);return [r,values.length?Math.min(...values):0];}));
+    return { gain: flow.gain, use: flow.use, units, power, features, constructionCost, purchaseCap,constructionReserve,armyCap: c.armyCap,
       reserveCap: c.garrisonCap + c.rallyCap, caps: {...c.caps}, maxHp: c.maxHp,
       economy: producers.reduce((n, x) => n + x, 0), slots: R.occupancy(c).size };
   };
@@ -166,7 +169,7 @@ export function installAiEvaluation(R) {
       score += weight * ((after.gain[r]-gain)-(after.use[r]-use)) / scale;
       const worseDeficit=Math.max(0,after.use[r]-after.gain[r])-Math.max(0,use-gain);
       if(worseDeficit>0)score-=16*worseDeficit/scale;
-      const storageNeed = before.purchaseCap[r] > c.caps[r] || c.resources[r] > c.caps[r] * .72 && c.caps[r] < before.purchaseCap[r] * 1.5;
+      const storageNeed = R.aiStoragePressure?.(c,before) ?? false;
       if (after.caps[r] > before.caps[r]) score += (storageNeed ? 12 : 1) * Math.min(2, (after.caps[r] - before.caps[r]) / Math.max(1, before.caps[r]));
     }
     const committed = R.fieldUnitCount(c) + R.reserveCount(c);

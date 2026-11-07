@@ -14,6 +14,12 @@ export function installSharedAiPlacement(R) {
     return affects(c, hub, target);
   };
   R.aiRequiresLocalTargets = (c, b) => !!BUILDING_MECHANICS[b.type]?.local || !!BUILDING_MECHANICS[b.type]?.localSupport || requires(c, b);
+  R.aiMarginalSupportTargets=(c,b,targets)=>{
+    if(!BUILDING_MECHANICS[b.type]?.nonstacking)return targets;
+    const strength=p=>(p.level||R.levelOf(c,p.type))*(['tavern','armorsmith'].includes(p.type)?R.townhallPower?.(c,p)||1:1);
+    const existing=c.buildings.filter(p=>p.type===b.type&&!p.inactive&&strength(p)>=strength(b));
+    return targets.filter(p=>!existing.some(h=>R.aiSupportAffects(c,h,p)));
+  };
   const oldLayout = R.aiLayoutPlan;
   R.aiLayoutPlan = c => {
     const base = oldLayout(c), ids = new Set(base.hubs.map(x => x.hub.id));
@@ -46,7 +52,8 @@ export function installSharedAiPlacement(R) {
           if (type === 'guardhouse' && !R.v491GuardhousePlacementValid(c, row, col, rotation)) continue;
           const covered = layout.producers.filter(p => R.aiSupportAffects(c, b, p));
           const supportTargets = m.localSupport ? c.buildings.filter(p => R.aiSupportAffects(c, b, p)) : [];
-          if (R.aiRequiresLocalTargets(c, b) && !(m.localSupport ? supportTargets.length : covered.length)) continue;
+          const useful=R.aiMarginalSupportTargets(c,b,covered),usefulSupports=R.aiMarginalSupportTargets(c,b,supportTargets);
+          if (R.aiRequiresLocalTargets(c, b) && !(m.localSupport ? usefulSupports.length : useful.length)) continue;
           let score = -.3 * (Math.abs(row - R.CENTER.row) + Math.abs(col - R.CENTER.col));
           if (R.producerHasBonus(c, type, b)) score += 1000;
           if (!m.produces) {
@@ -54,7 +61,7 @@ export function installSharedAiPlacement(R) {
             if (R.adjacentTerrain(c, b, 'forest')) score -= 210;
             if (R.adjacentTerrain(c, b, 'quarry')) score -= 210;
           }
-          score += covered.length * 120 + supportTargets.length * 100;
+          score += useful.length * 120 + usefulSupports.length * 100;
           if (m.localUpkeep) score += c.buildings.filter(p => p.type !== 'keep' && p.id !== b.id && R.aiSupportAffects(c, b, p))
             .reduce((n, p) => n + (R.buildingDefinition(c, p.type).upkeep || 0), 0) * 90;
           if (R.BUILDINGS[type].unit) {

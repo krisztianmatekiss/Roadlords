@@ -1,9 +1,10 @@
 import { installAiEvaluation } from './evaluation.js';
 import { installAiActions } from './actions.js';
 import { installSharedAiPlacement } from './shared-placement.js';
+import { installAiBattleAwareness } from './battle-awareness.js';
+import { installAiGrowthPolicy } from './growth-policy.js';
 import { BUILDING_MECHANICS, CONDITIONAL_EFFECTS, UNIT_FEATURES, cardTargets } from './mechanics.js';
 import { levelValue } from '../data/faction-redesign.js';
-import { UNDEAD_CONVERGENCE as CONVERGENCE } from '../data/undead-convergence.js';
 
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 const sum = values => values.reduce((n, x) => n + x, 0);
@@ -14,6 +15,8 @@ export function installSharedAiPlanner(R) {
   installAiEvaluation(R);
   installAiActions(R);
   installSharedAiPlacement(R);
+  installAiBattleAwareness(R);
+  installAiGrowthPolicy(R);
   let decision = null;
   const available = c => R.aiFactionBuildings(c).filter(type => type !== 'keep' && c.unlocked.has(type) &&
     (!R.isUniqueBuilding(c, type) || !R.hasBuilding(c, type)));
@@ -26,28 +29,12 @@ export function installSharedAiPlanner(R) {
 
   function context(c) {
     const metrics = R.aiPreview(c,()=>{}), resources = R.aiResourceKeys(c);
-    const side=R.sideForCity(c);
-    const observed = R.state.units.filter(u => u.alive && u.side !== side);
-    const army = R.state.units.filter(u => u.alive && u.side === side);
-    const deep = observed.filter(u => side==='enemy'?u.lane > R.PATH_LENGTH * .84:u.lane<R.PATH_LENGTH*.16);
-    const pressure = deep.length >= 3 || c.hp < c.maxHp * .72;
+    const battle=R.aiBattleState(c),observed=battle.foes.map(e=>e.u),army=battle.allies.map(e=>e.u);
+    const deep=battle.threats.map(e=>e.u),pressure=battle.urgent;
     const military = available(c).filter(type => R.BUILDINGS[type].unit);
     const producers = available(c).filter(type => BUILDING_MECHANICS[type]?.produces);
-    const buildBudget = R.C();
-    for (const r of resources) {
-      const construction = producers.filter(type => BUILDING_MECHANICS[type].produces.includes(r));
-      const cheapest = Math.min(...construction.map(type => R.buildPrice(c, type)[r] || 0));
-      buildBudget[r] = Number.isFinite(cheapest) ? cheapest : 0;
-    }
-    const target = R.C();
-    for (const r of resources) {
-      const cap = c.caps[r], stock = c.resources[r];
-      const full = Number.isFinite(cap) && cap < 1e10 && stock > cap * .75;
-      const growth = (r === 'food' ? .7 : Math.max(1, buildBudget[r] / (metrics.power ? 65 : 45))) * (full ? .2 : 1);
-      const room = metrics.slots < R.GRID * R.GRID * .8 ? 1 : .25;
-      target[r] = metrics.use[r] * 1.18 + growth * room;
-    }
-    return { c, metrics, resources, observed, army, pressure, deep, military, producers, target,
+    const growth=R.aiGrowthTargets(c,metrics,battle,military),target=growth.target;
+    return { c, metrics, resources, observed, army, pressure, deep, military, producers, target,battle,growth,
       options: new Map(), buildings: new Map(), successors: new Map() };
   }
   function duringDecision(action,city=decision?.c||R.E) {
@@ -133,7 +120,8 @@ export function installSharedAiPlanner(R) {
       const after = R.aiCityMetrics(shadow); return {after, passive:passive(shadow,after)};
     });
     const after = result.after = measured.after;
-    let score = valueDelta(metrics,after,c,passive(c,metrics),measured.passive);
+    const benefit=valueDelta(metrics,after,c,passive(c,metrics),measured.passive);
+    let score = benefit;
     const area = R.cityBuildingCells(c,{type,row:0,col:0,rotation:cell[2]}).length;
     if (m.produces) {
       let repair = 0;
@@ -147,8 +135,8 @@ export function installSharedAiPlanner(R) {
     } else if (R.BUILDINGS[type].unit) {
       score = militaryScore(type,ctx) + Math.min(12,score*.15);
       const ready = ctx.resources.every(r => metrics.gain[r] >= ctx.target[r]);
-      if (!ready && !ctx.pressure && R.state.time<120) score -= 28;
-      if (ctx.pressure) score += 20;
+      if (!ready && !ctx.pressure) score -= ctx.battle.safeOpening?48:25;
+      if (ctx.pressure) score += metrics.power?25:65;
       if (ctx.resources.some(r=>after.use[r] > after.gain[r]*.98 && c.resources[r]-(price[r]||0)<Math.max(0,after.use[r]-after.gain[r])*45)) score -= 40;
       if (sum(Object.values(metrics.units).map(u=>u.count)) < 2 && ready) score += 8;
     } else if (m.capacity || m.reserve) {
@@ -156,11 +144,11 @@ export function installSharedAiPlanner(R) {
       if (m.capacity) score += committed > c.armyCap*.75 ? 40 : committed > c.armyCap*.5 ? 10 : -22;
       if (m.reserve && R.reserveCount(c)>=(c.garrisonCap+c.rallyCap)*.75) score += 12;
     } else if (m.storage) {
-      const needed = ctx.resources.some(r=>metrics.purchaseCap[r]>c.caps[r] || c.resources[r]>c.caps[r]*.85 && metrics.gain[r]>metrics.use[r] && c.caps[r]<metrics.purchaseCap[r]*1.5);
-      score += needed ? 25 : -18;
+      score += R.aiStoragePressure(c,metrics) ? 25 : -45;
     } else {
       if (!metrics.power) score -= 25;
-      score += Math.min(5, metrics.power / 5);
+      if(ctx.pressure&&m.features?.includes('defense'))score+=40;
+      score += benefit>.1?Math.min(5,metrics.power/5):-20;
       if (R.activeSpawners(c).length >= 3 && !R.hasBuilding(c,type)) score += 4;
     }
     // Expensive 2x2/3x3 buildings and sustained operating costs have real
@@ -212,6 +200,7 @@ export function installSharedAiPlanner(R) {
       });
       const value=valueDelta(metrics,measured.after,c,passive(c,metrics),measured.passive);
       score = value + R.aiConditionalCardValue(o,c,metrics);
+      if(ctx.pressure&&CONDITIONAL_EFFECTS[o.id]?.features.includes('defense'))score+=16;
       if (o.kind === 'building_upgrade') score += successorValue(o.id,ctx);
       if (o.kind==='building_upgrade'||o.kind==='building_branch') score += Math.min(4,R.buildingOf(c,o.id).length*.3);
       // Non-stat links still matter for a near-future unlocked unit, without
@@ -274,6 +263,7 @@ export function installSharedAiPlanner(R) {
 
   function savings(c, opp) {
     R.aiSaveForBuild(opp.type,opp.price,R.BUILDINGS[opp.type]?.unit?'military':BUILDING_MECHANICS[opp.type]?.produces?'economy':'support',c);
+    if(opp.capacityPrice)c._aiSaveCapacityPrice={...opp.capacityPrice};
     if(c.undeadState)c.undSaveSouls=opp.price.wood||0;
   }
   function clearSavings(c) {
@@ -284,9 +274,9 @@ export function installSharedAiPlanner(R) {
     if(!opp.cell) {
       const plan=R.aiBlockingPlan(c,opp.type,{affordableOnly:false});
       if(plan) {
-        const price={...opp.price};
-        for(const [row,col] of plan.ruins){const cost=R.terrainClearPrice(c,R.terrainAt(c,row,col).type);for(const r of R.RES)price[r]+=(cost[r]||0);}
-        savings(c,{...opp,price});
+        const price={...opp.price},capacityPrice={...opp.price};
+        for(const [row,col] of plan.ruins){const cost=R.terrainClearPrice(c,R.terrainAt(c,row,col).type);for(const r of R.RES){price[r]+=(cost[r]||0);capacityPrice[r]=Math.max(capacityPrice[r]||0,cost[r]||0);}}
+        savings(c,{...opp,price,capacityPrice});
         return R.aiClearBlockingRuin(opp.type,c)||true;
       }
       return R.aiMakeRoomFor(opp.type,c);
@@ -304,60 +294,100 @@ export function installSharedAiPlanner(R) {
   function setPortal(ctx) {
     const c=ctx.c;
     if(!c.undeadState||!R.hasBuilding(c,'und_otherworld_portal'))return;
-    const base=levelValue(R.levelOf(c,'und_otherworld_portal'),CONVERGENCE.portalUpkeep);
-    const cost=base+Math.floor((c.undeadState.portalUptime||0)/CONVERGENCE.portalIncreaseEvery)*CONVERGENCE.portalIncrease;
-    const other=ctx.metrics.use.wood-(c.undPortalEnabled?cost:0);
-    const enabled=ctx.metrics.gain.wood>other+cost+3&&c.resources.wood>cost*20;
-    if(enabled!==!!c.undPortalEnabled){c.undPortalEnabled=enabled;R.recomputeCity(c,true);return true;}
-    return false;
+    const battle=R.aiBattleState(c),reserve=R.reserveCount(c),readyWave=reserve>=Math.min(c._aiWaveTarget||10,c.garrisonCap);
+    const room=R.fieldUnitCount(c)<c.armyCap&&(R.battlePopulationRoom?.(c)??Infinity)>0;
+    const deploying=room&&(c.releaseQueue.length>0||c.gateMode==='open'&&reserve>0||readyWave);
+    let enabled=false;
+    if(deploying&&!battle.portalUnsafe&&R.state.time>=(c._aiPortalOffUntil||0)){
+      const on=c.undPortalEnabled?{flow:R.resourceFlowRates(c),upkeep:R.undEconomy(c).totalUpkeep}:
+        R.aiPreview(c,shadow=>{shadow.undPortalEnabled=true;},shadow=>({flow:R.resourceFlowRates(shadow),upkeep:R.undEconomy(shadow).totalUpkeep}));
+      const saving=c._aiSaveReason==='economy'?(c._aiSavePrice?.wood||0):0;
+      const needed=Math.max(0,on.flow.use.wood-on.flow.gain.wood)*45+on.upkeep*12+saving;
+      enabled=c.resources.wood>Math.max(30,needed);
+    }
+    if(enabled!==!!c.undPortalEnabled){
+      c.undPortalEnabled=enabled;if(!enabled)c._aiPortalOffUntil=R.state.time+8;
+      R.recomputeCity(c,true);
+    }
   }
   R.aiStepCity = (city,dt) => {
     if(R.MP.enabled||R.ROAD.test||R.state.pregame||R.state.ended)return;
     city.aiThink-=Math.max(0,dt||0);
     if(city.aiThink>0)return;
     city.aiThink=.8;
+    // The old implicit L4 slider default applied only to the right AI. Set
+    // the same explicit profile for either AI, preserving each locked cycle.
+    if(city.race==='orc')for(const b of city.buildings)if(b.type==='orc_overseer'&&b.level===4){
+      city.orcHasteSettings||={};if(city.orcHasteSettings[b.id]==null)city.orcHasteSettings[b.id]=.5;
+    }
     R.aiGate(city);
     return duringDecision(ctx=>{
       const {c,metrics}=ctx;
       if(metrics.slots>=R.GRID*R.GRID*.92&&!ctx.pressure)c.aiThink=2.4;
-      if(setPortal(ctx))return;
-      if(R.state.startChoices>0)return;
-      if(R.aiExcavateAncient(c._aiSaveType,c)){clearSavings(c);return;}
-      const saved=c._aiSaveType;
-      if(saved&&c.unlocked.has(saved)&&R.state.time-c._aiSaveSince<60&&!R.findCell(c,saved)) {
-        const deficit=ctx.resources.some(r=>metrics.gain[r]<metrics.use[r]);
-        if((BUILDING_MECHANICS[saved]?.produces||!deficit&&!ctx.pressure)&&invest(opportunity(saved,ctx),ctx))return;
+      const reserve=R.C();
+      for(const r of ctx.resources)if(metrics.gain[r]<ctx.target[r]){
+        const sources=ctx.producers.filter(type=>BUILDING_MECHANICS[type]?.produces.includes(r));
+        const cheapest=sources.sort((a,b)=>R.RES.reduce((n,k)=>n+(R.buildPrice(c,a)[k]||0)-(R.buildPrice(c,b)[k]||0),0))[0];
+        if(cheapest){const price=R.buildPrice(c,cheapest);for(const k of R.RES)reserve[k]=Math.max(reserve[k],price[k]||0);}
       }
-      const types=available(c);
-      // Evaluate all economic/capacity roles, but only the four most promising
-      // military and four support investments. No per-frame search or history.
-      const military=ctx.military.slice().sort((a,b)=>militaryScore(b,ctx)-militaryScore(a,ctx)).slice(0,4);
-      const supports=types.filter(type=>!R.BUILDINGS[type].unit&&!BUILDING_MECHANICS[type]?.produces&&!BUILDING_MECHANICS[type]?.capacity&&!BUILDING_MECHANICS[type]?.storage);
-      supports.sort((a,b)=>{
-        const affinity=type=>sum((BUILDING_MECHANICS[type]?.features||[]).map(x=>metrics.features[x]||0))+(R.hasBuilding(c,type)?-5:1);
-        return affinity(b)-affinity(a);
-      });
-      const chosen=new Set([...ctx.producers,...military,...supports.slice(0,4),...types.filter(type=>BUILDING_MECHANICS[type]?.capacity||BUILDING_MECHANICS[type]?.storage)]);
-      if(c._aiSaveType&&c.unlocked.has(c._aiSaveType)&&R.state.time-c._aiSaveSince<60)chosen.add(c._aiSaveType);
-      let ranked=[...chosen].map(type=>opportunity(type,ctx));
-      const noPlot=ranked.filter(x=>!x.cell);
-      ranked=ranked.filter(x=>x.cell).map(x=>({...x,score:x.score+(x.type===c._aiSaveType?R.canPay(c,x.price)?18:3:0)})).sort((a,b)=>b.score-a.score);
-      const best=ranked[0];
-      if(best&&best.score>0) {
-        // Existing construction savings survive ordinary ticks. A sustained
-        // deficit or invasion can supersede them; sunk costs are not a lock.
-        invest(best,ctx);return;
-      }
-      const blocked=noPlot.sort((a,b)=>{
-        const urgency=type=>BUILDING_MECHANICS[type]?.produces?ctx.resources.some(r=>ctx.target[r]>metrics.gain[r])?30:5:R.BUILDINGS[type]?.unit?20:0;
-        return urgency(b.type)-urgency(a.type);
-      });
-      if(blocked.length){
-        const limit=Math.min(4,blocked.length),index=(c._aiBlockedCursor||0)%limit;
-        c._aiBlockedCursor=index+1;
-        if(invest(blocked[index],ctx))return;
-      }
-      clearSavings(c);
+      c._aiGrowthPlan={time:R.state.time,growing:ctx.growth.growing,reserve};
+      try{
+        if(R.state.startChoices>0)return;
+        if(ctx.pressure&&!R.activeSpawners(c).some(b=>!b.inactive)){
+          const emergency=ctx.military.map(type=>{
+            const opp=opportunity(type,ctx);if(!opp.cell)return null;
+            const b={type,id:'emergency-budget',level:R.levelOf(c,type),row:opp.cell[0],col:opp.cell[1],rotation:opp.cell[2]};
+            const key=R.effectiveUnitKey(c,b),cost=R.primarySpawnCost(c,key,b),stats=R.statsFor(c,{key});
+            if(R.RES.some(r=>c.resources[r]<(opp.price[r]||0)+(cost[r]||0)))return null;
+            const eta=R.trainingTime(c,b)+Math.min(ctx.battle.frontDistance,...ctx.battle.threats.map(e=>e.d))/Math.max(1,stats.speed);
+            return {...opp,emergency:militaryScore(type,ctx)-eta*.25};
+          }).filter(Boolean).sort((a,b)=>b.emergency-a.emergency);
+          if(emergency[0]&&R.aiBuild(emergency[0].type,c)){clearSavings(c);return;}
+        }
+        // Complete a funded multi-cell replacement before another small
+        // building can occupy its freshly cleared cells.
+        const redevelopment=c._aiRedevelopPlan;
+        if(redevelopment&&!ctx.pressure){
+          if(invest(opportunity(redevelopment.type,ctx),ctx))return;
+          clearSavings(c);
+        }
+        if(R.aiExcavateAncient(c._aiSaveType,c)){clearSavings(c);return;}
+        const saved=c._aiSaveType;
+        if(saved&&c.unlocked.has(saved)&&R.state.time-c._aiSaveSince<60&&!R.findCell(c,saved)) {
+          const deficit=ctx.resources.some(r=>metrics.gain[r]<metrics.use[r]);
+          if((BUILDING_MECHANICS[saved]?.produces||!deficit&&!ctx.pressure)&&invest(opportunity(saved,ctx),ctx))return;
+        }
+        const types=available(c);
+        // Evaluate all economic/capacity roles, but only the four most promising
+        // military and four support investments. No per-frame search or history.
+        const military=ctx.military.slice().sort((a,b)=>militaryScore(b,ctx)-militaryScore(a,ctx)).slice(0,4);
+        const supports=types.filter(type=>!R.BUILDINGS[type].unit&&!BUILDING_MECHANICS[type]?.produces&&!BUILDING_MECHANICS[type]?.capacity&&!BUILDING_MECHANICS[type]?.storage);
+        supports.sort((a,b)=>{
+          const affinity=type=>sum((BUILDING_MECHANICS[type]?.features||[]).map(x=>metrics.features[x]||0))+(R.hasBuilding(c,type)?-5:1);
+          return affinity(b)-affinity(a);
+        });
+        const chosen=new Set([...ctx.producers,...military,...supports.slice(0,4),...types.filter(type=>BUILDING_MECHANICS[type]?.capacity||BUILDING_MECHANICS[type]?.storage)]);
+        if(c._aiSaveType&&c.unlocked.has(c._aiSaveType)&&R.state.time-c._aiSaveSince<60)chosen.add(c._aiSaveType);
+        let ranked=[...chosen].map(type=>opportunity(type,ctx));
+        const noPlot=ranked.filter(x=>!x.cell);
+        ranked=ranked.filter(x=>x.cell).map(x=>({...x,score:x.score+(x.type===c._aiSaveType?R.canPay(c,x.price)?18:3:0)})).sort((a,b)=>b.score-a.score);
+        const best=ranked[0];
+        if(best&&best.score>0) {
+          // Existing construction savings survive ordinary ticks. A sustained
+          // deficit or invasion can supersede them; sunk costs are not a lock.
+          invest(best,ctx);return;
+        }
+        const blocked=noPlot.sort((a,b)=>{
+          const urgency=type=>BUILDING_MECHANICS[type]?.produces?ctx.resources.some(r=>ctx.target[r]>metrics.gain[r])?30:5:R.BUILDINGS[type]?.unit?20:0;
+          return urgency(b.type)-urgency(a.type);
+        });
+        if(blocked.length){
+          const limit=Math.min(4,blocked.length),index=(c._aiBlockedCursor||0)%limit;
+          c._aiBlockedCursor=index+1;
+          if(invest(blocked[index],ctx))return;
+        }
+        clearSavings(c);
+      }finally{setPortal(ctx);}
     },city);
   };
   R.enemyBuildAI=dt=>{if(R.spectator?.active)R.aiStepCity(R.P,dt);R.aiStepCity(R.E,dt);};

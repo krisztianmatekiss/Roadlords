@@ -5,6 +5,9 @@ html body #suddenOverlay {
   border-radius:12px;background:#24122aee;box-shadow:0 0 35px #ce56df66;
   opacity:0;transition:opacity .25s,transform .25s;
 }
+.building .capacitySurplusMark {position:absolute;right:2px;top:2px;z-index:30;display:grid;place-items:center;width:clamp(17px,2vw,27px);height:clamp(17px,2vw,27px);border-radius:50%;border:1px solid #ff9c91;background:#360e0ff2;color:#ff635b;font:900 clamp(20px,2.5vw,32px)/1 sans-serif;pointer-events:auto;text-shadow:0 1px 3px #000;}
+#buildList .buildcard.capacityLocked {filter:saturate(.35);}
+.capacityLimitBadge {position:absolute;left:10%;top:14%;z-index:20;border:1px solid #ff9c91;border-radius:4px;padding:2px 5px;background:#360e0ff2;color:#ff8176;font-weight:900;}
 html body #suddenOverlay.show {opacity:1;transform:translate(-50%,0);}
 html body #suddenOverlay .big {display:block;font-size:clamp(24px,3vw,40px);color:#f6c7ff;font-weight:900;}
 html body #suddenOverlay .sub {display:block;margin-top:8px;font-size:clamp(14px,1.5vw,19px);color:#f6e5f8;}

@@ -31,7 +31,7 @@ export function installSharedAiPlacement(R) {
   const previous = R.findCell;
   R.findCell = (c, type) => {
     if (!R.aiControlsCity(c)) return previous(c, type);
-    if (!R.BUILDINGS[type] || REMOVED_BUILDINGS.has(type) || !R.factionMatches(c.race, R.BUILDINGS[type], type) ||
+    if (!R.BUILDINGS[type] || !R.canBuildArmyCapacity(c,type) || REMOVED_BUILDINGS.has(type) || !R.factionMatches(c.race, R.BUILDINGS[type], type) ||
       R.isUniqueBuilding(c, type) && R.hasBuilding(c, type)) return null;
     const signature = c.buildings.map(b => `${b.id}:${b.type}:${b.level}:${b.row}:${b.col}:${b.rotation||0}:${!!b.inactive}`).join('|');
     const board=c.race+';'+signature+';'+c.terrain.map(t=>t?.type||'').join(',')+';'+JSON.stringify([c.levels,c.l4Branches,[...c.legends]]);

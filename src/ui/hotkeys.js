@@ -101,7 +101,7 @@ export function initializeUiHotkeys(runtime) {
     const cards = [...runtime.$$('#buildList .buildcard')];
     const card = cards[n - 1];
     if (!card) return;
-    if (card.disabled) {
+    if (card.disabled || card.getAttribute('aria-disabled') === 'true') {
       runtime.revealBuildCard?.(card.dataset.k, {keyboard:true});
       runtime.toast(`${n}. hely: ez az épület most nem építhető.`);
       return;

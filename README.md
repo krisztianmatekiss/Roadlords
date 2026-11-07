@@ -1,4 +1,14 @@
-# Roadlords · V4.62.0
+# Roadlords · V4.62.1
+
+## V4.62.1 – Sereglimit és gazdasági nyitás
+
+- A tényleges úti sereglimit legfeljebb 750. A külön, idézetteket és utasokat is számoló 750-es egységplafon és az egységek eltérő helyfoglalása továbbra is érvényes.
+- A Lakóház és Kripta a plafonnál nem építhető tovább; az építési sáv MAX jelzést mutat. A valódi helyőrségi mellékhatást adó épület továbbra is használható erre a célra.
+- Fejlesztés után a teljesen fölösleges kapacitásépületeken piros X jelenik meg. A korábbi épületek kapják előbb a rendelkezésre álló keretet; bontás után a jelölés újraszámolódik. A meglévő egységeket a korlát nem törli.
+- Az AI a valódi kivonulási igényre épít kapacitást, teli pályasereg mellett nem erőltet új házakat. Zsúfolt, biztonságos városban felszabadítja a fölöslegessé vált kapacitásépületek helyét.
+- A korai gazdaság értékelését nem nyomja le a kezdőkészlet, amíg az adott nyersanyag termelőháttere hiányzik. Az L2 főépületből származó bevétel nem helyettesíti automatikusan az első Favágót.
+
+A közös szabály a [kapacitásmodulban](src/economy/army-capacity.js) található; ugyanazt használja a vásárlás, a kirajzolás és az AI. A multiplayer szabályverzió 15: eltérő, korábbi klienssel nem indítható közös meccs.
 
 ## V4.62.0 – Helyzetfelismerő AI
 

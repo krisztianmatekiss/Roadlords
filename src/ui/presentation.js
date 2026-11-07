@@ -221,6 +221,13 @@ export function register(runtime) {
       const clip = runtime.lClipFor(b.type, b.rotation || 0);
       if (clip) el.style.clipPath = clip;
       el.innerHTML = `${runtime.buildingSpriteHTML(b.type, b.rotation || 0, bounds)}<span class="bname">${d.name}</span><span class="blv">L${b.level}</span>${d.unit ? `<i class="bprog" style="width:${Math.round((b.progress || 0) * 100)}%"></i>` : ''}`;
+      if (runtime.armyCapacityState?.(c)?.buildings.get(b.id)?.redundant) {
+        const mark = document.createElement('span');
+        mark.className = 'capacitySurplusMark';mark.textContent = '×';
+        mark.title = `Fölösleges kapacitás: a sereglimit már ${runtime.armyCapacityLimit}.`;
+        mark.setAttribute('role','img');mark.setAttribute('aria-label',mark.title);
+        el.append(mark);
+      }
       if (interactive) el.onclick = () => {
         runtime.state.selectedBuild = null;
         runtime.state.selectedBuilding = b.id;
@@ -415,6 +422,9 @@ export function register(runtime) {
     }).join('');
     runtime.$$('#buildList .buildcard').forEach(b => b.onclick = () => {
       const k = b.dataset.k;
+      if (runtime.canBuildArmyCapacity && !runtime.canBuildArmyCapacity(runtime.P,k)) {
+        runtime.toast(`Elérted a maximális sereglimitet (${runtime.armyCapacityLimit}).`);return;
+      }
       runtime.state.selectedBuilding = null;
       runtime.state.lastPlacementHover = null;
       if (runtime.state.selectedBuild === k) runtime.state.selectedBuild = null;else {

@@ -18,7 +18,7 @@ export function installSharedAiPlanner(R) {
   installAiBattleAwareness(R);
   installAiGrowthPolicy(R);
   let decision = null;
-  const available = c => R.aiFactionBuildings(c).filter(type => type !== 'keep' && c.unlocked.has(type) &&
+  const available = c => R.aiFactionBuildings(c).filter(type => type !== 'keep' && c.unlocked.has(type) && R.canBuildArmyCapacity(c,type) &&
     (!R.isUniqueBuilding(c, type) || !R.hasBuilding(c, type)));
   const previewBuilding = (c, type, cell, measure) => R.aiPreview(c, shadow => {
     const price=R.placementPrice(shadow,type,...cell);
@@ -140,9 +140,12 @@ export function installSharedAiPlanner(R) {
       if (ctx.resources.some(r=>after.use[r] > after.gain[r]*.98 && c.resources[r]-(price[r]||0)<Math.max(0,after.use[r]-after.gain[r])*45)) score -= 40;
       if (sum(Object.values(metrics.units).map(u=>u.count)) < 2 && ready) score += 8;
     } else if (m.capacity || m.reserve) {
-      const committed = R.fieldUnitCount(c) + R.reserveCount(c);
-      if (m.capacity) score += committed > c.armyCap*.75 ? 40 : committed > c.armyCap*.5 ? 10 : -22;
-      if (m.reserve && R.reserveCount(c)>=(c.garrisonCap+c.rallyCap)*.75) score += 12;
+      // Standing garrisons cannot justify unlimited field capacity. Count
+      // actual field units plus one deployable wave, and value only real gains.
+      const field = R.fieldUnitCount(c), committed = field + Math.min(R.reserveCount(c),Math.max(8,metrics.power*8));
+      if (m.capacity) score += after.armyCap > metrics.armyCap ? committed > c.armyCap*.8 ? 28 : committed > c.armyCap*.6 ? 6 : -30 : -35;
+      if (m.reserve && R.reserveCount(c)>=(c.garrisonCap+c.rallyCap)*.8 && after.reserveCap>metrics.reserveCap) score += 12;
+      if ((R.battlePopulationRoom?.(c) ?? Infinity) <= 0) score -= 60;
     } else if (m.storage) {
       score += R.aiStoragePressure(c,metrics) ? 25 : -45;
     } else {
@@ -174,6 +177,7 @@ export function installSharedAiPlanner(R) {
         return {after,passive:passive(shadow,after)};
       });
       const value=valueDelta(metrics,measured.after,c,passive(c,metrics),measured.passive);
+      if(BUILDING_MECHANICS[o.id]?.capacity && measured.after.armyCap<=metrics.armyCap && measured.after.reserveCap<=metrics.reserveCap) return 0;
       best = Math.max(best,value);
     }
     const discounted = Math.min(9,best * (level===3?.20:.08));
@@ -185,6 +189,7 @@ export function installSharedAiPlanner(R) {
     const {c,metrics} = ctx;
     let score;
     if (o.kind === 'building') {
+      if(!R.canBuildArmyCapacity(c,o.id))return -100;
       // An unlock has option value but no imaginary free building. Preview its
       // best legal footprint, then discount construction time and affordability.
       const opp = opportunity(o.id,ctx), type = R.BUILDINGS[o.id], m=BUILDING_MECHANICS[o.id]||{};
@@ -199,6 +204,7 @@ export function installSharedAiPlanner(R) {
         return {after,passive:passive(shadow,after)};
       });
       const value=valueDelta(metrics,measured.after,c,passive(c,metrics),measured.passive);
+      if(BUILDING_MECHANICS[o.id]?.capacity && measured.after.armyCap<=metrics.armyCap && measured.after.reserveCap<=metrics.reserveCap) return -100;
       score = value + R.aiConditionalCardValue(o,c,metrics);
       if(ctx.pressure&&CONDITIONAL_EFFECTS[o.id]?.features.includes('defense'))score+=16;
       if (o.kind === 'building_upgrade') score += successorValue(o.id,ctx);
@@ -333,6 +339,10 @@ export function installSharedAiPlanner(R) {
       c._aiGrowthPlan={time:R.state.time,growing:ctx.growth.growing,reserve};
       try{
         if(R.state.startChoices>0)return;
+        if(!ctx.pressure&&metrics.slots>=R.GRID*R.GRID*.8){
+          const surplus=[...R.armyCapacityState(c).buildings].find(([,value])=>value.redundant);
+          if(surplus&&R.aiMutate(()=>R.demolish(c,surplus[0])))return;
+        }
         if(ctx.pressure&&!R.activeSpawners(c).some(b=>!b.inactive)){
           const emergency=ctx.military.map(type=>{
             const opp=opportunity(type,ctx);if(!opp.cell)return null;

@@ -11,7 +11,7 @@ export function installAiActions(R) {
   R.aiClearBuildSavings = (c=R.E) => {c._aiSaveType=null;c._aiSavePrice=null;c._aiSaveCapacityPrice=null;c._aiRedevelopPlan=null;c._aiSaveReason=null;c._aiSaveSince=0;};
   installIncomeRedevelopment(R);
   R.aiBuild = (type,c=R.E) => {
-    if(!type||!R.BUILDINGS[type]||!c.unlocked.has(type)||!R.factionMatches(c.race,R.BUILDINGS[type],type))return false;
+    if(!type||!R.BUILDINGS[type]||!R.canBuildArmyCapacity(c,type)||!c.unlocked.has(type)||!R.factionMatches(c.race,R.BUILDINGS[type],type))return false;
     if(R.isUniqueBuilding(c,type)&&R.hasBuilding(c,type))return false;
     const cell=R.findCell(c,type);
     if(!cell)return R.aiMutate(()=>R.aiClearBlockingRuin(type,c));
@@ -19,7 +19,7 @@ export function installAiActions(R) {
     return R.aiMutate(()=>!!R.placeBuilding(c,type,...cell)?.ok);
   };
   R.aiBlockingPlan = (c,type,{affordableOnly=true}={}) => {
-    if(!R.BUILDINGS[type]||!c.unlocked.has(type)||R.isUniqueBuilding(c,type)&&R.hasBuilding(c,type))return null;
+    if(!R.BUILDINGS[type]||!R.canBuildArmyCapacity(c,type)||!c.unlocked.has(type)||R.isUniqueBuilding(c,type)&&R.hasBuilding(c,type))return null;
     const occupied=R.occupancy(c);let best=null;
     for(const rotation of R.rotationOptions(type)){
       const offsets=R.cityBuildingCells(c,{type,row:0,col:0,rotation});

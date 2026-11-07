@@ -119,6 +119,9 @@ export function initializeUiCatalogDetails(runtime) {
     }).join('');
     runtime.$$('#buildList .buildcard').forEach(b => b.onclick = () => {
       const k = b.dataset.k;
+      if (runtime.canBuildArmyCapacity && !runtime.canBuildArmyCapacity(runtime.P,k)) {
+        runtime.toast(`Elérted a maximális sereglimitet (${runtime.armyCapacityLimit}).`);return;
+      }
       runtime.state.selectedBuilding = null;
       runtime.state.lastPlacementHover = null;
       if (runtime.state.selectedBuild === k) runtime.state.selectedBuild = null;else {

@@ -29,7 +29,8 @@ export function installAiGrowthPolicy(R) {
       budget[r]=prices.length?Math.min(...prices):0;
       future[r]=Number.isFinite(seconds)?(cost[r]||0)/Math.max(1,seconds):0;
       const stock=c.resources[r],full=Number.isFinite(c.caps[r])&&c.caps[r]<1e10&&stock>=c.caps[r]*.75;
-      const surplus=full||stock>Math.max(100,budget[r]*4)? .2:stock>Math.max(100,budget[r]*2)?.55:1;
+      const established=sources.some(type=>BUILDING_MECHANICS[type].produces.includes(r)&&R.hasBuilding(c,type));
+      const surplus=battle.safeOpening&&!established?1:full||stock>Math.max(100,budget[r]*4)? .2:stock>Math.max(100,budget[r]*2)?.55:1;
       const construction=r==='food'?.45:Math.max(r==='wood'?2:1,budget[r]/(battle.safeOpening?22:28),b?(R.buildPrice(c,next)[r]||0)/55:0);
       target[r]=metrics.use[r]*1.18+(construction*surplus+future[r]*.8)*room;
     }

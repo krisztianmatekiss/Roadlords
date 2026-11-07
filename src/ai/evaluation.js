@@ -172,7 +172,7 @@ export function installAiEvaluation(R) {
       const storageNeed = R.aiStoragePressure?.(c,before) ?? false;
       if (after.caps[r] > before.caps[r]) score += (storageNeed ? 12 : 1) * Math.min(2, (after.caps[r] - before.caps[r]) / Math.max(1, before.caps[r]));
     }
-    const committed = R.fieldUnitCount(c) + R.reserveCount(c);
+    const committed = R.fieldUnitCount(c) + Math.min(R.reserveCount(c),Math.max(8,before.power*8));
     score += Math.min(20, positive(after.armyCap - before.armyCap) / Math.max(10, before.armyCap) * (committed >= before.armyCap * .65 ? 35 : 3));
     score += Math.min(10, positive(after.reserveCap - before.reserveCap) / Math.max(10, before.reserveCap) * (R.reserveCount(c) > before.reserveCap * .6 ? 20 : 2));
     score += Math.log(Math.max(1, after.maxHp) / Math.max(1, before.maxHp)) * (c.hp < c.maxHp * .7 ? 8 : 2);

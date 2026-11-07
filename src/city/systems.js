@@ -324,6 +324,7 @@ export function register(runtime) {
     return map;
   };
   runtime.canPlace = function canPlace(c, type, row, col, rotation = 0, exceptId = null) {
+    if (!exceptId && runtime.canBuildArmyCapacity && !runtime.canBuildArmyCapacity(c,type)) return false;
     const occ = runtime.occupancy(c, exceptId);
     for (const [dr, dc] of runtime.rotatedShape(type, rotation)) {
       const r = row + dr,
@@ -436,6 +437,10 @@ export function register(runtime) {
     if (runtime.isUniqueBuilding(c, type) && runtime.hasBuilding(c, type)) return {
       ok: false,
       reason: 'Ebből csak 1 lehet.'
+    };
+    if (runtime.canBuildArmyCapacity && !runtime.canBuildArmyCapacity(c,type)) return {
+      ok: false,
+      reason: `Elérted a maximális sereglimitet (${runtime.armyCapacityLimit}).`
     };
     rotation = runtime.normalizedRotation(type, rotation);
     if (!runtime.canPlace(c, type, row, col, rotation)) return {
@@ -759,7 +764,9 @@ export function register(runtime) {
   runtime.cityVisualSignature = function cityVisualSignature(c) {
     const terrain = (c.terrain || []).map(t => t?.type || '').join(','),
       buildings = c.buildings.map(b => `${b.id}:${b.type}:${b.level}:${b.row}:${b.col}:${b.rotation || 0}:${b.inactive ? 1 : 0}`).join('|');
-    return `${terrain}§${buildings}`;
+    const capacity = runtime.armyCapacityState?.(c);
+    const surplus = capacity ? [...capacity.buildings].filter(([,value])=>value.redundant).map(([id])=>id).join(',') : '';
+    return `${terrain}§${buildings}§surplus:${surplus}`;
   };
   runtime.v491GuardhousePlacementValid = function v491GuardhousePlacementValid(c, row, col, rotation = 0) {
     const fake = {

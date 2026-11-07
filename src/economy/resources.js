@@ -246,6 +246,15 @@ export function register(runtime) {
     }[need.r] : null;
   };
   runtime.updateBuildAffordabilityV497 = function updateBuildAffordabilityV497() {
+    runtime.$$('#buildList .buildcard').forEach(card => {
+      const blocked = runtime.canBuildArmyCapacity && !runtime.canBuildArmyCapacity(runtime.P,card.dataset.k);
+      card.classList.toggle('capacityLocked',!!blocked);
+      card.setAttribute('aria-disabled',String(!!blocked || card.disabled));
+      let badge = card.querySelector('.capacityLimitBadge');
+      if (blocked && !badge) {
+        badge = document.createElement('span');badge.className = 'capacityLimitBadge';badge.textContent = 'MAX';card.append(badge);
+      } else if (!blocked) badge?.remove();
+    });
     runtime.$$('#buildList [data-cost-resource]').forEach(el => {
       const r = el.dataset.costResource,
         amount = Number(el.dataset.costAmount) || 0,

@@ -6,6 +6,7 @@ import { initializeHumanMapArtwork } from '../rendering/human-map-artwork.js';
 import { initializeUndeadExpansion } from '../factions/undead/expansion.js';
 import { installFlyingShotSnapshots } from '../multiplayer/flying-shots.js';
 import { installBattlePopulation } from '../economy/battle-population.js';
+import { installArmyCapacity } from '../economy/army-capacity.js';
 import { installUnitMovementBalance } from '../data/movement-balance.js';
 import { installProductionFigures } from '../rendering/production-figures.js';
 import { initializeUndeadFoundation } from '../factions/undead/foundation.js';
@@ -297,6 +298,7 @@ export function createGame() {
   initializeUndeadTerritoryLegends(runtime);
   initializeUndeadConvergence(runtime);
   installUnitCardIllustrations(runtime);
+  installArmyCapacity(runtime);
   installSharedAiPlanner(runtime);
   return runtime;
 }

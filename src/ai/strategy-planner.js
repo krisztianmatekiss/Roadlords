@@ -139,7 +139,9 @@ export function installAiStrategyPlanner(R) {
     const value={primary,alternatives:plans.filter(p=>p!==primary),projections:budget.used,at:now,reservation:null,pressure:ctx.pressure};
     const progressStamp=primary?progress(c,primary):'';
     const progressAt=previous&&old?.key===primary?.key&&previous.progressStamp===progressStamp?previous.progressAt:now;
-    memory.set(c,{capital,stamp,time:now,next:now+(ctx.metrics.slots>=80?12:8),value,heldAt:previous?.heldAt??null,progressStamp,progressAt});
+    const continuing=previous?.capital===capital&&now>=previous.time;
+    memory.set(c,{capital,stamp,time:now,next:now+(ctx.metrics.slots>=80?12:8),value,
+      heldAt:continuing?previous.heldAt??null:null,formingSince:continuing?previous.formingSince??null:null,progressStamp,progressAt});
     if(primary&&primary.evidence>=3&&!ctx.pressure){
       const type=R.aiStrategySteps(c,primary,false,ctx.metrics).filter(o=>o.kind==='construct'||o.kind==='building').map(o=>o.id)
         .find(type=>!R.aiBuildingMechanics(type).produces&&R.cityBuildingCells(c,{type,row:0,col:0,rotation:0}).length>1);
@@ -189,6 +191,11 @@ export function installAiStrategyPlanner(R) {
   };
   R.aiStrategyGatePolicy=(c,{entries,total,target,cap,full})=>{
     const state=stateFor(c),p=state?.value.primary;
+    if(state&&(!entries.length||c.gateMode==='open'))state.formingSince=null;
+    if(state&&entries.length)state.formingSince??=R.state.time;
+    if(state?.formingSince!=null&&R.state.time-state.formingSince>=45){
+      state.heldAt=null;return {target:Math.min(target,Math.max(1,total)),hold:false};
+    }
     if(!p||p.confidence<.35||R.aiUnderAttack(c)){if(state)state.heldAt=null;return {target,hold:false};}
     const focused=entries.filter(e=>p.units.includes(e.key)).length>=entries.length*.5&&entries.length>0;
     const wanted=focused?Math.min(cap,Math.max(target,Math.floor(cap*.75))):target;

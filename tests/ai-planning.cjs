@@ -104,6 +104,12 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    const other=R.P;for(let n=0;n<15;n++){const u=R.releaseUnit(other,R.makeEntry(other,'catapult'));u.lane=R.PATH_LENGTH-30;}
    R.state.time++;const emergency=R.aiStrategyGatePolicy(c,args);return first.hold&&!expired.hold&&!emergency.hold;
   }));
+  check('A slowly formed strategic wave is actually released after the formation deadline',await p.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,c=planReset('undead');planPut(c,'und_graveyard');c.legends.add('skeleton_leg_guard');R.recomputeCity(c,true);
+   R.aiStrategy(c,planContext(c));c.garrison=Array.from({length:2},()=>R.makeEntry(c,'und_skeleton'));c.gateMode='closed';c._aiPickDue=R.state.time+60;
+   R.aiGate(c);if(c.gateMode!=='closed')return false;
+   R.state.time+=46;R.aiGate(c);return c.gateMode==='open'&&c.releaseQueue.length===2;
+  }));
   check('Strategic planning remains inactive in multiplayer',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=vampirePlan('enemy');R.MP.enabled=true;const before=JSON.stringify(c),out=R.aiStrategy(c,planContext(c));R.aiStepCity(c,1);R.MP.enabled=false;return out===null&&before===JSON.stringify(c);
   }));

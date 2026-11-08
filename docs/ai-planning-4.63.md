@@ -16,7 +16,7 @@ Egy tervet a felvett lapok, az elkészült épületek, a technológiai szintek �
 - Az AI megtervezheti a nagyobb beruházáshoz szükséges raktárat vagy termelőt is. A megvalósítást továbbra is a valódi, fizetett építési útvonal végzi; képzési fogyasztás és vészhelyzet felülírhatja a beruházást.
 - A fontos, akár még feloldásra váró épületnek puha helyfoglalást adhat. Ez a jó termelőhelyeket nem tiltja le; vészhelyzetben a stratégiai helyfoglalás nem akadályozza a védelmet.
 - A helyi támogatók elhelyezése figyeli a terv fő egységeinek termelőit is. A már elkészült cél nem kap újra első példányra szóló építési bónuszt.
-- Egy erősen támogatott egységből összeálló hullám nagyobbra gyűlhet. Közeli, hasznos fejlesztési lehetőségre legfeljebb 12 másodpercet várhat. Tele tartalék és közvetlen veszély ezt a várakozást feloldja.
+- Egy erősen támogatott egységből összeálló hullám nagyobbra gyűlhet. A gyülekezés legfeljebb 45 másodpercig emelheti a szükséges hullámméretet; utána az összegyűlt sereg elindulhat. Közeli, hasznos fejlesztési lehetőségre legfeljebb 12 másodpercet várhat. Tele tartalék és közvetlen veszély ezt a várakozást feloldja.
 
 ## Terhelés és korlátok
 

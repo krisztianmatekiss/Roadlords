@@ -13,6 +13,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    let untilPick=R.PICK_BASE_SECONDS,picks=0,minSouls=initial.wood,lost=0,unfunded=0;
    try{for(let t=1;t<=600;t++){
     R.state.time=t;R.ROAD.clock=t;untilPick--;if(untilPick<=0){R.grantEnemyPick('timer');picks++;untilPick=R.PICK_BASE_SECONDS*Math.pow(R.PICK_GROWTH,picks);}
+    R.state.nextPick=untilPick;R.state.timedPickCount=picks;
     R.produceResources(c,1);R.updateSpawners(c,1);R.enemyBuildAI(1);R.enemyGateAI();R.releaseQueues(1);
     if(c.buildings.length>1)times.firstBuilding??=t;
     R.state.units=R.state.units.filter(u=>u.side!=='enemy'||t-(u.auditReleasedAt??t)<45);

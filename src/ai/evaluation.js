@@ -28,8 +28,8 @@ export function installAiEvaluation(R) {
 
   // Never call applyChoice, setBuildingLevel or makeEntry on a preview: those
   // paths can emit picks, refresh real troops, roll RNG, or update match stats.
-  R.aiPreview = (city, change, measure = c => R.aiCityMetrics(c)) => {
-    const shadow = structuredClone(city), side = city === R.P ? 'P' : 'E', original = R[side], cache = R.aiDecisionCache;
+  R.aiPreview = (city, change, measure = c => R.aiCityMetrics(c), owner = city) => {
+    const shadow = structuredClone(city), side = owner === R.P ? 'P' : 'E', original = R[side], cache = R.aiDecisionCache;
     delete shadow._aiShared;
     R[side] = shadow;
     R.aiDecisionCache = null;
@@ -42,7 +42,7 @@ export function installAiEvaluation(R) {
       R.aiDecisionCache = cache;
     }
   };
-  R.aiPreviewChoice = (c, o, measure) => R.aiPreview(c, shadow => {
+  R.aiProjectChoice = (shadow,o) => {
     if (o.kind === 'building') shadow.unlocked.add(o.id);
     else if (o.kind === 'normal') shadow.normal[o.id] = (shadow.normal[o.id] || 0) + 1;
     else if (o.kind === 'legendary') {
@@ -55,7 +55,8 @@ export function installAiEvaluation(R) {
       if (o.branch) shadow.l4Branches[o.id] = o.branch;
       for (const b of shadow.buildings) if (b.type === o.id) b.level = level;
     }
-  }, measure);
+  };
+  R.aiPreviewChoice = (c, o, measure) => R.aiPreview(c, shadow => R.aiProjectChoice(shadow,o), measure);
 
   R.aiUnitQuality = (c, key, b = null) => {
     const base = R.UNITS[key];

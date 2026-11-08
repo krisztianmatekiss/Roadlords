@@ -1,4 +1,13 @@
-# Roadlords · V4.62.1
+# Roadlords · V4.63.0
+
+## V4.63.0 – Kombinációk köré épülő AI
+
+- A legendás és L4 célok körül több lehetséges tervet értékel; a megszerzett lapokhoz és a tényleges termeléshez igazodva választ.
+- Több lépést tekint előre, valódi költséggel, helyfoglalással és bizonytalan lapmegszerzéssel. A tárolás és a termelőháttér szükséges köztes beruházás lehet.
+- A terv összekapcsolja a lapválasztást, az építést, a támogatókat és a hullám időzítését. Közvetlen veszély felülírja a kivárást.
+- A korlátozott keresés és a gyorsítótárazás mindhárom népnél ugyanazt a közös AI-t szolgálja.
+
+Részletek, ellenőrzések és a tervezés határai: [AI-tervező](docs/ai-planning-4.63.md).
 
 ## V4.62.1 – Sereglimit és gazdasági nyitás
 

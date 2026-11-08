@@ -111,13 +111,15 @@ export function installAiActions(R) {
     const weight=e=>R.orcArmyWeight(e,c),main=c.garrison.reduce((n,e)=>n+weight(e),0),rally=c.rallyReserve.reduce((n,e)=>n+weight(e),0);
     const total=main+rally,sp=R.activeSpawners(c).length,cap=Math.max(1,c.garrisonCap+(R.hasBuilding(c,'rally')?c.rallyCap:0));
     const room=R.fieldQueueRoom(c),opening=!c._aiLastWave&&R.state.time>=120;
-    const target=Math.min(cap,opening?Math.max(8,8+sp*2):Math.max(26,22+sp*3+Math.min(20,Math.floor(R.state.time/90)*2)));
+    let target=Math.min(cap,opening?Math.max(8,8+sp*2):Math.max(26,22+sp*3+Math.min(20,Math.floor(R.state.time/90)*2)));
     const entries=[...c.garrison,...c.rallyReserve],hp=entries.reduce((n,e)=>n+R.statsFor(c,e).hp,0);
     const mainTypes=R.activeSpawners(c).filter(b=>R.productionDestination(c,b)!=='rally');
     const smallest=mainTypes.length?Math.min(...mainTypes.map(b=>weight({key:R.effectiveUnitKey(c,b)}))):1;
     const full=main>0&&c.garrisonCap-main<smallest||rally>0&&c.rallyCap-rally<1&&!mainTypes.length;
+    const strategy=R.aiStrategyGatePolicy?.(c,{entries,total,target,cap,full});
+    if(strategy)target=strategy.target;
     const reinforce=R.fieldUnitCount(c)>=8&&total>=Math.max(6,Math.min(16,sp*2))&&R.state.time-(c._aiLastWave?.time||0)>=25;
-    const launch=(total>=target||full||entries.length>=12&&hp>=target*170||reinforce)&&room>=Math.min(20,Math.min(total,target)*.65);
+    const launch=!strategy?.hold&&(total>=target||full||entries.length>=12&&hp>=target*170||reinforce)&&room>=Math.min(20,Math.min(total,target)*.65);
     const defend=R.aiUnderAttack(c)&&total>0&&room>=Math.min(smallest,total);
     c._aiWaveTarget=target;
     if(c.gateMode!=='open'&&(launch||defend)){

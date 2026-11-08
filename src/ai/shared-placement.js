@@ -34,7 +34,7 @@ export function installSharedAiPlacement(R) {
     if (!R.BUILDINGS[type] || !R.canBuildArmyCapacity(c,type) || REMOVED_BUILDINGS.has(type) || !R.factionMatches(c.race, R.BUILDINGS[type], type) ||
       R.isUniqueBuilding(c, type) && R.hasBuilding(c, type)) return null;
     const signature = c.buildings.map(b => `${b.id}:${b.type}:${b.level}:${b.row}:${b.col}:${b.rotation||0}:${!!b.inactive}`).join('|');
-    const board=c.race+';'+signature+';'+c.terrain.map(t=>t?.type||'').join(',')+';'+JSON.stringify([c.levels,c.l4Branches,[...c.legends]]);
+    const board=c.race+';'+signature+';'+c.terrain.map(t=>t?.type||'').join(',')+';'+JSON.stringify([c.levels,c.l4Branches,[...c.legends]])+';'+(R.aiStrategyLayoutKey?.(c)||'');
     let persistent=placementCache.get(c);
     if(persistent?.board!==board){persistent={board,cells:new Map()};placementCache.set(c,persistent);}
     if(persistent.cells.has(type))return persistent.cells.get(type);
@@ -55,6 +55,7 @@ export function installSharedAiPlacement(R) {
           const useful=R.aiMarginalSupportTargets(c,b,covered),usefulSupports=R.aiMarginalSupportTargets(c,b,supportTargets);
           if (R.aiRequiresLocalTargets(c, b) && !(m.localSupport ? usefulSupports.length : useful.length)) continue;
           let score = -.3 * (Math.abs(row - R.CENTER.row) + Math.abs(col - R.CENTER.col));
+          score-=R.aiStrategyPlacementPenalty?.(c,type,offsets.map(([dr,dc])=>[row+dr,col+dc]))||0;
           if (R.producerHasBonus(c, type, b)) score += 1000;
           if (!m.produces) {
             if (offsets.some(([dr, dc]) => R.terrainAt(c, row + dr, col + dc)?.type === 'fertile')) score -= 420;
@@ -62,6 +63,7 @@ export function installSharedAiPlacement(R) {
             if (R.adjacentTerrain(c, b, 'quarry')) score -= 210;
           }
           score += useful.length * 120 + usefulSupports.length * 100;
+          if(m.local)score+=R.aiStrategySupportPlacement?.(c,useful)||0;
           if (m.localUpkeep) score += c.buildings.filter(p => p.type !== 'keep' && p.id !== b.id && R.aiSupportAffects(c, b, p))
             .reduce((n, p) => n + (R.buildingDefinition(c, p.type).upkeep || 0), 0) * 90;
           if (R.BUILDINGS[type].unit) {

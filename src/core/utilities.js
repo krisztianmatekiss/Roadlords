@@ -1,5 +1,6 @@
 import { assetUrl } from '../assets/urls.js';
 import { fitsUnitRoom } from '../economy/unit-capacity.js';
+import { PICK_RULES, rareSubtypeForCounts } from '../progression/pick-rules.js';
 export function register(runtime) {
   runtime.keepCellSet = function keepCellSet() {
     const set = new Set();
@@ -392,12 +393,8 @@ export function register(runtime) {
   runtime.chooseRareSubtype = function chooseRareSubtype(c, preferred, count) {
     const unlock = runtime.buildingUnlockPool(c),
       upgrade = runtime.buildingUpgradePool(c),
-      want = preferred || (Math.random() < .35 ? 'unlock' : 'upgrade'),
-      first = want === 'unlock' ? unlock : upgrade,
-      other = want === 'unlock' ? upgrade : unlock;
-    if (first.length >= Math.min(count, 4)) return want;
-    if (other.length >= Math.min(count, 4)) return want === 'unlock' ? 'upgrade' : 'unlock';
-    return first.length >= other.length ? want : want === 'unlock' ? 'upgrade' : 'unlock';
+      want = preferred || (Math.random() < PICK_RULES.unlockPreference ? 'unlock' : 'upgrade');
+    return rareSubtypeForCounts(unlock.length,upgrade.length,count,want);
   };
   runtime.signedPct = function signedPct(v) {
     return `${v >= 0 ? '+' : '−'}${Math.round(Math.abs(v) * 100)}%`;

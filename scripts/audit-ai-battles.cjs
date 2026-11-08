@@ -4,6 +4,8 @@
 const {chromium}=require('playwright'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
 const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
 const before=process.env.ROADLORDS_BASELINE_DIST;
+const races=(process.env.ROADLORDS_AI_RACES||'human,orc,undead').split(',');
+const seeds=(process.env.ROADLORDS_AI_SEEDS||'42,137').split(',').map(Number);
 let baselineServer;
 (async()=>{
  if(before){baselineServer=http.createServer((req,res)=>{
@@ -16,7 +18,7 @@ let baselineServer;
  const report={scope:'Ten-minute real combat against a fixed paid opponent; AI/pick patch comparison, not human win rate.',cases:[],errors:[]};
  try{
   const versions=before?[['before','http://127.0.0.1:4174/Roadlords/'],['after',URL]]:[['after',URL]];
-  for(const [version,url]of versions)for(const race of ['human','orc','undead'])for(const seed of [42,137]){
+  for(const [version,url]of versions)for(const race of races)for(const seed of seeds){
    const p=await browser.newPage();await p.route('https://**/*',r=>r.abort());p.on('pageerror',e=>report.errors.push(e.message));await p.goto(url);await p.waitForFunction(()=>window.__ROADLORDS_RUNTIME__);
    const result=await p.evaluate(({race,seed})=>{
     const R=__ROADLORDS_RUNTIME__,random=Math.random;let rng=seed;
@@ -51,17 +53,21 @@ let baselineServer;
      for(let step=1;step<=6000&&!R.state.ended;step++){
       const dt=.1,t=step*dt;R.state.time=t;untilPick-=dt;
       if(untilPick<=0){choiceTimes.push(t);autoPlayerPick('timer');R.grantEnemyPick('timer');picks++;untilPick+=R.PICK_BASE_SECONDS*Math.pow(R.PICK_GROWTH,picks);}
+      R.state.nextPick=untilPick;R.state.timedPickCount=picks;
       R.produceResources(player,dt);R.produceResources(enemy,dt);R.updateSpawners(player,dt);R.updateSpawners(enemy,dt);
       if(Math.floor(t)!==lastSecond){lastSecond=Math.floor(t);opponent();if(R.reserveCount(player)>=10){R.releaseRally(player);R.openWave(player);player.gateMode='open';}}
       const start=performance.now();R.enemyBuildAI(dt);const elapsed=performance.now()-start;if(elapsed>.15)planning.push(elapsed);
       R.enemyGateAI();R.releaseQueues(dt);R.garrisonFire(dt);R.updateBattle(dt);R.updateSuddenDeath(dt);
       for(const tower of R.towers)if(!tower.alive&&!towerEvents.some(e=>e.id===tower.id))towerEvents.push({id:tower.id,side:tower.side,time:t});
-      if(step%600===0)rows.push({t,ownHp:enemy.hp,opponentHp:player.hp,army:R.fieldUnitCount(enemy),opponentArmy:R.fieldUnitCount(player),military:R.activeSpawners(enemy).length});
+      if(step%600===0){const strategy=R.aiStrategyFor?.(enemy);rows.push({t,ownHp:enemy.hp,opponentHp:player.hp,army:R.fieldUnitCount(enemy),opponentArmy:R.fieldUnitCount(player),military:R.activeSpawners(enemy).length,
+       strategy:strategy?.primary?{anchor:strategy.primary.anchor,units:strategy.primary.units,goals:strategy.primary.goals,projections:strategy.projections}:null});}
      }
     }finally{Math.random=random;R.queueChoice=queue;R.state.running=false;}
     planning.sort((a,b)=>a-b);
     return {race,seed,time:R.state.time,result:enemy.hp<=0?'loss':player.hp<=0?'win':'unfinished',hp:{ai:enemy.hp/enemy.maxHp,opponent:player.hp/player.maxHp},towerEvents,
      military:R.activeSpawners(enemy).length,buildings:enemy.buildings.length,legends:[...enemy.legends],rows,
+     economy:{flow:R.resourceFlowRates(enemy),stock:{...enemy.resources}},
+     roster:enemy.buildings.map(b=>({type:b.type,level:b.level,branch:enemy.l4Branches[b.type]})),normal:{...enemy.normal},
      planningMs:{p50:planning[Math.floor(planning.length*.5)]||0,p95:planning[Math.floor(planning.length*.95)]||0,max:planning.at(-1)||0},runtimeError:R.state.lastRuntimeErrorV4965||null};
    },{race,seed});
    report.cases.push({version,...result});console.log(JSON.stringify({version,race,seed,result:result.result,time:result.time,hp:result.hp,towers:result.towerEvents.length,planning:result.planningMs}));

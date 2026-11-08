@@ -7,4 +7,12 @@ export const PICK_RULES = Object.freeze({
   legendaryChance: .05,
   wideLegendaryChance: .10,
   guaranteedOffer: 20,
+  unlockPreference: .35,
 });
+
+export function rareSubtypeForCounts(unlock,upgrade,count,wanted) {
+  const first=wanted==='unlock'?unlock:upgrade,other=wanted==='unlock'?upgrade:unlock;
+  if(first>=Math.min(count,4))return wanted;
+  if(other>=Math.min(count,4))return wanted==='unlock'?'upgrade':'unlock';
+  return first>=other?wanted:wanted==='unlock'?'upgrade':'unlock';
+}

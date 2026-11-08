@@ -3,6 +3,7 @@ import { installAiActions } from './actions.js';
 import { installSharedAiPlacement } from './shared-placement.js';
 import { installAiBattleAwareness } from './battle-awareness.js';
 import { installAiGrowthPolicy } from './growth-policy.js';
+import { installAiStrategyPlanner } from './strategy-planner.js';
 import { BUILDING_MECHANICS, CONDITIONAL_EFFECTS, UNIT_FEATURES, cardTargets } from './mechanics.js';
 import { levelValue } from '../data/faction-redesign.js';
 
@@ -17,6 +18,7 @@ export function installSharedAiPlanner(R) {
   installSharedAiPlacement(R);
   installAiBattleAwareness(R);
   installAiGrowthPolicy(R);
+  installAiStrategyPlanner(R);
   let decision = null;
   const available = c => R.aiFactionBuildings(c).filter(type => type !== 'keep' && c.unlocked.has(type) && R.canBuildArmyCapacity(c,type) &&
     (!R.isUniqueBuilding(c, type) || !R.hasBuilding(c, type)));
@@ -34,7 +36,8 @@ export function installSharedAiPlanner(R) {
     const military = available(c).filter(type => R.BUILDINGS[type].unit);
     const producers = available(c).filter(type => BUILDING_MECHANICS[type]?.produces);
     const growth=R.aiGrowthTargets(c,metrics,battle,military),target=growth.target;
-    return { c, metrics, resources, observed, army, pressure, deep, military, producers, target,battle,growth,
+    const strategy=R.aiStrategy(c,{metrics,battle,pressure});
+    return { c, metrics, resources, observed, army, pressure, deep, military, producers, target,battle,growth,strategy,
       options: new Map(), buildings: new Map(), successors: new Map() };
   }
   function duringDecision(action,city=decision?.c||R.E) {
@@ -85,6 +88,7 @@ export function installSharedAiPlanner(R) {
     }
     if (features.includes('siege') && !metrics.power) score -= 12;
     if (c.armyCap - R.fieldUnitCount(c) < seats) score -= 15;
+    score+=R.aiStrategyMilitaryBonus(key,ctx);
     return score;
   }
   function passive(c, metrics) {
@@ -160,7 +164,7 @@ export function installSharedAiPlanner(R) {
     score -= Math.min(12,costTime*.10) + Math.max(0,area-1)*.45;
     score -= Math.min(25,result.wait*.10);
     if (ctx.resources.some(r=>after.gain[r]<after.use[r] && after.gain[r]-after.use[r]<metrics.gain[r]-metrics.use[r]-1e-6 && !R.BUILDINGS[type].unit)) score -= 45;
-    result.score = score;
+    result.score = score+R.aiStrategyBuildBonus(c,type,ctx);
     return result;
   }
 
@@ -168,7 +172,7 @@ export function installSharedAiPlanner(R) {
     if (ctx.successors.has(type)) return ctx.successors.get(type);
     const {c,metrics} = ctx, level=R.levelOf(c,type);
     if (level>=4 || !R.hasBuilding(c,type)) return 0;
-    const branches = R.V4_BRANCHES[type] || [];
+    const branches = R.aiBuildingBranches(c,type);
     const options = branches.length ? branches.map(b=>({kind:'building_branch',id:type,branch:b.id})) : [{kind:'building_branch',id:type}];
     let best = 0;
     for (const o of options) {
@@ -216,6 +220,7 @@ export function installSharedAiPlanner(R) {
         if (value<.1 && relevance<1) score += relevance*2;
       }
     }
+    score+=R.aiStrategyChoiceBonus(c,o,ctx.strategy)*(ctx.pressure?.25:1);
     score=Number.isFinite(score)?score:-100;
     ctx.options.set(signature,score); return score;
   }
@@ -377,6 +382,7 @@ export function installSharedAiPlanner(R) {
           return affinity(b)-affinity(a);
         });
         const chosen=new Set([...ctx.producers,...military,...supports.slice(0,4),...types.filter(type=>BUILDING_MECHANICS[type]?.capacity||BUILDING_MECHANICS[type]?.storage)]);
+        for(const type of ctx.strategy?.primary?.goals||[])if(types.includes(type))chosen.add(type);
         if(c._aiSaveType&&c.unlocked.has(c._aiSaveType)&&R.state.time-c._aiSaveSince<60)chosen.add(c._aiSaveType);
         let ranked=[...chosen].map(type=>opportunity(type,ctx));
         const noPlot=ranked.filter(x=>!x.cell);

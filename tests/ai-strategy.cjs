@@ -14,7 +14,8 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   });
   check('Orc AI saves for an unlocked Warg producer instead of buying another affordable Warrior camp',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=strategyOrc();c.resources=R.C(50,50,100);const n=c.buildings.length;strategyTick();
-   return c.buildings.length===n&&c._aiSaveType==='orc_warg'&&c._aiSaveReason==='military';
+   const ok=c.buildings.length===n&&c._aiSaveType==='orc_warg'&&c._aiSaveReason==='military';
+   if(!ok)throw Error(JSON.stringify({saved:c._aiSaveType,buildings:c.buildings.length,plan:R.aiStrategyFor(c)?.primary,options:R.aiConstructionOpportunities(c).map(o=>({type:o.type,score:o.score}))}));return true;
   }));
   check('The investment survives a growth tick and produces the selected Warg camp once funded',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=R.E,since=c._aiSaveSince;R.state.time++;strategyTick();

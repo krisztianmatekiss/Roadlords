@@ -131,7 +131,11 @@ export function installSharedAiPlanner(R) {
       let repair = 0;
       for (const r of ctx.resources) {
         const deficit = Math.max(0,ctx.target[r]-metrics.gain[r]);
-        repair += Math.min(deficit, Math.max(0,after.gain[r]-metrics.gain[r])) / Math.max(1,ctx.target[r]);
+        // Reward relief of the actual bottleneck. Dividing only by the target
+        // perversely favors small goals over the resource funding expansion.
+        const shortage = Math.min(1, deficit / Math.max(1, ctx.target[r]));
+        repair += Math.min(deficit, Math.max(0,after.gain[r]-metrics.gain[r])) /
+          Math.max(1,metrics.gain[r]) * shortage;
       }
       score += repair * 48 + (repair > .1 ? 9 : -18);
       if (!metrics.power && repair > .05) score += 12;

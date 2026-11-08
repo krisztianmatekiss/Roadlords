@@ -3,7 +3,8 @@
     "4.63.0",
     "4.63.1"
   ],
-  "scope": "Three real AI vs AI pairings, seed 42, 900 game seconds each, before and after. Same initial RNG seed; decisions change subsequent draws. Not win rates.",
+  "codeCommit": "2ba68a0",
+  "scope": "Three real AI vs AI pairings, seed 42. Before: 900 game seconds, after: 600; comparisons use the first 600 seconds. Same initial RNG seed; decisions change subsequent draws. Not win rates.",
   "cases": [
     {
       "pair": [
@@ -84,20 +85,20 @@
                   "food": 138.5266666666667
                 }
               },
-              "15": {
-                "buildings": 74,
-                "plots": 94,
+              "10": {
+                "buildings": 72,
+                "plots": 92,
                 "producers": 20,
-                "spawners": 25,
+                "spawners": 23,
                 "gain": {
-                  "wood": 30.6,
-                  "stone": 170.00000000000003,
-                  "food": 190.39999999999995
+                  "wood": 27,
+                  "stone": 150,
+                  "food": 168
                 },
                 "use": {
-                  "wood": 19.45777777777778,
-                  "stone": 135.68296296296302,
-                  "food": 154.97777777777785
+                  "wood": 12.481333333333335,
+                  "stone": 122.41777777777779,
+                  "food": 138.5266666666667
                 }
               }
             }
@@ -170,7 +171,7 @@
                   "food": 0
                 }
               },
-              "15": {
+              "10": {
                 "buildings": 53,
                 "plots": 100,
                 "producers": 4,
@@ -181,7 +182,7 @@
                   "food": 0
                 },
                 "use": {
-                  "wood": 176.33190476190475,
+                  "wood": 164.34190476190474,
                   "stone": 0,
                   "food": 0
                 }
@@ -205,9 +206,9 @@
                 "producers": 4,
                 "spawners": 1,
                 "gain": {
-                  "wood": 8.399999999999999,
-                  "stone": 5.6,
-                  "food": 5.6
+                  "wood": 10.4,
+                  "stone": 13,
+                  "food": 7.800000000000001
                 },
                 "use": {
                   "wood": 0,
@@ -216,67 +217,67 @@
                 }
               },
               "3": {
-                "buildings": 11,
-                "plots": 18,
-                "producers": 4,
-                "spawners": 6,
+                "buildings": 10,
+                "plots": 14,
+                "producers": 5,
+                "spawners": 4,
                 "gain": {
-                  "wood": 30,
-                  "stone": 27,
-                  "food": 27
+                  "wood": 10.4,
+                  "stone": 13,
+                  "food": 10.4
                 },
                 "use": {
-                  "wood": 3.76,
-                  "stone": 10.426666666666666,
-                  "food": 12.719999999999999
+                  "wood": 1.28,
+                  "stone": 4.782222222222223,
+                  "food": 6.933333333333334
                 }
               },
               "5": {
-                "buildings": 29,
-                "plots": 41,
-                "producers": 11,
-                "spawners": 9,
+                "buildings": 20,
+                "plots": 31,
+                "producers": 8,
+                "spawners": 10,
                 "gain": {
-                  "wood": 30,
-                  "stone": 33,
-                  "food": 54
+                  "wood": 31.2,
+                  "stone": 36.400000000000006,
+                  "food": 31.200000000000006
                 },
                 "use": {
-                  "wood": 3.008,
-                  "stone": 28.309333333333335,
-                  "food": 0
+                  "wood": 4.854666666666667,
+                  "stone": 25.019703703703705,
+                  "food": 27.548888888888893
                 }
               },
               "9": {
-                "buildings": 82,
-                "plots": 94,
-                "producers": 27,
-                "spawners": 12,
+                "buildings": 70,
+                "plots": 91,
+                "producers": 37,
+                "spawners": 20,
                 "gain": {
-                  "wood": 36,
-                  "stone": 150,
-                  "food": 48
+                  "wood": 39.199999999999996,
+                  "stone": 89.59999999999998,
+                  "food": 71.4
                 },
                 "use": {
-                  "wood": 6.212266666666666,
-                  "stone": 83.57902222222219,
-                  "food": 0
+                  "wood": 11.540533333333334,
+                  "stone": 55.61765925925926,
+                  "food": 58.97859259259259
                 }
               },
-              "15": {
-                "buildings": 82,
+              "10": {
+                "buildings": 73,
                 "plots": 94,
-                "producers": 27,
-                "spawners": 12,
+                "producers": 38,
+                "spawners": 22,
                 "gain": {
-                  "wood": 60,
-                  "stone": 276,
-                  "food": 96
+                  "wood": 39.199999999999996,
+                  "stone": 89.59999999999998,
+                  "food": 72.80000000000001
                 },
                 "use": {
-                  "wood": 8.496469333333334,
-                  "stone": 114.31038577777778,
-                  "food": 0
+                  "wood": 14.754133333333334,
+                  "stone": 55.61765925925926,
+                  "food": 62.25459259259259
                 }
               }
             }
@@ -286,81 +287,81 @@
             "race": "undead",
             "minutes": {
               "2": {
-                "buildings": 16,
-                "plots": 44,
-                "producers": 6,
-                "spawners": 3,
+                "buildings": 31,
+                "plots": 71,
+                "producers": 7,
+                "spawners": 19,
                 "gain": {
-                  "wood": 56.1,
+                  "wood": 126.50000000000001,
                   "stone": 0,
                   "food": 0
                 },
                 "use": {
-                  "wood": 32.68,
+                  "wood": 91.18746031746034,
                   "stone": 0,
                   "food": 0
                 }
               },
               "3": {
-                "buildings": 28,
-                "plots": 71,
+                "buildings": 49,
+                "plots": 96,
                 "producers": 7,
-                "spawners": 4,
+                "spawners": 33,
                 "gain": {
-                  "wood": 64.9,
+                  "wood": 249.70000000000002,
                   "stone": 0,
                   "food": 0
                 },
                 "use": {
-                  "wood": 47.596666666666664,
+                  "wood": 142.06079365079364,
                   "stone": 0,
                   "food": 0
                 }
               },
               "5": {
-                "buildings": 39,
-                "plots": 91,
+                "buildings": 53,
+                "plots": 100,
                 "producers": 7,
-                "spawners": 6,
+                "spawners": 37,
                 "gain": {
-                  "wood": 64.9,
+                  "wood": 249.70000000000002,
                   "stone": 0,
                   "food": 0
                 },
                 "use": {
-                  "wood": 64.72999999999998,
+                  "wood": 155.53412698412697,
                   "stone": 0,
                   "food": 0
                 }
               },
               "9": {
-                "buildings": 48,
+                "buildings": 53,
                 "plots": 100,
                 "producers": 7,
-                "spawners": 15,
+                "spawners": 37,
                 "gain": {
-                  "wood": 129.8,
+                  "wood": 253.00000000000003,
                   "stone": 0,
                   "food": 0
                 },
                 "use": {
-                  "wood": 102.21999999999998,
+                  "wood": 196.93412698412703,
                   "stone": 0,
                   "food": 0
                 }
               },
-              "15": {
-                "buildings": 49,
+              "10": {
+                "buildings": 53,
                 "plots": 100,
-                "producers": 5,
-                "spawners": 17,
+                "producers": 7,
+                "spawners": 37,
                 "gain": {
-                  "wood": 202.4,
+                  "wood": 253.00000000000003,
                   "stone": 0,
                   "food": 0
                 },
                 "use": {
-                  "wood": 153.69071428571425,
+                  "wood": 196.93412698412703,
                   "stone": 0,
                   "food": 0
                 }
@@ -449,20 +450,20 @@
                   "food": 29.671671335200745
                 }
               },
-              "15": {
-                "buildings": 27,
-                "plots": 74,
-                "producers": 7,
+              "10": {
+                "buildings": 26,
+                "plots": 73,
+                "producers": 6,
                 "spawners": 11,
                 "gain": {
-                  "wood": 106.32,
-                  "stone": 104.44,
-                  "food": 44.800000000000004
+                  "wood": 37.6,
+                  "stone": 48.44,
+                  "food": 40
                 },
                 "use": {
-                  "wood": 15.689841269841272,
-                  "stone": 32.94741363211951,
-                  "food": 37.89439402427639
+                  "wood": 14.26349206349206,
+                  "stone": 29.95219421101774,
+                  "food": 34.44944911297852
                 }
               }
             }
@@ -535,20 +536,20 @@
                   "food": 61.150222222222226
                 }
               },
-              "15": {
-                "buildings": 79,
-                "plots": 97,
-                "producers": 13,
-                "spawners": 27,
+              "10": {
+                "buildings": 62,
+                "plots": 79,
+                "producers": 8,
+                "spawners": 15,
                 "gain": {
-                  "wood": 30.400000000000002,
-                  "stone": 97.6,
-                  "food": 112
+                  "wood": 28.8,
+                  "stone": 56.800000000000004,
+                  "food": 102.4
                 },
                 "use": {
-                  "wood": 9.309422222222224,
-                  "stone": 82.66948148148151,
-                  "food": 107.11865185185182
+                  "wood": 5.784533333333334,
+                  "stone": 47.979555555555564,
+                  "food": 61.150222222222226
                 }
               }
             }
@@ -556,7 +557,7 @@
         ]
       },
       "after": {
-        "workCamps": 4,
+        "workCamps": 16,
         "workCampsWithBetterLegalYield": 0,
         "runtimeError": null,
         "cities": [
@@ -575,73 +576,73 @@
                   "food": 6.4
                 },
                 "use": {
-                  "wood": 0.6,
-                  "stone": 2.0352941176470587,
-                  "food": 2.6176470588235294
+                  "wood": 0,
+                  "stone": 2.070588235294118,
+                  "food": 2.635294117647059
                 }
               },
               "3": {
-                "buildings": 7,
-                "plots": 16,
-                "producers": 2,
-                "spawners": 4,
+                "buildings": 9,
+                "plots": 26,
+                "producers": 3,
+                "spawners": 5,
                 "gain": {
-                  "wood": 16,
-                  "stone": 25.6,
-                  "food": 25.6
+                  "wood": 19.2,
+                  "stone": 19.2,
+                  "food": 30.400000000000002
                 },
                 "use": {
-                  "wood": 4.044444444444444,
-                  "stone": 8.452287581699345,
-                  "food": 11.248366013071896
+                  "wood": 3.8,
+                  "stone": 14.478431372549021,
+                  "food": 16.705882352941178
                 }
               },
               "5": {
-                "buildings": 19,
-                "plots": 45,
-                "producers": 5,
-                "spawners": 11,
+                "buildings": 39,
+                "plots": 80,
+                "producers": 20,
+                "spawners": 17,
                 "gain": {
-                  "wood": 38.4,
-                  "stone": 38.400000000000006,
-                  "food": 40
+                  "wood": 64.67999999999999,
+                  "stone": 53.48,
+                  "food": 68.8
                 },
                 "use": {
-                  "wood": 14.271067821067819,
-                  "stone": 31.452313046430692,
-                  "food": 39.06742636448519
+                  "wood": 10.244444444444444,
+                  "stone": 42.39111111111111,
+                  "food": 52.83111111111111
                 }
               },
               "9": {
-                "buildings": 41,
-                "plots": 88,
-                "producers": 12,
-                "spawners": 23,
+                "buildings": 49,
+                "plots": 94,
+                "producers": 28,
+                "spawners": 19,
                 "gain": {
-                  "wood": 88.8,
-                  "stone": 97.2,
-                  "food": 84.60000000000001
+                  "wood": 81.62,
+                  "stone": 80.48,
+                  "food": 116.80000000000001
                 },
                 "use": {
-                  "wood": 30.014213564213566,
-                  "stone": 65.6347763347763,
-                  "food": 83.35230880230881
+                  "wood": 10.244444444444444,
+                  "stone": 86.97777777777777,
+                  "food": 109.5777777777778
                 }
               },
-              "15": {
-                "buildings": 41,
-                "plots": 88,
-                "producers": 12,
-                "spawners": 23,
+              "10": {
+                "buildings": 49,
+                "plots": 94,
+                "producers": 31,
+                "spawners": 16,
                 "gain": {
-                  "wood": 272.64000000000004,
-                  "stone": 270.72,
-                  "food": 218
+                  "wood": 92.39999999999999,
+                  "stone": 92.8,
+                  "food": 116.80000000000001
                 },
                 "use": {
-                  "wood": 32.91964285714285,
-                  "stone": 75.06785714285712,
-                  "food": 93.96051587301586
+                  "wood": 6.644444444444445,
+                  "stone": 80.97777777777777,
+                  "food": 93.77777777777777
                 }
               }
             }
@@ -651,83 +652,83 @@
             "race": "human",
             "minutes": {
               "2": {
-                "buildings": 9,
-                "plots": 14,
-                "producers": 2,
-                "spawners": 6,
-                "gain": {
-                  "wood": 23.400000000000002,
-                  "stone": 20.8,
-                  "food": 23.400000000000002
-                },
-                "use": {
-                  "wood": 1.4222222222222223,
-                  "stone": 12.088888888888889,
-                  "food": 14.488888888888887
-                }
-              },
-              "3": {
-                "buildings": 19,
-                "plots": 24,
+                "buildings": 12,
+                "plots": 15,
                 "producers": 9,
-                "spawners": 7,
+                "spawners": 2,
                 "gain": {
-                  "wood": 23.400000000000002,
-                  "stone": 26.000000000000004,
-                  "food": 41.6
-                },
-                "use": {
-                  "wood": 1.4222222222222223,
-                  "stone": 24.88888888888889,
-                  "food": 30.488888888888887
-                }
-              },
-              "5": {
-                "buildings": 42,
-                "plots": 50,
-                "producers": 21,
-                "spawners": 7,
-                "gain": {
-                  "wood": 27.75,
-                  "stone": 42.75,
-                  "food": 64.5
-                },
-                "use": {
-                  "wood": 2.8444444444444446,
-                  "stone": 49.77777777777778,
-                  "food": 60.977777777777774
-                }
-              },
-              "9": {
-                "buildings": 87,
-                "plots": 95,
-                "producers": 34,
-                "spawners": 15,
-                "gain": {
-                  "wood": 33.6,
-                  "stone": 143.2,
-                  "food": 164.8
-                },
-                "use": {
-                  "wood": 2.8444444444444446,
-                  "stone": 118.04444444444444,
-                  "food": 146.31111111111113
-                }
-              },
-              "15": {
-                "buildings": 89,
-                "plots": 97,
-                "producers": 40,
-                "spawners": 21,
-                "gain": {
-                  "wood": 35.7,
-                  "stone": 277.09999999999985,
-                  "food": 243.95
+                  "wood": 12,
+                  "stone": 8.4,
+                  "food": 7.199999999999999
                 },
                 "use": {
                   "wood": 0,
-                  "stone": 0,
-                  "food": 0
+                  "stone": 2.56,
+                  "food": 3.2
+                }
+              },
+              "3": {
+                "buildings": 18,
+                "plots": 23,
+                "producers": 10,
+                "spawners": 7,
+                "gain": {
+                  "wood": 28.8,
+                  "stone": 25.199999999999996,
+                  "food": 26.399999999999995
+                },
+                "use": {
+                  "wood": 1.4222222222222223,
+                  "stone": 9.955555555555554,
+                  "food": 11.822222222222221
+                }
+              },
+              "5": {
+                "buildings": 47,
+                "plots": 57,
+                "producers": 30,
+                "spawners": 12,
+                "gain": {
+                  "wood": 28.8,
+                  "stone": 52.79999999999998,
+                  "food": 83.99999999999997
+                },
+                "use": {
+                  "wood": 2.937777777777778,
+                  "stone": 41.45333333333333,
+                  "food": 50.44222222222221
+                }
+              },
+              "9": {
+                "buildings": 81,
+                "plots": 95,
+                "producers": 37,
+                "spawners": 23,
+                "gain": {
+                  "wood": 31.2,
+                  "stone": 184.60000000000005,
+                  "food": 161.20000000000005
+                },
+                "use": {
+                  "wood": 8.169777777777778,
+                  "stone": 67.88888888888889,
+                  "food": 88.17555555555553
+                }
+              },
+              "10": {
+                "buildings": 83,
+                "plots": 97,
+                "producers": 37,
+                "spawners": 24,
+                "gain": {
+                  "wood": 42,
+                  "stone": 213,
+                  "food": 186
+                },
+                "use": {
+                  "wood": 8.169777777777778,
+                  "stone": 71.94222222222221,
+                  "food": 93.2422222222222
                 }
               }
             }
@@ -814,7 +815,7 @@
                   "food": 0
                 }
               },
-              "15": {
+              "10": {
                 "buildings": 50,
                 "plots": 100,
                 "producers": 7,
@@ -825,7 +826,7 @@
                   "food": 0
                 },
                 "use": {
-                  "wood": 216.77301587301588,
+                  "wood": 208.52301587301588,
                   "stone": 0,
                   "food": 0
                 }
@@ -900,20 +901,20 @@
                   "food": 55.84211344211346
                 }
               },
-              "15": {
-                "buildings": 39,
-                "plots": 89,
+              "10": {
+                "buildings": 37,
+                "plots": 86,
                 "producers": 14,
-                "spawners": 15,
+                "spawners": 13,
                 "gain": {
-                  "wood": 102.4,
-                  "stone": 100.8,
+                  "wood": 72.8,
+                  "stone": 78.39999999999999,
                   "food": 123.19999999999999
                 },
                 "use": {
-                  "wood": 11.792784992784991,
-                  "stone": 68.91459651459652,
-                  "food": 84.98108558108561
+                  "wood": 9.03111111111111,
+                  "stone": 61.716239316239324,
+                  "food": 74.64854700854703
                 }
               }
             }
@@ -930,8 +931,8 @@
             "race": "undead",
             "minutes": {
               "2": {
-                "buildings": 8,
-                "plots": 27,
+                "buildings": 7,
+                "plots": 25,
                 "producers": 3,
                 "spawners": 1,
                 "gain": {
@@ -940,39 +941,39 @@
                   "food": 0
                 },
                 "use": {
-                  "wood": 17.515555555555558,
+                  "wood": 15.575555555555557,
                   "stone": 0,
                   "food": 0
                 }
               },
               "3": {
-                "buildings": 16,
-                "plots": 44,
-                "producers": 5,
-                "spawners": 2,
+                "buildings": 30,
+                "plots": 60,
+                "producers": 4,
+                "spawners": 9,
                 "gain": {
-                  "wood": 54.6,
+                  "wood": 140.70000000000002,
                   "stone": 0,
                   "food": 0
                 },
                 "use": {
-                  "wood": 37.446666666666665,
+                  "wood": 93.22412698412698,
                   "stone": 0,
                   "food": 0
                 }
               },
               "5": {
-                "buildings": 32,
-                "plots": 74,
-                "producers": 8,
-                "spawners": 3,
+                "buildings": 52,
+                "plots": 97,
+                "producers": 9,
+                "spawners": 11,
                 "gain": {
-                  "wood": 159.6,
+                  "wood": 315,
                   "stone": 0,
                   "food": 0
                 },
                 "use": {
-                  "wood": 97.00333333333334,
+                  "wood": 240.16301587301592,
                   "stone": 0,
                   "food": 0
                 }
@@ -980,31 +981,31 @@
               "9": {
                 "buildings": 49,
                 "plots": 100,
-                "producers": 12,
-                "spawners": 12,
+                "producers": 11,
+                "spawners": 11,
                 "gain": {
-                  "wood": 226.8,
+                  "wood": 394.8,
                   "stone": 0,
                   "food": 0
                 },
                 "use": {
-                  "wood": 176.32968253968252,
+                  "wood": 326.1530158730159,
                   "stone": 0,
                   "food": 0
                 }
               },
-              "15": {
-                "buildings": 64,
+              "10": {
+                "buildings": 49,
                 "plots": 100,
-                "producers": 7,
-                "spawners": 12,
+                "producers": 11,
+                "spawners": 11,
                 "gain": {
-                  "wood": 260.40000000000003,
+                  "wood": 394.8,
                   "stone": 0,
                   "food": 0
                 },
                 "use": {
-                  "wood": 181.58682539682542,
+                  "wood": 326.1530158730159,
                   "stone": 0,
                   "food": 0
                 }
@@ -1016,14 +1017,14 @@
             "race": "orc",
             "minutes": {
               "2": {
-                "buildings": 10,
-                "plots": 19,
-                "producers": 6,
+                "buildings": 9,
+                "plots": 18,
+                "producers": 5,
                 "spawners": 3,
                 "gain": {
-                  "wood": 19.599999999999998,
-                  "stone": 11.2,
-                  "food": 6.45
+                  "wood": 11.2,
+                  "stone": 7,
+                  "food": 5.1
                 },
                 "use": {
                   "wood": 0,
@@ -1032,67 +1033,67 @@
                 }
               },
               "3": {
-                "buildings": 14,
-                "plots": 26,
-                "producers": 7,
-                "spawners": 6,
+                "buildings": 15,
+                "plots": 28,
+                "producers": 9,
+                "spawners": 5,
                 "gain": {
-                  "wood": 22.4,
-                  "stone": 14,
-                  "food": 11.899999999999999
+                  "wood": 19.200000000000003,
+                  "stone": 9.799999999999999,
+                  "food": 7.8
                 },
                 "use": {
-                  "wood": 1.9313131313131313,
-                  "stone": 7.11491384432561,
-                  "food": 9.068568033273916
+                  "wood": 1.2,
+                  "stone": 5.105882352941177,
+                  "food": 6.552941176470588
                 }
               },
               "5": {
-                "buildings": 21,
-                "plots": 40,
-                "producers": 9,
-                "spawners": 11,
+                "buildings": 36,
+                "plots": 64,
+                "producers": 18,
+                "spawners": 16,
                 "gain": {
-                  "wood": 95.19999999999999,
-                  "stone": 39.199999999999996,
-                  "food": 56
+                  "wood": 41.6,
+                  "stone": 22.400000000000002,
+                  "food": 40.599999999999994
                 },
                 "use": {
-                  "wood": 11.8020202020202,
-                  "stone": 33.44194890077243,
-                  "food": 37.00986333927511
+                  "wood": 4.8,
+                  "stone": 16.28235294117647,
+                  "food": 20.94117647058824
                 }
               },
               "9": {
-                "buildings": 39,
-                "plots": 86,
-                "producers": 11,
-                "spawners": 15,
+                "buildings": 53,
+                "plots": 91,
+                "producers": 21,
+                "spawners": 26,
                 "gain": {
-                  "wood": 128.23999999999998,
-                  "stone": 58.239999999999995,
-                  "food": 102.4
+                  "wood": 95.4,
+                  "stone": 57.6,
+                  "food": 131.6
                 },
                 "use": {
-                  "wood": 21.916161616161613,
-                  "stone": 50.76500297088532,
-                  "food": 58.343612596553776
+                  "wood": 28.195093795093793,
+                  "stone": 49.7048467871997,
+                  "food": 72.7889313301078
                 }
               },
-              "15": {
-                "buildings": 46,
-                "plots": 97,
-                "producers": 13,
-                "spawners": 20,
+              "10": {
+                "buildings": 53,
+                "plots": 91,
+                "producers": 21,
+                "spawners": 26,
                 "gain": {
-                  "wood": 182.40000000000003,
-                  "stone": 99.2,
-                  "food": 152
+                  "wood": 95.4,
+                  "stone": 57.6,
+                  "food": 131.6
                 },
                 "use": {
-                  "wood": 38.26905792620078,
-                  "stone": 69.0294057016746,
-                  "food": 79.39270738598472
+                  "wood": 28.195093795093793,
+                  "stone": 49.7048467871997,
+                  "food": 72.7889313301078
                 }
               }
             }

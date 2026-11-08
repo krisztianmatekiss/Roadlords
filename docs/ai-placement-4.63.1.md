@@ -19,23 +19,23 @@ A közös AI mindhárom népnél és az AI–AI mód mindkét oldalán ezt haszn
 
 ## Valódi meccsek
 
-Mindkét verzióban három, egyenként 15 játékperces normál AI–AI meccs futott: ember–élőhalott, ork–ember és élőhalott–ork, 42-es kezdőmaggal. A valós választási, fizetési, építési, képzési és harcrendszer működött; nem adtunk ajándék pénzt vagy sereget. Köztes mérésként a puszta elhelyezésjavítással is lefutott három ötperces meccs.
+A régi verzióban három 15 perces, a végleges javítással három 10 perces normál AI–AI meccs futott: ember–élőhalott, ork–ember és élőhalott–ork, 42-es kezdőmaggal. Az összehasonlítás az első tíz percet használja. A valós választási, fizetési, építési, képzési és harcrendszer működött; nem adtunk ajándék pénzt vagy sereget.
 
-A régi verzió 11 Munkatáborából **6** esetén volt szabad, szabályos, nagyobb hozamú hely. A végső verzió **12-ből 12** alkalommal a legjobb elérhető összhozamot választotta. Konkrét példa: a 175. másodpercnél választott tábor 4,4 nyersanyag/mp-t adott, miközben egy szabad hely 8,8-at adott volna; romeltakarítás nélkül.
+A régi verzió 11 Munkatáborából **6** esetén volt szabad, szabályos, nagyobb hozamú hely. A végső verzió **24-ből 24** alkalommal a legjobb elérhető összhozamot választotta. Konkrét példa: a 175. másodpercnél választott tábor 4,4 nyersanyag/mp-t adott, miközben egy szabad hely 8,8-at adott volna; romeltakarítás nélkül.
 
 | AI és ellenfél | Termelők a 2. percnél, régi → új | Beépített mezők az 5. percnél | Beépített mezők a 9. percnél |
 | --- | ---: | ---: | ---: |
-| Ember, élőhalott ellen | 2 → 4 | 50 → 41 | 89 → 94 |
-| Ember, ork ellen | 2 → 2 | 51 → 50 | 78 → 95 |
-| Ork, ember ellen | 1 → 2 | 36 → 45 | 62 → 88 |
-| Ork, élőhalott ellen | 2 → 6 | 39 → 40 | 72 → 86 |
+| Ember, élőhalott ellen | 2 → 4 | 50 → 31 | 89 → 91 |
+| Ember, ork ellen | 2 → 9 | 51 → 57 | 78 → 95 |
+| Ork, ember ellen | 1 → 2 | 36 → 80 | 62 → 94 |
+| Ork, élőhalott ellen | 2 → 5 | 39 → 64 | 72 → 91 |
 
-Ez erősebb korai termelőfókuszt és a két ork esetben gyorsabb beépülést mutat. Az emberi ötperces kitöltés nem javult minden esetben. Az élőhalottak is több időt költhettek újrabefektetésre; a régi 3–4 perc helyett 6–7 perc körül teltek meg, és a 9. percre mindkét város teljes volt. A város kitöltése önmagában nem a build harcereje.
+Ez erősebb korai termelőfókuszt és a két ork esetben gyorsabb beépülést mutat. Az emberi ötperces kitöltés nem javult minden esetben; a kilencedik percnél mindkét emberi eset magasabban állt. Az élőhalottak a kilencedik percre mindkét meccsen teljes várossal rendelkeztek. A város kitöltése önmagában nem a build harcereje.
 
-Az eltérő döntések a további lapokat és a harci véletleneket is megváltoztatják, ezért az azonos kezdőmag nem jelent végig azonos leosztást. Ezek minták, nem győzelmi arányok és nem ígéret arra, hogy minden leosztás gyorsabb lesz. A 15. percnél mindkét verzió mérkőzései még tartottak. Az összesített adatok: [audit JSON](audits/ai-placement-4.63.1.json).
+Az eltérő döntések a további lapokat és a harci véletleneket is megváltoztatják, ezért az azonos kezdőmag nem jelent végig azonos leosztást. Különösen a korai L4 főépület okozhat nagy ugrást a teljes bevételben. Ezek minták, nem győzelmi arányok és nem ígéret arra, hogy minden leosztás gyorsabb lesz. A tizedik percnél mindkét verzió mérkőzései még tartottak. Az összesített adatok és a mért kód commitja: [audit JSON](audits/ai-placement-4.63.1.json).
 
 ## Ellenőrzés
 
-Az új `tests/ai-producer-placement.cjs` 19 ellenőrzést futtat: kétoldali terepbónuszok, valós jövedelem, több lelőhely, fal és termékeny föld, céhbónusz, L4 és common együtthatók, gyorsítótár-frissítés, elzárt bónuszhely, valódi nyitási AI-kör, valamint változatlan játékállapot és véletlenszám-sorozat. A további öt célzott AI tesztcsomaggal és a kapacitásvizsgálattal összesen 132 ellenőrzés sikerült; a meccsauditok nem jeleztek futási hibát.
+Az új `tests/ai-producer-placement.cjs` 19 ellenőrzést futtat: kétoldali terepbónuszok, valós jövedelem, több lelőhely, fal és termékeny föld, céhbónusz, L4 és common együtthatók, gyorsítótár-frissítés, elzárt bónuszhely, valódi nyitási AI-kör, kis bevételi hiány melletti fizetett építkezés, valamint változatlan játékállapot és véletlenszám-sorozat. A további öt célzott AI tesztcsomaggal és a kapacitásvizsgálattal összesen 132 ellenőrzés sikerült; az élőhalott frakció integrációs vizsgálata is sikerült. A meccsauditok nem jeleztek futási hibát.
 
 Újrafuttatás: `npm run build`, majd `node scripts/test.cjs tests/ai-producer-placement.cjs`. A meccsméréshez `ROADLORDS_AI_SECONDS=900 ROADLORDS_AI_TAG=placement npm run audit:ai-matches`. Az audit kizárólag kézzel indítható fejlesztői eszköz; a játék nem exportál automatikusan meccsnaplót.

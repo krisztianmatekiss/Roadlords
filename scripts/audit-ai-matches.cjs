@@ -15,9 +15,26 @@ const seconds=Number(process.env.ROADLORDS_AI_SECONDS||600);
    const result=await p.evaluate(async({left,right,seed,seconds})=>{
     const R=__ROADLORDS_RUNTIME__,random=Math.random;let rng=seed;
     Math.random=()=>((rng=(Math.imul(rng,1664525)+1013904223)>>>0)/4294967296);
-    const builds=[],excavations=[],portals=[],rows=[],deadTowers=new Set(),towerEvents=[],ticks=[];
+    const builds=[],placements=[],excavations=[],portals=[],rows=[],deadTowers=new Set(),towerEvents=[],ticks=[];
     const place=R.placeBuilding,clear=R.clearTerrain;
-    R.placeBuilding=(c,type,...args)=>{const out=place(c,type,...args);if(out?.ok)builds.push({side:R.sideForCity(c),t:R.state.time,type});return out;};
+    const auditPlacement=(c,type,selected)=>{
+     if(!R.aiBuildingMechanics(type).produces||c.race==='undead')return null;
+     const side=R.sideForCity(c);
+     return R.aiPreview(c,()=>{},shadow=>{
+      const base=R.productionRates(shadow),original=shadow.buildings,options=[];
+      const inspect=(row,col,rotation)=>{
+       const b={id:'audit-producer',type,row,col,rotation,level:R.levelOf(shadow,type)};
+       shadow.buildings=[...original,b];const rates=R.productionRates(shadow);shadow.buildings=original;
+       const gain=Object.fromEntries(R.RES.map(r=>[r,rates[r]-base[r]]));
+       const near=terrain=>{const seen=new Set();for(const [r,k]of R.cityBuildingCells(shadow,b))for(const [rr,kk]of R.orth(r,k))if(R.terrainAt(shadow,rr,kk)?.type===terrain)seen.add(R.idx(rr,kk));return seen.size;};
+       return {cell:[row,col,rotation],gain,total:R.RES.reduce((n,r)=>n+gain[r],0),forest:near('forest'),quarry:near('quarry'),wall:R.touchesWall(b)};
+      };
+      for(const rotation of R.rotationOptions(type))for(let row=0;row<R.GRID;row++)for(let col=0;col<R.GRID;col++)if(R.canPlace(shadow,type,row,col,rotation))options.push(inspect(row,col,rotation));
+      const chosen=inspect(...selected),best=options.sort((a,b)=>b.total-a.total)[0];
+      return {side,t:R.state.time,type,chosen,best,options:options.length};
+     });
+    };
+    R.placeBuilding=(c,type,...args)=>{const placement=auditPlacement(c,type,args.slice(0,3)),out=place(c,type,...args);if(out?.ok){builds.push({side:R.sideForCity(c),t:R.state.time,type});if(placement)placements.push(placement);}return out;};
     R.clearTerrain=(c,row,col,...args)=>{const type=R.terrainAt(c,row,col)?.type,out=clear(c,row,col,...args);if(out)excavations.push({side:R.sideForCity(c),t:R.state.time,type});return out;};
     const snapshot=()=>({t:R.state.time,cities:[R.P,R.E].map(c=>{
      const flow=R.resourceFlowRates(c);
@@ -36,7 +53,7 @@ const seconds=Number(process.env.ROADLORDS_AI_SECONDS||600);
       if(n%600===0){const row=snapshot();rows.push(row);console.log('AI-MINUTE '+JSON.stringify({left,right,seed,t:Math.round(row.t),cities:row.cities.map(c=>({race:c.race,buildings:c.buildings,plots:c.plots,hp:+c.hp.toFixed(3)}))}));}
      }
      if(R.state.running)R.$('#pauseBtn').click();ticks.sort((a,b)=>a-b);
-     return {version:window.__ROADLORDS_VERSION__,left,right,seed,rows,final:snapshot(),builds,excavations,portals,towerEvents,tickP95:ticks[Math.floor(ticks.length*.95)]||0,runtimeError:R.state.lastRuntimeErrorV4965||null};
+     return {version:window.__ROADLORDS_VERSION__,left,right,seed,rows,final:snapshot(),builds,placements,excavations,portals,towerEvents,tickP95:ticks[Math.floor(ticks.length*.95)]||0,runtimeError:R.state.lastRuntimeErrorV4965||null};
     }finally{Math.random=random;R.placeBuilding=place;R.clearTerrain=clear;}
    },{left,right,seed,seconds});
    report.cases.push(result);fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync(`artifacts/ai-matches-${tag}.json`,JSON.stringify(report,null,2));

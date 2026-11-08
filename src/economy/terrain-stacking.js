@@ -1,31 +1,16 @@
 import { assetUrl } from '../assets/urls.js';
+import { adjacentTerrainCount as countTerrain, producerBaseOutput } from './producer-output.js';
 export function initializeEconomyTerrainStacking(runtime) {
   window.__ROADLORDS_VERSION__ = '4.9.28-terrain-stacking';
-  function adjacentTerrainCount(c, b, type) {
-    const seen = new Set();
-    for (const [r, col] of runtime.buildingCells(b)) {
-      for (const [rr, cc] of runtime.orth(r, col)) {
-        if (runtime.terrainAt(c, rr, cc)?.type === type) seen.add(runtime.idx(rr, cc));
-      }
-    }
-    return seen.size;
-  }
+  const adjacentTerrainCount = (c, b, type) => countTerrain(runtime, c, b, type);
   runtime.productionRates = function (c) {
     const k = runtime.hasBranch(c, 'keep', 'empire') ? 16 : runtime.v4LevelValue(runtime.levelOf(c, 'keep'), [1, 2, 4, 8]);
     const global = 1 + .10 * runtime.countNormal(c, 'production');
-    const rates = runtime.C(k * global, k * global, k * global),
-      lv = [1, 2, 3, 6];
+    const rates = runtime.C(k * global, k * global, k * global);
     for (const b of c.buildings) {
-      const val = (lv[b.level - 1] || lv[3]) * runtime.guildMultiplier(c, b) * global;
-      if (b.type === 'lumber') {
-        const n = adjacentTerrainCount(c, b, 'forest');
-        rates.wood += val * (1 + n);
-      }
-      if (b.type === 'stonecutter') {
-        const n = adjacentTerrainCount(c, b, 'quarry');
-        rates.stone += val * (1 + n);
-      }
-      if (b.type === 'farm') rates.food += val * (runtime.buildingOnTerrain(c, b, 'fertile') ? 2 : 1);
+      if (!['lumber', 'stonecutter', 'farm'].includes(b.type)) continue;
+      const output = producerBaseOutput(runtime, c, b);
+      for (const r of runtime.RES) rates[r] += output[r] * global;
     }
     if (runtime.hasLeg(c, 'full_garrison_economy') && runtime.reserveCount(c) >= c.garrisonCap && c.garrisonCap > 0) runtime.RES.forEach(r => rates[r] *= 2);
     return rates;

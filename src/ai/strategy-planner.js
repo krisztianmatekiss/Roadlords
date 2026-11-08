@@ -179,7 +179,10 @@ export function installAiStrategyPlanner(R) {
     const focus=sum(p.units.map(k=>ctx.metrics.units[k]?.count||0));
     return 3*p.confidence*(focus>=total*.7?.35:1);
   };
-  R.aiStrategyLayoutKey=c=>JSON.stringify(R.aiStrategyFor(c)?.reservation||null);
+  R.aiStrategyLayoutKey=c=>{
+    const s=R.aiStrategyFor(c);
+    return JSON.stringify([s?.reservation,s?.pressure,s?.primary?.units,s?.primary?.confidence]);
+  };
   R.aiStrategyPlacementPenalty=(c,type,cells)=>{
     const state=R.aiStrategyFor(c),reservation=!state?.pressure&&state?.reservation;
     if(!reservation||R.hasBuilding(c,reservation.type)||reservation.type===type||!cells.some(([r,k])=>reservation.cells.some(([rr,kk])=>r===rr&&k===kk)))return 0;

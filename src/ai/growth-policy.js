@@ -24,17 +24,20 @@ export function installAiGrowthPolicy(R) {
     const b=next?{type:next,id:'growth-budget',level:R.levelOf(c,next),row:0,col:0,rotation:0}:null;
     const cost=b?R.primarySpawnCost(c,R.effectiveUnitKey(c,b),b):R.C(),seconds=b?R.trainingTime(c,b):Infinity;
     const room=metrics.slots<R.GRID*R.GRID*.8?1:metrics.slots<R.GRID*R.GRID*.95?.45:0;
+    // Healthy road defenses buy time to reinvest. A full starting stockpile
+    // must not masquerade as sustainable construction income after one mill.
+    const expanding=battle.safeOpening&&metrics.slots<R.GRID*R.GRID*.6;
     for(const r of resources){
       const prices=sources.filter(type=>BUILDING_MECHANICS[type].produces.includes(r)).map(type=>R.buildPrice(c,type)[r]||0);
       budget[r]=prices.length?Math.min(...prices):0;
       future[r]=Number.isFinite(seconds)?(cost[r]||0)/Math.max(1,seconds):0;
       const stock=c.resources[r],full=Number.isFinite(c.caps[r])&&c.caps[r]<1e10&&stock>=c.caps[r]*.75;
       const established=sources.some(type=>BUILDING_MECHANICS[type].produces.includes(r)&&R.hasBuilding(c,type));
-      const surplus=battle.safeOpening&&!established?1:full||stock>Math.max(100,budget[r]*4)? .2:stock>Math.max(100,budget[r]*2)?.55:1;
-      const construction=r==='food'?.45:Math.max(r==='wood'?2:1,budget[r]/(battle.safeOpening?22:28),b?(R.buildPrice(c,next)[r]||0)/55:0);
+      const surplus=expanding? .85:battle.safeOpening&&!established?1:full||stock>Math.max(100,budget[r]*4)? .2:stock>Math.max(100,budget[r]*2)?.55:1;
+      const construction=r==='food'?.45:Math.max(r==='wood'?2:1,budget[r]/(expanding?12:battle.safeOpening?22:28),b?(R.buildPrice(c,next)[r]||0)/(expanding?18:55):0);
       target[r]=metrics.use[r]*1.18+(construction*surplus+future[r]*.8)*room;
     }
-    return {target,budget,growing:room>0&&resources.some(r=>metrics.gain[r]+.01<target[r])};
+    return {target,budget,expanding,growing:room>0&&resources.some(r=>metrics.gain[r]+.01<target[r])};
   };
   const spawn=R.normalSpawn;
   R.normalSpawn=(c,b)=>{

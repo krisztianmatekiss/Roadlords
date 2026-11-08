@@ -1,4 +1,13 @@
-# Roadlords · V4.63.0
+# Roadlords · V4.63.1
+
+## V4.63.1 – Termelőhelyek javítása
+
+- A munkatábor a tényleges fa- és kőtermelés alapján keres helyet, mindkét terepbónusszal és forgatással számolva.
+- Az emberi termelők az összeadódó lelőhelybónuszokat és a helyi termeléstámogatást is értékelik.
+- A helykeresés gyorsítótára terep-, fejlesztés- és stratégiai változás után frissül.
+- Biztonságos nyitásnál többet fektet a termelőháttérbe; a teli kezdőkészlet nem helyettesíti a tartós bevételt.
+
+Ellenőrzés: [termelőelhelyezési audit](docs/ai-placement-4.63.1.md).
 
 ## V4.63.0 – Kombinációk köré épülő AI
 

@@ -1,5 +1,6 @@
 import { BUILDING_MECHANICS } from './mechanics.js';
 import { REMOVED_BUILDINGS } from '../data/faction-redesign.js';
+import { producerBaseOutput } from '../economy/producer-output.js';
 
 export function installSharedAiPlacement(R) {
   const placementCache=new WeakMap();
@@ -34,11 +35,11 @@ export function installSharedAiPlacement(R) {
     if (!R.BUILDINGS[type] || !R.canBuildArmyCapacity(c,type) || REMOVED_BUILDINGS.has(type) || !R.factionMatches(c.race, R.BUILDINGS[type], type) ||
       R.isUniqueBuilding(c, type) && R.hasBuilding(c, type)) return null;
     const signature = c.buildings.map(b => `${b.id}:${b.type}:${b.level}:${b.row}:${b.col}:${b.rotation||0}:${!!b.inactive}`).join('|');
-    const board=c.race+';'+signature+';'+c.terrain.map(t=>t?.type||'').join(',')+';'+JSON.stringify([c.levels,c.l4Branches,[...c.legends]])+';'+(R.aiStrategyLayoutKey?.(c)||'');
+    const board=c.race+';'+signature+';'+c.terrain.map(t=>t?.type||'').join(',')+';'+JSON.stringify([c.levels,c.l4Branches,c.normal,[...c.legends],c.race==='orc'&&R.orcGateBonuses(c)])+';'+(R.aiStrategyLayoutKey?.(c)||'');
     let persistent=placementCache.get(c);
     if(persistent?.board!==board){persistent={board,cells:new Map()};placementCache.set(c,persistent);}
     if(persistent.cells.has(type))return persistent.cells.get(type);
-    return R.aiMemo(`shared-cell:${type}:${signature}`, () => {
+    return R.aiMemo(`shared-cell:${type}:${board}`, () => {
       const occupied = R.occupancy(c), layout = R.aiLayoutPlan(c), m = BUILDING_MECHANICS[type] || {};
       let best = null, bestScore = -Infinity;
       for (const rotation of R.rotationOptions(type)) {
@@ -56,7 +57,11 @@ export function installSharedAiPlacement(R) {
           if (R.aiRequiresLocalTargets(c, b) && !(m.localSupport ? usefulSupports.length : useful.length)) continue;
           let score = -.3 * (Math.abs(row - R.CENTER.row) + Math.abs(col - R.CENTER.col));
           score-=R.aiStrategyPlacementPenalty?.(c,type,offsets.map(([dr,dc])=>[row+dr,col+dc]))||0;
-          if (R.producerHasBonus(c, type, b)) score += 1000;
+          if (m.produces) {
+            const output = producerBaseOutput(R, {...c, buildings: [...c.buildings, b]}, b);
+            score += R.RES.reduce((sum, r) => sum + output[r] *
+              (c.race === 'orc' ? 1 + .2 * R.countNormal(c, 'orc_' + r) : 1), 0) * 1000;
+          }
           if (!m.produces) {
             if (offsets.some(([dr, dc]) => R.terrainAt(c, row + dr, col + dc)?.type === 'fertile')) score -= 420;
             if (R.adjacentTerrain(c, b, 'forest')) score -= 210;

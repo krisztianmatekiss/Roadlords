@@ -2,6 +2,7 @@ import { ORC_REDESIGN, levelValue } from '../data/faction-redesign.js';
 import { rangedRange } from '../data/ranged-balance.js';
 import { MOVEMENT_BALANCE } from '../data/movement-balance.js';
 import { assetUrl } from '../assets/urls.js';
+import { producerBaseOutput } from '../economy/producer-output.js';
 import { ORC_BALANCE, GOBLIN_BOW_COPY } from '../data/combat-balance.js';
 import { ORC_TRAINING, trainingPrice } from '../data/unit-balance.js';
 import { attackSourceCanResolve } from '../combat/target-budget.js';
@@ -168,15 +169,11 @@ export function initializeFactionsOrcFoundation(runtime) {
       c.garrisonCap += runtime.v4LevelValue(b.level, ORC_REDESIGN.hut);
     }
   };
-  function slaveWorkMult(c, b) {
-    return runtime.hasBranch(c, 'orc_slave', 'overseers') && runtime.adjacentBuildings(c, b).some(x => x.type === 'orc_slave' && !x.inactive) ? 1.5 : 1;
-  }
   function workRates(c, b) {
-    const lv = Math.min(b.level, 3);
-    return runtime.C(slaveWorkMult(c, b) * (b.level === 4 ? runtime.branchOf(c, b.type) === 'stone' ? 4 : 6 : lv) * (runtime.adjacentTerrain(c, b, 'forest') ? runtime.hasLeg(c, 'orc_ancient_deposits') ? 3 : 2 : 1), slaveWorkMult(c, b) * (b.level === 4 ? runtime.branchOf(c, b.type) === 'stone' ? 6 : 4 : lv) * (runtime.adjacentTerrain(c, b, 'quarry') ? runtime.hasLeg(c, 'orc_ancient_deposits') ? 3 : 2 : 1));
+    return producerBaseOutput(runtime, c, b);
   }
   function huntRate(c, b) {
-    return slaveWorkMult(c, b) * runtime.v4LevelValue(b.level, ORC_REDESIGN.hunt) * (1 + (runtime.touchesWall(b) ? .5 : 0) + (runtime.orcGateBonuses(c) ? .5 : 0));
+    return producerBaseOutput(runtime, c, b).food;
   }
   const oldRates = runtime.productionRates;
   runtime.productionRates = function (c) {

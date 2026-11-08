@@ -54,7 +54,15 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   check('Existing Human building illustrations stay on their original two atlases',inventory.building.every(id=>['human-buildings','human-support-buildings'].includes(manifest.scenes['human-building:'+id].source)));
   check('Common and legendary Human cards have distinct steel and gold frame inlays',report.commonStroke!==report.legendaryStroke);
   await p.evaluate(html=>{const grid=document.createElement('div');grid.id='humanArtGallery';grid.style.cssText='position:absolute;left:0;top:0;z-index:100000;width:1440px;padding:20px;box-sizing:border-box;background:#122019;display:grid;grid-template-columns:repeat(4,1fr);gap:16px';grid.innerHTML=html.join('');document.body.append(grid);window.dispatchEvent(new Event('roadlords:ui-scale'));},gallery);
-  await p.waitForTimeout(100);
+  // The resize observer refits on animation frames; a loaded CI runner may
+  // need more than 100 ms. Wait for the actual layout, including web fonts.
+  await p.evaluate(async()=>{await document.fonts.ready;});
+  await p.waitForFunction(()=>{
+   const cards=[...document.querySelectorAll('#humanArtGallery .cardFace')];
+   return cards.length===8&&cards.every(c=>['.rlCodexTitle','.rlCodexContent'].every(selector=>{
+    const box=c.querySelector(selector);return box?.clientHeight>0&&box.scrollHeight<=box.clientHeight+2&&box.scrollWidth<=box.clientWidth+2;
+   }));
+  },null,{timeout:10000});
   check('Exported card previews refit their titles and descriptions at the gallery size',await p.evaluate(()=>[...document.querySelectorAll('#humanArtGallery .cardFace')].every(c=>['.rlCodexTitle','.rlCodexContent'].every(selector=>{const box=c.querySelector(selector);return box.scrollHeight<=box.clientHeight+2&&box.scrollWidth<=box.clientWidth+2;}))));
   await p.locator('#humanArtGallery').screenshot({path:'artifacts/human-card-art-4.58.4.png'});await p.evaluate(()=>document.querySelector('#humanArtGallery').remove());await p.keyboard.press('Escape');
   const picks=await p.evaluate(async()=>{

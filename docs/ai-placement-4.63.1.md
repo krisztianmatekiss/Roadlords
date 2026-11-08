@@ -7,6 +7,8 @@
 - A tartós helygyorsítótárból hiányoztak a commonok és a stratégiai cél egyes elemei. A döntésen belüli gyorsítótárból a terep és a fejlesztések is hiányoztak.
 - A nyitás egyetlen termelő után túl könnyen elégségesnek tekintette a gazdaságot. Teli kezdőkészletnél a beruházási bevételi cél az ötödére eshetett. Ez túl hamar terelte katonai kiadásokra az AI-t.
 
+Kis bevételi hiánynál holtpont alakulhatott ki: a katonai építés még várt a célra, a következő szükséges termelő viszont a 0,1-es javítási küszöb alatt negatív pontot kapott. Most a tényleges nettó bevételjavulás számít; a katonai készenlét ugyanazt a 0,01-es tűrést használja, mint a növekedési cél.
+
 ## Változtatások
 
 A `src/economy/producer-output.js` a valódi termelés és az AI által közösen használt, mellékhatás nélküli termelőképlet. Megőrzi a jelenlegi gazdasági értékeket: emberi terephalmozás, termékeny föld, céhbónuszok; ork kétféle termelés, L4 ág, ősi lelőhely, rabszolgatábor és vadászházi bónuszok. Az AI az összes engedett forgatást vizsgálja, és a tényleges hozam alapján rangsorol. Szabad bónuszos hely hiányában normál helyre is építhet.
@@ -34,6 +36,6 @@ Az eltérő döntések a további lapokat és a harci véletleneket is megválto
 
 ## Ellenőrzés
 
-Az új `tests/ai-producer-placement.cjs` 18 ellenőrzést futtat: kétoldali terepbónuszok, valós jövedelem, több lelőhely, fal és termékeny föld, céhbónusz, L4 és common együtthatók, gyorsítótár-frissítés, elzárt bónuszhely, valódi nyitási AI-kör, valamint változatlan játékállapot és véletlenszám-sorozat. A további öt célzott AI tesztcsomaggal összesen 112 ellenőrzés sikerült; a meccsauditok nem jeleztek futási hibát.
+Az új `tests/ai-producer-placement.cjs` 19 ellenőrzést futtat: kétoldali terepbónuszok, valós jövedelem, több lelőhely, fal és termékeny föld, céhbónusz, L4 és common együtthatók, gyorsítótár-frissítés, elzárt bónuszhely, valódi nyitási AI-kör, valamint változatlan játékállapot és véletlenszám-sorozat. A további öt célzott AI tesztcsomaggal és a kapacitásvizsgálattal összesen 132 ellenőrzés sikerült; a meccsauditok nem jeleztek futási hibát.
 
 Újrafuttatás: `npm run build`, majd `node scripts/test.cjs tests/ai-producer-placement.cjs`. A meccsméréshez `ROADLORDS_AI_SECONDS=900 ROADLORDS_AI_TAG=placement npm run audit:ai-matches`. Az audit kizárólag kézzel indítható fejlesztői eszköz; a játék nem exportál automatikusan meccsnaplót.

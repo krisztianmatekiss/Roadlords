@@ -6,6 +6,7 @@
 - Az emberi termelők az összeadódó lelőhelybónuszokat és a helyi termeléstámogatást is értékelik.
 - A helykeresés gyorsítótára terep-, fejlesztés- és stratégiai változás után frissül.
 - Biztonságos nyitásnál többet fektet a termelőháttérbe; a teli kezdőkészlet nem helyettesíti a tartós bevételt.
+- A kis bevételi hiány sem állíthatja le egyszerre a további termelő- és katonai építkezést.
 
 Ellenőrzés: [termelőelhelyezési audit](docs/ai-placement-4.63.1.md).
 

@@ -87,6 +87,19 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
     return !!R.aiBuildingMechanics(invested).produces;
    },race));
   }
+  check('A small funded income shortfall cannot deadlock both economy and military construction',await p.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,c=producerFixture('human');R.state.time=120;
+   c.unlocked=new Set(['keep','lumber','stonecutter','farm','barracks','house','warehouse']);
+   for(let i=0;i<6;i++)producerResult(c,'lumber');
+   for(let i=0;i<6;i++){producerResult(c,'stonecutter');producerResult(c,'farm');}
+   c.resources=R.C(1e5,1e5,1e5);const cell=R.findCell(c,'barracks');if(!R.placeBuilding(c,'barracks',...cell).ok)return false;
+   c.resources={...c.caps};const before=R.productionRates(c).wood;
+   const opportunity=R.aiConstructionOpportunities(c).find(o=>o.type==='lumber');
+   if(!(opportunity?.score>0)){const metrics=R.aiPreview(c,()=>{});throw Error(JSON.stringify({stage:'opportunity',before,score:opportunity?.score,flow:R.resourceFlowRates(c),target:R.aiGrowthTargets(c,metrics,R.aiBattleState(c),['barracks']),b:c.buildings.at(-1)}));}
+   c.aiThink=0;R.aiStepCity(c,1);const after=R.productionRates(c).wood;
+   if(!(after>before))throw Error(JSON.stringify({stage:'turn',before,after,saving:c._aiSaveType,last:c.buildings.at(-1),growth:c._aiGrowthPlan}));
+   return true;
+  }));
   check('Placement evaluation consumes no RNG and leaves both real cities unchanged',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=producerFixture('orc');terrain(c,0,0,'forest');
    const snapshot=()=>JSON.stringify([R.P,R.E]),before=snapshot(),random=Math.random;

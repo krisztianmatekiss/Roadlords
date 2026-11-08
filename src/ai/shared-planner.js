@@ -128,21 +128,25 @@ export function installSharedAiPlanner(R) {
     let score = benefit;
     const area = R.cityBuildingCells(c,{type,row:0,col:0,rotation:cell[2]}).length;
     if (m.produces) {
-      let repair = 0;
+      let repair = 0, improvesNeededIncome = false;
       for (const r of ctx.resources) {
         const deficit = Math.max(0,ctx.target[r]-metrics.gain[r]);
         // Reward relief of the actual bottleneck. Dividing only by the target
         // perversely favors small goals over the resource funding expansion.
         const shortage = Math.min(1, deficit / Math.max(1, ctx.target[r]));
-        repair += Math.min(deficit, Math.max(0,after.gain[r]-metrics.gain[r])) /
-          Math.max(1,metrics.gain[r]) * shortage;
+        const improvement = Math.min(deficit, Math.max(0,
+          (after.gain[r]-after.use[r])-(metrics.gain[r]-metrics.use[r])));
+        if (improvement > .01) improvesNeededIncome = true;
+        repair += improvement / Math.max(1,metrics.gain[r]) * shortage;
       }
-      score += repair * 48 + (repair > .1 ? 9 : -18);
+      // A small remaining shortage is still worth fixing. Otherwise military
+      // waits for income while the last required mill is scored as useless.
+      score += repair * 48 + (improvesNeededIncome ? 9 : -18);
       if (!metrics.power && repair > .05) score += 12;
       if (ctx.resources.some(r=>metrics.use[r]>metrics.gain[r] && after.gain[r]>metrics.gain[r])) score += 30;
     } else if (R.BUILDINGS[type].unit) {
       score = militaryScore(type,ctx) + Math.min(12,score*.15);
-      const ready = ctx.resources.every(r => metrics.gain[r] >= ctx.target[r]);
+      const ready = ctx.resources.every(r => metrics.gain[r] + .01 >= ctx.target[r]);
       if (!ready && !ctx.pressure) score -= ctx.battle.safeOpening?48:25;
       if (ctx.pressure) score += metrics.power?25:65;
       if (ctx.resources.some(r=>after.use[r] > after.gain[r]*.98 && c.resources[r]-(price[r]||0)<Math.max(0,after.use[r]-after.gain[r])*45)) score -= 40;

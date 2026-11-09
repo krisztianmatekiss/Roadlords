@@ -1,0 +1,678 @@
+{
+  "version": "4.65.0",
+  "scope": "Developer-only seeded normal AI matches. Actual choices, placement, money, training and combat; no player win-rate or FPS claim. Earlier runs are labelled by source commit.",
+  "runs": [
+    {
+      "sourceCommit": "dcbc280",
+      "seed": 7,
+      "left": "human",
+      "right": "orc",
+      "seconds": 600.0,
+      "errors": [],
+      "cities": [
+        {
+          "race": "human",
+          "hp": 1,
+          "buildings": 62,
+          "plots": 92,
+          "army": 388,
+          "reserve": 0,
+          "produced": 1129,
+          "gain": {
+            "wood": 42,
+            "stone": 150,
+            "food": 222
+          },
+          "use": {
+            "wood": 4.266666666666667,
+            "stone": 88.44444444444443,
+            "food": 86.13333333333333
+          },
+          "redeveloped": 1,
+          "roster": {
+            "keep": 1,
+            "lumber": 2,
+            "warehouse": 1,
+            "stonecutter": 9,
+            "stable": 19,
+            "library": 1,
+            "farm": 22,
+            "mastersguild": 1,
+            "tavern": 1,
+            "temple": 2,
+            "house": 2,
+            "guardhouse": 1
+          },
+          "firstBuilds": [
+            {
+              "seconds": 0.1,
+              "type": "lumber"
+            },
+            {
+              "seconds": 9.1,
+              "type": "warehouse"
+            },
+            {
+              "seconds": 22.6,
+              "type": "stonecutter"
+            },
+            {
+              "seconds": 44.2,
+              "type": "lumber"
+            },
+            {
+              "seconds": 74.8,
+              "type": "stable"
+            },
+            {
+              "seconds": 89.2,
+              "type": "stable"
+            },
+            {
+              "seconds": 94.6,
+              "type": "stonecutter"
+            },
+            {
+              "seconds": 98.2,
+              "type": "stonecutter"
+            },
+            {
+              "seconds": 106.3,
+              "type": "library"
+            },
+            {
+              "seconds": 110.8,
+              "type": "stonecutter"
+            }
+          ]
+        },
+        {
+          "race": "orc",
+          "hp": 0.9834375,
+          "buildings": 50,
+          "plots": 89,
+          "army": 86,
+          "reserve": 0,
+          "produced": 1677,
+          "gain": {
+            "wood": 38.4,
+            "stone": 80,
+            "food": 115.2
+          },
+          "use": {
+            "wood": 0,
+            "stone": 62.11764705882353,
+            "food": 79.05882352941177
+          },
+          "redeveloped": 0,
+          "roster": {
+            "keep": 1,
+            "warehouse": 2,
+            "orc_work": 4,
+            "orc_war": 30,
+            "orc_hunt": 13
+          },
+          "firstBuilds": [
+            {
+              "seconds": 36.1,
+              "type": "warehouse"
+            },
+            {
+              "seconds": 37.9,
+              "type": "warehouse"
+            },
+            {
+              "seconds": 115.3,
+              "type": "orc_work"
+            },
+            {
+              "seconds": 149.5,
+              "type": "orc_work"
+            },
+            {
+              "seconds": 165.7,
+              "type": "orc_war"
+            },
+            {
+              "seconds": 194.5,
+              "type": "orc_war"
+            },
+            {
+              "seconds": 195.4,
+              "type": "orc_war"
+            },
+            {
+              "seconds": 196.3,
+              "type": "orc_war"
+            },
+            {
+              "seconds": 204.4,
+              "type": "orc_war"
+            },
+            {
+              "seconds": 213.4,
+              "type": "orc_war"
+            }
+          ]
+        }
+      ],
+      "portalTransitions": 0,
+      "redevelopments": [
+        {
+          "side": "player",
+          "t": 488.80000000004264,
+          "type": "guardhouse",
+          "removed": [
+            "farm"
+          ],
+          "cell": [
+            0,
+            2,
+            0
+          ],
+          "score": 8.140190476190474,
+          "previews": 4
+        }
+      ]
+    },
+    {
+      "sourceCommit": "dcbc280",
+      "seed": 7,
+      "left": "undead",
+      "right": "orc",
+      "seconds": 458.7,
+      "errors": [],
+      "cities": [
+        {
+          "race": "undead",
+          "hp": 0,
+          "buildings": 37,
+          "plots": 94,
+          "army": 0,
+          "reserve": 0,
+          "produced": 50,
+          "gain": {
+            "wood": 149.60000000000002,
+            "stone": 0,
+            "food": 0
+          },
+          "use": {
+            "wood": 113.5866666666666,
+            "stone": 0,
+            "food": 0
+          },
+          "redeveloped": 1,
+          "roster": {
+            "keep": 1,
+            "und_bone_forge": 3,
+            "und_well": 7,
+            "und_vampire_castle": 1,
+            "und_rebirth_tomb": 1,
+            "und_corrupted_hatchery": 1,
+            "und_plague_chamber": 23
+          },
+          "firstBuilds": [
+            {
+              "seconds": 0.1,
+              "type": "und_bone_forge"
+            },
+            {
+              "seconds": 1.0,
+              "type": "und_well"
+            },
+            {
+              "seconds": 28.0,
+              "type": "und_well"
+            },
+            {
+              "seconds": 45.1,
+              "type": "und_well"
+            },
+            {
+              "seconds": 57.7,
+              "type": "und_well"
+            },
+            {
+              "seconds": 67.6,
+              "type": "und_well"
+            },
+            {
+              "seconds": 76.6,
+              "type": "und_well"
+            },
+            {
+              "seconds": 83.8,
+              "type": "und_vampire_castle"
+            },
+            {
+              "seconds": 90.1,
+              "type": "und_garden_of_dead"
+            },
+            {
+              "seconds": 95.5,
+              "type": "und_rebirth_tomb"
+            }
+          ]
+        },
+        {
+          "race": "orc",
+          "hp": 1,
+          "buildings": 44,
+          "plots": 84,
+          "army": 475,
+          "reserve": 105,
+          "produced": 660,
+          "gain": {
+            "wood": 108.80000000000001,
+            "stone": 60,
+            "food": 152.6
+          },
+          "use": {
+            "wood": 27.200000000000006,
+            "stone": 45.33333333333332,
+            "food": 58.93333333333336
+          },
+          "redeveloped": 3,
+          "roster": {
+            "keep": 1,
+            "orc_work": 5,
+            "orc_hunt": 16,
+            "orc_bers": 17,
+            "orc_arena": 1,
+            "orc_totem": 1,
+            "orc_hut": 3
+          },
+          "firstBuilds": [
+            {
+              "seconds": 34.3,
+              "type": "orc_work"
+            },
+            {
+              "seconds": 48.7,
+              "type": "orc_hunt"
+            },
+            {
+              "seconds": 70.3,
+              "type": "orc_work"
+            },
+            {
+              "seconds": 77.5,
+              "type": "orc_bers"
+            },
+            {
+              "seconds": 82.9,
+              "type": "orc_hunt"
+            },
+            {
+              "seconds": 88.3,
+              "type": "orc_hunt"
+            },
+            {
+              "seconds": 98.2,
+              "type": "orc_bers"
+            },
+            {
+              "seconds": 108.1,
+              "type": "orc_bers"
+            },
+            {
+              "seconds": 112.6,
+              "type": "orc_hunt"
+            },
+            {
+              "seconds": 118.9,
+              "type": "orc_work"
+            }
+          ]
+        }
+      ],
+      "portalTransitions": 0,
+      "redevelopments": [
+        {
+          "side": "player",
+          "t": 181.89999999999395,
+          "type": null,
+          "removed": [
+            "und_garden_of_dead"
+          ],
+          "cell": null
+        },
+        {
+          "side": "enemy",
+          "t": 299.79999999999967,
+          "type": "orc_hut",
+          "removed": [
+            "orc_work",
+            "orc_work"
+          ],
+          "cell": [
+            5,
+            1,
+            0
+          ],
+          "score": 20.230767882187937,
+          "previews": 4
+        },
+        {
+          "side": "enemy",
+          "t": 363.7000000000142,
+          "type": "orc_hut",
+          "removed": [
+            "orc_hunt",
+            "orc_hunt"
+          ],
+          "cell": [
+            3,
+            0,
+            0
+          ],
+          "score": 10.512087660980425,
+          "previews": 4
+        },
+        {
+          "side": "enemy",
+          "t": 421.3000000000273,
+          "type": "orc_hut",
+          "removed": [
+            "orc_slave"
+          ],
+          "cell": [
+            4,
+            8,
+            0
+          ],
+          "score": 10.270490407220903,
+          "previews": 4
+        }
+      ]
+    },
+    {
+      "sourceCommit": "e156c75",
+      "seed": 7,
+      "left": "undead",
+      "right": "orc",
+      "seconds": 600.0,
+      "errors": [],
+      "cities": [
+        {
+          "race": "undead",
+          "hp": 1,
+          "buildings": 47,
+          "plots": 98,
+          "army": 459,
+          "reserve": 18,
+          "produced": 1140,
+          "gain": {
+            "wood": 272.8,
+            "stone": 0,
+            "food": 0
+          },
+          "use": {
+            "wood": 221.88,
+            "stone": 0,
+            "food": 0
+          },
+          "redeveloped": 6,
+          "roster": {
+            "keep": 1,
+            "und_well": 7,
+            "und_morgue": 24,
+            "und_dark_tower": 4,
+            "und_border_obelisk": 8,
+            "und_crypt": 3
+          },
+          "firstBuilds": [
+            {
+              "seconds": 0.1,
+              "type": "und_bone_forge"
+            },
+            {
+              "seconds": 1.0,
+              "type": "und_well"
+            },
+            {
+              "seconds": 28.0,
+              "type": "und_well"
+            },
+            {
+              "seconds": 45.1,
+              "type": "und_well"
+            },
+            {
+              "seconds": 57.7,
+              "type": "und_well"
+            },
+            {
+              "seconds": 67.6,
+              "type": "und_well"
+            },
+            {
+              "seconds": 76.6,
+              "type": "und_well"
+            },
+            {
+              "seconds": 83.8,
+              "type": "und_vampire_castle"
+            },
+            {
+              "seconds": 85.6,
+              "type": "und_morgue"
+            },
+            {
+              "seconds": 88.3,
+              "type": "und_morgue"
+            }
+          ]
+        },
+        {
+          "race": "orc",
+          "hp": 1,
+          "buildings": 48,
+          "plots": 86,
+          "army": 425,
+          "reserve": 55,
+          "produced": 1512,
+          "gain": {
+            "wood": 170.79999999999998,
+            "stone": 61.599999999999994,
+            "food": 84
+          },
+          "use": {
+            "wood": 32.88888888888889,
+            "stone": 49.95555555555554,
+            "food": 65.68888888888891
+          },
+          "redeveloped": 3,
+          "roster": {
+            "keep": 1,
+            "orc_work": 7,
+            "orc_hunt": 18,
+            "orc_bers": 17,
+            "orc_arena": 1,
+            "orc_shaman": 2,
+            "orc_totem": 1,
+            "orc_hut": 1
+          },
+          "firstBuilds": [
+            {
+              "seconds": 34.3,
+              "type": "orc_work"
+            },
+            {
+              "seconds": 48.7,
+              "type": "orc_hunt"
+            },
+            {
+              "seconds": 70.3,
+              "type": "orc_work"
+            },
+            {
+              "seconds": 77.5,
+              "type": "orc_bers"
+            },
+            {
+              "seconds": 82.9,
+              "type": "orc_hunt"
+            },
+            {
+              "seconds": 88.3,
+              "type": "orc_hunt"
+            },
+            {
+              "seconds": 99.1,
+              "type": "orc_bers"
+            },
+            {
+              "seconds": 104.5,
+              "type": "orc_hunt"
+            },
+            {
+              "seconds": 114.4,
+              "type": "orc_bers"
+            },
+            {
+              "seconds": 118.9,
+              "type": "orc_hunt"
+            }
+          ]
+        }
+      ],
+      "portalTransitions": 0,
+      "redevelopments": [
+        {
+          "side": "player",
+          "t": 166.59999999999482,
+          "type": null,
+          "removed": [
+            "und_bone_forge"
+          ],
+          "cell": null
+        },
+        {
+          "side": "player",
+          "t": 227.49999999999136,
+          "type": "und_plague_chamber",
+          "removed": [
+            "und_vampire_castle"
+          ],
+          "cell": [
+            1,
+            6,
+            0
+          ],
+          "score": 8.098223966025685,
+          "previews": 4
+        },
+        {
+          "side": "player",
+          "t": 323.50000000000506,
+          "type": "und_border_obelisk",
+          "removed": [
+            "und_plague_chamber"
+          ],
+          "cell": [
+            1,
+            6,
+            0
+          ],
+          "score": 5.878095645530907,
+          "previews": 4
+        },
+        {
+          "side": "enemy",
+          "t": 368.2000000000152,
+          "type": "warehouse",
+          "removed": [
+            "orc_work"
+          ],
+          "cell": [
+            1,
+            7,
+            0
+          ],
+          "score": 5.180756764068946,
+          "previews": 4
+        },
+        {
+          "side": "player",
+          "t": 369.1000000000154,
+          "type": "und_crypt",
+          "removed": [
+            "und_morgue"
+          ],
+          "cell": [
+            0,
+            1,
+            0
+          ],
+          "score": 6.010292207792208,
+          "previews": 4
+        },
+        {
+          "side": "enemy",
+          "t": 425.8000000000283,
+          "type": "orc_totem",
+          "removed": [
+            "orc_hunt",
+            "orc_hunt",
+            "orc_shaman"
+          ],
+          "cell": [
+            0,
+            3,
+            0
+          ],
+          "score": 8.212293957447425,
+          "previews": 4
+        },
+        {
+          "side": "player",
+          "t": 438.70000000003125,
+          "type": "und_border_obelisk",
+          "removed": [
+            "und_dark_tower"
+          ],
+          "cell": [
+            1,
+            7,
+            0
+          ],
+          "score": 9.369208211143697,
+          "previews": 4
+        },
+        {
+          "side": "enemy",
+          "t": 552.7000000000571,
+          "type": "orc_hut",
+          "removed": [
+            "orc_hunt",
+            "orc_hunt",
+            "warehouse"
+          ],
+          "cell": [
+            0,
+            7,
+            0
+          ],
+          "score": 10.747487011119457,
+          "previews": 4
+        },
+        {
+          "side": "player",
+          "t": 556.3000000000579,
+          "type": "und_border_obelisk",
+          "removed": [
+            "und_dark_tower"
+          ],
+          "cell": [
+            3,
+            9,
+            0
+          ],
+          "score": 21.854545454545583,
+          "previews": 4
+        }
+      ]
+    }
+  ]
+}

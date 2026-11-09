@@ -1484,16 +1484,6 @@
         333.3333333333333
       ]
     },
-    "undead-building:und_soul_rift": {
-      "source": "undead-convergence",
-      "index": 2,
-      "rect": [
-        1028,
-        4,
-        504,
-        333.3333333333333
-      ]
-    },
     "undead-building:und_otherworld_portal": {
       "source": "undead-convergence",
       "index": 3,

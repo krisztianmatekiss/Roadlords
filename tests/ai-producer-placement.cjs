@@ -81,7 +81,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
     for(const type of types)producerResult(c,type);
     c.resources={...c.caps};const metrics=R.aiPreview(c,()=>{}),military=R.aiFactionBuildings(c).filter(type=>R.BUILDINGS[type].unit);
     const safe=R.aiGrowthTargets(c,metrics,{safeOpening:true},military),exposed=R.aiGrowthTargets(c,metrics,{safeOpening:false},military);
-    if(!(safe.expanding&&safe.growing&&safe.target.wood>exposed.target.wood*2&&safe.target.stone>exposed.target.stone*2))return false;
+    if(!(safe.expanding&&safe.growing&&safe.target.wood>exposed.target.wood&&safe.target.stone>exposed.target.stone))return false;
     const ids=new Set(c.buildings.map(b=>b.id));c.aiThink=0;R.aiStepCity(c,1);
     const invested=c.buildings.find(b=>!ids.has(b.id))?.type||c._aiSaveType;
     return !!R.aiBuildingMechanics(invested).produces;

@@ -270,7 +270,7 @@ export function initializeUndeadFoundation(R) {
           .filter((b) => !lost.has(b.id))
           .map((b) => {
             const old = byId.get(b.id);
-            if (!old) return b.type==='und_soul_rift'?{...b,undRiftClock:0}:b;
+            if (!old) return b;
             const copy = { ...b };
             for (const key of ['undHp', 'undStarve', 'undRiftClock']) if (old[key] !== undefined) copy[key] = old[key];
             return copy;

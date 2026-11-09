@@ -10,4 +10,4 @@ export const levelValue = (level, values) => values[Math.max(0, Math.min(values.
 export const territoryPower = c => c?.race === 'undead' && c.l4Branches?.keep === 'dead_realm' ? 2 : 1;
 export const undeadEliteChance = (c, produced = false) => Math.min(1,
   (produced && c?.l4Branches?.keep === 'elite_dominion' ? .5 : 0) + (c?.legends?.has('und_elite_birth') ? .2 : 0));
-export const REMOVED_BUILDINGS = new Set(['hospital', 'towercommand', 'alchemist', 'academy', 'orc_altar', 'und_soul_harvester', 'und_soul_blade']);
+export const REMOVED_BUILDINGS = new Set(['hospital', 'towercommand', 'alchemist', 'academy', 'orc_altar', 'und_soul_harvester', 'und_soul_blade', 'und_soul_rift']);

@@ -55,7 +55,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   }));
   check('An unfunded plan cannot fabricate a producer or spend future income that does not exist',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=planReset('undead');planPut(c,'und_vampire_castle');c.resources=R.C();
-   const endpoint=R.aiStrategyAnchors(c).find(p=>p.anchor.id==='und_soul_rift'),before=JSON.stringify(c);
+   const endpoint=R.aiStrategyAnchors(c).find(p=>p.anchor.id==='und_otherworld_portal'),before=JSON.stringify(c);
    const out=R.aiStrategyProject(c,{...endpoint,producer:null},{budget:{remaining:4,used:0}});return out.blocked==='income'&&out.actions.length===1&&before===JSON.stringify(c);
   }));
   check('A chosen L4 branch excludes incompatible future branches from planning',await p.evaluate(()=>{
@@ -74,7 +74,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    const R=__ROADLORDS_RUNTIME__,c=planReset('human');for(const type of ['lumber','stonecutter','farm']){planPut(c,type);R.setBuildingLevel(c,type,4);}
    const barracks=planPut(c,'barracks');R.setBuildingLevel(c,'barracks',4,'cavalry_barracks');c.normal.knight_dmg=6;c.legends.add('cavalry_charge');c.resources=R.C(1500,1500,1500);
    const s=R.aiStrategy(c,planContext(c));if(!s.primary?.units.includes('knight'))throw Error(JSON.stringify(s.primary));
-   for(let n=0;n<5&&!R.hasBuilding(c,'stable');n++){c.aiThink=0;R.aiStepCity(c,1);R.state.time++;}
+   for(let n=0;n<45&&!R.hasBuilding(c,'stable');n++){R.produceResources(c,1);c.aiThink=0;R.aiStepCity(c,1);R.state.time++;}
    return R.buildingOf(c,'stable').some(b=>R.aiBuildingsTouch(c,b,barracks))&&R.effectiveUnitKey(c,barracks)==='knight';
   }));
   check('Orc Warg upgrades and legendary effects produce a cavalry-focused plan',await p.evaluate(()=>{

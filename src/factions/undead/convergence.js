@@ -119,9 +119,6 @@ export function initializeUndeadConvergence(R) {
     description:R.NORMAL.find(d=>d.id===o.id).description,context:'A jelenlegi területnövelésekkel.',stacking:'Halmozható.',
     rows:[{label:'Saját térfélnövelés',before:`+${(R.undTerritoryAdvance(c)/10).toLocaleString('hu-HU')} m`,after:`+${(Math.min(R.PATH_LENGTH/2-20,R.undTerritoryAdvance(c)+120*R.undTerritoryScale(c))/10).toLocaleString('hu-HU')} m`}],
   }:preview(c,o);
-  R.undRiftProfile=(c,b)=>R.branchOf(c,b.type)==='rift_persistence'&&b.level===4
-    ?{count:B.riftLongCount,lifetime:B.riftLongLifetime,cost:B.riftLongPrice}
-    :{count:at(b.level,B.riftCounts),lifetime:at(b.level,B.riftLifetime),cost:at(b.level,B.riftPrice)};
   R.undPortalOperational=c=>undead(c)&&!!c.undPortalEnabled&&active(c,'und_otherworld_portal').some(b=>!(b.undStarve>0))&&c.resources.wood>=0;
   const release=R.releaseUnit;
   R.releaseUnit=(c,e)=>{
@@ -141,41 +138,11 @@ export function initializeUndeadConvergence(R) {
     }
     return out;
   };
-  const flow=R.resourceFlowRates;
-  R.resourceFlowRates=c=>{
-    const result=flow(c);if(!undead(c))return result;
-    let extra=active(c,'und_soul_rift').reduce((n,b)=>n+R.undRiftProfile(c,b).cost/B.riftInterval,0);
-    result.use.wood+=extra;result.sources.convergence=R.C(extra,0,0);return result;
-  };
-  function castRifts(c,dt){
-    const side=R.sideForCity(c),front=R.targetStructure(side),low=side==='player'?8:Math.max(8,front.capital?8:front.lane+18),high=side==='enemy'?R.PATH_LENGTH-8:Math.min(R.PATH_LENGTH-8,front.capital?R.PATH_LENGTH-8:front.lane-18);
-    for(const b of active(c,'und_soul_rift')){
-      if(b.undStarve>0)continue;
-      b.undRiftClock=Math.min(B.riftInterval,(b.undRiftClock||0)+dt);
-      const p=R.undRiftProfile(c,b),queued=c.releaseQueue.reduce((n,e)=>n+R.battleEntrySeats(e),0);
-      if(b.undRiftClock<B.riftInterval||c.resources.wood<p.cost||R.battlePopulationRoom(c)-queued<p.count)continue;
-      let point=null;
-      for(let i=0;i<32;i++){
-        const candidate={side,lane:low+Math.random()*Math.max(0,high-low),offset:(Math.random()*2-1)*R.ROAD.half};
-        if(R.isOwnHalf(candidate)){point=candidate;break;}
-      }
-      if(!point)for(let i=0;i<=32&&!point;i++)for(let j=0;j<=8;j++){
-        const candidate={side,lane:low+(high-low)*i/32,offset:-R.ROAD.half+R.ROAD.half*2*j/8};
-        if(R.isOwnHalf(candidate)){point=candidate;break;}
-      }
-      if(!point)continue;
-      if(!R.pay(c,R.C(p.cost,0,0)))continue;
-      const keys=Object.keys(U);
-      for(let i=0;i<p.count;i++)R.undSpawn(c,keys[Math.floor(Math.random()*keys.length)],point.lane,point.offset,{undSummoned:true,undNoArmySlot:true,undLifetime:p.lifetime});
-      b.undRiftClock=0;R.undConvergenceFx(c,'rift',point.lane,point.offset,1.5);
-    }
-  }
   const battle=R.updateBattle;
   R.updateBattle=dt=>{
     const result=battle(dt);
     if(authoritative()){
       flushShadow();
-      if(dt>0)for(const c of [R.P,R.E])if(undead(c))castRifts(c,dt);
     }
     return result;
   };
@@ -201,7 +168,6 @@ export function initializeUndeadConvergence(R) {
     if(!undead(c))return rows(c,b);
     const upkeep=(R.undEconomy(c).upkeep.get(b.id)||0).toLocaleString('hu-HU',{maximumFractionDigits:2});
     if(b.type==='und_well')return [['Termelés',`${at(b.level,B.wellIncome)*(R.hasLeg(c,'und_compact_wells') ? .5 : 1)} Lélek/mp`],['Fenntartás',`${upkeep} Lélek/mp`]];
-    if(b.type==='und_soul_rift'){const p=R.undRiftProfile(c,b);return [['Idézés',`${p.count} egység / ${B.riftInterval} mp`],['Élettartam',`${p.lifetime} mp`],['Idézés ára',`${p.cost} Lélek`],['Következő idézés',`${Math.max(0,B.riftInterval-(b.undRiftClock||0)).toFixed(1)} mp`],['Fenntartás',`${upkeep} Lélek/mp`]];}
     if(b.type==='und_otherworld_portal')return [['Állapot',c.undPortalEnabled?'Bekapcsolva':'Kikapcsolva'],['Aktív működés',`${Math.floor(c.undeadState?.portalUptime||0)} mp`],['Fenntartás',`${upkeep} Lélek/mp`],['Növekedés',`+${B.portalIncrease} Lélek/mp minden ${B.portalIncreaseEvery} aktív mp után`]];
     return rows(c,b);
   };

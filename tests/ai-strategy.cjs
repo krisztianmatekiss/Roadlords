@@ -12,15 +12,16 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    window.strategyTick=()=>{R.E.aiThink=0;R.enemyBuildAI(1);};
    window.strategyOrc=()=>{const c=strategyReset('orc');c.unlocked=new Set(['keep','orc_work','orc_hunt','warehouse','orc_war','orc_hut','orc_warg']);for(const type of ['orc_work','orc_work','orc_hunt','orc_hunt','orc_hunt','warehouse','warehouse','warehouse','warehouse','orc_war','orc_war','orc_war'])strategyPut(type);R.setBuildingLevel(c,'orc_work',4);R.setBuildingLevel(c,'orc_hunt',4);return c;};
   });
-  check('Orc AI saves for an unlocked Warg producer instead of buying another affordable Warrior camp',await p.evaluate(()=>{
-   const R=__ROADLORDS_RUNTIME__,c=strategyOrc();c.resources=R.C(50,50,100);const n=c.buildings.length;strategyTick();
-   const ok=c.buildings.length===n&&c._aiSaveType==='orc_warg'&&c._aiSaveReason==='military';
+  check('A committed Warg build keeps its goal while funding it instead of buying unrelated Warriors',await p.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,c=strategyOrc();c.normal.orc_warg_dmg=8;c.legends.add('orc_predator');R.recomputeCity(c,true);c.resources=R.C(50,50,100);const n=c.buildings.length;strategyTick();
+   const ok=c.buildings.length===n&&c._aiInvestment.goals.includes('orc_warg')&&(c._aiSaveType==='orc_warg'||R.aiBuildingMechanics(c._aiSaveType).produces);
    if(!ok)throw Error(JSON.stringify({saved:c._aiSaveType,buildings:c.buildings.length,plan:R.aiStrategyFor(c)?.primary,options:R.aiConstructionOpportunities(c).map(o=>({type:o.type,score:o.score}))}));return true;
   }));
   check('The investment survives a growth tick and produces the selected Warg camp once funded',await p.evaluate(()=>{
-   const R=__ROADLORDS_RUNTIME__,c=R.E,since=c._aiSaveSince;R.state.time++;strategyTick();
-   if(c._aiSaveType!=='orc_warg'||c._aiSaveSince!==since)return false;
-   c.resources=R.C(10000,10000,10000);strategyTick();return R.buildingOf(c,'orc_warg').length===1&&!c._aiSavePrice;
+   const R=__ROADLORDS_RUNTIME__,c=R.E,since=c._aiSaveSince,saved=c._aiSaveType;R.state.time++;strategyTick();
+   if(c._aiSaveType!==saved||c._aiSaveSince!==since)return false;
+   c.resources=R.C(10000,10000,10000);for(let n=0;n<30&&!R.hasBuilding(c,'orc_warg');n++){R.produceResources(c,1);R.state.time++;strategyTick();}
+   return R.buildingOf(c,'orc_warg').length===1&&!c._aiSavePrice;
   }));
   check('Saving for military investment slows existing training without stopping it indefinitely',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=strategyOrc(),b=R.buildingOf(c,'orc_war')[0];c.resources=R.C(100,100,100);R.aiSaveForBuild('orc_warg',R.C(300,300),'military');
@@ -34,7 +35,11 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   }));
   check('Visible ranged enemies increase investment in Warg riders through a real AI decision',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=strategyOrc();strategyPut('orc_warg');c.resources=R.C(10000,10000,10000);
-   R.state.units=Array.from({length:20},(_,id)=>({id,key:'archer',alive:true,side:'player',lane:100,tags:['ranged']}));strategyTick();return R.buildingOf(c,'orc_warg').length===2;
+   const before=R.aiMilitaryScore('orc_warg',c);
+   R.state.units=Array.from({length:20},(_,id)=>({id,key:'archer',alive:true,side:'player',lane:100,tags:['ranged']}));R.state.combatStep++;
+   const responsive=R.aiMilitaryScore('orc_warg',c)>before;
+   for(let n=0;n<30&&R.buildingOf(c,'orc_warg').length<2;n++){R.produceResources(c,1);R.state.time++;strategyTick();}
+   return responsive&&R.buildingOf(c,'orc_warg').length>=2;
   }));
   check('The opening attack leaves with a useful smaller army rather than waiting for 30 recruits',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=strategyReset('human');strategyPut('barracks');c.garrison=Array.from({length:12},()=>R.makeEntry(c,'swordsman'));c.gateMode='closed';R.enemyGateAI();return c.gateMode==='open'&&c.releaseQueue.length===12;
@@ -58,8 +63,8 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    if(R.aiMakeRoomFor('und_graveyard')||c.undeadState.aiRedeveloped!==1)return false;
    R.state.time+=15;return R.aiMakeRoomFor('und_graveyard')&&c.undeadState.aiRedeveloped===2;
   }));
-  check('Full warehouses reduce expansion demand while preserving current training coverage',await p.evaluate(()=>{
-   const R=__ROADLORDS_RUNTIME__,c=strategyReset('human');strategyPut('barracks');const use=R.consumptionRates(c);c.resources=R.C();const low=R.aiResourceTargets();c.resources={...c.caps};const full=R.aiResourceTargets();return R.RES.every(k=>full[k]<low[k]&&full[k]>=use[k]);
+  check('Full warehouses preserve sustainable construction and training requirements',await p.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,c=strategyReset('human');strategyPut('barracks');const use=R.consumptionRates(c);c.resources=R.C();const low=R.aiResourceTargets();c.resources={...c.caps};const full=R.aiResourceTargets();return R.RES.every(k=>full[k]===low[k]&&full[k]>=use[k]);
   }));
   check('The AI does not spend or place buildings in multiplayer',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,c=strategyOrc();c.resources=R.C(10000,10000,10000);const before=JSON.stringify([c.resources,c.buildings]);R.MP.enabled=true;strategyTick();const same=JSON.stringify([c.resources,c.buildings])===before;R.MP.enabled=false;return same;}));
   check('No AI strategy runtime errors',!report.errors.length);

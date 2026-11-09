@@ -20,7 +20,7 @@ export function cardFrameUrl(id, kind, race) {
   if (kind==='unit' || race==='undead' && kind==='normal') return commonFrameUrl(race);
   if (race==='orc' && hasUpgradeScene(id)) return assetUrl(kind==='legendary' ? 'cards/orc/upgrades/orc_transfusion.webp' : 'cards/orc/upgrades/orc_as.webp');
   if(race==='undead'&&humanBuilding&&hasUpgradeScene(`undead-building:${id}`)) {
-    const reference=id==='und_soul_rift'?'und_necro_spawner':'und_soul_anchor';
+    const reference='und_soul_anchor';
     return assetUrl('cards/undead/'+undeadManifest.cards[`building:${reference}`]);
   }
   if (race === 'undead') {

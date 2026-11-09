@@ -1,4 +1,15 @@
-# Roadlords · V4.64.0
+# Roadlords · V4.65.0
+
+## V4.65.0 – Közös beruházási terv és taktikai épülethasználat
+
+- A gazdasági igény a következő konkrét beruházások és képzés teljes nyersanyagköltségéből készül. A rövid előrejelzés fizetett, szabályos építési lépéseket, megtakarítást és köztes termelőket hasonlít össze.
+- A hadsereg fő egységtípust és indokolt kiegészítő szerepeket kap. Egy új egységtípus feloldása önmagában nem jár keverési bónusszal; a további gyártósorhoz szükséges utánpótlási ütemet is vizsgálja.
+- A portált védhető hátbatámadásra, seregszétválasztási lehetőségre vagy érdemi menetidő-megtakarításra, rövid időszakokra használja. Veszély, üres kivonulás és finanszírozási hiány leállítja.
+- A Haditanács módja, az ork összevont kapacitás és az L4 Hajcsártábor beállítása is értékelhető döntés. A már elkezdett képzési ciklus profilja nem változik.
+- Az alig hasznos épület bontása önálló lehetőség lett, megfigyelési idővel és a meglévő biztonsági feltételekkel. Az átépítés az egységtervet is figyelembe veszi.
+- Az emberek kezdő fája 90 → 110. A Lélekhasadék és az idézési mechanikája kikerült a játékból; a multiplayer szabályverzió 16.
+
+Részletek és ellenőrzés: [AI beruházási tervező](docs/ai-investment-4.65.md).
 
 ## V4.64.0 – Átépítő AI
 

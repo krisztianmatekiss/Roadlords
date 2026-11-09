@@ -21,7 +21,6 @@ export const BUILDING_MECHANICS = {
   und_rebirth_tomb: { features: ['death', 'revive'] },
   und_garden_of_dead: { features: ['death', 'revive', 'territory'] },
   und_border_obelisk: { features: ['territory'] }, und_dark_tower: { features: ['territory', 'defense'] },
-  und_soul_rift: { features: ['summon', 'territory'] },
   und_otherworld_portal: { features: ['territory', 'flank'] },
 };
 

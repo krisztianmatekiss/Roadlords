@@ -1,3 +1,4 @@
+import { startingResources } from '../data/starting-resources.js';
 import { assetUrl } from '../assets/urls.js';
 export function initializeEconomyMatchStatistics(runtime) {
   const PRODUCER_LEVELS = [1, 2, 3, 6];
@@ -25,8 +26,8 @@ export function initializeEconomyMatchStatistics(runtime) {
   const statsOf = c => c._matchStats || (c._matchStats = makeStats());
   statsOf(runtime.P);
   statsOf(runtime.E);
-  runtime.P.resources = runtime.C(90, 20, 10);
-  runtime.E.resources = runtime.C(90, 20, 10);
+  runtime.P.resources = startingResources(runtime.P.race);
+  runtime.E.resources = startingResources(runtime.E.race);
   const style = document.createElement('style');
   style.textContent = "@import url(\"" + (assetUrl("styles/features/economy-match-statistics-13.css") + "\");");
   document.head.appendChild(style);

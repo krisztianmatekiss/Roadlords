@@ -78,7 +78,7 @@ export function initializeFactionRedesign(R) {
     let profile={time:1,hp:1};
     for(const support of R.adjacentBuildings(c,b))if(support.type==='orc_overseer'&&!support.inactive){
       const configured=c.orcHasteSettings?.[support.id];
-      const fallback=configured==null&&c===R.E&&!R.MP.enabled ? .5 : Number(configured)||0;
+      const fallback=Number(configured)||0;
       const setting=support.level>=4 ? Math.max(0,Math.min(1,fallback)) : 0;
       const time=support.level>=4 ? .6-.4*setting : 1-lv(support.level,[.2,.3,.4]);
       if(time<profile.time)profile={time,hp:support.level>=4?.8-.55*setting:.8};

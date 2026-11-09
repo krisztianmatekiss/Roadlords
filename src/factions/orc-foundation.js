@@ -1,3 +1,4 @@
+import { startingResources } from '../data/starting-resources.js';
 import { ORC_REDESIGN, levelValue } from '../data/faction-redesign.js';
 import { rangedRange } from '../data/ranged-balance.js';
 import { MOVEMENT_BALANCE } from '../data/movement-balance.js';
@@ -336,7 +337,7 @@ export function initializeFactionsOrcFoundation(runtime) {
     c.garrison = [];
     c.releaseQueue = [];
     c.rallyReserve = [];
-    c.resources = runtime.C(150, 75, 40);
+    c.resources = startingResources(race);
     c.aiThink = 0;
     runtime.initializeFactionCity?.(c);
     runtime.generateTerrain(c, 10 + Math.floor(Math.random() * 6));

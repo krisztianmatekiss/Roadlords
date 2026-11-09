@@ -1,3 +1,6 @@
+import { installAiArmyIntent } from './army-intent.js';
+import { installAiInvestmentPlan } from './investment-plan.js';
+import { installAiBuildingControls } from './building-controls.js';
 import { installAiEvaluation } from './evaluation.js';
 import { installAiActions } from './actions.js';
 import { installSharedAiPlacement } from './shared-placement.js';
@@ -21,6 +24,9 @@ export function installSharedAiPlanner(R) {
   installAiGrowthPolicy(R);
   installAiStrategyPlanner(R);
   installAiRedevelopment(R);
+  installAiArmyIntent(R);
+  installAiInvestmentPlan(R);
+  installAiBuildingControls(R);
   let decision = null;
   const available = c => R.aiFactionBuildings(c).filter(type => type !== 'keep' && c.unlocked.has(type) && R.canBuildArmyCapacity(c,type) &&
     (!R.isUniqueBuilding(c, type) || !R.hasBuilding(c, type)));
@@ -37,9 +43,10 @@ export function installSharedAiPlanner(R) {
     const deep=battle.threats.map(e=>e.u),pressure=battle.urgent;
     const military = available(c).filter(type => R.BUILDINGS[type].unit);
     const producers = available(c).filter(type => BUILDING_MECHANICS[type]?.produces);
-    const growth=R.aiGrowthTargets(c,metrics,battle,military),target=growth.target;
     const strategy=R.aiStrategy(c,{metrics,battle,pressure});
-    return { c, metrics, resources, observed, army, pressure, deep, military, producers, target,battle,growth,strategy,
+    const intent=R.aiArmyIntent(c,{metrics,battle,strategy});
+    const growth=R.aiGrowthTargets(c,metrics,battle,military,intent,strategy),target=growth.target;
+    return { c, metrics, resources, observed, army, pressure, deep, military, producers, target,battle,growth,strategy,intent,
       options: new Map(), buildings: new Map(), successors: new Map() };
   }
   function duringDecision(action,city=decision?.c||R.E) {
@@ -65,33 +72,11 @@ export function installSharedAiPlanner(R) {
     return Math.min(15, value);
   }
   function militaryScore(type, ctx) {
-    const {c, metrics, observed} = ctx, key = R.BUILDINGS[type]?.unit, base = R.UNITS[key];
-    if (!base) return -100;
-    const b = {type, id:'shared-military-preview', level:R.levelOf(c,type), row:0, col:0, rotation:0};
-    const seconds = R.trainingTime(c, b), seats = R.orcArmyWeight({key}, c);
-    const quality = R.aiUnitQuality(c, key);
-    let score = 12 + 3 * Math.sqrt(quality * R.productionBatchSize(c, b) / Math.max(1, seconds)) + investment(c, key);
-    const count = metrics.units[key]?.count || 0;
-    score -= count * 1.3;
-    if (!count && sum(Object.values(metrics.units).map(u=>u.count)) >= 3) score += 4;
-    const features = UNIT_FEATURES[key] || [], total = Math.max(1, observed.length);
-    const ranged = observed.filter(u => (u.tags || R.UNITS[u.key]?.tags || []).includes('ranged')).length / total;
-    const heavy = observed.filter(u => ['cavalry','siege'].includes(R.UNITS[u.key]?.cat)).length / total;
-    if (features.includes('charge')) score += ranged * 9;
-    if (features.includes('counter')) score += heavy * 12;
-    const own = Object.keys(metrics.units), frontline = own.some(k => R.UNITS[k].tags.includes('melee'));
-    if (!frontline && own.length && base.tags.includes('melee')) score += 6;
-    if (!frontline && base.tags.includes('ranged') && !features.includes('summon')) score -= 3;
-    if (features.includes('heal') || features.includes('curse')) {
-      if (!metrics.power) score -= 20;
-      else if (!count) score += 5;
-      const share = (count + 1) / Math.max(1, sum(Object.values(metrics.units).map(u=>u.count)) + 1);
-      if (share > .25) score -= 30 * share;
-    }
-    if (features.includes('siege') && !metrics.power) score -= 12;
-    if (c.armyCap - R.fieldUnitCount(c) < seats) score -= 15;
-    score+=R.aiStrategyMilitaryBonus(key,ctx);
-    return score;
+    const purpose=R.aiMilitaryPurpose(type,ctx);
+    if(!purpose?.needed)return -100;
+    const count=ctx.metrics.units[purpose.key]?.count||0;
+    const saturation=purpose.role==='core'?0:Math.max(0,count-purpose.desired+1)*12;
+    return purpose.value+(purpose.role==='core'?8:4)-saturation;
   }
   function passive(c, metrics) {
     let value = 0;
@@ -106,7 +91,7 @@ export function installSharedAiPlanner(R) {
       if (b.type === 'orc_tunnel') value += Math.min(8, R.activeSpawners(c).filter(p=>R.aiSupportAffects(c,b,p)).length * 2);
       if (b.type === 'und_border_obelisk') value += lv * (.6 + (metrics.features.territory || 0) * 1.5);
       if (b.type === 'und_dark_tower') value += (2 + lv) * Math.min(2, metrics.power / 8);
-      if (b.type === 'und_otherworld_portal') value += Math.min(10, metrics.power * .3);
+      if (b.type === 'und_otherworld_portal') value += R.aiPortalUtility?.(c,metrics)||0;
 
     }
     return value;
@@ -209,7 +194,12 @@ export function installSharedAiPlanner(R) {
       // best legal footprint, then discount construction time and affordability.
       const opp = opportunity(o.id,ctx), type = R.BUILDINGS[o.id], m=BUILDING_MECHANICS[o.id]||{};
       score = opp.cell ? 4 + Math.max(-5,opp.score) * .48 : -8;
-      if (type?.unit) score += investment(c,type.unit) * .6;
+      if (type?.unit) {
+        score += investment(c,type.unit) * .6;
+        const prospective=R.aiPreviewChoice(c,o,shadow=>R.aiArmyIntent(shadow,{metrics,battle:ctx.battle,strategy:ctx.strategy}));
+        const purpose=prospective.purposes.get(o.id);
+        if(purpose?.needed)score+=purpose.role==='core'?Math.max(0,purpose.value-(ctx.intent.main?.value||0))*1.5:3;
+      }
       if (m.capacity && c.armyCap<=R.fieldUnitCount(c)+R.reserveCount(c)+15) score += 12;
       if (m.features?.some(x=>(metrics.features[x]||0)>0)) score += 3;
       if (c.unlocked.has(o.id)) score = -100;
@@ -237,7 +227,9 @@ export function installSharedAiPlanner(R) {
   }
   R.scoreAiChoice = R.scoreAiChoiceV17 = (o,c=R.E) => duringDecision(ctx=>scoreChoice(o,ctx),c);
   R.aiMilitaryScore = R.aiCompositionScore = (type,c=R.E) => duringDecision(ctx=>militaryScore(type,ctx),c);
-  R.aiMilitaryPool = (c=R.E) => duringDecision(ctx=>ctx.military.slice().sort((a,b)=>militaryScore(b,ctx)-militaryScore(a,ctx)),c);
+  R.aiMilitaryPool = (c=R.E) => duringDecision(ctx=>ctx.military.filter(type=>R.aiMilitaryPurpose(type,ctx)?.needed).sort((a,b)=>militaryScore(b,ctx)-militaryScore(a,ctx)),c);
+  R.aiPlannedInvestment=(c=R.E)=>duringDecision(ctx=>R.aiPlanInvestment(c,ctx),c);
+  R.aiIntentFor=(c=R.E)=>duringDecision(ctx=>ctx.intent,c);
   R.aiConstructionOpportunities = (c=R.E) => duringDecision(ctx=>available(ctx.c).map(type=>opportunity(type,ctx)).sort((a,b)=>b.score-a.score),c);
   R.aiResourceTargets = (extra=R.C()) => duringDecision(ctx=>Object.fromEntries(R.RES.map(r=>[r,ctx.target[r]+(extra[r]||0)*1.18])));
   R.aiRememberChoice = (o,c=R.E) => {
@@ -313,35 +305,11 @@ export function installSharedAiPlanner(R) {
     }
     savings(c,opp);return true;
   }
-  function setPortal(ctx) {
-    const c=ctx.c;
-    if(!c.undeadState||!R.hasBuilding(c,'und_otherworld_portal'))return;
-    const battle=R.aiBattleState(c),reserve=R.reserveCount(c),readyWave=reserve>=Math.min(c._aiWaveTarget||10,c.garrisonCap);
-    const room=R.fieldUnitCount(c)<c.armyCap&&(R.battlePopulationRoom?.(c)??Infinity)>0;
-    const deploying=room&&(c.releaseQueue.length>0||c.gateMode==='open'&&reserve>0||readyWave);
-    let enabled=false;
-    if(deploying&&!battle.portalUnsafe&&R.state.time>=(c._aiPortalOffUntil||0)){
-      const on=c.undPortalEnabled?{flow:R.resourceFlowRates(c),upkeep:R.undEconomy(c).totalUpkeep}:
-        R.aiPreview(c,shadow=>{shadow.undPortalEnabled=true;},shadow=>({flow:R.resourceFlowRates(shadow),upkeep:R.undEconomy(shadow).totalUpkeep}));
-      const saving=c._aiSaveReason==='economy'?(c._aiSavePrice?.wood||0):0;
-      const needed=Math.max(0,on.flow.use.wood-on.flow.gain.wood)*45+on.upkeep*12+saving;
-      enabled=c.resources.wood>Math.max(30,needed);
-    }
-    if(enabled!==!!c.undPortalEnabled){
-      c.undPortalEnabled=enabled;if(!enabled)c._aiPortalOffUntil=R.state.time+8;
-      R.recomputeCity(c,true);
-    }
-  }
   R.aiStepCity = (city,dt) => {
     if(R.MP.enabled||R.ROAD.test||R.state.pregame||R.state.ended)return;
     city.aiThink-=Math.max(0,dt||0);
     if(city.aiThink>0)return;
     city.aiThink=.8;
-    // The old implicit L4 slider default applied only to the right AI. Set
-    // the same explicit profile for either AI, preserving each locked cycle.
-    if(city.race==='orc')for(const b of city.buildings)if(b.type==='orc_overseer'&&b.level===4){
-      city.orcHasteSettings||={};if(city.orcHasteSettings[b.id]==null)city.orcHasteSettings[b.id]=.5;
-    }
     R.aiGate(city);
     return duringDecision(ctx=>{
       const {c,metrics}=ctx;
@@ -384,6 +352,13 @@ export function installSharedAiPlanner(R) {
           if((BUILDING_MECHANICS[saved]?.produces||!deficit&&!ctx.pressure)&&invest(opportunity(saved,ctx),ctx))return;
         }
         if(R.aiTryRedevelopment(c,ctx))return;
+        if(R.aiTrimUnproductive(c,ctx))return;
+        if(!ctx.pressure){
+          const plan=R.aiPlanInvestment(c,ctx);
+          c._aiInvestment={type:plan.type,at:R.state.time,goals:plan.goals,steps:plan.steps,forecasts:plan.forecasts};
+          if(plan.type){invest(opportunity(plan.type,ctx),ctx);return;}
+          clearSavings(c);return;
+        }
         const types=available(c);
         // Evaluate all economic/capacity roles, but only the four most promising
         // military and four support investments. No per-frame search or history.
@@ -415,23 +390,13 @@ export function installSharedAiPlanner(R) {
           if(invest(blocked[index],ctx))return;
         }
         clearSavings(c);
-      }finally{setPortal(ctx);}
+      }finally{R.aiUpdateBuildingControls(c,ctx);}
     },city);
   };
   R.enemyBuildAI=dt=>{if(R.spectator?.active)R.aiStepCity(R.P,dt);R.aiStepCity(R.E,dt);};
   R.updateEnemyWarModeV45=()=>{
-    for(const c of R.spectator?.active?[R.P,R.E]:[R.E]){
-      if(!R.aiControlsCity(c)||!R.hasBuilding(c,'warcenter')||R.state.time-(c.warModeChangedAt??-30)<30)continue;
-      duringDecision(ctx=>{
-        let best=c.warMode||'mass',value=0;
-        for(const mode of ['mass','economy','elite'])if(mode!==c.warMode){
-          const measured=R.aiPreview(c,shadow=>{shadow.warMode=mode;});
-          const score=R.aiMetricDelta(ctx.metrics,measured,c);
-          if(score>value+1){best=mode;value=score;}
-        }
-        if(best!==c.warMode)R.setWarMode(c,best,true);
-      },c);
-    }
+    for(const c of R.spectator?.active?[R.P,R.E]:[R.E])if(R.aiControlsCity(c))
+      duringDecision(ctx=>R.aiUpdateBuildingControls(c,ctx),c);
   };
   Object.assign(window.__ROADLORDS__,{enemyBuildAI:R.enemyBuildAI,enemyGateAI:R.enemyGateAI,aiBuild:R.aiBuild,aiMilitaryPool:R.aiMilitaryPool,
     scoreAiChoiceV17:R.scoreAiChoiceV17,aiResourceTargets:R.aiResourceTargets,findCell:R.findCell});

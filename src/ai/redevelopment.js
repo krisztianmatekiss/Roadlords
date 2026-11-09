@@ -154,11 +154,11 @@ export function installAiRedevelopment(R) {
     const before=R.aiPreview(c,()=>{},R.aiRedevelopmentMeasure),s=R.aiObserveRedevelopment(c,before);
     before.passive=R.aiRedevelopmentPassive(c,before);
     const after=R.aiProjectRedevelopment(c,plan);
-    if(!plan.legal||!plan.affordable||!R.aiRedevelopmentSafe(c,before,after,plan,s)||!R.aiRedevelopmentHasPurpose(c,plan,after)||R.aiRedevelopmentValue(c,before,after,plan,s)<5)return false;
+    if(!plan.legal||!plan.affordable||!R.aiRedevelopmentSafe(c,before,after,plan,s)||!R.aiRedevelopmentHasPurpose(c,plan,after)||R.aiRedevelopmentValue(c,before,after,plan,s)<(plan.type?5:2))return false;
     const snapshot=structuredClone(c),capital=c.buildings.find(b=>b.type==='keep'),towers=structuredClone(R.towers);let ok=false;
     try{ok=R.aiMutate(()=>{
       for(const id of plan.ids)if(!R.demolish(c,id))return false;
-      return !!R.placeBuilding(c,plan.type,...plan.cell)?.ok;
+      return !plan.type||!!R.placeBuilding(c,plan.type,...plan.cell)?.ok;
     });}finally{
       if(!ok){for(const key of Object.keys(c))delete c[key];Object.assign(c,snapshot);
         const restored=c.buildings.find(b=>b.type==='keep');Object.assign(capital,restored);
@@ -169,7 +169,7 @@ export function installAiRedevelopment(R) {
     if(!ok)return false;
     c._aiRedevelopAfter=R.state.time+45;s.next=R.state.time+45;
     for(const b of snapshot.buildings.filter(b=>plan.ids.includes(b.id))){s.recent.set(b.type,R.state.time+90);if(b.type!==plan.type)s.removed.set(b.type,R.state.time+90);}
-    s.recent.set(plan.type,R.state.time+90);
+    if(plan.type)s.recent.set(plan.type,R.state.time+90);
     c._aiRedevelopCount=(c._aiRedevelopCount||0)+1;
     if(c.undeadState)c.undeadState.aiRedeveloped=(c.undeadState.aiRedeveloped||0)+1;
     R.aiClearBuildSavings(c);
@@ -181,6 +181,34 @@ export function installAiRedevelopment(R) {
     if(m.produces?.some(r=>ctx.metrics.gain[r]<ctx.metrics.use[r]))return 0;
     if(m.capacity&&R.fieldUnitCount(c)>=c.armyCap)return 0;
     return 25;
+  };
+  R.aiTrimUnproductive=(c,ctx)=>{
+    if(!R.aiControlsCity(c)||ctx.pressure||R.state.time<120||R.state.time<(c._aiRedevelopAfter||0))return false;
+    const s=stateFor(c),now=R.state.time;s.idle||=new Map();
+    if(now<(s.trimNext||0))return false;s.trimNext=now+15;
+    const before=R.aiPreview(c,()=>{},R.aiRedevelopmentMeasure);before.passive=R.aiRedevelopmentPassive(c,before);
+    const rank=b=>{
+      const m=R.aiBuildingMechanics(b.type);
+      if(b.inactive)return -200;
+      if(m.local||m.localSupport||m.localUpkeep){
+        const targets=(m.localSupport||m.localUpkeep?c.buildings:R.activeSpawners(c)).filter(p=>p.id!==b.id&&R.aiSupportAffects(c,b,p));
+        const others=m.nonstacking?{...c,buildings:c.buildings.filter(p=>p.id!==b.id)}:c;
+        if(!R.aiMarginalSupportTargets(others,b,targets).length)return -100;
+      }
+      return importance(c,b,before,s);
+    };
+    const candidates=c.buildings.filter(b=>b.type!=='keep'&&!(s.recent.get(b.type)>now)).sort((a,b)=>rank(a)-rank(b)).slice(0,6);
+    const cursor=s.trimCursor||0;s.trimCursor=(cursor+2)%Math.max(1,candidates.length);
+    for(const b of candidates.slice(cursor,cursor+2)){
+      const plan={type:null,ids:[b.id],cell:null},after=R.aiProjectRedevelopment(c,plan);
+      const useful=R.aiRedevelopmentValue(c,before,after,plan,s)<2||!R.aiRedevelopmentSafe(c,before,after,plan,s)||
+        R.aiResourceKeys(c).some(r=>after.gain[r]+.01<ctx.target[r]&&after.gain[r]<before.gain[r]);
+      if(useful){s.idle.set(b.id,now);continue;}
+      if(!s.idle.has(b.id)){s.idle.set(b.id,now);continue;}
+      if(now-s.idle.get(b.id)>=45&&R.aiExecuteRedevelopment(c,plan)){c._aiTrimmedCount=(c._aiTrimmedCount||0)+1;return true;}
+    }
+    for(const id of s.idle.keys())if(!R.getBuilding(c,id))s.idle.delete(id);
+    return false;
   };
   R.aiTryRedevelopment=(c,ctx)=>{
     const s=R.aiObserveRedevelopment(c,ctx.metrics),now=R.state.time;

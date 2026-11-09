@@ -6,8 +6,6 @@ export const UNDEAD_CONVERGENCE = Object.freeze({
   wellPrice: 220, wellUpkeep: 2, wellIncome: [4,8,16,32],
   shadowCooldown: 8,
   borderMetres: [5,10,15,20], borderAmplification: [.05,.1,.15,.2],
-  riftInterval: 45, riftCounts: [4,6,9,18], riftLifetime: [30,40,50,60], riftPrice: [80,120,180,360],
-  riftLongCount: 9, riftLongLifetime: 120, riftLongPrice: 180,
   portalUpkeep: [3,2.5,2,1.5], portalIncreaseEvery: 30, portalIncrease: 1,
 });
 const B=UNDEAD_CONVERGENCE,fmt=n=>n.toLocaleString('hu-HU');
@@ -19,13 +17,6 @@ const building=(name,shape,souls,upkeep,category,levels,cityArtIndex,extra={})=>
 export const UNDEAD_CONVERGENCE_BUILDINGS={
   und_border_obelisk:building('Sírhatárkő',[[0,0]],140,.7,'support',
     B.borderMetres.map((n,i)=>`+${n} m saját térfél és +${fmt(B.borderAmplification[i]*100)}% térfélnövelés.`),1),
-  und_soul_rift:building('Lélekhasadék',square,480,1.5,'military',
-    B.riftCounts.map((n,i)=>i<3
-      ?`${B.riftInterval} mp-enként ${n} véletlen élőhalottat idéz ${B.riftLifetime[i]} mp-re. Idézés: ${B.riftPrice[i]} Lélek.`
-      :`${B.riftInterval} mp-enként ideiglenes élőhalott sereget idéz a saját területedre.`),2,{branches:[
-    {id:'rift_horde',name:'Holtak áradata',icon:'☠',description:`${B.riftInterval} mp-enként ${B.riftCounts[3]} véletlen élőhalott ${B.riftLifetime[3]} mp-re. Idézés: ${B.riftPrice[3]} Lélek.`},
-    {id:'rift_persistence',name:'Hosszan kísértők',icon:'◷',description:`${B.riftInterval} mp-enként ${B.riftLongCount} véletlen élőhalott ${B.riftLongLifetime} mp-re. Idézés: ${B.riftLongPrice} Lélek.`},
-  ]}),
   und_otherworld_portal:building('Túlvilági portál',square,360,0,'support',
     B.portalUpkeep.map(n=>`Bekapcsolva a kapuból kivonulók a saját térfélhatárra érkeznek. Alapfenntartás: ${fmt(n)} Lélek/mp.`),
     3,{unique:true,description:'Bekapcsolva a kapuból kivonuló egységeket a saját térfélhatárra küldi. Fenntartása működés közben nő.'}),

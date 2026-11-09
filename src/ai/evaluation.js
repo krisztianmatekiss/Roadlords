@@ -1,7 +1,6 @@
 import { BUILDING_MECHANICS, CONDITIONAL_EFFECTS, UNIT_FEATURES, cardTargets } from './mechanics.js';
 import { ORC_REDESIGN, TAVERN, levelValue, undeadEliteChance, REMOVED_BUILDINGS } from '../data/faction-redesign.js';
 import { ARMY_TEMPO } from '../data/unit-balance.js';
-import { UNDEAD_CONVERGENCE as CONVERGENCE } from '../data/undead-convergence.js';
 
 const positive = n => Math.max(0, Number(n) || 0);
 const bounded = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
@@ -137,11 +136,6 @@ export function installAiEvaluation(R) {
         power += totalRate * .5 * chance * R.aiUnitQuality(c, key);
       }
       if (b.type === 'und_plague_chamber') power += originalPower * (.08 + .025 * b.level);
-      if (b.type === 'und_soul_rift') {
-        const p = R.undRiftProfile(c, b), keys = Object.keys(R.UNITS).filter(k => R.factionUnitMatches(c.race, R.UNITS[k]));
-        const quality = keys.reduce((n, key) => n + R.aiUnitQuality(c, key), 0) / Math.max(1, keys.length);
-        power += quality * p.count / CONVERGENCE.riftInterval * Math.min(1, p.lifetime / 60);
-      }
       if (b.type === 'und_otherworld_portal' && c.undPortalEnabled) power *= 1.10;
     }
     for (const b of c.buildings) if (!b.inactive) for (const feature of BUILDING_MECHANICS[b.type]?.features || []) {

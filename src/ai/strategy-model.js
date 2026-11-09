@@ -21,7 +21,6 @@ const BRANCH_LINKS = {
   endless_hunger:{features:['beam','kills']},wither_bond:{features:['beam','control']},
   raise_vampire:{units:['und_vampire'],features:['revive','territory']},
   raise_lich:{units:['und_lich'],features:['revive','territory']},
-  rift_horde:{features:['summon','territory']},rift_persistence:{features:['summon','survival']},
   veteran_army:{features:['elite']},monsters:{features:['summon']},ruthless:{features:['training']},
 };
 const FEATURE_PARTNERS = {

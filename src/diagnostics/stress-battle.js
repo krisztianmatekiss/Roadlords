@@ -1,9 +1,11 @@
+import { startingResources } from '../data/starting-resources.js';
 import { MIXED_FIGURE_TRIALS, isMixedFigureTrial, loadMixedFigureTrialArt } from '../config/figure-trials.js';
 export function register(runtime) {
   runtime.roadResetCity = function roadResetCity(c, race) {
     for (const k of Object.keys(c)) delete c[k];
     Object.assign(c, structuredClone(runtime.ROAD.templates[c === runtime.E ? 1 : 0]));
     c.race = race;
+    if(race!=='undead')c.resources=startingResources(race);
     c.l4Branches = {};
     c.terrain = Array(runtime.GRID * runtime.GRID).fill(null);
     c.unlocked = new Set(race === 'orc' ? window.__ROADLORDS_ORCS__.basic : runtime.BASIC);

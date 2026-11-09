@@ -102,7 +102,11 @@ export function installAiStrategyPlanner(R) {
   R.aiStrategy=(c,ctx)=>{
     if(!R.aiControlsCity(c))return null;
     const now=R.state.time,stamp=signature(c),capital=c.buildings.find(b=>b.type==='keep'),previous=memory.get(c);
-    if(previous&&previous.capital===capital&&previous.stamp===stamp&&now>=previous.time&&now<previous.next){previous.value.pressure=ctx.pressure;return previous.value;}
+    if(previous&&previous.capital===capital&&previous.stamp===stamp&&now>=previous.time&&now<previous.next){
+      previous.value.pressure=ctx.pressure;
+      const p=previous.value.primary;if(p)p.goals=R.aiStrategySteps(c,p,false,ctx.metrics).filter(o=>o.kind==='construct').map(o=>o.id);
+      return previous.value;
+    }
     const ranked=candidates(c,ctx.metrics),short=[],themes=new Set();
     for(const p of ranked){
       const theme=p.units.slice().sort().join(',')||p.features.slice().sort().join(',');

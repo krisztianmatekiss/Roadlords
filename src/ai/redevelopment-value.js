@@ -84,6 +84,11 @@ export function installRedevelopmentValue(R) {
   };
   R.aiRedevelopmentValue=(c,before,after,plan,history)=>{
     const a={...before,gain:{...before.gain}},b={...after,gain:{...after.gain}};
+    const intent=R.aiArmyIntent?.(c,{metrics:before,battle:R.aiBattleState(c),strategy:R.aiStrategyFor(c)});
+    // An unbuilt, uninvested alternative is not yet a commitment. Do not
+    // devalue a functioning army merely because a paper replacement ranks well.
+    const committed=intent?.main&&((before.units[intent.main.key]?.count||0)>0||R.aiIntentUnitInvestment(c,intent.main.key)>=4||R.levelOf(c,intent.main.type)>=3);
+    const relevance=new Map([...(intent?.purposes.values()||[])].map(p=>[p.key,!committed||p.role==='core'?1:p.role ? .85 : .25]));
     const actorsFull=(R.battlePopulationRoom?.(c)??Infinity)<=0;
     if(actorsFull)b.armyCap=Math.min(b.armyCap,a.armyCap);
     for(const r of R.aiResourceKeys(c)){
@@ -97,7 +102,8 @@ export function installRedevelopmentValue(R) {
     const effective=m=>{
       const rate=Object.entries(m.units).reduce((n,[key,u])=>n+u.rate*Math.max(1,R.orcArmyWeight({key},c)),0);
       const needed=Math.max(1,(actorsFull?Math.min(m.armyCap,before.armyCap):m.armyCap)/90,history.deathRate*1.3);
-      return m.power*Math.min(1,needed/Math.max(.01,rate));
+      const unrelated=Object.entries(m.units).reduce((n,[key,u])=>n+u.power*(1-(relevance.get(key)??1)),0);
+      return Math.max(0,m.power-unrelated)*Math.min(1,needed/Math.max(.01,rate));
     };
     a.power=effective(a);b.power=effective(b);
     let score=R.aiMetricDelta(a,b,c)+after.passive-before.passive;
@@ -142,6 +148,7 @@ export function installRedevelopmentValue(R) {
       const stock={...shadow.resources};R.recomputeCity(shadow,true);
       for(const r of R.RES)plan.cashLost[r]+=Math.max(0,stock[r]-shadow.resources[r]);
     }
+    if(!plan.type){plan.legal=true;plan.affordable=true;plan.price=R.C();return;}
     if(!R.canPlace(shadow,plan.type,...plan.cell)||
        R.isUniqueBuilding(shadow,plan.type)&&R.hasBuilding(shadow,plan.type))return;
     const [row,col,rotation]=plan.cell,b={id:'redevelopment-preview',type:plan.type,row,col,rotation,level:R.levelOf(shadow,plan.type),progress:0};

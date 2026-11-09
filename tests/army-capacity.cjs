@@ -63,7 +63,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    const facts={locked:card.classList.contains('capacityLocked'),aria:card.getAttribute('aria-disabled'),badge:!!card.querySelector('.capacityLimitBadge'),selected:R.state.selectedBuild,cap:c.armyCap};if(!(facts.locked&&facts.aria==='true'&&facts.badge&&!facts.selected))throw Error(JSON.stringify(facts));return true;
   }));
   check('Old multiplayer clients cannot mix uncapped capacity rules into the new game',await p.evaluate(()=>{
-   const R=__ROADLORDS_RUNTIME__;let closed=false;R.MP.conn={open:true,send:()=>{},close:()=>closed=true};R.mpHandle({type:'hello',pathLength:R.PATH_LENGTH,gameRules:14});return closed&&R.gameRulesVersion===15;
+   const R=__ROADLORDS_RUNTIME__;let closed=false;R.MP.conn={open:true,send:()=>{},close:()=>closed=true};R.mpHandle({type:'hello',pathLength:R.PATH_LENGTH,gameRules:14});return closed&&R.gameRulesVersion===16;
   }));
   check('No capacity browser errors',report.errors.length===0);
  }finally{fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/army-capacity.json',JSON.stringify(report,null,2));await browser.close();}

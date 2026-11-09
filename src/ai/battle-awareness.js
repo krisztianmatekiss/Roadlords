@@ -59,7 +59,9 @@ export function installAiBattleAwareness(R) {
   };
   R.aiUnderAttack=c=>R.aiBattleState(c).urgent;
   R.aiProtectPortal=c=>{
-    if(!R.aiControlsCity(c)||!c.undPortalEnabled||!R.aiBattleState(c).portalUnsafe)return false;
+    if(!R.aiControlsCity(c)||!c.undPortalEnabled)return false;
+    const battle=R.aiBattleState(c);
+    if(R.aiPortalTactics?R.aiPortalTactics(c,battle).safe:!battle.portalUnsafe)return false;
     c.undPortalEnabled=false;c._aiPortalOffUntil=R.state.time+8;R.recomputeCity(c,true);return true;
   };
 }

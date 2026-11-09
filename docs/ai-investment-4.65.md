@@ -17,6 +17,10 @@ A stratégiai réteg több lépést is előre tudott nézni, de a végrehajtás 
 
 A tervező városonként gyorsítótáraz, épület- vagy fejlesztésváltozásnál és legfeljebb hat másodperc után újraértékel. Veszély esetén a tényleges érkezési időt vizsgáló vészhelyzeti építés és védekezés elsőbbséget kap. Nincs frakciónként előírt építési sorrend, személyiség vagy a játékban megjelenő indoklásnapló.
 
+A kötelező Lélekfenntartás átmeneti finanszírozási hiánya külön hátrány: a papíron később elkészülő termelő nem mentheti vissza az időközben elvesző épületet. A védekező épület veszélyben sem kap pusztán a kategóriája miatt fix pontjutalmat; a bónusz a becsült többlethaszonhoz kapcsolódik.
+
+Az építési megtakarítás nem tilthatja le korlátlan ideig a meglevő katonai termelőket. A közös toborzási keret gazdasági terjeszkedéskor a fenntartás után maradó bevétel 20%-ából időszakos, ténylegesen kifizetett képzést enged, a többi pénzt az építésnek hagyva. A működéshez szükséges rövid tartalék védett. A korábbi második, csak élőhalottakra érvényes megtakarítási tiltás megszűnt; veszély esetén a közös védekezési felülírás marad érvényes.
+
 ## Kapcsolható épületek
 
 A `building-controls.js` külön kezeli az építés és az aktív működtetés döntését.
@@ -42,7 +46,7 @@ A tartósan alig hasznos épület bontása új építés nélkül is megengedett
 
 ## Ellenőrzés és korlátok
 
-A `tests/ai-investment-policy.cjs` 21 ellenőrzése a közös kezdőkészletet, a törölt épület hiányát, a vámpírbuild indokolatlan csontváztermelésének elkerülését, a kétoldali tiszta előrejelzést, teljes építési költségvetést, köztes termelőt, fölösleges újabb Lélekkút elkerülését bőséges bevételnél, utánpótlási telítődést, a ténylegesen megtelt sereghez szükséges kapacitásépítést, várakozást, tényleges önálló bontást, kétoldali portálos hátbatámadást, időzített lekapcsolást, mély betörés felülírását és a multiplayerben inaktív AI-t vizsgálja.
+A `tests/ai-investment-policy.cjs` 24 ellenőrzése a közös kezdőkészletet, a törölt épület hiányát, a vámpírbuild indokolatlan csontváztermelésének elkerülését, a kétoldali tiszta előrejelzést, teljes építési költségvetést, köztes termelőt, fölösleges újabb Lélekkút elkerülését bőséges bevételnél, utánpótlási telítődést, a ténylegesen megtelt sereghez szükséges kapacitásépítést, várakozást, tényleges önálló bontást, kétoldali portálos hátbatámadást, időzített lekapcsolást, mély betörés felülírását és a multiplayerben inaktív AI-t vizsgálja.
 
 A régi tesztek közül a pusztán feloldott Warg kötelező építését számon kérő eset most befektetéssel és legendással indokolt Warg-tervet ellenőriz, köztes gazdasági finanszírozást is engedve. A lovassági kombináció tesztje a tényleges megtakarítási bevételt is futtatja. A feltöltött raktárakról szóló ellenőrzés megköveteli, hogy ne tűnjön el a tartós építési/képzési igény. A visszavont Lélekhasadék tesztjeit eltávolítási állítás váltotta fel; a portál-, időleges egység-, képességállapot- és multiplayerellenőrzések megmaradtak.
 

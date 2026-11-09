@@ -150,7 +150,10 @@ export function installSharedAiPlanner(R) {
       score += R.aiStoragePressure(c,metrics) ? 25 : -45;
     } else {
       if (!metrics.power) score -= 25;
-      if(ctx.pressure&&m.features?.includes('defense'))score+=40;
+      // An invasion raises the value of a useful marginal defense, not every
+      // duplicate carrying a defense tag. Flat urgency rewards can otherwise
+      // outbid the income and recruitment needed to sustain that defense.
+      if(ctx.pressure&&m.features?.includes('defense'))score+=Math.min(25,Math.max(0,benefit)*2);
       score += benefit>.1?Math.min(5,metrics.power/5):-20;
       if (R.activeSpawners(c).length >= 3 && !R.hasBuilding(c,type)) score += 4;
     }

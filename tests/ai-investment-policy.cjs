@@ -79,6 +79,27 @@ check('Waiting is a legal decision when there is no useful legal construction',a
  const R=__ROADLORDS_RUNTIME__,c=policyReset();c.terrain.fill({type:'forest'});for(const [r,k]of R.cityBuildingCells(c,c.buildings[0]))c.terrain[R.idx(r,k)]=null;
  return R.aiPlanInvestment(c,policyThought(c)).type===null;
 }));
+for(const race of ['human','undead'])check(race+': construction savings allow periodic paid recruits without spending the entire income',await p.evaluate(race=>{
+ const R=__ROADLORDS_RUNTIME__,c=policyReset(race);R.state.time=240;
+ if(race==='human')for(const t of ['lumber','stonecutter','farm'])policyPut(c,t,3);
+ else for(let n=0;n<3;n++)policyPut(c,'und_well',3);
+ const b=policyPut(c,race==='human'?'barracks':'und_vampire_castle');c.resources=R.C(30,30,30);
+ c._aiSaveReason='economy';c._aiSavePrice=R.C(1e6,1e6,1e6);c.undSaveSouls=1e6;
+ let recruits=0,paid=0;
+ for(let n=0;n<120;n++){R.state.time++;R.produceResources(c,1);c._aiGrowthPlan={time:R.state.time,growing:true,reserve:R.C(1e6,1e6,1e6)};
+  const before={...c.resources};if(R.normalSpawn(c,b)){recruits++;paid+=R.RES.reduce((v,r)=>v+before[r]-c.resources[r],0);}}
+ return recruits>0&&paid>0&&c.resources.wood>0&&(!c.undeadState||!c.undeadState.lostBuildingIds.length);
+},race));
+check('An invasion does not award a flat defense-tag bonus to duplicate towers',await p.evaluate(()=>{
+ const R=__ROADLORDS_RUNTIME__,c=policyReset('undead');R.state.time=240;
+ for(let n=0;n<4;n++)policyPut(c,'und_well',4);policyPut(c,'und_vampire_castle',3);
+ for(let n=0;n<10;n++)policyFighter(R.P,'archer',R.PATH_LENGTH-150);
+ c.resources.wood=10000;R.state.combatStep++;
+ const battle=R.aiBattleState(c);if(!battle.urgent)return false;
+ const score=R.aiConstructionOpportunities(c).find(o=>o.type==='und_dark_tower').score;
+ // A real, productive training support wins over another tag-only emergency.
+ return R.aiConstructionOpportunities(c).find(o=>o.type==='und_corrupted_hatchery').score>score;
+}));
 check('A disconnected support is actually demolished after sustained lack of utility',await p.evaluate(()=>{
  const R=__ROADLORDS_RUNTIME__,c=policyReset('orc');R.state.time=600;
  const arena=policyPut(c,'orc_arena',1,0,0);policyPut(c,'orc_work',4,7,0);policyPut(c,'orc_hunt',4,9,0);

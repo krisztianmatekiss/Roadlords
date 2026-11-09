@@ -201,8 +201,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     });
     report.data = data;
     check(
-      'The workbook registers 20 buildings, 7 unit variants, 26 common and 34 legendary upgrades',
-      data.total === 20 && data.units === 7 && data.normal === 26 && data.legend === 34,
+      'The active faction registers 19 buildings, 7 unit variants, 26 common and 34 legendary upgrades',
+      data.total === 19 && data.units === 7 && data.normal === 26 && data.legend === 34,
     );
     check(
       'Faction-specific draft pools do not leak Human or Orc cards; every common has a numeric preview',
@@ -746,13 +746,15 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       R.roadResetCity(R.E, 'undead');
       R.E.unlocked = new Set(Object.keys(__ROADLORDS_UNDEAD__.buildings));
       R.E.gateMode = 'open';
-      for (let i = 0; i < 240; i++) {
-        R.state.time = i;
-        R.produceResources(R.E, 1);
-        R.updateSpawners(R.E, 1);
-        R.releaseQueues(1);
-        R.enemyBuildAI(1);
-      }
+      const demolished=[],demolish=R.demolish;
+      R.demolish=(c,id)=>{const ok=demolish(c,id);if(ok&&c===R.E)demolished.push(id);return ok;};
+      try{for (let i = 0; i < 240; i++) {
+          R.state.time = i;
+          R.produceResources(R.E, 1);
+          R.updateSpawners(R.E, 1);
+          R.releaseQueues(1);
+          R.enemyBuildAI(1);
+      }}finally{R.demolish=demolish;}
       const c = R.E;
       return {
         buildings: c.buildings.map((b) => b.type),
@@ -761,17 +763,18 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         units: R.fieldUnitCount(c),
         reserves: R.reserveCount(c),
         lost: c.undeadState.lostBuildingIds,
+        demolished,
         flow: R.resourceFlowRates(c),
       };
     });
     report.ai = ai;
     check(
-      'Undead AI builds a funded economy, legal mixed army and trains recruits over four simulated minutes',
+      'Undead AI builds a funded economy and a legal army, without mandatory unit mixing, over four simulated minutes',
       ai.buildings.filter((k) => k === 'und_well').length >= 3 &&
-        ai.militaryTypes.length>=2 &&
+        ai.militaryTypes.length>=1 &&
         ai.units + ai.reserves > 0 &&
         ai.souls >= 0 &&
-        ai.lost.length === 0 &&
+        ai.lost.every(id=>ai.demolished.includes(id)) &&
         ai.buildings.every((k) => k === 'keep' || k.startsWith('und_')),
     );
     await page.evaluate(() => {

@@ -51,8 +51,13 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.roadWar.scrollLeft=0;});await p.waitForTimeout(80);
   check('Returning to the left city does not replay a hidden pick',await p.locator('#playerPickReveal').count()===0);
   const game=await p.evaluate(async()=>{
-   const R=__ROADLORDS_RUNTIME__;await R.startSpectator({left:'undead',right:'orc'});R.state.running=true;
-   for(let n=0;n<2400&&!R.state.ended;n++)R.tick(.1);
+   const R=__ROADLORDS_RUNTIME__,random=Math.random;let seed=7;
+   Math.random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
+   try{await R.startSpectator({left:'undead',right:'orc'});R.state.running=true;
+    // Economic openings and the long road do not promise contact by minute
+    // four. Keep real deployment, then wait for actual combat with a hard bound.
+    for(let n=0;n<6000&&!R.state.ended&&(n<2400||R.ROAD.metrics.damage<=0);n++)R.tick(.1);
+   }finally{Math.random=random;}
    if(R.state.running)R.$('#pauseBtn').click();R.updateHud();R.renderBattle(0);
    const visibleBuildings=[...document.querySelectorAll('#playerGrid .building')];
    const leftRendered=visibleBuildings.length===R.P.buildings.length&&R.P.buildings.every(b=>visibleBuildings.some(el=>el.dataset.id===b.id&&el.querySelector('.blv')?.textContent===`L${b.level}`&&el.style.gridRowStart===String(b.row+1)&&el.style.gridColumnStart===String(b.col+1)));

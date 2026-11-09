@@ -38,6 +38,10 @@ for(const side of ['player','enemy']){
   return before===snapshot()&&R.cityForSide(side)===c;
  },side));
 }
+check('Chosen advanced technology can seed one direction without forcing every available unit',await p.evaluate(()=>{
+ const R=__ROADLORDS_RUNTIME__,c=policyReset('orc'),intent=policyThought(c).intent;
+ return !R.factionBasics(c.race).includes(intent.main.type)&&[...intent.purposes.values()].filter(p=>p.role==='core').length===1&&[...intent.purposes.values()].filter(p=>p.needed).length===1;
+}));
 check('The construction budget includes wood needed to build stone and food income',await p.evaluate(()=>{
  const R=__ROADLORDS_RUNTIME__,c=policyReset();c.unlocked=new Set(['keep','lumber','stonecutter','farm','barracks']);const ctx=policyThought(c);
  return ctx.growth.budget.wood>=2*(R.buildPrice(c,'lumber').wood+R.buildPrice(c,'stonecutter').wood+R.buildPrice(c,'farm').wood)&&ctx.growth.goals.includes('barracks');

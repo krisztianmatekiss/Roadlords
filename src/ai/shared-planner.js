@@ -295,7 +295,7 @@ export function installSharedAiPlanner(R) {
       }
       return R.aiMakeRoomFor(opp.type,c);
     }
-    if(R.RES.some(r=>(opp.price[r]||0)>c.caps[r])) {
+    if(R.RES.some(r=>(opp.price[r]||0)>c.caps[r]&&(opp.price[r]||0)>c.resources[r])) {
       const stores=available(c).filter(type=>BUILDING_MECHANICS[type]?.storage).map(type=>opportunity(type,ctx)).filter(x=>x.cell);
       stores.sort((a,b)=>a.wait-b.wait);
       return stores[0]?invest(stores[0],ctx):false;
@@ -356,6 +356,12 @@ export function installSharedAiPlanner(R) {
         if(!ctx.pressure){
           const plan=R.aiPlanInvestment(c,ctx);
           c._aiInvestment={type:plan.type,at:R.state.time,goals:plan.goals,steps:plan.steps,forecasts:plan.forecasts};
+          // Land preparation is a prerequisite of a useful goal, not a reason
+          // to wait forever because the paid building cannot fit *yet*.
+          const repair=ctx.producers.filter(type=>!R.findCell(c,type)&&ctx.resources.some(r=>
+            BUILDING_MECHANICS[type].produces.includes(r)&&metrics.gain[r]+.01<(plan.type?metrics.use[r]:ctx.target[r])));
+          const blocked=[...new Set([...repair,...(!plan.type?ctx.growth.goals:[])])].filter(type=>!R.findCell(c,type));
+          for(const type of blocked.slice(0,2))if(invest(opportunity(type,ctx),ctx))return;
           if(plan.type){invest(opportunity(plan.type,ctx),ctx);return;}
           clearSavings(c);return;
         }

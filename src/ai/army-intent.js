@@ -21,7 +21,8 @@ export function installAiArmyIntent(R){
       const tags=[...new Set([...(UNIT_FEATURES[key]||[]),...(R.UNITS[key]?.tags||[])])],quality=R.aiUnitQuality(c,key),time=R.trainingTime(c,b),price=R.primarySpawnCost(c,key,b);
       const cost=R.aiResourceKeys(c).reduce((n,r)=>n+(price[r]||0),0),area=R.cityBuildingCells(c,b).length;
       const throughput=quality*R.productionBatchSize(c,b)/Math.max(1,time);
-      let value=8*Math.log1p(throughput/(1+cost/30+area*.12))+R.aiIntentUnitInvestment(c,key)+Math.max(0,b.level-1)*2;
+      const technology=R.factionBasics(c.race).includes(type)?0:5;
+      let value=8*Math.log1p(throughput/(1+cost/30+area*.12))+R.aiIntentUnitInvestment(c,key)+Math.max(0,b.level-1)*2+technology;
       if(p?.units.includes(key)&&p.units.length<=2)value+=12*p.confidence;
       if(tags.includes('charge'))value+=ranged*10;
       if(tags.includes('counter'))value+=heavy*12;

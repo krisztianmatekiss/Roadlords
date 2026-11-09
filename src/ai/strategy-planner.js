@@ -43,6 +43,7 @@ export function installAiStrategyPlanner(R) {
       plan.commitment=investment+links+(isOwned?7:0)+(progress>=3?3:0);
       plan.owned=isOwned;
       plan.producer=units.map(k=>producer(c,k)).find(type=>type&&R.hasBuilding(c,type))||units.map(k=>producer(c,k)).find(Boolean)||null;
+      if(plan.producer&&c.unlocked.has(plan.producer)&&!R.factionBasics(c.race).includes(plan.producer)){plan.evidence+=2;plan.commitment+=2;}
       // Unavailable cards can be a future possibility, never a reason to
       // abandon an already functioning economy for a guaranteed imaginary draw.
       plan.initial=plan.evidence+(isOwned?4:0)-(plan.producer&&!c.unlocked.has(plan.producer)?3:0);

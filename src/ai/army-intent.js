@@ -38,10 +38,17 @@ export function installAiArmyIntent(R){
     if(main)memory.set(c,{capital,key:main.key,at:R.state.time});
     const total=Object.values(metrics.units).reduce((n,u)=>n+u.count,0);
     const has=tag=>Object.keys(metrics.units).some(key=>(UNIT_FEATURES[key]||[]).includes(tag));
+    const rate=Object.entries(metrics.units).reduce((n,[key,u])=>n+u.rate*R.orcArmyWeight({key},c),0),neededRate=c.armyCap/(battle.urgent?60:120);
+    // An irreplaceable elite producer can define the build without being able
+    // to supply its whole army. Choose one scalable companion for the missing
+    // throughput, rather than unlocking every type or buying endless supports.
+    const companion=main&&R.isUniqueBuilding(c,main.type)&&R.hasBuilding(c,main.type)&&rate<neededRate
+      ? options.find(o=>o.key!==main.key&&!R.isUniqueBuilding(c,o.type)&&!o.tags.includes('heal')&&!o.tags.includes('curse')&&!(o.tags.includes('siege')&&!o.tags.includes('melee')&&R.state.time<180)):null;
     const purposes=new Map();
     for(const o of options){
       let role=null,share=0;
       if(o.key===main?.key){role='core';share=1;}
+      else if(o===companion){role='reinforcement';share=1;}
       else if(total>0){
         if(o.tags.includes('counter')&&heavy>=.2){role='counter';share=.3;}
         else if(o.tags.includes('charge')&&ranged>=.35){role='counter';share=.3;}
@@ -56,7 +63,7 @@ export function installAiArmyIntent(R){
       const desired=role==='core'?Infinity:Math.max(1,Math.floor((total+1)*share));
       const weightedRate=(metrics.units[main?.key]?.rate||0)*R.orcArmyWeight({key:main?.key},c);
       const coreNeeded=weightedRate<c.armyCap/(battle.urgent?60:120)&&(!R.isUniqueBuilding(c,o.type)||!R.hasBuilding(c,o.type));
-      purposes.set(o.type,{...o,role:!satisfied?role:null,share,desired,needed:!!role&&!satisfied&&(role==='core'?coreNeeded:count<desired)});
+      purposes.set(o.type,{...o,role:!satisfied?role:null,share,desired,needed:!!role&&!satisfied&&(role==='core'?coreNeeded:role==='reinforcement'?rate<neededRate:count<desired)});
     }
     return {main:main||null,purposes,total,confidence:clamp((main?.value||0)/20,.2,1)};
   };

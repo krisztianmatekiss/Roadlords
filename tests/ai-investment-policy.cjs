@@ -25,8 +25,9 @@ check('Soul Rift is absent from definitions, unlocks, upgrades and strategic anc
  return !R.BUILDINGS.und_soul_rift&&!R.UNLOCKABLE.includes('und_soul_rift')&&![...R.buildingUnlockPool(c),...R.buildingUpgradePool(c)].some(o=>o.id==='und_soul_rift')&&!R.aiStrategyAnchors(c).some(p=>p.anchor.id==='und_soul_rift');
 }));
 for(const side of ['player','enemy']){
- check(side+': a Vampire build does not recruit Skeletons just because Graveyard is available',await p.evaluate(side=>{
+ check(side+': a supplied Vampire build does not recruit Skeletons just because Graveyard is available',await p.evaluate(side=>{
   const R=__ROADLORDS_RUNTIME__,c=policyReset('undead',side);for(let n=0;n<4;n++)policyPut(c,'und_well',4);
+  for(let n=0;n<5;n++)policyPut(c,'und_morgue',3);
   policyPut(c,'und_vampire_castle',3);c.normal.vampire_common_damage=10;c.normal.vampire_common_hp=10;c.legends.add('vampire_leg_infection');R.recomputeCity(c,true);
   const ctx=policyThought(c);return ctx.intent.main.key==='und_vampire'&&!ctx.intent.purposes.get('und_graveyard').needed&&!R.aiMilitaryPool(c).includes('und_graveyard');
  },side));
@@ -45,6 +46,14 @@ check('Chosen advanced technology can seed one direction without forcing every a
 check('The construction budget includes wood needed to build stone and food income',await p.evaluate(()=>{
  const R=__ROADLORDS_RUNTIME__,c=policyReset();c.unlocked=new Set(['keep','lumber','stonecutter','farm','barracks']);const ctx=policyThought(c);
  return ctx.growth.budget.wood>=2*(R.buildPrice(c,'lumber').wood+R.buildPrice(c,'stonecutter').wood+R.buildPrice(c,'farm').wood)&&ctx.growth.goals.includes('barracks');
+}));
+check('An occupied unique core producer receives one scalable companion when army supply is insufficient',await p.evaluate(()=>{
+ const R=__ROADLORDS_RUNTIME__,c=policyReset('undead');policyPut(c,'und_vampire_castle',3);
+ c.normal.vampire_common_damage=10;c.normal.vampire_common_hp=10;c.legends.add('vampire_leg_infection');R.recomputeCity(c,true);
+ const intent=policyThought(c).intent,companions=[...intent.purposes.values()].filter(o=>o.role==='reinforcement'&&o.needed);
+ if(intent.main.key!=='und_vampire'||companions.length!==1||R.isUniqueBuilding(c,companions[0].type))return false;
+ for(let n=0;n<5;n++)policyPut(c,companions[0].type,3);
+ return ![...policyThought(c).intent.purposes.values()].some(o=>o.role==='reinforcement'&&o.needed);
 }));
 check('A funded safe opening selects a productive investment rather than obligatory military',await p.evaluate(()=>{
  const R=__ROADLORDS_RUNTIME__,c=policyReset();c.aiThink=0;R.aiStepCity(c,1);

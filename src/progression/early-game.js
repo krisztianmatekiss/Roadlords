@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { CIVILIAN_MILITIA_INTERVAL } from '../data/economy-balance.js';
 export function initializeProgressionEarlyGame(runtime) {
   if (!runtime.NORMAL.some(x => x.id === 'building_discount')) {
     runtime.NORMAL.push({
@@ -35,9 +36,9 @@ export function initializeProgressionEarlyGame(runtime) {
     if (!runtime.hasLeg(c, 'arm_the_people')) return;
     for (const b of c.buildings.filter(x => ['lumber', 'stonecutter', 'farm'].includes(x.type))) {
       b.militiaProgress = (b.militiaProgress || 0) + dt;
-      while (b.militiaProgress >= 40) {
+      while (b.militiaProgress >= CIVILIAN_MILITIA_INTERVAL) {
         if (!runtime.spawnFreeKey(c, 'swordsman')) break;
-        b.militiaProgress -= 40;
+        b.militiaProgress -= CIVILIAN_MILITIA_INTERVAL;
       }
     }
   };

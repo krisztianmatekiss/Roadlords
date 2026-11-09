@@ -4,6 +4,7 @@ import { installSharedAiPlacement } from './shared-placement.js';
 import { installAiBattleAwareness } from './battle-awareness.js';
 import { installAiGrowthPolicy } from './growth-policy.js';
 import { installAiStrategyPlanner } from './strategy-planner.js';
+import { installAiRedevelopment } from './redevelopment.js';
 import { BUILDING_MECHANICS, CONDITIONAL_EFFECTS, UNIT_FEATURES, cardTargets } from './mechanics.js';
 import { levelValue } from '../data/faction-redesign.js';
 
@@ -19,6 +20,7 @@ export function installSharedAiPlanner(R) {
   installAiBattleAwareness(R);
   installAiGrowthPolicy(R);
   installAiStrategyPlanner(R);
+  installAiRedevelopment(R);
   let decision = null;
   const available = c => R.aiFactionBuildings(c).filter(type => type !== 'keep' && c.unlocked.has(type) && R.canBuildArmyCapacity(c,type) &&
     (!R.isUniqueBuilding(c, type) || !R.hasBuilding(c, type)));
@@ -95,8 +97,8 @@ export function installSharedAiPlanner(R) {
     let value = 0;
     for (const b of c.buildings.filter(b=>!b.inactive)) {
       const lv = b.level;
-      if (b.type === 'library') value += Math.min(12, 2 + lv * 2) * Math.max(.25,1-R.state.time/2400);
-      if (b.type === 'mastersguild') value += (3 + lv * 2) * Math.min(1, c.buildings.length / 12);
+      if (b.type === 'library') value += Math.min(12, 2 + lv * 2) * Math.max(.25,1-R.state.time/2400) * R.townhallPower(c,b);
+      if (b.type === 'mastersguild') value += (3 + lv * 2) * Math.min(1, c.buildings.length / 12) * R.townhallPower(c,b);
       if (b.type === 'orc_totem') value += 5 * 300 / levelValue(lv,[300,260,220,160]) * Math.min(2, metrics.power / 8);
       if (b.type === 'orc_slave') value += Math.min(6, metrics.power * .25) * lv;
       if (b.type === 'und_soul_bank') value += Math.max(0,(Math.max(0,c.resources.wood-500)*levelValue(lv,[.05,.06,.08,.10])/60)*.5-(R.buildingDefinition(c,b.type).upkeep||0))*4;
@@ -112,6 +114,7 @@ export function installSharedAiPlanner(R) {
   function valueDelta(before, after, c, beforePassive, afterPassive) {
     return R.aiMetricDelta(before, after, c) + afterPassive - beforePassive;
   }
+  R.aiPassiveValue=passive;
 
   function opportunity(type, ctx) {
     if (ctx.buildings.has(type)) return ctx.buildings.get(type);
@@ -172,7 +175,7 @@ export function installSharedAiPlanner(R) {
     score -= Math.min(12,costTime*.10) + Math.max(0,area-1)*.45;
     score -= Math.min(25,result.wait*.10);
     if (ctx.resources.some(r=>after.gain[r]<after.use[r] && after.gain[r]-after.use[r]<metrics.gain[r]-metrics.use[r]-1e-6 && !R.BUILDINGS[type].unit)) score -= 45;
-    result.score = score+R.aiStrategyBuildBonus(c,type,ctx);
+    result.score = score+R.aiStrategyBuildBonus(c,type,ctx)-R.aiRedevelopmentTypePenalty(c,type,ctx);
     return result;
   }
 
@@ -380,6 +383,7 @@ export function installSharedAiPlanner(R) {
           const deficit=ctx.resources.some(r=>metrics.gain[r]<metrics.use[r]);
           if((BUILDING_MECHANICS[saved]?.produces||!deficit&&!ctx.pressure)&&invest(opportunity(saved,ctx),ctx))return;
         }
+        if(R.aiTryRedevelopment(c,ctx))return;
         const types=available(c);
         // Evaluate all economic/capacity roles, but only the four most promising
         // military and four support investments. No per-frame search or history.

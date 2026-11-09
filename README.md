@@ -1,4 +1,14 @@
-# Roadlords · V4.63.1
+# Roadlords · V4.64.0
+
+## V4.64.0 – Átépítő AI
+
+- A zsúfolt városban minden épületszerepnél keres megtérülő cserét: gazdaság, katonai termelés, támogatás, tárolás és kapacitás.
+- Több régi épület helyére is tervezhet egy új épületet; rosszul elhelyezett támogatót vagy termelőt kedvezőbb helyre építhet újra.
+- A teljes város bevételét, fogyasztását, katonai utánpótlását, tartalékait és támogatási kapcsolatait hasonlítja össze. A tartósan elvesző túltermelés kevesebbet ér, a hasznos piaci átváltás és Lélek-felhalmozás megmarad értéknek.
+- Előre finanszírozott, újraellenőrzött tervet hajt végre; közvetlen veszélynél nem bont. Várakozás és rövid típusmemória fékezi a visszaépítési köröket.
+- A keresés külön modulokban, korlátozott időközönként működik, mindhárom népnél ugyanazzal a szabályrendszerrel.
+
+Működés, ellenőrzés és korlátok: [átépítési audit](docs/ai-redevelopment-4.64.md).
 
 ## V4.63.1 – Termelőhelyek javítása
 

@@ -116,6 +116,7 @@ export function initializeHumanRedesign(R) {
   };
 
   R.marketStorageMultiplier=c=>{const m=active(c,'market')[0];return m?1+.5*m.level*R.townhallPower(c,m):1;};
+  R.marketConversionEfficiency=c=>{const m=active(c,'market')[0];return m?lv(m.level,[.5,1,1.5,2])*R.townhallPower(c,m):0;};
   // The old manual market has no route consumption anymore.
   R.marketTransfer=(c,dt,stock={...c.resources})=>({stock,gain:R.C(),use:R.C()});
   R.marketImports=()=>new Set();
@@ -123,7 +124,7 @@ export function initializeHumanRedesign(R) {
   R.aiMarket=()=>{};
   R.convertMarketOverflow=(c,overflow)=>{
     const market=human(c)&&active(c,'market')[0];if(!market)return;
-    const efficiency=lv(market.level,[.5,1,1.5,2])*R.townhallPower(c,market);
+    const efficiency=R.marketConversionEfficiency(c);
     const demand=R.productionBudgetRates(c),income=R.productionRates(c);
     // Only original production overflow is passed here. Converted output never recurses.
     for(const from of R.RES){

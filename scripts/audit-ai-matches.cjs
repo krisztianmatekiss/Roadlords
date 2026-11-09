@@ -5,11 +5,13 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
 const tag=(process.env.ROADLORDS_AI_TAG||'current').replace(/[^a-z0-9-]/gi,'-');
 const seeds=(process.env.ROADLORDS_AI_SEEDS||'42').split(',').map(Number);
 const seconds=Number(process.env.ROADLORDS_AI_SECONDS||600);
+const pairs=process.env.ROADLORDS_AI_PAIRS?process.env.ROADLORDS_AI_PAIRS.split(',').map(pair=>pair.split(':')):[['human','undead'],['orc','human'],['undead','orc']];
+if(pairs.some(pair=>pair.length!==2||pair.some(race=>!['human','orc','undead'].includes(race))))throw Error('ROADLORDS_AI_PAIRS must contain race:race pairs');
 (async()=>{
  const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox','--disable-dev-shm-usage']});
  const report={scope:'Full normal AI vs AI matches; seeded starts, real economy, choices, training and combat. Not human win rates.',cases:[],errors:[]};
  try{
-  for(const [left,right]of [['human','undead'],['orc','human'],['undead','orc']])for(const seed of seeds){
+  for(const [left,right]of pairs)for(const seed of seeds){
    const p=await browser.newPage();await p.route('https://**/*',r=>r.abort());p.on('pageerror',e=>report.errors.push(e.message));p.on('console',m=>{if(m.text().startsWith('AI-MINUTE '))console.log(m.text());});
    await p.goto(URL);await p.waitForFunction(()=>window.__ROADLORDS_RUNTIME__?.startSpectator);
    const result=await p.evaluate(async({left,right,seed,seconds})=>{

@@ -33,7 +33,11 @@ export function installAiRedevelopment(R) {
     let value=2+b.level*.5;
     if(role.produces){
       const output=producerBaseOutput(R,c,b);
-      value+=role.produces.reduce((n,r)=>n+(s.surplus[r]>=20?1:12)*(output[r]||m.gain[r]/Math.max(1,copies)),0);
+      // Do not let a large *discarded* output hide this plot behind useful
+      // troops in the short candidate list. Full-city safety still checks the
+      // income remaining after every proposed removal.
+      if(role.produces.every(r=>s.surplus[r]>=20))value=.25;
+      value+=role.produces.reduce((n,r)=>n+(s.surplus[r]>=20?.005:12)*(output[r]||m.gain[r]/Math.max(1,copies)),0);
     }
     if(!role.produces&&role.features?.includes('economy')){
       const without=R.aiPreview(c,shadow=>{shadow.buildings=shadow.buildings.filter(p=>p.id!==b.id);},shadow=>R.productionRates(shadow));

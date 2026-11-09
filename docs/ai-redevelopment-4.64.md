@@ -14,7 +14,7 @@ Az új réteg a közös AI rendes építési döntésének része, mindkét néz
 - Elkülönített városmásolaton számolja végig a bontást, visszatérítést, kapacitásváltozást, építési árat, új épületet és a teljes város újraszámolását. A tervezés nem fogyaszt játékbeli véletlenszámot és nem hoz létre valódi egységet vagy választást.
 - A pontozás együtt nézi a tényleges termelést, névleges teljes működési fogyasztást, katonai utánpótlást és minőségét, helyi támogatást, globális passzív hatásokat, szükséges kapacitást, területfoglalást és költséget.
 - Legalább húsz másodpercig megfigyelt, feltöltött tároló mellett is fölösleges bevétel veszít az értékéből. A legutóbbi kilencven másodperc fogyasztási csúcsa és veszteségi üteme is számít. A Lélek korlátlan tárolása, a túltermelést hasznosító fejlesztés és a hiányt fedező Piac kivétel.
-- A felhalmozott bevételt adó Rabszolgatábort a tényleges gazdasági hozzájárulása is védi. A felfegyverzett civileket előállító emberi termelő katonai hozzájárulása is megmarad az értékelésben.
+- A felhalmozott bevételt adó Rabszolgatábort a tényleges gazdasági hozzájárulása is védi. A már eldobott termelés nagy száma nem nyomhatja hátra a fölösleges termelőt a rövid jelöltlistán; a teljes városelőrejelzés ezután is megvédi a szükséges bevételt. A felfegyverzett civileket előállító emberi termelő katonai hozzájárulása is megmarad az értékelésben.
 - Azonos épület áthelyezéséhez tényleges helyfüggő előny kell: új kedvezményezett, erősebb bejövő támogatás, nagyobb hozam vagy megváltozó képzési típus. Globális épület puszta arrébb rakása és területfelszabadítása nem elég.
 
 A terv nem csökkentheti a szükséges sereglimitet és foglalt tartalékhelyet, nem ronthatja tovább a nyersanyaghiányt, nem tüntetheti el a fő stratégiai egység utolsó termelőjét. A jelenlegi megtakarításból finanszírozhatónak kell lennie már a bontási visszatérítés előtt is. Közvetlenül a bontás előtt újraértékeli az árat és a következményeket. A valódi, fizetett bontás és építés egy AI-körben történik; sikertelen építéskor visszaáll a város és a tornyok állapota. A főépület HP-jának és a tartalék egységek egyedi adatainak védelme is szerepel az ellenőrzésben.
@@ -31,7 +31,7 @@ A Piac átváltási aránya és a felfegyverzett civilek 40 másodperces időkö
 
 ## Ellenőrzés és korlátok
 
-A `tests/ai-redevelopment.cjs` 32 ellenőrzése valódi fizetett cserét vizsgál mindkét AI-oldalon, több épület bontását, mindhárom nép helyi támogatását, katonai termelő áthelyezését, tárolást, foglalt tartalékokat, a külön aktív-egységplafont, előző meccs állapotának törlését, finanszírozást, visszaállítást, tiszta előrejelzést és a valódi közös AI önálló döntését. Az új teszt a normál tesztsor része.
+A `tests/ai-redevelopment.cjs` 33 ellenőrzése valódi fizetett cserét vizsgál mindkét AI-oldalon, több épület bontását, mindhárom nép helyi támogatását, katonai termelő áthelyezését, tárolást, foglalt tartalékokat, a külön aktív-egységplafont, előző meccs állapotának törlését, finanszírozást, visszaállítást, tiszta előrejelzést és a valódi közös AI önálló döntését. Az új teszt a normál tesztsor része.
 
 Ez korlátozott keresés és heurisztikus értékelés. Nem keres minden lehetséges teljes városelrendezést, nem garantál optimális buildet vagy minden támogatási kombináció felismerését. A pillanatnyi túltermelés nem azonos a fölösleges épülettel; egy későbbi katonai hullámhoz, piachoz vagy Lélek-alapú sebzéshez szükséges tartalék szándékosan megmaradhat. A város mindenáron történő teleépítése vagy bontása nem cél.
 

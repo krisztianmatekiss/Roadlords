@@ -211,6 +211,16 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    c.levels.orc_arena=4;rebuildHistory(c);const plan=R.aiFindRedevelopment(c,{type:'orc_arena'});
    return !!plan&&!plan.ids.includes(slave.id)&&R.aiExecuteRedevelopment(c,plan)&&R.hasBuilding(c,'orc_slave')&&!R.hasBuilding(c,'orc_work')&&c.orcSupport.slaveKills===2000;
   }));
+  check('Discarded high output does not hide obsolete producers behind useful troops',await p.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,c=campBoard();
+   for(let row=0;row<2;row++)for(let col=3;col<5;col++){
+    c.terrain[R.idx(row,col)]=null;rebuildPut(c,'orc_gob',row,col);
+   }
+   rebuildHistory(c);const diagnostics=[],plan=R.aiFindRedevelopment(c,{type:'orc_arena',diagnostics}),first=diagnostics[0];
+   // The economic trade still has to be profitable before it may execute.
+   return first?.safe&&first.ids.length===2&&first.ids.every(id=>R.getBuilding(c,id)?.type==='orc_work')&&
+    (!plan||R.aiExecuteRedevelopment(c,plan))&&R.buildingOf(c,'orc_gob').length===4;
+  }));
   check('Global buildings never move just to create misleading empty-space profit',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=rebuildReset('human');rebuildPut(c,'mastersguild',0,0,4);
    for(let row=0;row<4;row++)rebuildPut(c,'barracks',row,3);rebuildHistory(c);

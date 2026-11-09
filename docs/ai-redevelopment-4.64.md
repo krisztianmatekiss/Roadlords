@@ -36,3 +36,27 @@ A `tests/ai-redevelopment.cjs` 33 ellenőrzése valódi fizetett cserét vizsgá
 Ez korlátozott keresés és heurisztikus értékelés. Nem keres minden lehetséges teljes városelrendezést, nem garantál optimális buildet vagy minden támogatási kombináció felismerését. A pillanatnyi túltermelés nem azonos a fölösleges épülettel; egy későbbi katonai hullámhoz, piachoz vagy Lélek-alapú sebzéshez szükséges tartalék szándékosan megmaradhat. A város mindenáron történő teleépítése vagy bontása nem cél.
 
 Újrafuttatás: `npm run build`, majd `node scripts/test.cjs tests/ai-redevelopment.cjs`. Hosszú valódi meccsek: `ROADLORDS_AI_SECONDS=1200 ROADLORDS_AI_TAG=redevelopment-final npm run audit:ai-matches`. Ez kézzel indított fejlesztői mérés; a játék nem exportál automatikus meccsnaplót.
+
+## A végleges kód valódi meccsei
+
+A `cd31fba` kóddal két normál AI–AI mérkőzés futott, mindhárom néppel, 42-es kezdőmaggal. A katonák és a városok a tényleges kezdőválasztásokból és gazdaságból épültek fel; a mérés nem adott ajándék pénzt vagy sereget.
+
+| Párosítás | Vizsgált idő | Bal / jobb oldal sikeres átépítései | Eredmény |
+| --- | ---: | ---: | --- |
+| Ork – ember | 20:00 | 8 / 3 | Mindkét főváros állt az időhatárnál. |
+| Élőhalott – ork | 13:31 | 5 / 2 | Élőhalott győzelem, természetes meccsvég. |
+
+Konkrét fizetett műveletek:
+
+- Az ork–ember mérkőzésben **hét Munkatábor bontása** került végrehajtott átépítési tervekbe. A végén öt maradt, a felhalmozott bevételt adó Rabszolgatábor is megmaradt. A végső névleges termelés továbbra is fedezte mindhárom nyersanyag teljes képzési fogyasztását.
+- Több Munkatábor, Vadászház és katonai épület helyére Kunyhó került. Egy Trollverem hat régi katonai épület helyén jött létre. A támogatási cserék közt Templom → Kocsma, Kővágó → Őrház is történt.
+- Az élőhalott–ork meccsen Lélekhasadék helyett Kripta, majd másik hasadék helyett Temető épült; két Pestiskamra helyén Sötét torony. Az ork Raktárt épített katonai termelő helyére, illetve három Dühöngő-termelő helyére Kunyhót.
+- A végrehajtás és a teljes meccsek nem jeleztek böngésző- vagy játékmotorhibát. A helyfüggő áthelyezést a célzott tesztek igazolják; e két meccsben nem állítunk mért természetes áthelyezési eredményt.
+
+Az új átépítési csomag 33 ellenőrzése sikerült; a teljes közös AI/gazdasági integrációs vizsgálatok és a végső előszűrési javítás érintett tesztjei is átmentek. A végleges kód teljes tesztsora és a GitHub Pages publikálása is sikerült: [kiadási futás](https://github.com/krisztianmatekiss/Roadlords/actions/runs/42596694118).
+
+A keresés mért 95. percentilise 31,8 ms és 18,0 ms volt; a leglassabb keresés 57,6 ms és 20,6 ms. A keresés időszakos, legfeljebb négy teljes előrejelzéssel. A mérés instrumentált, fej nélküli böngészőben történt, ezért ezek nem játék közbeni FPS-adatok. A korlátozott keresés mellett is maradhatnak drágább AI-körök.
+
+A kevés, azonos kezdőmagú minta nem győzelmi arány és nem bizonyítja minden csere stratégiai optimalitását. Az ork városban a javítás után is maradt túltermelés: a tervező csak a rendelkezésre álló lapokkal és a rövid jelöltlistával keres nyereséges cserét. A felmért állapotok és végrehajtott műveletek: [audit JSON](audits/ai-redevelopment-4.64.json).
+
+E két párosítás megismétléséhez: `ROADLORDS_AI_SECONDS=1200 ROADLORDS_AI_PAIRS=orc:human,undead:orc ROADLORDS_AI_TAG=redevelopment-release npm run audit:ai-matches`.

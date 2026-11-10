@@ -56,5 +56,5 @@ A multiplayer szabályverzió 17: eltérő harci szabályú kliensek nem csatlak
 
 Helyi ellenőrzés: a 68 fájlból álló teljes böngészőteszt-készlet lefutott.
 Az új balansszámokra frissített három elvárás után a kapcsolódó tesztek is sikeresek.
-A végső build célzott újrafuttatása a 31 új állapot-/balanszellenőrzést,
+A végső build célzott újrafuttatása a 32 új állapot-/balanszellenőrzést,
 a tömegcsatát, az egységbalance-t és a korábbi balance-szabályokat is ellenőrizte.

@@ -7,6 +7,6 @@ export function fitsUnitRoom(entry, room, weight) {
 export function unitRoomCount(entry, room, weight) {
   if (!weight) return room >= -1e-9 ? Infinity : 0;
   return entry?.key === 'orc_troll' && room >= 1 - 1e-9
-    ? Math.ceil((room - 1e-9) / weight)
+    ? Math.floor((room + weight - 1 + 1e-9) / weight)
     : Math.floor(Math.max(0, room) / weight);
 }

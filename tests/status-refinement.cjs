@@ -32,6 +32,9 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
     check('Breeding updates existing queues, new field units and reserves to two slots',R.orcArmyWeight(queued)===2&&R.orcArmyWeight(small)===2&&R.orcReserveWeight(queued,c)===2&&near(small.maxHp,1600));
     c.armyCap=1;R.state.units=[];c.garrison=[];c.releaseQueue=[R.makeEntry(c,'orc_troll'),R.makeEntry(c,'orc_troll')];c.gateMode='open';R.releaseQueues(1);
     check('A small Troll can use the last free place, then locks further arrivals',R.fieldUnitCount(c)===2&&c.releaseQueue.length===1);
+    R.state.units=[];c.garrison=[];c.releaseQueue=[];c.armyCap=3;c.garrisonCap=0;c.levels.orc_gob=4;c.l4Branches.orc_gob='swarm';unit(c,'orc_goblin');const trollProducer=R.buildingOf(c,'orc_troll')[0],smallRoom=R.productionRoomFor(c,trollProducer);
+    c.l4Branches.orc_troll='earthshaker';c.armyCap=5;
+    check('Half-slot Goblins cannot turn a half-free place into another small or full Troll',smallRoom===1&&R.productionRoomFor(c,trollProducer)===1);
     const retired=['orc_blessing','orc_curse_master','orc_inherit','orc_dispel','marking_arrow','gen_graveyard_capacity'];
     check('Removed cards cannot enter the catalog or be directly applied',retired.every(id=>![...R.NORMAL,...R.LEGENDARY].some(o=>o.id===id)&&R.applyChoice(c,{kind:'legendary',id})===false));
     c=reset('undead');check('Corrupted Hatchery is absent from definitions, drafts and AI',!R.BUILDINGS.und_corrupted_hatchery&&!__ROADLORDS_UNDEAD__.buildings.und_corrupted_hatchery&&!R.buildingUnlockPool(c).some(o=>o.id==='und_corrupted_hatchery')&&!R.aiFactionBuildings(c).includes('und_corrupted_hatchery'));

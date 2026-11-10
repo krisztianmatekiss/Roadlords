@@ -2,9 +2,9 @@ import { unitIsElite } from '../data/unit-ranks.js';
 import { EFFECT_COLORS as COLORS } from '../data/effect-palette.js';
 
 const BITS = {burn:1,poison:2,slow:4,bleed:8,curse:32,stun:512};
-const markers = new Map();
 let silhouette;
-export const statusSpriteCount = () => markers.size;
+// Markers are batched vector paths; no marker image cache is needed.
+export const statusSpriteCount = () => 0;
 export function unitStatusMask(R,u) {
   let mask=unitIsElite(u)?128:0;
   if(R.MP.enabled&&R.MP.role==='guest') {
@@ -46,34 +46,33 @@ export function paintBodyStatus(canvas,status,resolution) {
   }
   g.restore();
 }
-export function drawStatusSprite(g,mask,top) {
-  mask&=128|4|512;if(!mask)return;
-  let sprite=markers.get(mask);
-  if(!sprite) {
-    sprite=document.createElement('canvas');sprite.width=40;sprite.height=18;
-    const s=sprite.getContext('2d'),flags=[128,4,512].filter(bit=>mask&bit);
-    s.translate(20,9);s.lineWidth=1.8;s.lineJoin='round';s.lineCap='round';
-    flags.forEach((bit,i)=>{
-      const x=(i-(flags.length-1)/2)*12;s.save();s.translate(x,0);
-      s.strokeStyle='#101914';s.fillStyle='#101914';
-      if(bit===128) {
-        s.beginPath();s.moveTo(-4,-6);s.lineTo(4,-6);s.lineTo(4,2);s.lineTo(0,6);s.lineTo(-4,2);s.closePath();s.fill();s.strokeStyle='#ffe391';s.lineWidth=1;s.stroke();
-        s.strokeStyle='#ffd465';s.lineWidth=1.8;s.beginPath();s.moveTo(-2,-3);s.lineTo(0,-1);s.lineTo(2,-3);s.moveTo(-2,0);s.lineTo(0,2);s.lineTo(2,0);s.stroke();
-      } else if(bit===4) {
-        s.strokeStyle=COLORS.frost;s.lineWidth=2.5;s.beginPath();s.moveTo(0,-5);s.lineTo(0,5);s.moveTo(-4,1);s.lineTo(0,5);s.lineTo(4,1);s.stroke();
-      } else {
-        s.beginPath();for(let j=0;j<10;j++){const a=-Math.PI/2+j*Math.PI/5,r=j%2?2.6:6;const px=Math.cos(a)*r,py=Math.sin(a)*r;j?s.lineTo(px,py):s.moveTo(px,py);}s.closePath();s.lineWidth=2;s.stroke();s.fillStyle='#ffe391';s.fill();
-      }
-      s.restore();
-    });
-    markers.set(mask,sprite);
-  }
-  g.drawImage(sprite,-20,top-23);
+// One path per symbol, instead of a thousand tiny image transfers. All units
+// in a battle frame share the same camera scale; positions remain per-unit.
+export function drawStatusBatch(g,queue,count) {
+  if(!count)return;
+  const scale=queue[0].scale;
+  const visit=(bit,draw)=>{
+    for(let i=0;i<count;i++){
+      const p=queue[i],mask=p.mask;if(!(mask&bit))continue;
+      const n=Number(!!(mask&128))+Number(!!(mask&4))+Number(!!(mask&512));
+      const index=bit===128?0:bit===4?Number(!!(mask&128)):n-1;
+      draw(p.x+(index-(n-1)/2)*12*p.scale,p.y+(p.top-14)*p.scale,p.scale);
+    }
+  };
+  g.save();g.lineJoin='round';g.lineCap='round';
+  g.beginPath();visit(128,(x,y,s)=>{g.moveTo(x-4*s,y-6*s);g.lineTo(x+4*s,y-6*s);g.lineTo(x+4*s,y+2*s);g.lineTo(x,y+6*s);g.lineTo(x-4*s,y+2*s);g.closePath();});
+  g.fillStyle='#101914';g.fill();g.strokeStyle='#ffe391';g.lineWidth=scale;g.stroke();
+  g.beginPath();visit(128,(x,y,s)=>{g.moveTo(x-2*s,y-3*s);g.lineTo(x,y-s);g.lineTo(x+2*s,y-3*s);g.moveTo(x-2*s,y);g.lineTo(x,y+2*s);g.lineTo(x+2*s,y);});
+  g.strokeStyle='#ffd465';g.lineWidth=1.8*scale;g.stroke();
+  g.beginPath();visit(4,(x,y,s)=>{g.moveTo(x,y-5*s);g.lineTo(x,y+5*s);g.moveTo(x-4*s,y+s);g.lineTo(x,y+5*s);g.lineTo(x+4*s,y+s);});
+  g.strokeStyle=COLORS.frost;g.lineWidth=2.5*scale;g.stroke();
+  g.beginPath();visit(512,(x,y,s)=>{for(let j=0;j<10;j++){const a=-Math.PI/2+j*Math.PI/5,r=(j%2?2.6:6)*s,px=x+Math.cos(a)*r,py=y+Math.sin(a)*r;j?g.lineTo(px,py):g.moveTo(px,py);}g.closePath();});
+  g.strokeStyle='#101914';g.lineWidth=2*scale;g.stroke();g.fillStyle='#ffe391';g.fill();g.restore();
 }
 export function drawStatusEffects(R,g,u,detail,radius,x,y,scale,top=-51) {
   const mask=unitStatusMask(R,u)&(128|4|512);if(!mask)return;
   if(R.roadEffects?.collect) {
     const fx=R.roadEffects,item=fx.queue[fx.queueCount]||(fx.queue[fx.queueCount]={});fx.queueCount++;
-    Object.assign(item,{mask,x,y,scale,top});
-  } else drawStatusSprite(g,mask,top);
+    item.mask=mask;item.x=x;item.y=y;item.scale=scale;item.top=top;
+  } else drawStatusBatch(g,[{mask,x:0,y:0,scale:1,top}],1);
 }

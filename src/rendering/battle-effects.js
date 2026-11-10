@@ -1,7 +1,7 @@
 import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { EFFECT_COLORS as COLORS, STATUS_THEMES } from '../data/effect-palette.js';
 import { forecastPoisonDamage } from '../data/poison.js';
-import { drawStatusSprite, statusSpriteCount } from './unit-status-effects.js';
+import { drawStatusBatch, statusSpriteCount } from './unit-status-effects.js';
 export { drawStatusEffects } from './unit-status-effects.js';
 const TAU = Math.PI * 2;
 const circle = (g,x,y,r,color) => { g.fillStyle=color;g.beginPath();g.arc(x,y,r,0,TAU);g.fill(); };
@@ -42,11 +42,7 @@ export function installBattleEffects(R) {
   R.unitPoisonDamage=u=>R.MP.enabled&&R.MP.role==='guest'?Math.max(0,Math.min((u.hp||0)-1,u.syncedPoisonDamage||0)):forecastPoisonDamage(R,u,fx.collect?poisonMultipliers:null);
   R.roadBeginUnitEffects=()=>{fx.queueCount=0;fx.collect=true;poisonMultipliers.clear();};
   R.roadFlushUnitEffects=()=>{
-    fx.collect=false;const g=R.ctx;
-    for(let i=0;i<fx.queueCount;i++){
-      const item=fx.queue[i];g.save();g.translate(item.x,item.y);g.scale(item.scale,item.scale);
-      drawStatusSprite(g,item.mask,item.top);g.restore();
-    }
+    fx.collect=false;drawStatusBatch(R.ctx,fx.queue,fx.queueCount);
   };
   Object.defineProperty(fx,'statusSprites',{get:statusSpriteCount});
   R.roadImpactEffect=(u,a)=>{

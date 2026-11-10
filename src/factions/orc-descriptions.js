@@ -13,7 +13,7 @@ export function initializeFactionsOrcDescriptions(runtime) {
     orc_warg: 'Warglovasokat képez.',
     orc_shaman: 'Sámánokat képez.',
     orc_ram: 'Faltörő kosokat készít.',
-    orc_troll: 'Nagy életerejű, területsebző Trollokat képez. Egy Troll 4 helyet foglal a seregben és a helyőrségben is. Az oltár és a totem számlálójában is 4 egységnek számít.',
+    orc_troll: 'Nagy életerejű, területsebző Trollokat képez.',
     orc_arena: 'A szomszédos táborok veterán egységeket képezhetnek. A veteránoknak +50% életerejük és sebzésük van. Több Aréna bónusza alapból nem adódik össze.',
     orc_overseer: 'A szomszédos táborok gyorsabban képeznek egységeket, de azok sérülten indulnak. Több Hajcsártábor bónusza nem adódik össze.',
     orc_altar: 'Feláldozza a szomszédos táborok elkészült egységeit. Elegendő áldozat után sereged 12 másodpercig az okozott sebzés 25%-át visszagyógyítja.',
@@ -68,9 +68,9 @@ export function initializeFactionsOrcDescriptions(runtime) {
     orc_berserker: 'Minden 2% hiányzó életerőért +1% támadási sebességet kap.',
     orc_goblin: 'Gyorsan támadó távolsági egység.',
     orc_warg: 'Első támadásként 60 sebzésű lándzsát dob 230 hatótávból, utána közelharcban küzd. Épületek ellen a lándzsa kevesebbet sebez, és nem lehet kritikus.',
-    orc_shaman: 'Találatonként egy véletlen átkot tesz a célpontra 4 másodpercre. Elsősorban az átok nélküli ellenfeleket támadja.\nGyengeség: −20% sebzés.\nSorvadás: −20% maximális életerő; lejáratkor nem gyógyít.\nKimerültség: −25% támadási sebesség.\nSebezhetőség: +20% elszenvedett sebzés.\nVakság: 25% eséllyel elhibázza a támadást.\nUgyanaz az átok frissül, nem erősödik.',
+    orc_shaman: 'Sikeres találatkor 4 mp-re megátkozza a célpontot: +25% kapott és −25% kiosztott sebzés. Az Átok frissül, nem halmozódik.',
     orc_ram: 'Épületek ellen 130-at, egységek ellen 8-at sebez. A fizikai támadásokból 50%-kal kevesebb sebzést kap.',
-    orc_troll: 'A célpontnak 110-et, a körülötte álló ellenségeknek 35-öt sebez. 4 sereghelyet és 4 helyőrségi férőhelyet foglal.'
+    orc_troll: 'A célpontnak 110-et, a körülötte álló ellenségeknek 35-öt sebez. Alapférőhely: 4 a seregben és a helyőrségben.'
   };
   for (const [key, text] of Object.entries(unitCopy)) runtime.UNITS[key].description = text;
   const picks = {
@@ -79,7 +79,7 @@ export function initializeFactionsOrcDescriptions(runtime) {
     orc_double: 'A Goblin +5% eséllyel kétszer támad. Az esély felvételekkel növelhető, legfeljebb 100%-ig.',
     orc_spear_crit: 'A Warglovas lándzsája +10% eséllyel dupla sebzést okoz egységeknek. 100% fölött újabb duplázásra nyílik esély: 150%-nál mindig dupla, 50% eséllyel négyszeres sebzés.',
     orc_curse_duration: 'A Sámán átkai 1 másodperccel tovább tartanak.',
-    orc_troll_regen: 'A Troll másodpercenként 5 életerőt gyógyul.',
+    orc_troll_regen: 'A Troll másodpercenként 0,5% maximális életerőt gyógyul.',
     orc_as: 'Minden ork egység +5% támadási sebességet kap.',
     orc_hp: 'Minden ork egység +5% maximális életerőt kap.',
     orc_bers_rage: 'A Dühöngő minden 1% hiányzó életerőért +1% sebzést kap.',

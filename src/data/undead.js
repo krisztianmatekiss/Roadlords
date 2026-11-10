@@ -65,7 +65,7 @@ export const UNDEAD_UNITS = {
   },
   und_ghost: {
     name: 'Szellem',
-    hp: 75,
+    hp: 70,
     damage: 8,
     cooldown: 1.4,
     speed: 46,
@@ -80,7 +80,7 @@ export const UNDEAD_UNITS = {
   },
   und_necromancer: {
     name: 'Nekromanta',
-    hp: 100,
+    hp: 280,
     damage: 5,
     cooldown: 2,
     speed: 36,
@@ -111,7 +111,7 @@ export const UNDEAD_UNITS = {
   },
   und_lich: {
     name: 'Lich',
-    hp: 180,
+    hp: 380,
     damage: 5,
     cooldown: 5,
     speed: 32,
@@ -240,7 +240,7 @@ export const UNDEAD_BUILDINGS = Object.fromEntries(
 Object.assign(UNDEAD_BUILDINGS, UNDEAD_CONVERGENCE_BUILDINGS);
 UNDEAD_BUILDINGS.und_well.shape=[[0,0],[0,1],[1,0],[1,1]];
 UNDEAD_BUILDINGS.und_well.levels=CONVERGENCE.wellIncome.map(n=>`+${n} Lélek/mp.`);
-export const UNDEAD_UPGRADES = UNDEAD_PLAN_UPGRADES.filter(row => row.A !== 'gen_build_discount').map((row) => ({
+export const UNDEAD_UPGRADES = UNDEAD_PLAN_UPGRADES.filter(row => !['gen_build_discount','gen_graveyard_capacity'].includes(row.A)).map((row) => ({
   id: row.A,
   name: /^(HP|Sebzés) \+10%$/.test(row.D) ? row.C + ' · ' + row.D.replace('HP', 'Életerő') : row.D,
   description: UNDEAD_UPGRADE_COPY[row.A] || `${row.C}: +10% ${row.A.endsWith('_hp') ? 'maximális életerő' : 'sebzés'}.`,

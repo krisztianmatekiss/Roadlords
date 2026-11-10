@@ -5,18 +5,18 @@ export function initializeFactionsOrcMilitaryBranches(runtime) {
     id: 'double_curse',
     name: 'Kettős átok',
     icon: '☠',
-    description: 'Minden találat 2 különböző, véletlenszerű átkot okoz.'
+    description: 'A Sámán egyszerre 2 különböző ellenséget támad és átkoz meg, teljes sebzéssel.'
   }, {
     id: 'strong_curses',
     name: 'Felerősített átkok',
     icon: '☠',
-    description: 'Az átkok kétszer erősebbek: −40% sebzés, −40% maximális életerő, −50% támadási sebesség, +40% kapott sebzés vagy 50% melléütési esély. Időtartamuk változatlan.'
+    description: 'Az Átok +50% kapott sebzést és −50% kiosztott sebzést okoz. Időtartama változatlan.'
   }];
   runtime.V4_BRANCHES.orc_troll = [{
     id: 'breeding',
     name: 'Trolltenyészet',
     icon: '♟',
-    description: 'A Trollverem 2×2 mezős lesz, és több is építhető. A Trollok életereje, sebzése és képzési ára feleződik. Egy Troll továbbra is 4 helyet foglal a seregben és a helyőrségben is.'
+    description: 'A Trollverem 2×2 mezős lesz, és több is építhető. A Trollok életereje, sebzése és képzési ára feleződik. Egy kisebb Troll 2 helyet foglal a seregben és a helyőrségben is.'
   }, {
     id: 'earthshaker',
     name: 'Földrengető',
@@ -24,6 +24,10 @@ export function initializeFactionsOrcMilitaryBranches(runtime) {
     description: 'Minden harmadik csapás 2,5-szeres sugarú területen teljes sebzést okoz, és 1 másodpercre elkábítja az eltalált ellenfeleket. Alapsebzés: 110.'
   }];
   const breeding = c => !!c && runtime.hasBranch(c, 'orc_troll', 'breeding');
+  const make=runtime.makeEntry;
+  runtime.makeEntry=(c,key,extra={})=>{const e=make(c,key,extra);if(key==='orc_troll')e.orcTrollWeight=breeding(c)?2:4;return e;};
+  const choose=runtime.applyChoice;
+  runtime.applyChoice=(c,o,...args)=>{const out=choose(c,o,...args);if(o?.id==='orc_troll'&&breeding(c))for(const list of [c.garrison,c.rallyReserve,c.releaseQueue])for(const e of list)if(e.key==='orc_troll')e.orcTrollWeight=2;return out;};
   const oldStats = runtime.statsFor;
   runtime.statsFor = function (c, e) {
     const s = oldStats(c, e);
@@ -90,7 +94,7 @@ export function initializeFactionsOrcMilitaryBranches(runtime) {
   runtime.buildingEffectRows = function (c, b) {
     const rows = oldRows(c, b);
     if (b.type === 'orc_troll') {
-      rows.push(['Helyfoglalás', breeding(c) ? '2×2 mező' : '3×3 mező'], ['Építhető', breeding(c) ? 'Több példány' : 'Legfeljebb 1'], ['Sereg és helyőrség', '4 hely / Troll']);
+      rows.push(['Helyfoglalás', breeding(c) ? '2×2 mező' : '3×3 mező'], ['Építhető', breeding(c) ? 'Több példány' : 'Legfeljebb 1'], ['Sereg és helyőrség', breeding(c) ? '2 hely / Troll' : '4 hely / Troll']);
     }
     return rows;
   };

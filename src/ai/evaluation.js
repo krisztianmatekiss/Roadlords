@@ -67,7 +67,7 @@ export function installAiEvaluation(R) {
     let hp = stats.hp * (1 + positive(entry.shieldPct)), damage = stats.dmg / Math.max(.1, stats.cooldown);
     if (key === 'und_lich') damage *= 10; // Sustained ramping beams, not its nominal 5-second attack.
     if (key === 'und_necromancer') {
-      const sk = R.statsFor(c, { key: 'und_skeleton', undSummoned: true });
+      const sk = R.statsFor(c, { key: 'und_skeleton', undSummoned: true, undSummonerId: 'ai-preview' });
       damage += sk.dmg / sk.cooldown * 3 * 10 / ARMY_TEMPO.necroSummonInterval;
     }
     if (key === 'und_ghost') {
@@ -76,7 +76,7 @@ export function installAiEvaluation(R) {
     }
     if (key === 'und_vampire') hp *= 1.3;
     if (key === 'orc_goblin') hp *= 1.2;
-    if (key === 'orc_shaman') damage += Math.min(20,R.activeSpawners(c).length*1.5);
+    if (key === 'orc_shaman') {damage += Math.min(20,R.activeSpawners(c).length*1.5)*(R.hasBranch(c,'orc_shaman','strong_curses')?2:1);if(R.hasBranch(c,'orc_shaman','double_curse'))damage*=2;}
     if(c.race==='undead')damage*=R.undSoulDamageMult(c);
     if (b) {
       const taverns = R.buildingOf(c, 'tavern').filter(t => R.aiBuildingsTouch(c, t, b));

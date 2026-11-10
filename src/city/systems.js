@@ -799,7 +799,7 @@ export function register(runtime) {
     return e.tavernBaseBonus != null ? 1 + (e.tavernBaseBonus + .1 * runtime.countNormal(c, 'tavern_damage')) * (e.tavernBuffScale || 1) : e.permanentTavernMult || 2.5;
   };
   runtime.orcReserveWeight = function orcReserveWeight(entry, c) {
-    if (entry?.key === 'orc_troll') return 4;
+    if (entry?.key === 'orc_troll') return runtime.hasBranch(c,'orc_troll','breeding') ? 2 : 4;
     return entry?.key === 'orc_goblin' && runtime.hasBranch(c, 'orc_gob', 'swarm') ? 0 : 1;
   };
   runtime.orcGateBonuses = function orcGateBonuses(c) {

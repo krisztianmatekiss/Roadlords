@@ -3,7 +3,7 @@ import { formatMetres, formatSpeed } from '../world/measurements.js';
 import { ORC_BALANCE } from '../data/combat-balance.js';
 import { ORC_EXPANSION as B } from '../data/orc-expansion.js';
 
-const NORMAL_LIMITS = { building_discount: 5, orc_double: 20, orc_blessing: 40, orc_refund: 5, orc_loot: 10, orc_food_discount: 7 };
+const NORMAL_LIMITS = { building_discount: 5, orc_double: 20, orc_refund: 5, orc_loot: 10, orc_food_discount: 7 };
 const LEGEND_LIMITS = { sword_execute: 5, magic_order: 4, tavern_chain: Infinity, strategic_superiority: Infinity };
 const UNIT_PREFIXES = { sword: 'swordsman', swordsman: 'swordsman', spear: 'spearman', archer: 'archer', knight: 'knight', priest: 'priest', catapult: 'catapult', cat: 'catapult', mage: 'mage' };
 const METRICS = {
@@ -39,9 +39,8 @@ const MODIFIERS = {
   orc_food: n => ({ label: 'A lap élelemtermelési bónusza', value: bonus(20 * n) }),
   orc_spear_crit: n => ({ label: 'Kritikus esély e lapból', value: percent(10 * n) }),
   orc_curse_duration: scalar('Új átkok időtartama', n => 4 + n, ' mp'),
-  orc_troll_regen: scalar('A lap regenerációja', n => 5 * n, ' életerő/mp'),
+  orc_troll_regen: scalar('Regeneráció', n => .5 * n, '% Max HP/mp'),
   orc_crit: n => ({ label: 'Kritikus esély e lapból', value: percent(4 * n) }),
-  orc_blessing: n => ({ label: 'Áldás esélye', value: percent(Math.min(100, 2.5 * n)) }),
   orc_refund: n => ({ label: 'Visszatérítés esélye', value: percent(100 * Math.min(ORC_BALANCE.buildingRefundMaximum, ORC_BALANCE.buildingRefundPerStack * n)) }),
   orc_loot: n => ({ label: 'Zsákmány esélye', value: percent(Math.min(100, 10 * n)) }),
   orc_cargo: scalar('Trójai kos utasférőhelye', n => 10 + 4 * n)

@@ -11,24 +11,18 @@ export function shotKind(R, u) {
 
 const statusSprites = new Map();
 let statusAtlas, statusContext;
-const STATUS_BITS = { burn:1, poison:2, freeze:4, slow:4, bleed:8, regen:16,
-  weakness:32, atrophy:32, exhaustion:32, vulnerability:32, blindness:32, stun:32,
-  power:64, haste:64, stride:64, vitality:64, resistance:64, blessing:64, shield:256 };
+const STATUS_BITS = {burn:1,poison:2,slow:4,bleed:8,curse:32,stun:512};
 export function drawStatusEffects(R, g, u, detail, radius, x, y, scale) {
   let mask = unitIsElite(u) ? 128 : 0;
   if (R.MP.enabled && R.MP.role === 'guest') {
     for (const item of u.syncedStatusBadges || []) mask |= STATUS_BITS[item[0]] || 0;
   } else {
     if(u.burnTime>0)mask|=1;
-    if((u.shield||0)+(u.tempShield||0)>0)mask|=256;
     if(u.orcPoison>0)mask|=2;
-    if(u.slowTime>0||u.stunTime>0&&u.freezeFollow>0)mask|=4;
+    if(u.slowTime>0||u.undWitherSlow>0||u.stunTime>0&&u.freezeFollow>0)mask|=4;
     if(u.orcBleed>0)mask|=8;
-    if((u.orcPositive?.regen||0)+(u.alchemyRegen||0)+(u.orcRegenBlessingTime>0?1:0)>0)mask|=16;
-    if(u.stunTime>0&&!u.freezeFollow)mask|=32;
-    for(const key in u.orcCurses)if(u.orcCurses[key]>0)mask|=32;
-    if(u.blessingTime>0||u.attackSpeedBuffTime>0||u.speedBuffTime>0||u.rallySpeedReady||u.firstHitsRemaining>0||u.permanentTavern||u.alchemyEffects?.length>0)mask|=64;
-    for(const key in u.orcPositive)if(key!=='regen'&&u.orcPositive[key]>0)mask|=64;
+    if(u.stunTime>0)mask|=512;
+    if(R.orcCursePower(u,'curse'))mask|=32;
   }
   if(!mask)return;
   const frame=Math.floor(R.ROAD.clock*8+(u.id||0)*.73)%8,r=Math.round(radius/4)*4;
@@ -61,21 +55,20 @@ function drawStatusSprite(g,mask,frame,detail,r){
   else g.drawImage(statusAtlas,cell.x,cell.y+3,48,18,-24,-67,48,18);
 }
 function drawCompactStatuses(g,mask){
-  const flags=[128,1,2,4,8,16,32,64,256].filter(bit=>mask&bit);
+  const flags=[128,1,2,4,8,32,512].filter(bit=>mask&bit);
   for(let i=0;i<flags.length;i++){
     const bit=flags[i],x=(i-(flags.length-1)/2)*5,y=-61;
-    const color=({128:COLORS.buff,1:COLORS.fire,2:COLORS.poison,4:COLORS.frost,8:COLORS.bleed,16:COLORS.heal,32:COLORS.curse,64:COLORS.buff,256:COLORS.shield})[bit];
+    const color=({128:COLORS.buff,1:COLORS.fire,2:COLORS.poison,4:COLORS.frost,8:COLORS.bleed,32:COLORS.curse,512:'#f5d98a'})[bit];
     g.fillStyle='#11190ff0';g.fillRect(x-2.5,y-4,5,9);g.strokeStyle=color;g.fillStyle=color;g.lineWidth=1.4;
     g.beginPath();
-    if(bit===128||bit===64){const d=bit===128?1:-1;g.moveTo(x-2,y-d*2);g.lineTo(x,y+d);g.lineTo(x+2,y-d*2);g.stroke();}
-    else if(bit===4||bit===16){g.moveTo(x-2,y);g.lineTo(x+2,y);g.moveTo(x,y-3);g.lineTo(x,y+3);g.stroke();}
+    if(bit===128){const d=1;g.moveTo(x-2,y-d*2);g.lineTo(x,y+d);g.lineTo(x+2,y-d*2);g.stroke();}
+    else if(bit===4){g.moveTo(x-2,y);g.lineTo(x+2,y);g.moveTo(x,y-3);g.lineTo(x,y+3);g.stroke();}
     else if(bit===1||bit===8){g.moveTo(x,y-4);g.lineTo(x-2,y+2);g.lineTo(x+2,y+2);g.closePath();g.fill();}
-    else if(bit===256){g.rect(x-2,y-3,4,6);g.stroke();}
     else{g.arc(x,y,2,0,TAU);g.fill();}
   }
 }
 function drawStatusGeometry(g,mask,frame,detail,radius) {
-  const burning=mask&1,poison=mask&2,ice=mask&4,bleed=mask&8,regen=mask&16,curse=mask&32,buff=mask&64;
+  const burning=mask&1,poison=mask&2,ice=mask&4,bleed=mask&8,curse=mask&32;
   const clock=frame/8,phase=clock*TAU;
   if(burning){
     for(let i=0;i<(detail?3:1);i++){
@@ -90,14 +83,8 @@ function drawStatusGeometry(g,mask,frame,detail,radius) {
   }
   if(ice){g.strokeStyle=COLORS.frost;g.lineWidth=1.7;for(const x of [-radius,radius]){g.beginPath();g.moveTo(x-3,0);g.lineTo(x,-13);g.lineTo(x+4,0);g.stroke();}}
   if(curse){g.strokeStyle=COLORS.curse;g.lineWidth=1.5;g.beginPath();g.arc(0,-29,15,phase,phase+Math.PI*1.2);g.stroke();}
-  if(buff||regen){
-    const color=regen?COLORS.heal:COLORS.buff;g.strokeStyle=color;g.lineWidth=1.7;
-    const y=-9-clock*16;
-    g.beginPath();g.moveTo(-4,y+3);g.lineTo(0,y-1);g.lineTo(4,y+3);g.stroke();
-    if(detail){circle(g,-radius,-13,1.4,color);circle(g,radius,-23,1.4,color);}
-  }
   if(bleed){g.fillStyle=COLORS.bleed;g.beginPath();g.moveTo(radius,-20);g.quadraticCurveTo(radius-5,-12,radius,-11);g.quadraticCurveTo(radius+5,-12,radius,-20);g.fill();}
-  if(mask&256){g.strokeStyle=COLORS.shield;g.lineWidth=1.3;g.beginPath();g.ellipse(0,-20,radius+2,24,0,0,TAU);g.stroke();}
+  if(mask&512){g.fillStyle='#f5d98a';for(let i=0;i<3;i++){const a=phase+i*TAU/3;circle(g,Math.cos(a)*11,-40+Math.sin(a)*3,1.7,'#f5d98a');}}
   if(mask&128){
     const y=-64;g.fillStyle='#151b13';g.strokeStyle='#ffe391';g.lineWidth=1.3;
     g.beginPath();g.moveTo(-6,y-4);g.lineTo(6,y-4);g.lineTo(6,y+3);g.lineTo(0,y+8);g.lineTo(-6,y+3);g.closePath();g.fill();g.stroke();

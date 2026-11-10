@@ -9,7 +9,6 @@ export function installSharedAiPlacement(R) {
     const m = BUILDING_MECHANICS[hub.type] || {};
     if (hub.inactive || target.inactive || m.exclude?.includes(target.type)) return false;
     if (hub.type === 'und_soul_anchor') return hub.id !== target.id && R.undInRange(c, hub, target, Math.min(3, hub.level || R.levelOf(c, hub.type)));
-    if (hub.type === 'und_corrupted_hatchery') return !!R.BUILDINGS[target.type]?.unit && R.undInRange(c, hub, target, 1);
     if (hub.type === 'orc_tunnel') return !!R.BUILDINGS[target.type]?.unit && ((hub.level || R.levelOf(c, hub.type)) >= 4 || R.inBuildingRange(hub, target, hub.level || R.levelOf(c, hub.type)));
     if (hub.type === 'orc_raider') return !!R.BUILDINGS[target.type]?.unit && R.aiBuildingsTouch(c, hub, target);
     return affects(c, hub, target);

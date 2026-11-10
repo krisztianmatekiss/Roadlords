@@ -1,4 +1,13 @@
-# Roadlords · V4.65.0
+# Roadlords · V4.66.0
+
+## V4.66.0 – Letisztult állapotok és egységbalance
+
+- Hat negatív állapot; egységes Átok: +25% kapott és −25% kiosztott sebzés. A képességek ideiglenes bónuszai megmaradnak, külön pozitív állapotjelzők nélkül.
+- Kettős átok két célpontot támad; Felerősített átkok kétszeres büntetést ad. A Sötét Őrtorony célpontonként 1 sebzés/mp-ről indul, másodpercenként +1-gyel erősödik; L1–L4: 1–4 célpont.
+- Kék pajzscsík a piros HP fölött. Trollregeneráció Max HP alapján; Trolltenyészet 2 hely; Goblin íjászok és az elfogadott egységértékek frissítve.
+- Romlott keltető és a megszüntetett állapotokra épülő lapok kikerültek. A multiplayer szabályverzió 17.
+
+Pontos értékek és működés: [patchjegyzet](docs/status-refinement-4.66.md).
 
 ## V4.65.0 – Közös beruházási terv és taktikai épülethasználat
 

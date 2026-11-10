@@ -17,16 +17,16 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    const goblins=[];for(let i=0;i<120;i++)goblins.push(unit(R.P,'orc_goblin',4500,(i%6-2.5)*12));R.roadReindex();
    for(const u of goblins){const v=R.preferredTarget(u,foes);if(v)R.attackUnit(u,v);}
    const distribution=foes.map(v=>Q.pending.filter(p=>p.t===v).length);
-   check('120 Goblins distribute their first volley beyond six approaching Knights',distribution.filter(n=>n>0).length>6&&Math.max(...distribution)<=8,distribution);
+   check('120 Goblins distribute their first volley beyond six approaching Knights',distribution.filter(n=>n>0).length>6&&Math.max(...distribution)<=Math.ceil(25/goblins[0].damage),distribution);
    check('Selection does not consume opening hits, create marks or damage targets',goblins.every(u=>!u.attackCount)&&foes.every(v=>v.hp===25&&!v.rangedMarkTime));
    const pending=Q.pending[0],before=pending.t.roadIncomingDamage;Q.clock=pending.a.launch-.01;R.killUnit(pending.u,false);R.roadImpacts();
    check('A cancelled windup releases its target damage reservation',pending.t.roadIncomingDamage<before&&pending.reserved===0);
    reset();for(let i=0;i<6;i++){const v=unit(R.E,'knight',4650,(i-2.5)*12);v.hp=v.maxHp=25;v.shield=v.tempShield=0;v.stunTime=100;}
    for(let i=0;i<120;i++)unit(R.P,'orc_goblin',4500,(i%6-2.5)*12);R.updateBattle(1/30);
-   check('With only six targets, excess shooters hold fire without consuming their cooldown',Q.pending.length<=48&&Q.pending.length>0&&R.state.units.some(u=>u.side==='player'&&u.roadHoldFire&&u.cooldown===0),Q.pending.length);
+   check('With only six targets, excess shooters hold fire without consuming their cooldown',Q.pending.length<=6*Math.ceil(25/3)&&Q.pending.length>0&&R.state.units.some(u=>u.side==='player'&&u.roadHoldFire&&u.cooldown===0),Q.pending.length);
    reset();R.E.levels.stable=4;R.E.l4Branches.stable='armored_knights';const armored=unit(R.E,'knight',4650);armored.hp=20;armored.shield=100;
    for(let i=0;i<20;i++)unit(R.P,'orc_goblin',4500);R.roadReindex();for(const u of R.state.units.filter(u=>u.side==='player'))R.attackUnit(u,armored);
-   check('Reservations include shields and physical armour rather than treating them as missing HP',armored.roadIncomingDamage===35&&!R.roadTargetCovered(R.state.units.at(-1),armored),armored.roadIncomingDamage);
+   check('Reservations include shields and physical armour rather than treating them as missing HP',armored.roadIncomingDamage===30&&!R.roadTargetCovered(R.state.units.at(-1),armored),armored.roadIncomingDamage);
    for(const [race,key]of [['human','archer'],['human','mage'],['orc','orc_goblin'],['orc','orc_warg'],['undead','und_skeleton_archer']]){
     reset(race);const u=unit(R.P,key,4500),v=unit(R.E,'swordsman',4650);v.hp=v.maxHp=10000;v.shield=v.tempShield=0;R.roadReindex();R.attackUnit(u,v);const a=u.roadAttack;
     Q.clock=a.launch+.001;R.killUnit(u,false);R.state.units=R.state.units.filter(u=>u.alive);R.roadImpacts();const flying=[...R.roadFlyingShots()].some(p=>p.u===u&&p.a===a);

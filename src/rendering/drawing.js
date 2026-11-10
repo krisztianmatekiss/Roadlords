@@ -279,7 +279,7 @@ export function register(runtime) {
     }
     runtime.ctx.fillStyle = '#090c0a';
     runtime.ctx.fillRect(-barW / 2, barY, barW, 5);
-    runtime.ctx.fillStyle = runtime.unitTeamFill(u);
+    runtime.ctx.fillStyle = '#e65050';
     runtime.ctx.fillRect(-barW / 2, barY, barW * runtime.clamp(u.hp / u.maxHp, 0, 1), 5);
     runtime.ctx.restore();
   };

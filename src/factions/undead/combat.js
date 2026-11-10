@@ -1,3 +1,4 @@
+import { installDarkTowers } from './dark-towers.js';
 import { territoryPower } from '../../data/faction-redesign.js';
 import { UNDEAD_UNITS as U, UNDEAD_RULES } from '../../data/undead.js';
 import { isUndead } from './foundation.js';
@@ -21,7 +22,6 @@ export function initializeUndeadCombat(R) {
     'orcPoisonClock',
     'orcBleed',
     'orcBleedClock',
-    'rangedMarkTime',
     'orcCurses',
     'orcCurseSources',
     'undPoisonSource',
@@ -57,6 +57,7 @@ export function initializeUndeadCombat(R) {
       context = prev;
     }
   };
+  installDarkTowers(R, withSource);
   const near = (u, side, radius) => {
     const found = [];
     R.roadVisit(u, radius, (v) => {
@@ -182,7 +183,7 @@ export function initializeUndeadCombat(R) {
     const direct=R.redesignAttackContext;
     const melee=ctx?.attack ? hostile&&!ctx.ranged&&!ctx.secondary : direct?.melee&&direct.source.side!==target.side;
     if(target.key==='spearman'&&melee)amount*=1-Math.min(.75,.05*R.countNormal(own(target),'spear_range'));
-    if(hostile&&!ctx.guarded)amount *= R.undDamageMultiplier?.(source,ctx)||1;
+    if(hostile&&!ctx.guarded){amount *= R.undDamageMultiplier?.(source,ctx)||1;amount *= 1-.25*R.orcCursePower(source,'curse');}
     if (
       ctx?.attack &&
       ctx.ranged &&
@@ -548,27 +549,7 @@ export function initializeUndeadCombat(R) {
         }
       }
     }
-    for (const c of [R.P, R.E])
-      if (isUndead(c)) {
-        const side = R.sideForCity(c),
-          advance = (u) => (side === 'player' ? u.lane : R.PATH_LENGTH - u.lane);
-        c.undeadState.towerClock = (c.undeadState.towerClock || 0) + dt;
-        const towerTicks = Math.floor(c.undeadState.towerClock);
-        c.undeadState.towerClock -= towerTicks;
-        const towers = R.buildingOf(c, 'und_dark_tower').filter((t) => !t.inactive);
-        if (!towerTicks || !towers.length) continue;
-        const targets = R.state.units.filter(u => u.alive && u.side !== side && R.isOwnHalf({side, lane:u.lane, offset:u.offset}));
-        targets.sort((a,b)=>advance(a)-advance(b)||a.id-b.id);
-        for (const tower of towers) {
-          let hit = 0;
-          for (const target of targets) {
-            if (!target.alive) continue;
-            withSource({source:null,attack:true,ranged:true},()=>R.damageUnit(target,
-              target.maxHp * at(tower.level,[.01,.015,.02,.03]) * towerTicks * territoryPower(c),'magic'));
-            if (++hit >= tower.level) break;
-          }
-        }
-      }
+    R.undUpdateDarkTowers(dt);
     if (dirty) {
       R.state.units = R.state.units.filter((u) => u.alive);
       R.roadReindex();

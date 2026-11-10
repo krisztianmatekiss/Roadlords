@@ -45,7 +45,7 @@ export function initializeCombatCurseDamage(runtime) {
   const inherit = runtime.LEGENDARY.find(x => x.id === 'orc_inherit');
   if (inherit) inherit.description = 'Halálkor a közeli szövetséges megörökli a pozitív állapotokat, a megmaradt pajzsot és támadásbónuszokat. Az időtartamok és töltetek nem indulnak újra.';
   const spread = runtime.LEGENDARY.find(x => x.id === 'orc_curse_spread');
-  if (spread) spread.description = 'Elátkozott ellenség halálakor negatív állapotai a legközelebbi közeli ellenségre szállnak. Megmarad az erősségük és a hátralévő időtartamuk.';
+  if (spread) spread.description = 'Átkozott ellenség halálakor az Átok a legközelebbi ellenségre száll. Erőssége és hátralévő időtartama megmarad.';
   Object.assign(window.__ROADLORDS__, {
     attackUnit: runtime.attackUnit,
     attackStructure: runtime.attackStructure,

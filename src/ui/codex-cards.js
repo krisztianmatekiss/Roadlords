@@ -21,11 +21,9 @@ const BUILDING_RULES = {
   guardhouse: 'Összekapcsolt Őrházakon át is eléri a városfalat vagy Gyülekezőteret.',
   und_dark_tower: 'Minden további Sötét Őrtorony +25%-kal növeli az összes ilyen torony alapfenntartását.',
   und_soul_anchor: 'Önmagára nem hat. Egyedi épület: egyszerre egy építhető.',
-  und_corrupted_hatchery: 'Több Keltető közül csak a legerősebb hat. A Csontváz a kívánt egység helyett, annak áráért készül. Temetőkre nem hat.',
   und_rebirth_tomb: 'Egységenként egyszer működik.',
   und_bone_forge: 'Csak harci halál számít. Az idézett Csontvázak halála is számít, az idővel eltűnésük nem.',
   und_plague_chamber: 'A saját élőhalott egységek életerőt sebző támadási találatai mérgeznek, beleértve az idézett egységeket és a területi támadások külön eltalált célpontjait. Kitért vagy teljesen pajzzsal kivédett találat nem mérgez. A méreg, égés és sugár folyamatos sebzése nem támadási találat. Több Pestiskamra hatása összeadódik.',
-  und_corrupted_hatchery: 'Több Keltető közül csak a legerősebb hat. A Csontváz a kívánt egység helyett, annak áráért készül. Temetőkre nem hat.',
 };
 
 const ruleDetails = text => text ? `<details class="lexBranches"><summary>Részletek</summary><p>${effectText(text)}</p></details>` : '';

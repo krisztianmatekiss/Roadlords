@@ -107,7 +107,7 @@ export function initializeUndeadUi(R) {
             ),
           ) + '%',
       ],
-      necro_common_summon_stats: ['Idézett Csontvázak HP- és sebzésbónusza', (n) => '+' + fmt(10 * n) + '%'],
+      necro_common_summon_stats: ['Idézett egységek HP- és sebzésbónusza', (n) => '+' + fmt(10 * n) + '%'],
       vampire_common_lifesteal: ['Életlopás', (n) => fmt(30 + 5 * n) + '%'],
       lich_common_respawn: ['Újraéledés esélye', (n) => fmt(Math.min(100, 3 * n)) + '%'],
       und_death_mend:['Gyógyítás saját harci halálkor',(n)=>fmt(5*n)+'% Max HP'],

@@ -152,7 +152,7 @@ export function initializeCityAdvancedSupport(runtime) {
   }, {
     id: 'priest_heal',
     icon: '✦',
-    name: 'Áldás',
+    name: 'Erősebb gyógyítás',
     description: 'A Pap gyógyítóereje +15%.',
     eligible: s => runtime.unitAvailable(s, 'priest')
   }, {

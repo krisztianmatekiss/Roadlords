@@ -59,7 +59,7 @@ export function initializeFactionsOrcRoster(runtime) {
       battleIcon: 'S',
       cat: 'magic',
       tags: ['ranged'],
-      hp: 100,
+      hp: 170,
       damage: 8,
       cooldown: 2.5,
       speed: 38,
@@ -67,7 +67,7 @@ export function initializeFactionsOrcRoster(runtime) {
       train: ORC_TRAINING.orc_shaman[0],
       cost: runtime.C(10, 8, 12),
       damageType: 'magic',
-      description: 'Találatonként 1 véletlen átok 4 mp-re. Előnyben részesíti az átok nélküli ellenfelet. Gyengeség: −20% sebzés; Sorvadás: −20% Max HP; Kimerültség: −25% támadási sebesség; Sebezhetőség: +20% kapott sebzés; Vakság: 25% melléütés. Azonos átok nem erősödik, időtartama frissül. Sorvadás próbaszabálya: a jelenlegi HP legfeljebb az új maximumra csökken, lejáratkor nem gyógyít.'
+      description: 'Sikeres találatkor 4 mp Átok: +25% kapott és −25% kiosztott sebzés. Az időtartam frissül, a büntetés nem halmozódik.'
     },
     orc_ram: {
       name: 'Faltörő kos',
@@ -148,14 +148,8 @@ export function initializeFactionsOrcRoster(runtime) {
   }
   common('orc_spear_crit', 'Kritikus lándzsák', 'Warglovas lándzsadobása egység ellen: +10 százalékpont kritikus esély. Minden teljes 100% garantált további duplázás; a maradék újabb duplázás esélye.', 'orc_warg');
   common('orc_curse_duration', 'Tartós rontás', 'A Sámán újonnan kiosztott átkai +1 másodpercig tartanak. Halmozható.', 'orc_shaman');
-  common('orc_troll_regen', 'Trollregeneráció', 'A Trollok másodpercenként +5 HP-t gyógyulnak. Halmozható.', 'orc_troll');
-  const curseNames = {
-    weakness: 'Gyengeség',
-    atrophy: 'Sorvadás',
-    exhaustion: 'Kimerültség',
-    vulnerability: 'Sebezhetőség',
-    blindness: 'Vakság'
-  };
+  common('orc_troll_regen', 'Trollregeneráció', 'A Trollok másodpercenként +0,5% Max HP-t gyógyulnak.', 'orc_troll');
+  const curseNames = {curse: 'Átok'};
   const cursed = (u, key) => (u.orcCurses?.[key] || 0) > 0;
   const hasCurse = u => Object.values(u.orcCurses || {}).some(t => t > 0);
   function applyCurse(u, key, duration, power = 1) {
@@ -164,33 +158,17 @@ export function initializeFactionsOrcRoster(runtime) {
     runtime.spark(u.lane, curseNames[key], '#cf95ee');
     return true;
   }
-  const oldStats = runtime.statsFor;
-  runtime.statsFor = function (c, e) {
-    const s = oldStats(c, e);
-    s.hp *= 1 - .2 * runtime.orcCursePower(e, 'atrophy');
-    return s;
-  };
   const oldDamage = runtime.damageUnit;
   runtime.damageUnit = function (u, amount, type) {
-    amount *= 1 + .2 * runtime.orcCursePower(u, 'vulnerability');
+    amount *= 1 + .25 * runtime.orcCursePower(u, 'curse');
     if (u.key === 'orc_ram' && type === 'physical') amount *= .5;
     return oldDamage(u, amount, type);
-  };
-  const oldRetaliation = runtime.holyRetaliation;
-  runtime.holyRetaliation = function (c, u, healed) {
-    const power = u.heal;
-    u.heal *= 1 - .2 * runtime.orcCursePower(u, 'weakness');
-    try {
-      return oldRetaliation(c, u, healed);
-    } finally {
-      u.heal = power;
-    }
   };
   const oldStatus = runtime.updateUnitStatuses;
   runtime.updateUnitStatuses = function (u, dt) {
     runtime.auditTickCurses(u, dt);
     oldStatus(u, dt);
-    if (u.alive && u.key === 'orc_troll') runtime.healUnit(u, 5 * runtime.countNormal(runtime.cityForSide(u.side), 'orc_troll_regen') * dt);
+    if (u.alive && u.key === 'orc_troll') runtime.healUnit(u, u.maxHp * .005 * runtime.countNormal(runtime.cityForSide(u.side), 'orc_troll_regen') * dt);
   };
   const oldTarget = runtime.preferredTarget;
   runtime.preferredTarget = function (u, opps) {
@@ -202,8 +180,7 @@ export function initializeFactionsOrcRoster(runtime) {
       if (!t.alive) continue;
       const d = runtime.roadDistance(t, u);
       if (d > u.range) continue;
-      const allowed = O.curseSelection ? O.curseSelection(runtime.cityForSide(u.side)) : Object.keys(curseNames),
-        r = allowed.filter(k => cursed(t, k)).length / allowed.length;
+      const r = cursed(t, 'curse') ? 1 : 0;
       if (r < rank || r === rank && d < dist) {
         best = t;
         rank = r;
@@ -228,22 +205,15 @@ export function initializeFactionsOrcRoster(runtime) {
   const oldAttack = runtime.attackUnit;
   runtime.attackUnit = function (u, t, opts = {}) {
     if (!attackSourceCanResolve(runtime,u) || !t?.alive) return;
-    if (Math.random() < .25 * runtime.orcCursePower(u, 'blindness')) {
-      u.attackCount = (u.attackCount || 0) + 1;
-      runtime.consumeOpeningAttack(u);
-      runtime.afterFirstAttack(u);
-      runtime.spark(u.lane, 'MELLÉ', '#b8a0c6');
-      return;
-    }
-    const c = runtime.cityForSide(u.side),
-      weak = 1 - .2 * runtime.orcCursePower(u, 'weakness'),
-      scale = (opts.mult || 1) * weak;
+    const c = runtime.cityForSide(u.side), scale = opts.mult || 1;
     if (!units[u.key]) return oldAttack(u, t, {
       ...opts,
       mult: scale
     });
-    u.attackCount = (u.attackCount || 0) + 1;
-    const opening = runtime.consumeOpeningAttack(u);
+    const first = !opts.shamanVolley || opts.shamanVolley.opening == null;
+    if(first)u.attackCount = (u.attackCount || 0) + 1;
+    const opening = first ? runtime.consumeOpeningAttack(u) : opts.shamanVolley.opening;
+    if(opts.shamanVolley&&first)opts.shamanVolley.opening=opening;
     let mult = scale * opening;
     if (u.key === 'orc_warg' && u.orcSpearReady) {
       u.orcSpearReady = false;
@@ -265,24 +235,16 @@ export function initializeFactionsOrcRoster(runtime) {
     } else {
       runtime.damageUnit(t, dmg, u.damageType);
       if (u.key === 'orc_shaman' && t.alive && !t.orcLastEvaded) {
-        const keys = (O.curseSelection ? O.curseSelection(c) : Object.keys(curseNames)).map(k => [Math.random(), k]).sort((a, b) => a[0] - b[0]).map(x => x[1]),
-          count = runtime.hasBranch(c, 'orc_shaman', 'double_curse') ? 2 : 1;
-        for (const key of keys.slice(0, count)) applyCurse(t, key, 4 + runtime.countNormal(c, 'orc_curse_duration'), runtime.hasBranch(c, 'orc_shaman', 'strong_curses') ? 2 : 1);
+        applyCurse(t, 'curse', 4 + runtime.countNormal(c, 'orc_curse_duration'), runtime.hasBranch(c, 'orc_shaman', 'strong_curses') ? 2 : 1);
       }
     }
-    runtime.afterFirstAttack(u);
+    if(first)runtime.afterFirstAttack(u);
   };
   const oldStructure = runtime.attackStructure;
   runtime.attackStructure = function (u, s) {
-    if (Math.random() < .25 * runtime.orcCursePower(u, 'blindness')) {
-      runtime.consumeOpeningAttack(u);
-      runtime.afterFirstAttack(u);
-      runtime.spark(u.lane, 'MELLÉ', '#b8a0c6');
-      return;
-    }
     const dmg = u.damage,
       building = u.buildingDamage,
-      weak = 1 - .2 * runtime.orcCursePower(u, 'weakness');
+      weak = 1 - .25 * runtime.orcCursePower(u, 'curse');
     if (u.key === 'orc_warg' && u.orcSpearReady) {
       u.orcSpearReady = false;
       u.damage *= 2;

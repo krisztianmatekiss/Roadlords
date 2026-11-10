@@ -201,8 +201,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     });
     report.data = data;
     check(
-      'The active faction registers 19 buildings, 7 unit variants, 26 common and 34 legendary upgrades',
-      data.total === 19 && data.units === 7 && data.normal === 26 && data.legend === 34,
+      'The active faction registers 18 buildings, 7 unit variants, 25 common and 34 legendary upgrades',
+      data.total === 18 && data.units === 7 && data.normal === 25 && data.legend === 34,
     );
     check(
       'Faction-specific draft pools do not leak Human or Orc cards; every common has a numeric preview',
@@ -253,7 +253,6 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       R.setBuildingLevel(c, 'und_soul_anchor', 4);
       R.recomputeCity(c, true);
       const reduced = R.undEconomy(c).upkeep.get(well.id);
-      undPut('und_corrupted_hatchery', 3, 2);
       const producer = undPut('und_graveyard', 2, 2);
       const time = R.trainingTime(c, producer);
       c.resources.wood = 500;
@@ -296,7 +295,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       economy.anchorCost === 1 && economy.strongest === 1 && Math.abs(economy.reduced - 0.2) < 1e-6,
     );
     check(
-      'Graveyards ignore the Hatchery; recruits retain full HP and the training legendary boosts cadence',
+      'Graveyard recruits retain full HP and the training legendary boosts cadence',
       Math.abs(economy.time - 6.25) < 1e-6 &&
         economy.spawnRatio === 1 &&
         economy.overIncome === 7 &&
@@ -689,15 +688,15 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       const frostDodged = [g1, g2].every(
         (u) => u.hp === u.maxHp && !u.stunTime && !u.freezeFollow && !u.freezeImmunity,
       );
-      R.E.legends.add('marking_arrow');
-      const archer = undUnit('archer', 'enemy', 2450);
+      R.E.race='orc';
+      const archer = undUnit('orc_shaman', 'enemy', 2450);
       Math.random = () => 0;
       try {
         undHit(archer, g1);
       } finally {
         Math.random = random;
       }
-      const markDodged = !g1.rangedMarkTime;
+      const curseDodged = !R.orcCursePower(g1,'curse');
       return {
         elite,
         double,
@@ -712,7 +711,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         shield,
         cleared,
         frostDodged,
-        markDodged,
+        curseDodged,
       };
     });
     report.branches = branches;
@@ -729,16 +728,16 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       branches.crossed && branches.rear && branches.blocked,
     );
     check(
-      'Dark Towers hit the most advanced enemy on their own half for percentage max-HP damage',
-      branches.towerDamage.join() === '10,0',
+      'Dark Towers hit the most advanced enemy on their own half for one initial damage per second',
+      branches.towerDamage.join() === '1,0',
     );
     check(
       'Lich shield shares incoming damage and Wither ends when the beam owner dies',
       branches.slowed === 0.05 && branches.shield.join() === '10,10' && branches.cleared,
     );
     check(
-      'Ghost dodging also rejects area freezing and the pre-hit marking-arrow status',
-      branches.frostDodged && branches.markDodged,
+      'Ghost dodging also rejects area freezing and a Shaman hit curse',
+      branches.frostDodged && branches.curseDodged,
     );
     const ai = await page.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__;

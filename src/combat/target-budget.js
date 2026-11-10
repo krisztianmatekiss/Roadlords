@@ -7,10 +7,9 @@ export function incomingDamageEstimate(R, u, t, opts = {}) {
   if (u.firstHitsRemaining > 0 && !u.permanentTavern) damage *= u.firstMult || 1;
   if (u.spearVolleyReady) damage *= 3.5;
   if (u.orcSpearReady) damage *= 2;
-  if (t.rangedMarkTime > 0 && u.tags.includes('ranged')) damage *= 1.5;
   if (R.hasLeg(c, 'melee_doctrine')) damage *= u.tags.includes('melee') ? 2 : 0;
   damage *= R.longbowMult(u, t.lane);
-  if (R.orcCursePower) damage *= (1 - .2 * R.orcCursePower(u, 'weakness')) * (1 + .2 * R.orcCursePower(t, 'vulnerability'));
+  if (R.orcCursePower) damage *= (1 - .25 * R.orcCursePower(u, 'curse')) * (1 + .25 * R.orcCursePower(t, 'curse'));
   if (u.damageType === 'physical') {
     if (t.key === 'knight' && R.hasBranch(enemy, 'stable', 'armored_knights')) damage *= .5;
     if (t.key === 'orc_ram') damage *= .5;

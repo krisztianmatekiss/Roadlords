@@ -41,7 +41,7 @@ export function initializeDataUnitDefinitions(runtime) {
       cat: 'infantry',
       tags: ['ranged'],
       hp: 55,
-      damage: 8,
+      damage: 5.5,
       cooldown: 1.2,
       range: rangedRange(150),
       speed: 42,

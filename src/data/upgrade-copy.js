@@ -55,9 +55,8 @@ export const NORMAL_COPY = Object.freeze({
   "orc_troll_dmg": "Troll: +10% sebzés.",
   "orc_spear_crit": "A Warglovas lándzsája +10 százalékpont kritikus esélyt kap.",
   "orc_curse_duration": "A Sámán újonnan kiosztott átkainak időtartama 1 másodperccel nő.",
-  "orc_troll_regen": "A Troll regenerációja +5 életerő másodpercenként.",
+  "orc_troll_regen": "A Troll regenerációja +0,5% Max HP másodpercenként.",
   "orc_crit": "Minden egység +4 százalékpont kritikus esélyt kap.",
-  "orc_blessing": "Az új egységek +2,5 százalékpont eséllyel véletlen áldást kapnak 40 mp-re.",
   "orc_refund": "Építéskor +12 százalékpont esély a teljes ár visszatérítésére. Maximum: 60%.",
   "orc_loot": "Öléskor +10 százalékpont esély 2 fa, 2 kő és 2 élelem szerzésére. Maximum: 100%.",
   "orc_cargo": "A Trójai kos +4 gyalogost szállíthat."
@@ -104,7 +103,6 @@ export const LEGENDARY_COPY = Object.freeze({
   "archer_close_combat": "Az Íjász közelről is teljes sebzést okoz.",
   "knight_dismount": "Harcban elesett Lovagod helyén teljes életerejű Kardos jelenik meg.",
   "bloodlust": "Öléssel a Kardos azonnal újra támadhat, és maximális életereje 15%-ából gyógyul.",
-  "marking_arrow": "Az Íjász 4 mp-re megjelöli célpontját. A megjelölt egység +50% sebzést kap a távolsági egységektől.",
   "artillery_sighting": "Ugyanazt az épületet lőve a Katapult találatonként +50% sebzést gyűjt, legfeljebb +200%-ig.",
   "supply_hub": "A Raktárral szomszédos katonai épületek 30%-kal olcsóbban képeznek.",
   "castle_defenders": "Amíg mindhárom saját úttornyod áll, a helyőrségből elit egységek vonulnak ki. A 2 vártorony nem számít bele.",
@@ -135,9 +133,7 @@ export const LEGENDARY_COPY = Object.freeze({
   "orc_volley": "Goblin találatakor a közeli Goblinok 3% eséllyel ingyen támadják ugyanazt a célpontot.",
   "orc_hunt": "+0,5 élelem/mp. Fal mellett +50%, nyitott kapunál további +50% termelés.",
   "orc_predator": "A Warglovas a közeli távolsági ellenfelekre rohan.",
-  "orc_curse_master": "A Sámántáborban kiválaszthatod a Sámánjaid által használt átkokat.",
-  "orc_curse_spread": "Elátkozott ellenség halálakor negatív állapotai a legközelebbi, hatótávon belüli ellenségre kerülnek.",
-  "orc_dispel": "A Sámán találata eltávolít 1 pozitív állapotot a célpontról.",
+  "orc_curse_spread": "Átkozott ellenség halálakor az Átok a legközelebbi, hatótávon belüli ellenségre száll.",
   "orc_siege_shield": "A kos +100% életerőt, de −50% sebzést kap. Átveszi a közeli szövetségeseket érő sebzés felét.",
   "orc_trojan": "Legfeljebb 10 helyőrségi gyalogos száll a kosba. Toronynál vagy a kos halálakor kiszállnak. Sereghelyet foglalnak.",
   "orc_glutton": "A Troll minden öléssel +5% maximális életerőt és sebzést szerez haláláig.",
@@ -146,7 +142,6 @@ export const LEGENDARY_COPY = Object.freeze({
   "orc_crowded_huts": "A Kunyhók 1×1 méretűek lesznek, de −50% sereg- és helyőrségi férőhelyet adnak.",
   "orc_revenge": "Minden elvesztett saját torony +10% katonai képzési sebességet ad.",
   "orc_momentum": "A sebzésfejlesztések bónuszának fele támadási sebességként is jár.",
-  "orc_inherit": "Halálkor a legközelebbi, hatótávon belüli szövetséges örökli az egység pozitív állapotait, pajzsát és támadásbónuszait.",
   "orc_veteran_kills": "Minden Veteránod ölésenként +10% sebzést kap haláláig.",
   "orc_transfusion": "Az életlopás túlgyógyításának 30%-át a legközelebbi, 80 hatótávon belüli sérült szövetséges kapja.",
   "orc_siege_loot": "Lerombolt ellenséges tornyonként +1 szint egy saját épülettípusnak, legfeljebb L4-ig."
@@ -264,8 +259,8 @@ export const BRANCH_COPY = Object.freeze({
   "orc_bers/bloodbath": "50% életerő alatt a Dühöngő egy második közeli célpontot is eltalál 50% sebzéssel.",
   "orc_gob/swarm": "A Goblin nem foglal helyőrségi férőhelyet. A seregből fél helyet használ: 2 Goblin = 1 sereghely.",
   "orc_gob/agile": "A Goblin 40% eséllyel elkerüli a sebzést.",
-  "orc_shaman/double_curse": "A Sámán találata 2 különböző, véletlen átkot okoz.",
-  "orc_shaman/strong_curses": "2× erősebb átkok: −40% sebzés és életerő, −50% támadási sebesség, +40% kapott sebzés vagy 50% melléütés.",
+  "orc_shaman/double_curse": "A Sámán 2 különböző ellenséget támad és átkoz meg, teljes sebzéssel.",
+  "orc_shaman/strong_curses": "Erősebb Átok: +50% kapott és −50% kiosztott sebzés.",
   "orc_troll/breeding": "A Trollverem 2×2 méretű, több is építhető. Trollok: −50% életerő és sebzés, de −50% képzési ár.",
   "orc_troll/earthshaker": "Minden 3. csapás 2,5× nagyobb körben teljes sebzést okoz, és 1 mp-re elkábít."
 });

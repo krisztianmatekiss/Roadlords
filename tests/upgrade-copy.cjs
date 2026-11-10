@@ -37,14 +37,14 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         undeadCopy: Object.values(__ROADLORDS_UNDEAD__.buildings).every(d => d.levels.length === 4 && d.levels.every(x => x.length > 5 && x.length <= 150)) && [...R.NORMAL, ...R.LEGENDARY].filter(o => o.race === 'undead').every(o => o.description.length > 10 && o.description.length <= 240 && !/spawner|stack|pool|Shield|Halmozható\./i.test(o.description)),
         sword: preview('swordsman_dmg'), priest: preview('priest_dmg'), speed: preview('sword_as'), orc: preview('orc_warrior_dmg'),
         bleed: [preview('orc_bleed'), preview('orc_bleed', 1)], leech: [preview('orc_leech'), preview('orc_leech', 1)],
-        discount: preview('building_discount', 4), frugal: preview('frugal_training', 1), crit: preview('orc_crit', 25), blessing: preview('orc_blessing', 39),
+        discount: preview('building_discount', 4), frugal: preview('frugal_training', 1), crit: preview('orc_crit', 25),
         repeats: ['sword_execute', 'magic_order', 'tavern_chain', 'strategic_superiority', 'glass_cannon'].map(id => preview(id, 0, 'legendary')),
         specialization: R.upgradeCopyPreview({ ...city, normal: { swordsman_dmg: 1 }, legends: new Set(['specialization']) }, { id: 'swordsman_dmg', kind: 'normal' }),
         noFood: R.LEGENDARY.find(x => x.id === 'no_food').description,
         factory: R.LEGENDARY.find(x => x.id === 'factory_network').description
       };
     }); report.audit = audit;
-    check('All 63 common and 83 legendary descriptions have final, jargon-free copy', audit.coverage.join() === '63,83,146' && audit.text);
+    check('All 62 common and 79 legendary descriptions have final, jargon-free copy', audit.coverage.join() === '62,79,141' && audit.text);
     check('All faction building roles, branches and Undead levels use concise text without workbook dumps or internal jargon', audit.conciseBuildings && audit.conciseBranches && audit.undeadCopy);
     check('All common cards provide a numeric preview without changing cities, units, towers or RNG', audit.pure && audit.rows);
     check('Human damage and priest healing previews use actual unit stats', audit.sword.rows.some(r => r.before === '12' && r.after === '13,2') && audit.priest.rows.some(r => r.before === '30' && r.after === '33'));
@@ -52,7 +52,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     check('Orc unit preview uses the orc stat chain', audit.orc.rows.some(r => r.before === '20' && r.after === '22'));
     check('Bleed and lifesteal correctly distinguish first and subsequent pickups', audit.bleed[0].rows[0].after === '2' && audit.bleed[1].rows[0].after === '3' && audit.leech[0].rows[0].after === '5%' && audit.leech[1].rows[0].after === '7%');
     check('Building discount caps at 50%; repeated training discounts multiply', audit.discount.rows[0].after === '50%' && audit.discount.stacking.includes('5×') && audit.frugal.rows[0].after === '90,25%');
-    check('Critical chance above 100% remains visible; blessing shows its 100% cap', audit.crit.rows[0].after === '104%' && audit.blessing.rows[0].after === '100%' && audit.blessing.stacking.includes('40×'));
+    check('Critical chance above 100% remains visible', audit.crit.rows[0].after === '104%');
     check('Legendary cards distinguish one-time effects, repeatable relics and 5/4-stack limits', audit.repeats[0].stacking.includes('5×') && audit.repeats[1].stacking.includes('4×') && audit.repeats[2].stacking.includes('Korlátlanul') && audit.repeats[3].stacking.includes('Korlátlanul') && audit.repeats[4].stacking.includes('Egyszer'));
     check('Specialization preview explains the extra chance without rolling it', audit.specialization.specialization.includes('50%') && audit.specialization.rows[0].after === '14,4');
     check('Conscription and factory-chain descriptions match implemented 25% / 15-point effects', audit.noFood.includes('25%') && audit.factory.includes('15 százalékpont'));
@@ -94,7 +94,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     check('Fantasy titles load locally with Hungarian accents, and single-unit comparisons have visible labels', await page.evaluate(() => document.fonts.check('16px "Roadlords Display"', 'ÁÉÍÓÖŐÚÜŰ')));
     await show(['sword_as']);
     check('Single-unit attack intervals retain their explicit visible metric label', await page.locator('.upgradeMetric').evaluate(e => e.textContent === 'Két támadás között' && !e.classList.contains('sr-only') && e.clientHeight > 0));
-    await show(['orc_blessing', 'orc_bleed', 'orc_leech', 'orc_crit']);
+    await show(['orc_troll_regen', 'orc_bleed', 'orc_leech', 'orc_crit']);
     check('Long descriptions remain complete and scroll to the final comparison', await page.evaluate(() => [...document.querySelectorAll('#choiceList .choiceBody')].every(b => {
       const p = b.querySelector('p'), s = getComputedStyle(p); b.scrollTop = b.scrollHeight;
       return getComputedStyle(b).overflowY === 'auto' && s.webkitLineClamp === 'none' && s.whiteSpace === 'normal' && b.querySelector('.upgradeComparison').getBoundingClientRect().bottom <= b.getBoundingClientRect().bottom + 1;
@@ -102,7 +102,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     await show(['sword_execute', 'magic_order', 'campaign_feast', 'strategic_superiority'], 'legendary');
     await page.screenshot({ path: 'artifacts/upgrade-copy-legends.png' });
     await page.setViewportSize({ width: 800, height: 900 });
-    await show(['orc_blessing', 'orc_bleed', 'orc_leech', 'orc_crit']);
+    await show(['orc_troll_regen', 'orc_bleed', 'orc_leech', 'orc_crit']);
     check('At 800px all text remains reachable without horizontal scrolling inside cards', await page.evaluate(() => [...document.querySelectorAll('#choiceList .choiceBody')].every(b => b.clientHeight >= 45 && b.scrollWidth <= b.clientWidth + 1 && getComputedStyle(b).overflowY === 'auto')));
     await page.screenshot({ path: 'artifacts/upgrade-copy-800.png' });
     await page.setViewportSize({ width: 1440, height: 960 });

@@ -61,8 +61,8 @@ export const UNDEAD_BUILDING_COPY = {
     ],
   },
   und_dark_tower: {
-    description: 'A saját térfeleden legelőrébb járó ellenséget sebzi. Minden további torony 25%-kal növeli az összes Sötét Őrtorony alapfenntartását.',
-    levels: [1, 1.5, 2, 3].map((n) => `A saját térfeled első ellenségét sebzi: ${fmt(n)}% Max HP/mp.`),
+    description: 'Saját térfeleden erősödő sugarakkal sebez. Minden további torony 25%-kal növeli az összes Sötét Őrtorony alapfenntartását.',
+    levels: [1, 2, 3, 4].map(n => `${n} célpont. Sugaranként 1 sebzés/mp; másodpercenként +1 sebzés/mp. Célváltáskor újraindul.`),
   },
   und_soul_harvester: {
     description: 'Minden harcban elesett ellenség után Lelket ad, bárhol a csatatéren.',
@@ -111,7 +111,7 @@ export const UNDEAD_UPGRADE_COPY = {
   skeleton_common_ranged_res: 'Csontváz: +5 százalékpont távolsági ellenállás. Maximum: 90%.',
   zombie_common_poison: 'Zombi: halálakor +1 méregpontot okoz.',
   ghost_common_dodge: 'Szellem: +5 százalékpont kitérési esély.',
-  necro_common_summon_stats: 'A Nekromanták idézett Csontvázai +10% életerőt és sebzést kapnak.',
+  necro_common_summon_stats: 'A Nekromanták idézett egységei +10% életerőt és sebzést kapnak.',
   vampire_common_lifesteal: 'Vámpír: +5 százalékpont életlopás.',
   lich_common_respawn: 'Lich: halálakor +3 százalékpont eséllyel újjáéled a saját kapunál, teljes életerővel.',
   skeleton_leg_archer: 'A Temetők 50% eséllyel Csontváz Íjászt képeznek Csontváz helyett.',

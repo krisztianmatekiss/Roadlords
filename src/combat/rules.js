@@ -461,7 +461,7 @@ export function register(runtime) {
   };
   runtime.holyRetaliation = function holyRetaliation(c, u, healed) {
     if (!runtime.hasLeg(c, 'holy_retribution')) return;
-    for (const e of runtime.state.units.filter(v => v.alive && v.side !== u.side && runtime.roadDistance(v, healed) <= 65)) runtime.damageUnit(e, u.heal, 'magic');
+    for (const e of runtime.state.units.filter(v => v.alive && v.side !== u.side && runtime.roadDistance(v, healed) <= 65)) runtime.damageUnit(e, u.heal * (1 - .25 * runtime.orcCursePower(u,'curse')), 'magic');
     runtime.addImpactFx(healed.lane, healed.offset, 'holyburst');
   };
   runtime.checkSpearBrace = function checkSpearBrace(u, opps) {
@@ -971,8 +971,6 @@ export function register(runtime) {
       if (u.phalanx && runtime.hasLeg(c, 'phalanx')) counter *= 2;
       dmg *= counter;
     }
-    if (t.rangedMarkTime > 0 && u.tags.includes('ranged')) dmg *= 1.5;
-    if (u.key === 'archer' && runtime.hasLeg(c, 'marking_arrow')) t.rangedMarkTime = 4;
     if (u.key === 'knight' && runtime.hasLeg(c, 'cavalry_charge')) {
       dmg *= 1 + Math.min(2, .25 * Math.floor(u.chargeDist / (100 * WORLD_UNITS_PER_METRE)));
       u.chargeDist = 0;
@@ -1054,7 +1052,6 @@ export function register(runtime) {
       u.cooldown = 0;
       u.bloodlustReady = false;
     }
-    if (u.rangedMarkTime > 0) u.rangedMarkTime = Math.max(0, u.rangedMarkTime - dt);
     if (u.burnTime > 0) {
       const d = Math.min(dt, u.burnTime);
       u.burnTime -= d;
@@ -1235,7 +1232,7 @@ export function register(runtime) {
     return (u.orcCurses?.[key] || 0) > 0 ? u.orcCursePower?.[key] || 1 : 0;
   };
   runtime.orcAttackSpeedMult13 = function orcAttackSpeedMult13(u) {
-    return 1 - .25 * runtime.orcCursePower(u, 'exhaustion');
+    return 1; // Curse changes damage only; the existing Slow clock remains separate.
   };
   runtime.unitStatusBadges = function unitStatusBadges(u) {
     if (!u) return [];
@@ -1243,27 +1240,12 @@ export function register(runtime) {
       add = (k, n = 0) => {
         if (!out.some(x => x[0] === k)) out.push([k, Math.ceil(n)]);
       };
-    for (const k of Object.keys(u.orcCurses || {})) if (u.orcCurses[k] > 0) add(k);
-    for (const k of Object.keys(u.orcPositive || {})) if (u.orcPositive[k] > 0 && k !== 'regen') add(k);
-    const potions = {
-      damage: 'power',
-      hp: 'vitality',
-      attack_speed: 'haste',
-      movement: 'stride'
-    };
-    for (const k of u.alchemyEffects || []) if (potions[k]) add(potions[k]);
+    if (runtime.orcCursePower(u,'curse')) add('curse');
     if (u.orcBleed > 0) add('bleed', u.orcBleed);
     if (u.orcPoison > 0) add('poison', u.orcPoison);
     if (u.burnTime > 0) add('burn');
-    if (u.stunTime > 0) add(u.freezeFollow > 0 ? 'freeze' : 'stun');
-    if (u.slowTime > 0) add('slow');
-    const regen = (u.orcPositive?.regen || 0) + (u.alchemyRegen || 0) + (u.orcRegenBlessingTime > 0 ? 1 : 0);
-    if (regen > 0) add('regen', regen);
-    if (u.blessingTime > 0) add('blessing');
-    if (u.attackSpeedBuffTime > 0) add('haste');
-    if (u.speedBuffTime > 0 || u.rallySpeedReady) add('stride');
-    if (u.firstHitsRemaining > 0 || u.permanentTavern) add('power');
-    if (u.shield + u.tempShield > 0) add('shield');
+    if (u.stunTime > 0) add('stun');
+    if (u.slowTime > 0 || u.undWitherSlow > 0) add('slow');
     return out;
   };
   runtime.auditCurseCopy = function auditCurseCopy(u) {
@@ -1280,7 +1262,6 @@ export function register(runtime) {
   };
   runtime.auditSetCurseSummary = function auditSetCurseSummary(u, key) {
     const sources = u.orcCurseSources?.[key] || {},
-      old = runtime.orcCursePower(u, key),
       time = Math.max(0, ...Object.values(sources)),
       power = sources[2] > 0 ? 2 : sources[1] > 0 ? 1 : 0;
     u.orcCurses ||= {};
@@ -1293,13 +1274,10 @@ export function register(runtime) {
       delete u.orcCursePower[key];
       delete u.orcCurseSources[key];
     }
-    if (key === 'atrophy' && power !== old) {
-      u.maxHp = u.maxHp / (1 - .2 * old) * (1 - .2 * power);
-      u.hp = Math.min(u.hp, u.maxHp);
-    }
+
   };
   runtime.auditApplyCurse = function auditApplyCurse(u, key, duration, power = 1) {
-    if (duration <= 0) return;
+    if (key !== 'curse' || duration <= 0) return;
     power = power >= 2 ? 2 : 1;
     u.orcCurseSources ||= {};
     if (!u.orcCurseSources[key]) u.orcCurseSources[key] = runtime.auditCurseCopy(u)[key] || {};

@@ -181,7 +181,7 @@ export function initializeUndeadFoundation(R) {
       at(lv, UNDEAD_RULES.armyCapacity) +
       R.buildingOf(c, 'und_crypt').reduce((n, b) => n + at(b.level, [20, 30, 40, 80]), 0);
     c.armyCap = Math.max(0, c.armyCapBase - (c.towerGuardSlots || 0));
-    c.garrisonCap = 30 + R.buildingOf(c, 'und_graveyard').length * R.countNormal(c, 'gen_graveyard_capacity');
+    c.garrisonCap = 30;
     c.rallyCap = 0;
     c.caps = R.C(Number.MAX_SAFE_INTEGER, 0, 0);
     c.resources.wood = souls;
@@ -197,7 +197,7 @@ export function initializeUndeadFoundation(R) {
       hp = 1 + 0.1 * R.countNormal(c, family + '_common_hp'),
       damage = 1 + 0.1 * R.countNormal(c, family + '_common_damage');
     const summon =
-      e.undSummoned && e.key === 'und_skeleton' ? 1 + 0.1 * R.countNormal(c, 'necro_common_summon_stats') : 1;
+      e.undSummoned && e.undSummonerId ? 1 + 0.1 * R.countNormal(c, 'necro_common_summon_stats') : 1;
     s.hp *= hp * summon;
     s.dmg *= damage * summon;
     s.buildingDamage *= damage * summon;

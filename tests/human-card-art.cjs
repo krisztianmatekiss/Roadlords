@@ -15,10 +15,10 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   await p.goto(process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/');await p.waitForFunction(()=>window.__ROADLORDS_RUNTIME__);
   const inventory=await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return {building:Object.entries(R.BUILDINGS).filter(([id,d])=>R.factionMatches('human',d,id)).map(([id])=>id),normal:R.NORMAL.filter(d=>!d.race||d.race==='human').map(d=>d.id),legendary:R.LEGENDARY.filter(d=>!d.race||d.race==='human').map(d=>d.id)};});
   const all=Object.entries(inventory).filter(([kind])=>kind!=='building').flatMap(([kind,ids])=>ids.map(id=>manifest.scenes[`human-${kind}:${id}`]));
-  check('All 28 common and 56 legendary cards have 84 distinct in-bounds illustrations',inventory.building.length===23&&inventory.normal.length===28&&inventory.legendary.length===56&&all.every(s=>s&&s.source.startsWith('human-cards-')&&s.rect[0]>=0&&s.rect[1]>=0&&s.rect[0]+s.rect[2]<=manifest.sources[s.source].width&&s.rect[1]+s.rect[3]<=manifest.sources[s.source].height)&&new Set(all.map(s=>s.source+':'+s.rect.join(','))).size===84);
+  check('All 28 common and 55 legendary cards have 83 distinct in-bounds illustrations',inventory.building.length===23&&inventory.normal.length===28&&inventory.legendary.length===55&&all.every(s=>s&&s.source.startsWith('human-cards-')&&s.rect[0]>=0&&s.rect[1]>=0&&s.rect[0]+s.rect[2]<=manifest.sources[s.source].width&&s.rect[1]+s.rect[3]<=manifest.sources[s.source].height)&&new Set(all.map(s=>s.source+':'+s.rect.join(','))).size===83);
   await p.locator('.menuBrand').click();await p.waitForTimeout(900);await p.locator('#rlOpenCodex').click();await p.locator('#codexRace').selectOption('human');
   const gallery=[];const samples={buildings:['keep','barracks','magetower','tavern'],common:['swordsman_dmg','spear_range','mage_aoe','knight_move'],legendary:['phalanx','mage_triple','glass_cannon','knight_dismount']};
-  for(const [tab,count,kind]of [['buildings',23,'building'],['common',28,'normal'],['legendary',56,'legendary']]) {
+  for(const [tab,count,kind]of [['buildings',23,'building'],['common',28,'normal'],['legendary',55,'legendary']]) {
    await p.locator(`#rlCodexPanel [data-tab="${tab}"]`).click();await p.waitForTimeout(100);
    const result=await p.evaluate(async({kind,samples})=>{
     const cards=[...document.querySelectorAll('#rlCodexPanel [data-codex-building],#rlCodexPanel [data-codex-upgrade],#rlCodexPanel [data-codex-unit]')];

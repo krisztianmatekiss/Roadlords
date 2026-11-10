@@ -1,4 +1,4 @@
-import { KELTETO, levelValue, territoryPower } from '../../data/faction-redesign.js';
+import { territoryPower } from '../../data/faction-redesign.js';
 import { UNDEAD_BUILDINGS as D, UNDEAD_UNITS as U, UNDEAD_RULES } from '../../data/undead.js';
 import { isUndead } from './foundation.js';
 import { UNDEAD_ECONOMY as B } from '../../data/economy-balance.js';
@@ -16,8 +16,7 @@ export function initializeUndeadEconomy(R) {
     const memo = cache.get(c);
     if (memo?.key === key) return memo.value;
     const buildings = c.buildings.filter((b) => !b.inactive && D[b.type]),
-      anchors = active(c, 'und_soul_anchor'),
-      hatcheries = active(c, 'und_corrupted_hatchery');
+      anchors = active(c, 'und_soul_anchor');
     const production = 1,
       frugal = R.hasLeg(c, 'gen_soul_frugal') ? 1 - B.frugalReduction : 1,
       abundance = 1 + B.abundancePerStack * R.countNormal(c, 'gen_soul_abundance'),
@@ -43,14 +42,7 @@ export function initializeUndeadEconomy(R) {
         (b.type === 'und_dark_tower' ? 1 + 0.25 * Math.max(0, towerCount - 1) : 1);
       upkeep.set(b.id, cost);
       if (D[b.type].unit) {
-        const hatch = Math.max(
-          0,
-          ...hatcheries.filter((h) => b.type !== 'und_graveyard' && R.undInRange(c, h, b, 1)).map((h) => levelValue(h.level, KELTETO.speed)),
-        );
-        speed.set(b.id, {
-          mult: production * (1 + (R.hasLeg(c, 'gen_military_speed') ? B.trainingBonus : 0)) * (1 + hatch),
-          skeletonChance: hatch ? levelValue(KELTETO.speed.indexOf(hatch) + 1, KELTETO.skeleton) : 0,
-        });
+        speed.set(b.id, {mult: production * (1 + (R.hasLeg(c, 'gen_military_speed') ? B.trainingBonus : 0))});
       }
     }
     const value = {
@@ -224,10 +216,8 @@ export function initializeUndeadEconomy(R) {
       R.hasBranch(c, b.type, 'elite_skeletons') &&
       c.buildings.filter((x) => x.type === 'und_graveyard' && x.id !== b.id && R.aiBuildingsTouch(c, b, x))
         .length >= 3;
-    const skeletonChance = R.undEconomy(c).speed.get(b.id)?.skeletonChance || 0;
     for (let i = 0; i < count; i++) {
-      const key = skeletonChance && Math.random() < skeletonChance ? 'und_skeleton' :
-        base === 'und_skeleton' && R.hasLeg(c, 'skeleton_leg_archer') && Math.random() < .5 ? 'und_skeleton_archer' : base;
+      const key = base === 'und_skeleton' && R.hasLeg(c, 'skeleton_leg_archer') && Math.random() < .5 ? 'und_skeleton_archer' : base;
       const extra={originBuildingId:b.id,producerMade:true,undElite:elite,undSpawnHp:1};
       R.queueProduced(c,R.makeEntry(c,key,extra),b);
       if(R.hasLeg(c,'und_twin_training')&&Math.random()<.3)R.undQueueFree(c,key,extra);

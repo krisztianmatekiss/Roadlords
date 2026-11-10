@@ -3,27 +3,13 @@ import { ORC_EXPANSION } from '../data/orc-expansion.js';
 export function initializeFactionsOrcPositiveStatuses(runtime) {
   const O = window.__ROADLORDS_ORCS__;
   const defs = {
-    veteran: ['Elit', '★', '#f3d577', '+50% életerő és sebzés. Minden faj egysége lehet veterán.'],
-    elite: ['Elit', '◆', '#f3d577', 'Tartósan megerősített egység, arany rangjelzéssel.'],
-    power: ['Erő', '⚔', '#8be6a6', '+20% sebzés. Azonos állapotokból csak a legerősebb hat.'],
-    haste: ['Fürgeség', '»', '#8be6a6', '+20% támadási sebesség.'],
-    stride: ['Lendület', '➜', '#8be6a6', '+20% mozgási sebesség.'],
-    vitality: ['Életerő', '♥', '#8be6a6', '+20% maximális életerő.'],
-    resistance: ['Ellenállás', '◆', '#8be6a6', '20%-kal kevesebb kapott sebzés.'],
-    regen: ['Regeneráció', '✚', '#8be6a6', 'Másodpercenként az értékével gyógyít, majd 1-gyel csökken. Összeadódik.'],
-    weakness: ['Gyengeség', '⚔', '#ef9696', '−20% kiosztott sebzés.'],
-    atrophy: ['Sorvadás', '♥', '#ef9696', '−20% maximális életerő.'],
-    exhaustion: ['Kimerültség', '»', '#ef9696', '−25% támadási sebesség.'],
-    vulnerability: ['Sebezhetőség', '◆', '#ef9696', '+20% kapott sebzés.'],
-    blindness: ['Vakság', '⊘', '#ef9696', '25% eséllyel elhibázza a támadást.'],
-    bleed: ['Vérzés', '♦', '#ef9696', 'Másodpercenként az értékével sebez, majd 1-gyel csökken. Összeadódik.'],
-    poison: ['Mérgezés', '☠', '#ef9696', 'Másodpercenként az értékével sebez, majd 1-gyel csökken. Nem ölhet. −30% kapott gyógyítás.'],
-    burn: ['Égés', '♨', '#ef9696', 'Az Égés teljes értékét 4 másodperc alatt sebzi. Az új Égés hozzáadódik a megmaradt sebzéshez, és újraindítja a 4 másodpercet.'],
-    freeze: ['Fagyasztás', '❄', '#9fd9ff', '1,5 másodperc bénítás, utána 3 másodpercig −50% mozgási és támadási sebesség.'],
-    stun: ['Kábítás', '✦', '#ef9696', 'Nem mozoghat, támadhat vagy varázsolhat.'],
-    slow: ['Lassítás', '↓', '#ef9696', 'Csökkentett mozgási sebesség; a mértékét a képesség határozza meg.'],
-    blessing: ['Áldás', '☀', '#8be6a6', 'Ideiglenesen javítja az egység harci értékeit.'],
-    shield: ['Pajzs', '⬡', '#8be6a6', 'A pajzs felfogja a sebzést, amíg el nem fogy.']
+    veteran: ['Elit', '★', '#f3d577', 'Tartós rang: +50% életerő és sebzés.'],
+    curse: ['Átok', '☠', '#ce9cff', '+25% kapott és −25% kiosztott sebzés. Erősített Átoknál +50% és −50%. Azonos Átkok nem halmozódnak.'],
+    bleed: ['Vérzés', '♦', '#ff6b82', 'Másodpercenként az értékével sebez, majd 1-gyel csökken. Összeadódik.'],
+    poison: ['Mérgezés', '☠', '#a4ed65', 'Másodpercenként az értékével sebez, majd 1-gyel csökken. Nem ölhet. −30% kapott gyógyítás.'],
+    burn: ['Égés', '♨', '#ff815d', 'Az Égés sebzését 4 másodperc alatt okozza. Az új Égés hozzáadódik a megmaradt sebzéshez.'],
+    stun: ['Kábítás', '✦', '#f5d98a', 'Nem mozoghat, támadhat vagy varázsolhat.'],
+    slow: ['Lassítás', '↓', '#83ddff', 'Csökkentett mozgási sebesség. Egyes képességek a támadást is lassítják.'],
   };
   const oldDraw = runtime.drawUnit;
   runtime.drawUnit = function (u) {

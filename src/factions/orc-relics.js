@@ -372,56 +372,17 @@ export function initializeFactionsOrcRelics(runtime) {
   runtime.killUnit = function (u, combat = true) {
     if (!u?.alive) return;
     const savedCurseSources = runtime.auditCurseCopy(u),
-      savedBurns = runtime.auditBurnCopy(u),
-      savedCurses = {
-        ...u.orcCurses
-      },
-      savedPower = {
-        ...u.orcCursePower
-      },
-      savedPositive = {
-        ...u.orcPositive
-      },
-      burn = [u.burnTime, u.burnDps],
-      bleed = u.orcBleed,
-      poison = u.orcPoison;
+      savedCurses = {...u.orcCurses};
     const result = oldKill(u, combat);
     if (u.alive || !combat) return result;
     const c = own(u),
       opponent = runtime.otherCity(c);
     if (orc(opponent) && Math.random() < Math.min(1, .1 * runtime.countNormal(opponent, 'orc_loot'))) gain(opponent, runtime.C(2, 2, 2));
     if (u.orcCargo?.length) unload(u);
-    if (leg(c, 'inherit')) {
+    if (leg(opponent, 'curse_spread') && savedCurses.curse > 0) {
       const v = near(u, u.side, 80)[0];
-      if (v) {
-        for (const [k, time] of Object.entries(savedPositive)) if (time > 0) positiveApply(v, k, time);
-        for (const [timer, value] of [['blessingTime', null], ['attackSpeedBuffTime', 'attackSpeedMult'], ['speedBuffTime', 'speedMult']]) if (u[timer] > 0) {
-          v[timer] = Math.max(v[timer] || 0, u[timer]);
-          if (value) v[value] = Math.max(v[value] || 1, u[value] || 1);
-        }
-        for (const k of u.alchemyEffects || []) if (potionFields[k]) {
-          v.alchemyEffects ||= [];
-          if (!v.alchemyEffects.includes(k)) v.alchemyEffects.push(k);
-          v[potionFields[k]] = k === 'regen' ? (v.alchemyRegen || 0) + (u.alchemyRegen || 0) : Math.max(v[potionFields[k]] || 1, u[potionFields[k]] || 1);
-        }
-        v.alchemyEffect = v.alchemyEffects?.[0] || v.alchemyEffect;
-        runtime.auditInheritExtras(u, v);
-        refresh(v);
-      }
-    }
-    if (leg(opponent, 'curse_spread') && Object.values(savedCurses).some(v => v > 0)) {
-      const v = near(u, u.side, 80)[0];
-      if (v) {
-        for (const [k, sources] of Object.entries(savedCurseSources)) for (const [power, time] of Object.entries(sources)) if (time > 0) O.applyCurse(v, k, time, +power);
-        v.orcBleed = (v.orcBleed || 0) + (bleed || 0);
-        v.orcPoison = (v.orcPoison || 0) + (poison || 0);
-        if (savedBurns.length) runtime.auditTransferBurn(v, savedBurns);
-        v.stunTime = Math.max(v.stunTime || 0, u.stunTime || 0);
-        v.freezeFollow = Math.max(v.freezeFollow || 0, u.freezeFollow || 0);
-        v.freezeImmunity = Math.max(v.freezeImmunity || 0, u.freezeImmunity || 0);
-        v.slowTime = Math.max(v.slowTime || 0, u.slowTime || 0);
-        v.slowMult = Math.min(v.slowMult || 1, u.slowMult || 1);
-      }
+      if (v) for (const [power,time] of Object.entries(savedCurseSources.curse || {}))
+        if(time > 0) O.applyCurse(v,'curse',time,+power);
     }
     const amount = u.key === 'orc_warrior' && leg(c, 'last_blood') ? u.damage * 2 : u.key === 'orc_troll' && leg(c, 'last_rampage') ? u.maxHp * .25 : 0;
     if (amount) reactions.push(() => {

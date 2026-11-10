@@ -1,3 +1,4 @@
+import { drawUnitVitals } from './unit-vitals.js';
 import { installUndeadArt, paintedUndead, undeadFigurePose, drawUndead, drawUndeadShot } from './undead-figures.js';
 import { installOrcSiegeArt, paintedOrcSiege, orcSiegeVariant, drawWargRider, drawOrcRam, drawWargShot } from './orc-siege-figures.js';
 import { installOrcMysticsArt, paintedOrcMystic, drawOrcMystic, drawShamanShot } from './orc-mystic-figures.js';
@@ -295,7 +296,8 @@ export function installBattleFigures(R) {
     if(u.temporary>0||u.temporaryVisual)g.globalAlpha*=.55;
     g.drawImage(image,...image.figureBounds);g.restore();
     if(!dead){
-      if((detail||hurt>.4)&&u.hp<u.maxHp*.98){const top=paintedUndead(R,u)?(['und_lich','und_necromancer'].includes(u.key)?-75:-62):paintedOrcSiege(R,u)?(u.key==='orc_warg'?-65:-45):paintedOrcMystic(R,u)?(u.key==='orc_troll'?-72:-60):paintedKnight(R,u)?-61:paintedCaster(R,u)?-59:-51;g.fillStyle='#14251a';g.fillRect(-10,top,21,3);g.fillStyle=R.unitTeamFill(u);g.fillRect(-9,top+1,19*clamp(u.hp/u.maxHp),1.8);}
+      if(u.hp<u.maxHp*.98||u.shield>0||u.tempShield>0){const top=paintedUndead(R,u)?(['und_lich','und_necromancer'].includes(u.key)?-75:-62):paintedOrcSiege(R,u)?(u.key==='orc_warg'?-65:-45):paintedOrcMystic(R,u)?(u.key==='orc_troll'?-72:-60):paintedKnight(R,u)?-61:paintedCaster(R,u)?-59:-51;drawUnitVitals(g,u,top,style.mount||style.machine||style.size>1?30:24);}
+
       drawStatusEffects(R,g,u,detail,r,p.x,p.y,scale);
       if(hurt>.1){g.strokeStyle='#f7e0a1';g.lineWidth=1;line(g,8,-23,13,-27,'#ffe5a8',1);line(g,9,-19,15,-18,'#ffe5a8',1);}
     }

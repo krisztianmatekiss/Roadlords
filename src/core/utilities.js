@@ -549,8 +549,8 @@ export function register(runtime) {
     return Math.random() < .04 * runtime.executionStacks35(c);
   };
   runtime.orcArmyWeight = function orcArmyWeight(entry, c = null) {
-    if (entry?.key === 'orc_troll') return 4;
     const owner = c || (entry?.side ? runtime.cityForSide(entry.side) : null);
+    if (entry?.key === 'orc_troll') return owner ? runtime.hasBranch(owner,'orc_troll','breeding') ? 2 : 4 : entry.orcTrollWeight || 4;
     return entry?.key === 'orc_goblin' && (owner ? runtime.hasBranch(owner, 'orc_gob', 'swarm') : entry.orcSwarm) ? .5 : 1;
   };
   runtime.orcTakeArmyRoom = function orcTakeArmyRoom(entries, room, fifo = false) {

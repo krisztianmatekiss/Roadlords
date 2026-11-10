@@ -58,6 +58,7 @@ export function register(runtime) {
   installRoadMovement(runtime);
   runtime.roadQueueAttack = function roadQueueAttack(u, t, structure, opts) {
     if (!u?.alive || !structure && !t?.alive || u.roadPending) return;
+    opts={...opts};
     const orcSpear = u.key === 'orc_warg' && !!u.orcSpearReady;
     const ranged = u.tags.includes('ranged') || !!u.spearVolleyReady || orcSpear,
       wind = Math.min(.28, Math.max(.12, u.cooldownTime * .24)),
@@ -96,6 +97,18 @@ export function register(runtime) {
       reserved
     });
     runtime.ROAD.metrics.attacks++;
+    if(!structure&&u.key==='orc_shaman'&&runtime.hasBranch(runtime.cityForSide(u.side),'orc_shaman','double_curse')){
+      const candidates=[];
+      runtime.roadVisit(u,u.range,v=>{if(v!==t&&v.side!==u.side&&runtime.roadDistance(u,v)<=u.range)candidates.push(v);},u.side==='player'?'enemy':'player');
+      candidates.sort((x,y)=>Number(runtime.roadTargetCovered(u,x))-Number(runtime.roadTargetCovered(u,y))||Number(runtime.orcCursePower(x,'curse')>0)-Number(runtime.orcCursePower(y,'curse')>0)||runtime.roadDistance(u,x)-runtime.roadDistance(u,y)||x.id-y.id);
+      const next=candidates[0];
+      if(next){
+        const volley={opening:null};opts.shamanVolley=volley;
+        const extra={...a,to:next.lane,toOffset:next.offset||0},credit=incomingDamageEstimate(runtime,u,next,opts);
+        next.roadIncomingDamage=(next.roadIncomingDamage||0)+credit;
+        runtime.ROAD.pending.push({u,t:next,a:extra,structure:false,opts:{...opts,shamanVolley:volley,shamanSecondary:true},reserved:credit});
+      }
+    }
   };
   runtime.roadImpacts = function roadImpacts() {
     let n = 0;

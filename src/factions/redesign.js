@@ -2,7 +2,7 @@ import { ORC_REDESIGN as O, levelValue as lv, REMOVED_BUILDINGS, undeadEliteChan
 import { UNDEAD_BUILDINGS as D } from '../data/undead.js';
 import { initializeHumanRedesign } from '../city/human-redesign.js';
 
-const removedCards = new Set(['hospital_veterans','hospital_doomed','orc_enemy_ancestors','tavern_chain']);
+const removedCards = new Set(['hospital_veterans','hospital_doomed','orc_enemy_ancestors','tavern_chain','orc_blessing','orc_curse_master','orc_inherit','orc_dispel','marking_arrow','gen_graveyard_capacity']);
 const pct = n => `${(Math.round(n * 1000) / 10).toLocaleString('hu-HU')}%`;
 
 // Final catalog registration; effects themselves live in the relevant simulation modules.
@@ -17,6 +17,8 @@ export function initializeFactionRedesign(R) {
     const original=R[key];
     R[key]=(...args)=>original(...args).filter(o=>!REMOVED_BUILDINGS.has(o.id)&&!removedCards.has(o.id)&&!/^hospital|^alchemy|^alchemist|^academy_/.test(o.id));
   }
+  const apply=R.applyChoice;
+  R.applyChoice=(c,o,...args)=>o&&(removedCards.has(o.id)||REMOVED_BUILDINGS.has(o.id))?false:apply(c,o,...args);
   // Deleted definitions remain available only for safe inspection of older snapshots.
   // No new placement, unlock, upgrade, codex entry or AI build can select them.
   const aiBuild=R.aiBuild;
@@ -38,12 +40,9 @@ export function initializeFactionRedesign(R) {
     {id:'dead_realm',name:'A holtak birodalma',icon:'☠',description:'Kétszeres térfélnövelés és kétszeres saját térfélhez kötött bónuszok.'},
     {id:'elite_dominion',name:'Elit légió',icon:'★',description:'A termelőid 50% eséllyel elit egységeket képeznek. Épületeid fenntartása megduplázódik.'},
   ];
-  const hatchCopy=level=>`A közeli termelők ${pct(lv(level,[.4,.6,.8,1]))}-kal gyorsabban képeznek, de ${pct(lv(level,[.2,.25,.3,.35]))} eséllyel Csontváz készül. Temetőkre nem hat.`;
-  D.und_corrupted_hatchery.description=hatchCopy(1);
-  D.und_corrupted_hatchery.levels=[1,2,3,4].map(hatchCopy);
-  D.und_dark_tower.description='A saját térfeleden járó ellenségeket sebzi. Szintenként +1 célpont.';
-  D.und_dark_tower.levels=[1,2,3,4].map((level,i)=>`${level} célpont: ${[1,1.5,2,3][i]}% Max HP/mp a saját térfeleden.`);
-  for(const key of ['und_corrupted_hatchery','und_dark_tower'])Object.assign(R.BUILDINGS[key],D[key]);
+  D.und_dark_tower.description='A saját térfeleden járó ellenségeket erősödő sugarakkal sebzi. Célváltáskor a sebzés visszaáll.';
+  D.und_dark_tower.levels=[1,2,3,4].map(level=>`${level} célpont. Sugaranként 1 sebzés/mp, másodpercenként +1 sebzés/mp. Célváltáskor újra 1-ről indul.`);
+  for(const key of ['und_dark_tower'])Object.assign(R.BUILDINGS[key],D[key]);
   R.NORMAL.push({id:'und_territory',kind:'normal',name:'Terjeszkedő sírok',icon:'↔',race:'undead',description:'Saját térfeled +12 méterrel hosszabb.',eligible:c=>c.race==='undead'});
   R.LEGENDARY.push({id:'und_elite_birth',kind:'legendary',name:'Kiválasztott holtak',icon:'★',race:'undead',description:'Egységeid +20% eséllyel elitként jelennek meg. Idézettekre és feltámasztottakra is hat.',eligible:c=>c.race==='undead'&&!R.hasLeg(c,'und_elite_birth')});
   R.PICK_IMAGES.und_elite_birth=R.PICK_IMAGES.und_first_guard||R.CARD_IMAGES.und_necro_spawner;
@@ -118,7 +117,6 @@ export function initializeFactionRedesign(R) {
     orc_totem:(c,l)=>`Minden ${lv(l,O.totem)} megölt ellenség után 1 normál választás.`,
     orc_raider:(c,l)=>`Nyitott kapunál minden kiképzés ${pct(lv(l,O.raid))} eséllyel ingyenes erősítést hív.`,
     orc_overseer:(c,l)=>l>=4?'Állítható hajszolás: −40–80% képzési idő, 80–25% induló HP.':`A szomszédos táborok ${pct(1/(1-lv(l,[.2,.3,.4]))-1)}-kal gyorsabban képeznek, de az egységek 80% HP-val indulnak.`,
-    und_corrupted_hatchery:(c,l)=>hatchCopy(l),
     und_dark_tower:(c,l)=>D.und_dark_tower.levels[l-1],
   };
   R.redesignDescriptions=descriptions;

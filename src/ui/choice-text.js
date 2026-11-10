@@ -84,7 +84,6 @@ export function initializeUiChoiceText(runtime) {
     "archer_close_combat": "Az Íjászok sebzése a célpont távolságával nő, legfeljebb +200% sebzésbónuszig.",
     "knight_dismount": "Ha egy Lovag harcban elesik, a helyén azonnal megjelenik egy teljes HP-s Kardos.",
     "bloodlust": "Ha egy Kardos megöl egy ellenséget, azonnal újra támadhat, és visszagyógyul maximális HP-jának 15%-ával.",
-    "marking_arrow": "Az Íjász találata 4 másodpercre megjelöli a célpontot. A megjelölt egység +50% sebzést kap minden távolsági egységtől.",
     "artillery_sighting": "A Katapult ugyanazt az épületet egymás után lőve találatonként +50% sebzést halmoz, legfeljebb +200%-ig.",
     "supply_hub": "A Raktárral közvetlenül szomszédos katonai termelők egységköltsége −30%.",
     "castle_defenders": "Amíg mindhárom saját úttornyod áll, a helyőrségből elit egységek vonulnak ki. A 2 vártorony nem számít bele.",

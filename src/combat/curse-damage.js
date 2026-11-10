@@ -22,7 +22,12 @@ export function initializeCombatCurseDamage(runtime) {
     }
     u.burnParts = parts;
     runtime.auditBurnSummary(u);
-    if (damage > 0) runtime.damageUnit(u, damage, 'magic');
+    if (damage > 0) {
+      const before=u.hp+(u.shield||0)+(u.tempShield||0);
+      runtime.damageUnit(u, damage, 'magic');
+      const now=runtime.ROAD?.clock ?? runtime.state.time;
+      if(u.hp+(u.shield||0)+(u.tempShield||0)<before&&now-(u.statusBurnFlashAt??-100)>=.8)u.statusBurnFlashAt=now;
+    }
     if (!u.alive) return;
     u.burnTime = 0;
     u.burnDps = 0;

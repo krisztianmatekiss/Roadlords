@@ -1,3 +1,4 @@
+import { unitBodyStatus, paintBodyStatus } from './unit-status-effects.js';
 import { drawUnitVitals } from './unit-vitals.js';
 import { installUndeadArt, paintedUndead, undeadFigurePose, drawUndead, drawUndeadShot } from './undead-figures.js';
 import { installOrcSiegeArt, paintedOrcSiege, orcSiegeVariant, drawWargRider, drawOrcRam, drawWargShot } from './orc-siege-figures.js';
@@ -237,25 +238,26 @@ function humanoid(g, style, color, p, refined = false, elite = false) {
   return {stride,body:[thrust,-bob],shield:style.shield?[-8,-19,shieldAngle]:null,weapon:[handX,handY,angle]};
 }
 function sprite(R, u, pose) {
-  const elite=unitIsElite(u);
+  const elite=unitIsElite(u),status=pose.state==='death'?0:unitBodyStatus(R,u);
   const undead=paintedUndead(R,u),skeleton=paintedSkeleton(R,u),orc=paintedOrcWarrior(R,u),knight=paintedKnight(R,u),catapult=paintedCatapult(R,u),human=paintedHumanInfantry(R,u),archer=paintedArcher(R,u),caster=paintedCaster(R,u),raider=paintedOrcRaider(R,u),mystic=paintedOrcMystic(R,u),siege=paintedOrcSiege(R,u),painted=undead||siege||mystic||raider||caster||archer||skeleton||orc||knight||catapult||human;
   const summonKey=undead&&Number.isInteger(pose.summonFrame)?':summon:'+pose.summonFrame:'';
   const variant=raider?orcRaiderVariant(R,u):siege?orcSiegeVariant(u,pose):'';
   const kind=caster?shotKind(R,u):'',healKey=caster&&Number.isInteger(pose.healFrame)?':healing:'+pose.healFrame:'';
-  const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}${undead?':painted-undead':skeleton?':painted-skeleton':orc?':painted-orc':knight?':painted-knight':catapult?':painted-catapult':human?':painted-human':archer?':painted-archer':caster?':painted-caster:'+kind:raider?':painted-raider:'+variant:mystic?':painted-mystic':siege?':painted-siege:'+variant:''}${elite?":elite":""}${healKey}${summonKey}${R.ROAD.lowDetail?':crowd':''}`;
+  const color=R.unitTeamFill(u),refined=R.ROAD.figureStyle==='refined'&&REFINED_UNITS.has(u.key),key=`figure:${u.key}:${color}:${pose.state}:${pose.frame}${refined?":refined":""}${undead?':painted-undead':skeleton?':painted-skeleton':orc?':painted-orc':knight?':painted-knight':catapult?':painted-catapult':human?':painted-human':archer?':painted-archer':caster?':painted-caster:'+kind:raider?':painted-raider:'+variant:mystic?':painted-mystic':siege?':painted-siege:'+variant:''}${elite?":elite":""}${healKey}${summonKey}${R.ROAD.lowDetail?':crowd':''}${status?':status:'+status:''}`;
   let canvas=R.ROAD.sprites.get(key);if(canvas){R.ROAD.sprites.delete(key);R.ROAD.sprites.set(key,canvas);return canvas;}
   const style=FIGURES[u.key];if(!style)return null;
   canvas=document.createElement('canvas');canvas.width=canvas.height=undead?256:mystic&&u.key==='orc_troll'?384:mystic||siege?320:knight||catapult||human||archer||caster||raider||mystic?256:refined||painted?192:128;
   if(R.ROAD.lowDetail)canvas.width=canvas.height=canvas.width/2;
   const bounds=undead?[-58,-88,128,128]:siege?(u.key==='orc_warg'?[-68,-86,148,148]:[-60,-70,136,136]):mystic?(u.key==='orc_troll'?[-112,-144,240,240]:[-82,-116,168,168]):raider?[-48,-80,112,112]:human||archer||caster?[-44,-76,112,112]:catapult?[-54,-78,112,112]:knight?[-54,-84,124,124]:orc?[-46,-70,92,92]:[-40,-66,80,80];canvas.figureBounds=bounds;
   const g=canvas.getContext('2d'),p=phase(pose),resolution=canvas.width/bounds[2];g.translate(-bounds[0]*resolution,-bounds[1]*resolution);g.scale(resolution,resolution);
-  ellipse(g,1,2,style.mount||style.machine?18:style.size>1?15:10,3.5,'#18251e66');
   if(p.death&&!painted){g.translate(p.death*4,-(1-p.death)*23);g.scale(1,1-p.death*.55);g.rotate(p.death*1.48);g.translate(0,23);}
   g.save();g.scale(style.size||1,style.size||1);
   if(siege)canvas.figureRig=u.key==='orc_warg'?drawWargRider(g,R,color,p,elite,pose,variant):drawOrcRam(g,R,color,p,elite,pose);
   else if(catapult)canvas.figureRig=drawCatapult(g,R,color,p,elite,pose);
   else if(style.machine){machine(g,style,color,p);if(elite){line(g,-16,-18,16,-18,'#ebc66f',2.5);poly(g,[[-4,-26],[4,-26],[4,-21],[0,-18],[-4,-21]],'#d8ad50');}}
   else canvas.figureRig=undead?drawUndead(g,R,color,p,elite,pose,u.key):mystic?drawOrcMystic(g,R,color,p,elite,pose,u.key):raider?drawOrcRaider(g,R,color,p,elite,pose,u.key,variant):caster?drawHumanCaster(g,R,color,p,elite,pose,u.key,kind):archer?drawArcher(g,R,color,p,elite,pose):human?drawHumanInfantry(g,R,color,p,elite,pose.state==='walk',u.key):skeleton?drawSkeleton(g,R,color,p,elite,pose.state==='walk'):orc?drawOrcWarrior(g,R,color,p,elite,pose.state==='walk'):knight?drawKnight(g,R,color,p,elite,pose.state==='walk'):humanoid(g,style,color,p,refined,elite);g.restore();
+  if(status)paintBodyStatus(canvas,status,resolution);
+  g.save();g.globalCompositeOperation='destination-over';ellipse(g,1,2,style.mount||style.machine?18:style.size>1?15:10,3.5,'#18251e66');g.restore();
   if(!R.ROAD.sprites.size)R.ROAD.spritePixels=0;
   const pixels=canvas.width*canvas.height;
   while(R.ROAD.sprites.size&&(R.ROAD.spritePixels+pixels>16*1024*1024||R.ROAD.sprites.size>=768)){
@@ -296,9 +298,11 @@ export function installBattleFigures(R) {
     if(u.temporary>0||u.temporaryVisual)g.globalAlpha*=.55;
     g.drawImage(image,...image.figureBounds);g.restore();
     if(!dead){
-      if(u.hp<u.maxHp*.98||u.shield>0||u.tempShield>0){const top=paintedUndead(R,u)?(['und_lich','und_necromancer'].includes(u.key)?-75:-62):paintedOrcSiege(R,u)?(u.key==='orc_warg'?-65:-45):paintedOrcMystic(R,u)?(u.key==='orc_troll'?-72:-60):paintedKnight(R,u)?-61:paintedCaster(R,u)?-59:-51;drawUnitVitals(g,u,top,style.mount||style.machine||style.size>1?30:24);}
+      const top=paintedUndead(R,u)?(['und_lich','und_necromancer'].includes(u.key)?-75:-62):paintedOrcSiege(R,u)?(u.key==='orc_warg'?-65:-45):paintedOrcMystic(R,u)?(u.key==='orc_troll'?-72:-60):paintedKnight(R,u)?-61:paintedCaster(R,u)?-59:-51;
+      const poisonDamage=R.unitPoisonDamage(u);
+      if(u.hp<u.maxHp*.98||u.shield>0||u.tempShield>0||poisonDamage>0)drawUnitVitals(g,u,top,style.mount||style.machine||style.size>1?30:24,poisonDamage);
 
-      drawStatusEffects(R,g,u,detail,r,p.x,p.y,scale);
+      drawStatusEffects(R,g,u,detail,r,p.x,p.y,scale,top);
       if(hurt>.1){g.strokeStyle='#f7e0a1';g.lineWidth=1;line(g,8,-23,13,-27,'#ffe5a8',1);line(g,9,-19,15,-18,'#ffe5a8',1);}
     }
     g.restore();

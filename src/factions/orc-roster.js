@@ -5,6 +5,7 @@ import { ORC_TRAINING, trainingPrice } from '../data/unit-balance.js';
 import { MOVEMENT_BALANCE } from '../data/movement-balance.js';
 import { attackSourceCanResolve } from '../combat/target-budget.js';
 import { packBattleAttack } from '../multiplayer/attack-codec.js';
+import { forecastPoisonDamage } from '../data/poison.js';
 export function initializeFactionsOrcRoster(runtime) {
   const O = window.__ROADLORDS_ORCS__,
     isOrc = O.isOrc;
@@ -288,7 +289,7 @@ export function initializeFactionsOrcRoster(runtime) {
   const oldSend = runtime.mpSend;
   runtime.mpSend = function (data) {
     if (data?.type === 'snapshot' && Array.isArray(data.units) && data.units.length && Array.isArray(data.units[0])) {
-      const byId = new Map(runtime.state.units.map(u => [u.id, u]));
+      const byId = new Map(runtime.state.units.map(u => [u.id, u])),poisonMultipliers=new Map();
       data = {
         ...data,
         units: data.units.map(row => {
@@ -298,9 +299,12 @@ export function initializeFactionsOrcRoster(runtime) {
             cargo: (u?.orcCargo || []).reduce((n, e) => n + runtime.orcArmyWeight(e, runtime.cityForSide(u.side)), 0),
             feasts: u?.orcFeasts || 0,
             passengers: u?.orcCargo?.length || 0,
-            statuses: runtime.unitStatusBadges(u)
+            statuses: runtime.unitStatusBadges(u),
+            poisonDamage: forecastPoisonDamage(runtime,u,poisonMultipliers),
+            statusFlash: u&&(runtime.ROAD.clock-(u.statusBurnFlashAt??-100)<.16||runtime.ROAD.clock-(u.statusBleedFlashAt??-100)<.16)
+              ? [u.statusBurnFlashAt??-100,u.statusBleedFlashAt??-100] : null
           };
-          const metadata=extra.cargo||extra.feasts||extra.passengers||extra.statuses.length||Object.values(extra.positive).some(v=>v>0)?extra:null;
+          const metadata=extra.cargo||extra.feasts||extra.passengers||extra.statuses.length||extra.statusFlash||Object.values(extra.positive).some(v=>v>0)?extra:null;
           const packed = [...row.slice(0, 13), u?.orcCurses ? Object.keys(u.orcCurses).filter(k => cursed(u, k)) : [], !!u?.orcSpearReady, u?.orcDefianceTime || 0, u?.orcCursePower || {}, metadata, packBattleAttack(u?.roadAttack,runtime.ROAD.clock), !!u?.roadMoving];
           const faction = runtime.mpFactionUnitPayload?.(u);
           if(faction)packed.push(faction);

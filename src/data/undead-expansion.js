@@ -1,5 +1,6 @@
 import { UNDEAD_TERRITORY_UPGRADES } from './undead-territory-legends.js';
 import { UNDEAD_CONVERGENCE_UPGRADES } from './undead-convergence.js';
+const EARLY_COMMONS = new Set(['und_death_mend','und_home_march','und_siege_force','und_spawn_ward']);
 export const UNDEAD_EXPANSION = [
   {id:'und_death_mend',name:'Lélekörökség',kind:'normal',description:'Saját egység harci halálakor a legközelebbi élőhalott 5% Max HP-t gyógyul. Idézettek is számítanak.'},
   {id:'und_soul_might',name:'Lélekhatalom',kind:'legendary',repeatable:true,description:'Minden 1000 tárolt Lélek után +1% sebzés az élőhalottaknak.'},
@@ -13,7 +14,7 @@ export const UNDEAD_EXPANSION = [
   {id:'und_army_leech',name:'Életszüret',kind:'legendary',description:'Minden élőhalott +20% életlopást kap.'},
   {id:'und_first_guard',name:'Túlvilági oltalom',kind:'legendary',description:'Minden élőhalott teljesen kivédi az első rá mért támadást.'},
   {id:'und_raise_enemy',name:'Lélekbitorlás',kind:'legendary',description:'A harcban megölt ellenségek 20% eséllyel a te oldaladon támadnak fel, eredeti típusukként, 50% HP-val.'},
-].map(o=>({...o,scope:'Általános',icon:'☠',race:'undead',expansion:true}));
+].map(o=>({...o,scope:'Általános',icon:'☠',race:'undead',expansion:true,earlyCommon:EARLY_COMMONS.has(o.id)}));
 UNDEAD_EXPANSION.push(...UNDEAD_TERRITORY_UPGRADES);
 UNDEAD_EXPANSION.push(...UNDEAD_CONVERGENCE_UPGRADES);
 export const UNDEAD_EXPANSION_IDS = new Set(UNDEAD_EXPANSION.map(o=>o.id));

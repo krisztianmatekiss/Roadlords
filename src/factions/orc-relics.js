@@ -681,6 +681,9 @@ export function initializeFactionsOrcRelics(runtime) {
         u.orcCargoCount = extra.passengers || 0;
         u.orcFeasts = extra.feasts || 0;
         u.syncedStatusBadges = extra.statuses || [];
+        u.syncedPoisonDamage = extra.poisonDamage || 0;
+        u.statusBurnFlashAt = extra.statusFlash?.[0] ?? -100;
+        u.statusBleedFlashAt = extra.statusFlash?.[1] ?? -100;
       }
     }
     return out;

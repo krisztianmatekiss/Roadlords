@@ -1,4 +1,11 @@
-# Roadlords · V4.67.0
+# Roadlords · V4.68.0
+
+## V4.68.0 – Egyszerű állapotjelzések és élőhalott kezdő commonok
+
+- Mérgezett egység: zöld testszínezés; a HP-csík jobb oldali zöld szakasza a jelenlegi méreg hátralévő HP-sebzését jelzi. A fogyó stackekkel és a méregszorzóval számol; a méreg továbbra is meghagy 1 HP-t. A gyorsabb aktiválódás az időzítést változtatja.
+- Vérzés: rövid piros sebzésfelvillanás. Égés: rövid narancs felvillanás. Átok: lila körvonal. Lassítás: kék lefelé mutató nyíl. Kábítás: sárga csillag. Elit: arany rangjelvény. A pajzs marad a HP fölötti kék csíkon.
+- Síri menet (+10% mozgás a saját térfélen), Lélekpáncél (8% Max HP pajzs megjelenéskor), Lélekörökség (saját harci halálkor a legközelebbi élőhalott 5% Max HP-t gyógyul) és Holtak ostroma (+10% torony- és fővárossebzés) katonai termelő nélkül is választható. Mind halmozható.
+- Új legendás nincs. A harci értékek változatlanok; a vendég a host méreg-előrejelzését és sebzésfelvillanásait kapja. Multiplayer szabályverzió: 20.
 
 ## V4.67.0 – Becsapódó toronylövések és feltételes lapértékelés
 

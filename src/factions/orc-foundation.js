@@ -249,7 +249,9 @@ export function initializeFactionsOrcFoundation(runtime) {
       while (u.orcBleedClock >= 1 && u.orcBleed > 0 && u.alive) {
         u.orcBleedClock--;
         const d = u.orcBleed--;
+        const before=u.hp+(u.shield||0)+(u.tempShield||0);
         runtime.damageUnit(u, d, 'pure');
+        if(u.hp+(u.shield||0)+(u.tempShield||0)<before)u.statusBleedFlashAt = runtime.ROAD?.clock ?? runtime.state.time;
       }
     }
     if (u.key === 'orc_berserker') {

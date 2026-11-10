@@ -71,7 +71,7 @@ export function initializeUndeadFoundation(R) {
       ...o,
       eligible: (c) =>
         isUndead(c) &&
-        (!o.expansion || o.requires==='well' || c.buildings.some(b=>R.BUILDINGS[b.type]?.unit)) &&
+        (!o.expansion || o.earlyCommon || o.requires==='well' || c.buildings.some(b=>R.BUILDINGS[b.type]?.unit)) &&
         (o.requires !== 'well' || R.hasBuilding(c,'und_well')) &&
         (o.requires !== 'poison' || available(c,'und_zombie') || R.hasBuilding(c,'und_plague_chamber')) &&
         (unit

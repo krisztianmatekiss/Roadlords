@@ -1,6 +1,6 @@
 // Coordinates are mirrored locally, so peers must agree on the road length.
 export function installWorldVersion(R) {
-  R.gameRulesVersion=19;
+  R.gameRulesVersion=20;
   const send=R.mpSend,handle=R.mpHandle;
   R.mpSend=data=>send(data?.type==='hello'?{...data,pathLength:R.PATH_LENGTH,gameRules:R.gameRulesVersion}:data);
   R.mpHandle=data=>{

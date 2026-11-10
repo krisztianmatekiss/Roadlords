@@ -1,0 +1,60 @@
+name: Republish verified Roadlords 4.66
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/pages-republish.yml]
+permissions:
+  contents: read
+  actions: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url || steps.retry.outputs.page_url }}
+    env:
+      ROADLORDS_VERIFIED_RUN: '42802627846'
+      ROADLORDS_SOURCE_SHA: 3e24fdc70db00530ce811c8119320298a52c45da
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify successful tests and identical game source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$ROADLORDS_VERIFIED_RUN" --jq '.head_sha')" = "$ROADLORDS_SOURCE_SHA"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$ROADLORDS_VERIFIED_RUN/jobs" --jq '.jobs[] | select(.name == "build") | .conclusion')" = success
+          git diff --exit-code "$ROADLORDS_SOURCE_SHA" HEAD -- . ':(exclude).github/**'
+      - uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          run-id: ${{ env.ROADLORDS_VERIFIED_RUN }}
+          github-token: ${{ github.token }}
+          path: _pages-artifact
+      - name: Register the verified Pages archive for this publication
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages
+          path: _pages-artifact/artifact.tar
+          retention-days: 1
+          if-no-files-found: error
+      - uses: actions/configure-pages@v5
+      - name: Publish verified archive
+        id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+        with:
+          timeout: 600000
+      - name: Retry publication if needed
+        id: retry
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        with:
+          timeout: 600000

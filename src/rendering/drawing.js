@@ -1,3 +1,4 @@
+import { TOWER_RANGE } from '../data/combat-balance.js';
 import { installBattleFigures } from './battle-figures.js';
 export function register(runtime) {
   runtime.pointAt = function pointAt(distance, lateral = 0) {
@@ -290,7 +291,7 @@ export function register(runtime) {
     return {
       crewStacks,
       damage: (t.baseDamage || 96) * crew,
-      range: (t.baseRange || 165) * crew,
+      range: (t.baseRange || (t.gateTower ? TOWER_RANGE.gate : TOWER_RANGE.road)) * crew,
       cooldown: (t.baseCooldown || 1) / crew,
       attacksPerSecond: crew / (t.baseCooldown || 1),
       regen: t.regen || 0

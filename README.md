@@ -1,4 +1,11 @@
-# Roadlords · V4.66.0
+# Roadlords · V4.66.1
+
+## V4.66.1 – Kétszeres toronyhatótáv
+
+- Úttornyok: 16,5 → 33 m; a két vártorony külön-külön 19 → 38 m hatótávot kapott.
+- A kijelölési sáv, az adatlap és a tényleges célzás ugyanazt az értéket használja; a meglévő hatótávbónuszok az új alapra hatnak.
+- Sebzés és lövésköz változatlan: úttorony 96 / 1 mp, vártorony 120 / 0,85 mp. Az élőhalott Sötét Őrtorony továbbra is a saját térfélen működik.
+- A multiplayer szabályverzió 18.
 
 ## V4.66.0 – Letisztult állapotok és egységbalance
 

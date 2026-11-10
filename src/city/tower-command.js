@@ -1,3 +1,4 @@
+import { TOWER_RANGE } from '../data/combat-balance.js';
 import { formatMetres } from '../world/measurements.js';
 import { assetUrl } from '../assets/urls.js';
 export function initializeCityTowerCommand(runtime) {
@@ -118,7 +119,7 @@ export function initializeCityTowerCommand(runtime) {
       crewStacks: runtime.countNormal(c, 'tower_crews') || 0,
       commandCount: towerCommandCount(c),
       damage: (t.baseDamage || 96) * statMult,
-      range: (t.baseRange || 165) * statMult,
+      range: (t.baseRange || (t.gateTower ? TOWER_RANGE.gate : TOWER_RANGE.road)) * statMult,
       cooldown: (t.baseCooldown || 1) / statMult,
       attacksPerSecond: statMult / (t.baseCooldown || 1),
       regen: (runtime.countNormal(c, TOWER_REGEN_ID) || 0) * TOWER_REGEN_PER_STACK,

@@ -2,7 +2,7 @@ import { SPEAR_VOLLEY_RANGE, rangedRange } from '../data/ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { formatMetres, formatSpeed, WORLD_UNITS_PER_METRE } from '../world/measurements.js';
 import { attackSourceCanResolve } from './target-budget.js';
-import { MAGE_SECONDARY_DAMAGE } from '../data/combat-balance.js';
+import { MAGE_SECONDARY_DAMAGE, TOWER_RANGE } from '../data/combat-balance.js';
 export function register(runtime) {
   runtime.unitImageTag = function unitImageTag(key, cls = 'unitPortrait') {
     const src = runtime.UNIT_IMAGES[key];
@@ -23,7 +23,7 @@ export function register(runtime) {
       hp: towerHp,
       maxHp: towerHp,
       baseDamage: 96,
-      baseRange: 165,
+      baseRange: TOWER_RANGE.road,
       baseCooldown: 1,
       regen: 0,
       cooldown: 0,
@@ -43,7 +43,7 @@ export function register(runtime) {
       hp: towerHp,
       maxHp: towerHp,
       baseDamage: 120,
-      baseRange: 190,
+      baseRange: TOWER_RANGE.gate,
       baseCooldown: .85,
       regen: 1,
       cooldown: 0,

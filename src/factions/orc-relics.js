@@ -628,7 +628,7 @@ export function initializeFactionsOrcRelics(runtime) {
   runtime.clearTerrain = function (c, row, col, ai = false) {
     const t = runtime.terrainAt(c, row, col);
     if (!['forest', 'quarry'].includes(t?.type)) return oldClear(c, row, col, ai);
-    const price = t.type === 'forest' ? runtime.C(20, 0, 0) : runtime.C(0, 20, 0);
+    const price = runtime.terrainClearPrice(c,t.type);
     if (!runtime.canPay(c, price)) {
       if (!ai) runtime.toast('Nincs elég nyersanyag a bontáshoz.');
       return false;

@@ -10,7 +10,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   await page.goto(URL);await page.waitForFunction(()=>!!window.__ROADLORDS_ROAD__);
   await page.locator('.menuBrand').click();await page.waitForTimeout(900);
   await page.locator('#roadTestsMenu').click();
-  check('TESZTEK contains the full AI spectator mode with faction selectors and the separate UI trial',await page.locator('.roadTestsList button').count()===2&&await page.locator('#roadUiTrialMenu').isVisible()&&await page.locator('#roadAiVsAiMenu').isVisible()&&await page.locator('#spectatorLeftRace').isVisible()&&await page.locator('#spectatorRightRace').isVisible()&&await page.locator('#roadOrcsHumansMenu,#roadUndeadOrcsMenu').count()===0);
+  check('TESZTEK contains only the full AI spectator mode with faction selectors',await page.locator('.roadTestsList button').count()===1&&await page.locator('#roadAiVsAiMenu').isVisible()&&await page.locator('#spectatorLeftRace').isVisible()&&await page.locator('#spectatorRightRace').isVisible()&&await page.locator('#roadOrcsHumansMenu,#roadUndeadOrcsMenu').count()===0);
   await page.locator('#roadTestsBack').click();await page.evaluate(()=>__ROADLORDS_RUNTIME__.roadStartTest(42,{count:50}));await page.evaluate(()=>__ROADLORDS_ROAD__.pause());
   check('Diagnostic fixture creates exactly 50/50 with all 14 roster types',await page.evaluate(()=>{const Q=__ROADLORDS_ROAD__;return Q.state.testCount===50&&Q.snapshot().counts.every(n=>n===50)&&Q.state.initial.keys.length===14;}));
   const beforeZoom=await page.evaluate(()=>({zoom:__ROADLORDS_ROAD__.state.zoom,time:__ROADLORDS__.state.time}));await page.locator('#roadZoomIn').click();

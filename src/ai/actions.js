@@ -1,15 +1,17 @@
 import { installIncomeRedevelopment } from './income-redevelopment.js';
+import { installAiLandPlanning } from './land-planning.js';
 // Paid construction, excavation, redevelopment and wave release for either city.
 // The same controller is used for the solo opponent and both spectator AIs.
 export function installAiActions(R) {
   R.aiControlsCity = c => !R.MP.enabled && !R.ROAD.test && (c === R.E || R.spectator?.active && c === R.P);
   R.aiSaveForBuild = (type,price,reason,c=R.E) => {
-    if(c._aiSaveType!==type){c._aiSaveSince=R.state.time;c._aiSaveType=type;}
+    if(c._aiSaveType!==type){c._aiSaveSince=R.state.time;c._aiSaveType=type;c._aiLandGoal=null;}
     c._aiSavePrice={...price};c._aiSaveReason=reason;
     c._aiSaveCapacityPrice={...price};
   };
-  R.aiClearBuildSavings = (c=R.E) => {c._aiSaveType=null;c._aiSavePrice=null;c._aiSaveCapacityPrice=null;c._aiRedevelopPlan=null;c._aiSaveReason=null;c._aiSaveSince=0;};
+  R.aiClearBuildSavings = (c=R.E) => {c._aiSaveType=null;c._aiLandGoal=null;c._aiSavePrice=null;c._aiSaveCapacityPrice=null;c._aiRedevelopPlan=null;c._aiSaveReason=null;c._aiSaveSince=0;};
   installIncomeRedevelopment(R);
+  installAiLandPlanning(R);
   R.aiBuild = (type,c=R.E) => {
     if(!type||!R.BUILDINGS[type]||!R.canBuildArmyCapacity(c,type)||!c.unlocked.has(type)||!R.factionMatches(c.race,R.BUILDINGS[type],type))return false;
     if(R.isUniqueBuilding(c,type)&&R.hasBuilding(c,type))return false;
@@ -17,32 +19,6 @@ export function installAiActions(R) {
     if(!cell)return R.aiMutate(()=>R.aiClearBlockingRuin(type,c));
     if(!R.canPay(c,R.placementPrice(c,type,...cell)))return false;
     return R.aiMutate(()=>!!R.placeBuilding(c,type,...cell)?.ok);
-  };
-  R.aiBlockingPlan = (c,type,{affordableOnly=true}={}) => {
-    if(!R.BUILDINGS[type]||!R.canBuildArmyCapacity(c,type)||!c.unlocked.has(type)||R.isUniqueBuilding(c,type)&&R.hasBuilding(c,type))return null;
-    const occupied=R.occupancy(c);let best=null;
-    for(const rotation of R.rotationOptions(type)){
-      const offsets=R.cityBuildingCells(c,{type,row:0,col:0,rotation});
-      for(let row=0;row<R.GRID;row++)for(let col=0;col<R.GRID;col++){
-        const ruins=[];let valid=true;
-        for(const [dr,dc]of offsets){const r=row+dr,k=col+dc,t=R.terrainAt(c,r,k);
-          if(r<0||k<0||r>=R.GRID||k>=R.GRID||occupied.has(R.idx(r,k))){valid=false;break;}
-          if(t?.type==='ruin'||t?.type==='ancient')ruins.push([r,k]);
-          else if(R.terrainBlocks(c,r,k)){valid=false;break;}
-        }
-        if(!valid||!ruins.length||affordableOnly&&!ruins.some(([r,k])=>R.canPay(c,R.terrainClearPrice(c,R.terrainAt(c,r,k).type))))continue;
-        if(type==='guardhouse'&&!R.v491GuardhousePlacementValid(c,row,col,rotation))continue;
-        const hub={type,row,col,rotation,level:R.levelOf(c,type)},m=R.aiBuildingMechanics(type);
-        if(R.aiRequiresLocalTargets(c,hub)){
-          const targets=(m.localSupport?c.buildings:R.activeSpawners(c)).filter(p=>R.aiSupportAffects(c,hub,p));
-          if(!R.aiMarginalSupportTargets(c,hub,targets).length)continue;
-        }
-        const cost=R.C();for(const [r,k]of ruins){const price=R.terrainClearPrice(c,R.terrainAt(c,r,k).type);for(const resource of R.RES)cost[resource]+=price[resource]||0;}
-        const score=R.RES.reduce((n,r)=>n+cost[r],0)+ruins.length;
-        if(!best||score<best.score)best={cell:[row,col,rotation],ruins,cost,score};
-      }
-    }
-    return best;
   };
   R.v4918BlockingRuinPlan = (type,options) => R.aiBlockingPlan(R.E,type,options);
   R.aiClearBlockingRuin = (type,c=R.E) => {
@@ -87,14 +63,15 @@ export function installAiActions(R) {
     if(R.MP.enabled||R.state.pregame||R.state.ended||R.aiUnderAttack(c))return false;
     const price=R.terrainClearPrice(c,'ancient'),ruins=R.terrainCellsOfType(c,'ancient');
     if(!ruins.length)return false;
-    if(R.activeSpawners(c).length<2&&R.occupancy(c).size<R.GRID*R.GRID*.65)return false;
+    const developed=R.occupancy(c).size,landPressure=developed+c.terrain.filter(t=>R.TERRAIN[t?.type]?.blocked).length>=R.GRID*R.GRID*.8;
+    if(R.activeSpawners(c).length<2&&developed<R.GRID*R.GRID*.65&&!landPressure)return false;
     const flow=R.resourceFlowRates(c);
     const planned=goal?R.buildPrice(c,goal):R.C();
     const growth=c._aiGrowthPlan&&R.state.time-c._aiGrowthPlan.time<5?c._aiGrowthPlan:null;
     const reserve=Object.fromEntries(R.RES.map(r=>[r,Math.max(20,Math.max(0,flow.use[r]-flow.gain[r])*30,
       planned[r]||0,growth?.growing?growth.reserve[r]||0:0)]));
     if(R.RES.some(r=>price[r]>c.caps[r]&&c.resources[r]<price[r])){
-      const useful=R.occupancy(c).size>=R.GRID*R.GRID*.65&&!growth?.growing;
+      const useful=(developed>=R.GRID*R.GRID*.65||landPressure)&&!growth?.growing;
       const fundable=R.aiResourceKeys(c).every(r=>price[r]<=0||(flow.gain[r]>flow.use[r]&&
         (price[r]+reserve[r]-c.resources[r])/Math.max(.01,flow.gain[r]-flow.use[r])<=90));
       if(useful&&fundable)c._aiAncientPrice={...price};

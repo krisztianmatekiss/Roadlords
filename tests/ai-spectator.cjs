@@ -7,7 +7,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   await p.goto(process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/');await p.waitForFunction(()=>window.__ROADLORDS_RUNTIME__?.startSpectator);
   await p.locator('.menuBrand').click();await p.waitForTimeout(900);await p.locator('#roadTestsMenu').click();
   check('Both spectator faction selectors offer all three factions independently',await p.evaluate(()=>['spectatorLeftRace','spectatorRightRace'].every(id=>[...document.getElementById(id).options].map(o=>o.value).join(',')==='human,orc,undead')));
-  check('AI vs AI remains the live battle test beside the separate UI trial',await p.locator('.roadTestsList button').count()===2&&await p.locator('#roadAiVsAiMenu').isVisible());
+  check('Only full AI vs AI remains in the Tests menu',await p.locator('.roadTestsList button').count()===1&&await p.locator('#roadAiVsAiMenu').isVisible());
   await p.selectOption('#spectatorLeftRace','undead');await p.selectOption('#spectatorRightRace','orc');
   await p.route('**/art/battle/orc-warrior-heroes-parts.png',r=>r.abort(),{times:1});
   await p.evaluate(async()=>{await document.getElementById('roadAiVsAiMenu').onclick();});
@@ -29,7 +29,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   await p.locator('#enemyDeckBtn').click();
   check('The right AI deck is independently inspectable',await p.locator('#relicOverlay').getAttribute('data-deck-side')==='enemy');await p.keyboard.press('Escape');
   await p.evaluate(()=>{
-   const R=__ROADLORDS_RUNTIME__;document.body.classList.add('roadlords-menu-open');R.updateHud();document.body.classList.remove('roadlords-menu-open');
+   const R=__ROADLORDS_RUNTIME__;R.state.running=false;document.body.classList.add('roadlords-menu-open');R.updateHud();document.body.classList.remove('roadlords-menu-open');
    if(!R.ROAD.enemyPinned)R.$('#enemyCityPin').click();R.roadWar.scrollLeft=0;R.roadPositionPinnedCity();
    R.aiGrantPick(R.P,'ancient');R.aiGrantPick(R.E,'ancient');
   });

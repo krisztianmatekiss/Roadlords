@@ -1,13 +1,15 @@
 import { createBattleLine } from './battle-line.js';
+import { installBattleRosters } from './battle-rosters.js';
 
-// A reversible layout experiment around the real solo game, never a second sim.
-export function installUiTrial(R) {
-  const state=R.uiTrial={active:false,scale:'1.5',collapsed:false,launching:false};
+// Default battle layout around the same solo, spectator and multiplayer game.
+export function installBattleLayout(R) {
+  const state=R.battleLayout={active:false,scale:'1.5',collapsed:false};
+  const rosters=installBattleRosters(R,()=>state.active);
   const app=R.$('#app'),catalog=R.$('.catalog'),tabs=R.$('.commandRail .tabs'),deck=R.$('#relicBtn'),gate=R.$('#gateControls');
   const drawer=document.createElement('aside');drawer.id='uiTrialDrawer';drawer.hidden=true;
-  drawer.innerHTML='<button id="uiTrialFold" type="button" aria-expanded="true" aria-controls="uiTrialCards">ÉPÍTÉS ‹</button><div class="uiTrialCategories"></div><div id="uiTrialCards"></div><footer class="uiTrialDrawerFoot"><div class="uiTrialScale"><label>Nagyítás<select id="uiTrialScale"><option value="1">1×</option><option value="1.25">1,25×</option><option value="1.5" selected>1,5×</option><option value="fit">Teljes város</option></select></label><button id="uiTrialExit" type="button">Normál nézet</button></div><div class="uiTrialDeckHome"></div></footer>';
+  drawer.innerHTML='<button id="uiTrialFold" type="button" aria-expanded="true" aria-controls="uiTrialCards">ÉPÍTÉS ‹</button><div class="uiTrialCategories"></div><div id="uiTrialCards"></div><footer class="uiTrialDrawerFoot"><div class="uiTrialScale"><label>Nagyítás<select id="uiTrialScale"><option value="1">1×</option><option value="1.25">1,25×</option><option value="1.5" selected>1,5×</option><option value="fit">Teljes város</option></select></label><button id="uiTrialExit" type="button">Régi nézet</button></div><div class="uiTrialDeckHome"></div></footer>';
   const line=document.createElement('section');line.id='uiTrialOverview';line.hidden=true;
-  line.innerHTML='<aside class="uiTrialOwnSummary"></aside><div class="uiTrialTrack"><span class="uiTrialTag">UI PRÓBA</span><canvas id="uiTrialLine" tabindex="0" role="slider" aria-label="Csataáttekintő és pályamozgatás" aria-valuemin="0" aria-valuemax="9600"></canvas></div><aside class="uiTrialEnemySummary"></aside>';
+  line.innerHTML='<aside class="uiTrialOwnSummary"></aside><div class="uiTrialTrack"><canvas id="uiTrialLine" tabindex="0" role="slider" aria-label="Csataáttekintő és pályamozgatás" aria-valuemin="0" aria-valuemax="9600"></canvas></div><aside class="uiTrialEnemySummary"></aside>';
   app.append(drawer,line);
   const restore=[];
   function move(node,parent){const mark=document.createComment('UI trial return point');node.before(mark);restore.push(()=>{mark.replaceWith(node)});parent.append(node);}
@@ -24,17 +26,17 @@ export function installUiTrial(R) {
     move(tabs,drawer.querySelector('.uiTrialCategories'));move(catalog,drawer.querySelector('#uiTrialCards'));move(deck,drawer.querySelector('.uiTrialDeckHome'));move(gate,R.$('.topbar'));
     for(const side of ['player','enemy'])move(R.$(`.roadRosterTeam[data-side="${side}"]`),line.querySelector(side==='player'?'.uiTrialOwnSummary':'.uiTrialEnemySummary'));
     R.ROAD.zoom=1;if(R.ROAD.enemyPinned)R.$('#enemyCityPin').click();
-    R.closeBuildCardPreview?.();R.roadResize();state.line.resize();R.renderBuildList();
+    R.closeBuildCardPreview?.();R.roadResize();state.line.resize();R.renderBuildList();R.updateHud();
   };
   state.exit=()=>{
     if(!state.active)return;
-    state.active=false;R.closeBuildCardPreview?.();document.body.classList.remove('ui-trial','ui-trial-collapsed');drawer.hidden=line.hidden=true;
+    state.active=false;rosters.reset();R.closeBuildCardPreview?.();document.body.classList.remove('ui-trial','ui-trial-collapsed');drawer.hidden=line.hidden=true;
     while(restore.length)restore.pop()();
     R.roadWorld.style.height=oldHeight;R.roadWorld.style.removeProperty('--trial-world-scale');R.roadWar.title=oldWarTitle;R.ROAD.zoom=oldZoom;
     if(R.ROAD.enemyPinned!==oldPinned)R.$('#enemyCityPin').click();
     R.roadWar.scrollTop=0;R.roadResize();R.renderBuildList();R.updateHud();
   };
-  drawer.querySelector('#uiTrialExit').onclick=state.exit;
+  drawer.querySelector('#uiTrialExit').onclick=()=>state.setMode('classic');
   drawer.querySelector('#uiTrialFold').onclick=()=>{
     state.collapsed=!state.collapsed;document.body.classList.toggle('ui-trial-collapsed',state.collapsed);
     const button=drawer.querySelector('#uiTrialFold');button.textContent=state.collapsed?'›':'ÉPÍTÉS ‹';button.setAttribute('aria-expanded',String(!state.collapsed));
@@ -72,12 +74,19 @@ export function installUiTrial(R) {
     if(!state.active||!['ArrowUp','ArrowDown'].includes(e.key)||e.target.closest('input,select,textarea')||R.state.modal||document.body.classList.contains('roadlords-menu-open'))return;
     e.preventDefault();R.roadWar.scrollTop+=e.key==='ArrowUp'?-80:80;
   });
-  document.addEventListener('click',e=>{if(state.active&&!state.launching&&e.target.closest('#mpSolo,#mpOpenMulti,#mpCreateRoom,#mpJoinRoom,#roadAiVsAiMenu'))state.exit();},true);
-  const menu=document.createElement('section');menu.className='spectatorSetup uiTrialSetup';
-  menu.innerHTML='<h3>UI próba · Oldalsó kártyák és csatavonal</h3><button id="roadUiTrialMenu" class="menuButton" type="button">UI PRÓBA INDÍTÁSA</button><p>Játékos vs AI, fajválasztással. Bal oldali kártyafül, azonnali előnézet, vonalas csataáttekintő és 1,5× nagyítás. A normál nézet külön megmarad.</p>';
-  menu.querySelector('button').onclick=()=>{
-    R.$('#roadTestsBack').click();state.launching=true;
-    try{state.enter();R.$('#mpSolo').click();}finally{state.launching=false;}
+  const settings=document.querySelector('.rlSettingsPanel .rlPanelBody');
+  const field=document.createElement('section');field.className='rlSection';
+  field.innerHTML='<h3 class="rlSectionTitle">JÁTÉKNÉZET</h3><label>Elrendezés <select id="battleLayoutMode"><option value="modern">Oldalsó kártyák és csatavonal</option><option value="classic">Régi alsó építési sáv</option></select></label>';
+  settings.append(field);
+  const select=field.querySelector('select');
+  state.setMode=(mode,persist=true)=>{
+    mode=mode==='classic'?'classic':'modern';select.value=mode;
+    if(persist)try{localStorage.setItem('roadlords-battle-layout',mode);}catch{}
+    if(mode==='classic')state.exit();else state.enter();
   };
-  R.$('#roadTestsPanel .roadTestsList').append(menu);
+  select.onchange=()=>state.setMode(select.value);
+  // Explicit classic links also keep the retained legacy UI fixtures usable.
+  let mode=new URL(location.href).searchParams.get('layout');
+  if(!mode)try{mode=localStorage.getItem('roadlords-battle-layout');}catch{}
+  state.setMode(mode||'modern',false);
 }

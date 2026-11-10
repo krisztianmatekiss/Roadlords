@@ -1,15 +1,16 @@
-# Roadlords · V4.69.0
+# Roadlords · V4.70.0
 
 
-## V4.69.0 – Külön UI-próba
+## V4.70.0 – Új alapnézet és AI-területfelszabadítás
 
-A **Tesztek → UI PRÓBA INDÍTÁSA** a valódi egyjátékos módot nyitja, saját és AI-faj választásával. A normál felület továbbra is az alapértelmezett.
+Az oldalsó építési kártyák, az alsó csatavonal és a nagy felső kapugombok már az alapjátékban, multiplayerben és AI–AI nézetben is működnek. Alapból 1,5× nagyítás; a bal alsó választóban a teljes város is megjeleníthető. A **Beállítások → Játéknézet** alatt visszakapcsolható a régi alsó építési sáv. A választást a böngésző megjegyzi. A Tesztek között csak AI–AI marad. A sereg és helyőrség fix sorokban, állandó típushelyeken és görgetősáv nélkül látszik. A más népektől szerzett egységeket a + jel mutatja külön.
 
-- Bal oldali, összecsukható kártyafül, felül a kategóriákkal. A lapok a tényleges leírásmező kezdetén fedik egymást; azonnali, a pálya felé nyíló előnézetükre átvihető az egér. Kiválasztáskor az előnézet eltűnik.
-- A saját pakli bal alul marad. Az alsó csatavonal mindkét fél seregét és helyőrségét, a fővárosokat, az összes tornyot, a térfélhatárt és az egységcsoportokat mutatja. Egy csoport csak azonos oldali és típusú, legfeljebb 20 méteres szakaszon álló egységeket egyesít. A HP és a hirtelen halál jelzése élő adat.
-- Nagy kapugombok a képernyő felső közepén; a felső sávból a seregszámlálók átkerülnek az áttekintőbe. A csatavonal kattintással, húzással vagy billentyűzettel mozgatja a kamerát.
-- Alapból 1,5× város-/objektumnagyítás, változatlan 10×10 mezővel és játékszabályokkal. A magasabb pálya függőlegesen is mozgatható: fel/le nyíl, Shift+görgő vagy görgetősáv. Választható 1×, 1,25× és teljes várost mutató méretezés is.
-- A **Normál nézet** gomb ugyanabban a meccsben visszaállítja az eredeti sávokat és minitérképet. A prototípus nem kerül multiplayerbe, nem mentődik alapbeállításnak.
+- A közös AI rommal, ősi rommal, erdővel és kőlelőhellyel is tervezhet fizetett helyfelszabadítást. A többmezős épületek teljes helyét végig felszabadítja, majd befejezi az eredetileg tervezett építést.
+- A 120 másodperces beruházási előrejelzésben szerepel a bontás ára, ideje, az elvesző termelési bónusz és a szükséges raktárkapacitás. Az előrejelzés nem oszt ki ősirom-jutalmakat.
+- Az AI előnyben részesíti a haszontalan tereptárgy eltávolítását a működő erdő-/kőbónusz elvesztése helyett. Nem rontja tovább a gazdaságát egy szükséges termelési bónusz elbontásával.
+- Az ősi rom területigényét a még blokkolt mezőkkel együtt értékeli, és szükség esetén raktárat épít a feltárás finanszírozásához.
+
+A játékszabályok és a bontási árak változatlanok; multiplayer szabályverzió: 20. A régi elrendezést ellenőrző regressziók explicit `?layout=classic` nézetben futnak; külön böngészőpróba ellenőrzi az új alapnézetet egyjátékosban, AI–AI módban és multiplayer pillanatképekkel.
 
 ## V4.68.0 – Egyszerű állapotjelzések és élőhalott kezdő commonok
 

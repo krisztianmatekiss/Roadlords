@@ -54,6 +54,7 @@ const { chromium } = require('playwright'), assert = require('node:assert/strict
    const R=__ROADLORDS_RUNTIME__,c=ruinFixture('undead');for(let n=0;n<3;n++)ruinPut('und_well');
    const occupied=R.occupancy(c);for(let row=0;row<R.GRID;row++)for(let col=0;col<R.GRID;col++)if(!occupied.has(R.idx(row,col)))R.setTerrain(c,row,col,'ruin');
    c.resources.wood=5000;const wells=R.buildingOf(c,'und_well').map(b=>b.id);
+   R.aiSaveForBuild('und_graveyard',R.buildPrice(c,'und_graveyard'),'military',c);
    for(let n=0;n<6&&!R.activeSpawners(c).length;n++)ruinTick();
    return R.activeSpawners(c).length===1&&wells.every(id=>R.getBuilding(c,id));
   }));
@@ -74,6 +75,54 @@ const { chromium } = require('playwright'), assert = require('node:assert/strict
    const R=__ROADLORDS_RUNTIME__,c=ruinFixture('undead');ruinPut('und_graveyard');ruinPut('und_graveyard');R.setTerrain(c,9,9,'ancient');
    R.state.units=Array.from({length:3},(_,id)=>({id,key:'swordsman',side:'player',alive:true,lane:R.PATH_LENGTH*.9}));
    if(R.aiExcavateAncient())return false;R.state.units=[];R.MP.enabled=true;const blocked=!R.aiExcavateAncient();R.MP.enabled=false;return blocked&&!!R.terrainAt(c,9,9);
+  }));
+  for(const race of ['human','orc','undead'])for(const terrain of ['forest','quarry']){
+   check(race+': AI can pay for '+terrain+' removal and complete the intended footprint',await page.evaluate(({race,terrain})=>{
+    const R=__ROADLORDS_RUNTIME__,c=ruinFixture(race),type={human:'lumber',orc:'orc_work',undead:'und_well'}[race],occupied=R.occupancy(c);
+    for(let r=0;r<R.GRID;r++)for(let k=0;k<R.GRID;k++)if(!occupied.has(R.idx(r,k)))R.setTerrain(c,r,k,terrain);
+    const before={...c.resources},price=R.terrainClearPrice(c,terrain);let count=0;
+    while(!R.findCell(c,type)&&count<5){if(!R.aiClearBlockingRuin(type,c))return false;count++;}
+    return count>0&&R.RES.every(k=>Math.abs(before[k]-c.resources[k]-count*price[k])<1e-8)&&R.aiBuild(type,c);
+   },{race,terrain}));
+  }
+  check('Orc land planning keeps a working forest bonus and clears unused terrain instead',await page.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,c=ruinFixture('orc');
+   c.buildings.push({id:'working-camp',type:'orc_work',row:0,col:1,rotation:0,level:1,progress:0});
+   R.setTerrain(c,0,0,'forest');R.setTerrain(c,9,9,'forest');const occupied=R.occupancy(c);
+   for(let r=0;r<R.GRID;r++)for(let k=0;k<R.GRID;k++)if(!occupied.has(R.idx(r,k))&&!R.terrainAt(c,r,k))c.buildings.push({id:'fill-'+r+'-'+k,type:'orc_hunt',row:r,col:k,rotation:0,level:1,progress:0});
+   const plan=R.aiBlockingPlan(c,'orc_hunt',{affordableOnly:false});
+   return plan&&plan.ruins.length===1&&plan.ruins[0][0]===9&&plan.ruins[0][1]===9&&R.aiClearBlockingRuin('orc_hunt',c)&&!!R.terrainAt(c,0,0);
+  }));
+  check('The live Orc planner builds storage for an ancient excavation above its resource cap',await page.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,c=ruinFixture('orc');
+   for(let i=0;i<4;i++)ruinPut('orc_work');for(let i=0;i<2;i++)ruinPut('orc_war');
+   R.recomputeCity(c,true);const occupied=R.occupancy(c);
+   for(let r=0;r<R.GRID;r++)for(let k=0;k<R.GRID;k++)if(!occupied.has(R.idx(r,k)))R.setTerrain(c,r,k,'ancient');
+   // Real warehouse footprints remain available, not a mocked cap increase.
+   for(let r=8;r<10;r++)for(let k=0;k<6;k++)if(!occupied.has(R.idx(r,k)))R.setTerrain(c,r,k,null);c.resources={...c.caps};const before=R.buildingOf(c,'warehouse').length;
+   for(let i=0;i<8;i++){c.resources={...c.caps};c.aiThink=0;R.state.time=500+i*7;R.enemyBuildAI(1);}
+   return R.buildingOf(c,'warehouse').length>before&&c.caps.wood>=R.terrainClearPrice(c,'ancient').wood;
+  }));
+  check('A late-game Orc city funds an ancient reward even without another recruitment goal',await page.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,c=ruinFixture('orc');
+   for(let i=0;i<4;i++)ruinPut('orc_work');for(let i=0;i<2;i++)ruinPut('orc_war');ruinPut('warehouse');
+   R.setBuildingLevel(c,'keep',4);R.setBuildingLevel(c,'orc_work',3);const occupied=R.occupancy(c);
+   const holes=[];for(let r=R.GRID-1;r>=0;r--)for(let k=0;k<R.GRID-1;k++)if(!occupied.has(R.idx(r,k))&&!occupied.has(R.idx(r,k+1))&&!holes.length)holes.push([r,k],[r,k+1]);
+   let ancient;
+   for(let r=0;r<R.GRID;r++)for(let k=0;k<R.GRID;k++)if(!occupied.has(R.idx(r,k))&&!holes.some(([rr,kk])=>rr===r&&kk===k)){
+    if(!ancient){ancient=[r,k];R.setTerrain(c,r,k,'ancient');}
+    else c.buildings.push({id:'late-fill-'+r+'-'+k,type:'orc_hunt',row:r,col:k,rotation:0,level:1,progress:0});
+   }
+   c.unlocked=new Set(['keep','warehouse']);R.recomputeCity(c,true);const before=R.buildingOf(c,'warehouse').length;
+   for(let i=0;i<5;i++){c.resources={...c.caps};c.aiThink=0;R.state.time=900+i*7;R.enemyBuildAI(1);}
+   return R.buildingOf(c,'warehouse').length>before&&!R.terrainAt(c,...ancient);
+  }));
+  check('The live Orc planner funds and clears ruins before completing a multi-cell goal',await page.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,c=ruinFixture('orc');for(let i=0;i<3;i++)ruinPut('orc_work');ruinPut('orc_hunt');ruinPut('orc_war');
+   const occupied=R.occupancy(c);for(let r=0;r<R.GRID;r++)for(let k=0;k<R.GRID;k++)if(!occupied.has(R.idx(r,k)))R.setTerrain(c,r,k,'ruin');
+   c.resources=R.C(2000,2000,2000);c.caps=R.C(2000,2000,2000);const before=c.terrain.filter(t=>t?.type==='ruin').length,buildings=c.buildings.length;
+   for(let i=0;i<12;i++){c.aiThink=0;R.state.time=500+i;R.enemyBuildAI(1);}
+   return c.terrain.filter(t=>t?.type==='ruin').length<before&&c.buildings.length>buildings;
   }));
   check('No ruin-clearing browser errors',report.errors.length===0);
  } finally {fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/ai-ruin-clearing.json',JSON.stringify(report,null,2));await browser.close();}

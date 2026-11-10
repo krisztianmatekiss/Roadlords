@@ -85,7 +85,10 @@ for(const side of ['player','enemy'])check(side+': a real nearly full army adds 
  return c.armyCap>before&&R.hasBuilding(c,'house');
 },side));
 check('Waiting is a legal decision when there is no useful legal construction',await p.evaluate(()=>{
- const R=__ROADLORDS_RUNTIME__,c=policyReset();c.terrain.fill({type:'forest'});for(const [r,k]of R.cityBuildingCells(c,c.buildings[0]))c.terrain[R.idx(r,k)]=null;
+ const R=__ROADLORDS_RUNTIME__,c=policyReset(),occupied=R.occupancy(c);
+ // Forest is removable land, not an impossible plot. Occupied building cells
+ // require the separate redevelopment planner and cannot be excavated.
+ for(let r=0;r<R.GRID;r++)for(let k=0;k<R.GRID;k++)if(!occupied.has(R.idx(r,k)))c.buildings.push({id:'occupied-'+r+'-'+k,type:'house',level:1,row:r,col:k,rotation:0,progress:0});
  return R.aiPlanInvestment(c,policyThought(c)).type===null;
 }));
 for(const race of ['human','undead'])check(race+': construction savings allow periodic paid recruits without spending the entire income',await p.evaluate(race=>{

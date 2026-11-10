@@ -295,6 +295,11 @@ export function installSharedAiPlanner(R) {
         const price={...opp.price},capacityPrice={...opp.price};
         for(const [row,col] of plan.ruins){const cost=R.terrainClearPrice(c,R.terrainAt(c,row,col).type);for(const r of R.RES){price[r]+=(cost[r]||0);capacityPrice[r]=Math.max(capacityPrice[r]||0,cost[r]||0);}}
         savings(c,{...opp,price,capacityPrice});
+        c._aiLandGoal=opp.type;
+        if(R.RES.some(r=>capacityPrice[r]>c.caps[r]&&capacityPrice[r]>c.resources[r])){
+          const store=available(c).find(t=>BUILDING_MECHANICS[t]?.storage&&t!==opp.type&&R.findCell(c,t));
+          return store?invest(opportunity(store,ctx),ctx):false;
+        }
         return R.aiClearBlockingRuin(opp.type,c)||true;
       }
       return R.aiMakeRoomFor(opp.type,c);
@@ -351,9 +356,21 @@ export function installSharedAiPlanner(R) {
         }
         if(R.aiExcavateAncient(c._aiSaveType,c)){clearSavings(c);return;}
         const saved=c._aiSaveType;
-        if(saved&&c.unlocked.has(saved)&&R.state.time-c._aiSaveSince<60&&!R.findCell(c,saved)) {
+        if(saved&&c.unlocked.has(saved)&&R.state.time-c._aiSaveSince<60&&(!R.findCell(c,saved)||c._aiLandGoal===saved)) {
           const deficit=ctx.resources.some(r=>metrics.gain[r]<metrics.use[r]);
           if((BUILDING_MECHANICS[saved]?.produces||!deficit&&!ctx.pressure)&&invest(opportunity(saved,ctx),ctx))return;
+        }
+        // Finance a required excavation before the last affordable plots are
+        // consumed by other growth. This is a budget prerequisite, not a
+        // compulsory warehouse count or faction-specific opening sequence.
+        if(!ctx.pressure&&ctx.growth.landStorageRequired){
+          const store=available(c).find(t=>{
+            if(!BUILDING_MECHANICS[t]?.storage)return false;
+            if(R.findCell(c,t))return true;
+            const land=R.aiBlockingPlan(c,t,{affordableOnly:false});
+            return land&&land.ruins.every(([row,col])=>{const cost=R.terrainClearPrice(c,R.terrainAt(c,row,col).type);return R.RES.every(r=>cost[r]<=c.caps[r]||cost[r]<=c.resources[r]);});
+          });
+          if(store&&invest(opportunity(store,ctx),ctx))return;
         }
         if(R.aiTryRedevelopment(c,ctx))return;
         if(R.aiTrimUnproductive(c,ctx))return;

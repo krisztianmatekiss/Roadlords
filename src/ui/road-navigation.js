@@ -112,7 +112,7 @@ export function installRoadNavigation(R) {
   war.addEventListener('wheel', e => {
     if (e.ctrlKey || e.metaKey) return;
     const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-    if(R.uiTrial?.active&&e.shiftKey){war.scrollTop+=delta;e.preventDefault();return;}
+    if(R.battleLayout?.active&&e.shiftKey){war.scrollTop+=delta;e.preventDefault();return;}
     war.scrollLeft += delta * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? war.clientWidth : 1);
     e.preventDefault();
   }, {passive: false});

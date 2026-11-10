@@ -1,7 +1,7 @@
 import { groupBattleUnits } from './battle-line-model.js';
 import { formatMetres } from '../world/measurements.js';
 
-// Only the UI trial uses this canvas. World simulation and visibility stay live.
+// The overview reads the live world used by every game mode.
 export function createBattleLine(R,canvas,active) {
   const g=canvas.getContext('2d'),portraits=new Map();
   let width=0,height=0,last=-Infinity,hits=[],drag=null;
@@ -29,14 +29,14 @@ export function createBattleLine(R,canvas,active) {
   }
   function structure(item,x,y){
     const color=R.unitTeamFill({side:item.side}),hp=Math.max(0,item.hp),ratio=R.clamp(hp/Math.max(1,item.maxHp),0,1),capital=item.capital;
-    const size=capital?14:9,alive=hp>0&&item.alive!==false;
+    const size=capital?20:13,alive=hp>0&&item.alive!==false;
     g.globalAlpha=alive?1:.3;g.fillStyle='#14271f';g.strokeStyle=alive?color:'#879088';g.lineWidth=1.5;
     g.fillRect(x-size/2,y-size,size,size*1.5);g.strokeRect(x-size/2,y-size,size,size*1.5);
     for(let i=0;i<3;i++)g.fillRect(x-size/2+i*size/3,y-size-3,size/5,4);
     const bar=capital?36:24,barY=y+size*.5+5;
     g.fillStyle='#101811';g.fillRect(x-bar/2,barY,bar,4);g.fillStyle=color;g.fillRect(x-bar/2,barY,bar*ratio,4);
     if(item.sdActive&&alive){g.strokeStyle=`rgba(255,215,115,${.5+.5*Math.sin(performance.now()/180)})`;g.lineWidth=2;g.strokeRect(x-size/2-3,y-size-6,size+6,size*1.5+18);}
-    g.globalAlpha=1;g.fillStyle='#c7d4c5';g.font='700 9px system-ui';g.fillText(capital?'VÁROS':item.overviewLabel||`T${item.tier}`,x,barY+16);
+    g.globalAlpha=1;g.fillStyle='#d6decf';g.font='700 10px system-ui';g.fillText(capital?'VÁROS':item.overviewLabel||`T${item.tier}`,x,barY+16);
     hits.push({x,y,r:Math.max(16,bar/2),lane:item.lane,capital,side:item.side,label:`${capital?'Főváros':item.gateTower?'Vártorony':'Úttorony'} · ${Math.ceil(hp)} / ${Math.ceil(item.maxHp)} HP`});
   }
   line.draw=(force=false)=>{
@@ -51,7 +51,7 @@ export function createBattleLine(R,canvas,active) {
     g.strokeStyle=enemy;g.beginPath();g.moveTo(mid,y);g.lineTo(width-pad,y);g.stroke();
     for(const [offset,color]of [[-2,own],[2,enemy]]){g.strokeStyle=color;g.lineWidth=2;g.beginPath();g.moveTo(mid+offset,y-14);g.lineTo(mid+offset,y+14);g.stroke();}
     line.groups=groupBattleUnits(R.state.units);line.boundary=boundary;
-    const size=height<125?16:20,step=height<125?19:24,rows={player:[-Infinity,-Infinity],enemy:[-Infinity,-Infinity]};
+    const size=height<160?20:24,step=height<160?24:30,rows={player:[-Infinity,-Infinity],enemy:[-Infinity,-Infinity]};
     for(const group of line.groups){
       if(!R.UNITS[group.key])continue;
       const px=x(group.lane),used=rows[group.side],row=used[0]<px-size-3?0:1;used[row]=px;

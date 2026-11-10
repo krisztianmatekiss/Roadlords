@@ -17,5 +17,5 @@ export function initializeExpansionBalance(R) {
   // One price source for player tooltips, payment and both faction AIs.
   R.terrainClearPrice = (c, type) => c.race === 'undead'
     ? R.C(type === 'ancient' ? 1000 : type === 'ruin' ? 100 : 20)
-    : R.TERRAIN[type]?.clear || R.C();
+    : type === 'forest' ? R.C(20) : type === 'quarry' ? R.C(0,20) : R.TERRAIN[type]?.clear || R.C();
 }

@@ -24,20 +24,31 @@ export function installAiInvestmentPlan(R){
     const budget=R.C(),future=R.C();
     for(const type of goals){
       const cell=R.findCell(c,type),price=cell?R.placementPrice(c,type,...cell):R.buildPrice(c,type);
-      for(const r of R.RES)budget[r]+=price[r]||0;
+      const land=cell?null:R.aiBlockingPlan(c,type,{affordableOnly:false});
+      for(const r of R.RES)budget[r]+=(price[r]||0)+(land?.cost[r]||0);
       if(R.BUILDINGS[type]?.unit){const b={type,level:R.levelOf(c,type),row:cell?.[0]||0,col:cell?.[1]||0,rotation:cell?.[2]||0},seconds=R.trainingTime(c,b),cost=R.primarySpawnCost(c,R.effectiveUnitKey(c,b),b);
         if(Number.isFinite(seconds))for(const r of R.RES)future[r]+=(cost[r]||0)*R.productionBatchSize(c,b)/Math.max(1,seconds);}
     }
     // Expanding the economy also costs wood/stone. Count each full price
     // vector, including the wood price of a stone-producing building.
-    const reinvest=sources.filter(t=>R.findCell(c,t));
-    for(const type of reinvest){const price=R.buildPrice(c,type);for(const r of R.RES)budget[r]+=(price[r]||0)*(expanding?2:1)*room;}
+    for(const type of sources){
+      const cell=R.findCell(c,type),land=cell?null:R.aiBlockingPlan(c,type,{affordableOnly:false});
+      if(!cell&&!land)continue;
+      const price=R.buildPrice(c,type);for(const r of R.RES)budget[r]+=((price[r]||0)+(land?.cost[r]||0))*(expanding?2:1)*room;
+    }
     const target=R.C(),period=expanding?60:90;
     for(const r of R.aiResourceKeys(c))target[r]=metrics.use[r]*1.15+(budget[r]/period+future[r]*.8)*room;
     const stores=R.aiFactionBuildings(c).filter(t=>R.aiBuildingMechanics(t).storage&&eligible(c,t));
-    const storageIndex=goals.findIndex(t=>R.RES.some(r=>R.buildPrice(c,t)[r]>c.caps[r]&&R.buildPrice(c,t)[r]>c.resources[r]));
+    let landStorageRequired=R.RES.some(r=>(c._aiAncientPrice?.[r]||0)>c.caps[r]&&(c._aiAncientPrice?.[r]||0)>c.resources[r]);
+    const needsStorage=goals.map(t=>{
+      const price={...R.buildPrice(c,t)},land=R.findCell(c,t)?null:R.aiBlockingPlan(c,t,{affordableOnly:false});
+      for(const [row,col]of land?.ruins||[]){const cost=R.terrainClearPrice(c,R.terrainAt(c,row,col).type);for(const r of R.RES){price[r]=Math.max(price[r]||0,cost[r]||0);if(cost[r]>c.caps[r]&&cost[r]>c.resources[r])landStorageRequired=true;}}
+      return R.RES.some(r=>price[r]>c.caps[r]&&price[r]>c.resources[r]);
+    });
+    const storageIndex=needsStorage.indexOf(true);
     if(storageIndex>=0&&stores[0])goals.splice(storageIndex,0,stores[0]);
-    return {target,budget,future,goals:goals.slice(0,4),sources,expanding,growing:room>0&&R.aiResourceKeys(c).some(r=>metrics.gain[r]+.01<target[r])};
+    if(R.aiStoragePressure(c,metrics)&&stores[0]&&!goals.includes(stores[0]))goals.unshift(stores[0]);
+    return {target,budget,future,goals:[...new Set(goals)].slice(0,4),sources,expanding,landStorageRequired,growing:room>0&&R.aiResourceKeys(c).some(r=>metrics.gain[r]+.01<target[r])};
   };
   const operational=(c,ctx)=>{
     const flow=R.resourceFlowRates(c),use={...flow.use};
@@ -87,7 +98,28 @@ export function installAiInvestmentPlan(R){
       if(index>0){const source=bridge(shadow,queue[index],ctx);if(source)queue.splice(index,0,source);}
       const type=queue[index];
       if(!eligible(shadow,type))continue;
-      const cell=R.findCell(shadow,type);if(!cell){blocked='space';break;}
+      let cell=R.findCell(shadow,type),land=null;
+      if(!cell){
+        land=R.aiBlockingPlan(shadow,type,{affordableOnly:false});
+        if(!land){blocked='space';break;}
+        // Forecast paid preparation one tile at a time, with real caps and
+        // income after every removal. Never call clearTerrain on a preview:
+        // ancient ruins would otherwise award picks during decision making.
+        for(const [row,col]of land.ruins){
+          const price=R.terrainClearPrice(shadow,R.terrainAt(shadow,row,col).type),flow=operational(shadow,ctx);let wait=0;
+          for(const r of R.aiResourceKeys(shadow)){
+            if(price[r]>shadow.caps[r]&&price[r]>shadow.resources[r]){blocked='storage';break;}
+            const short=(price[r]||0)-shadow.resources[r],net=flow.gain[r]-flow.use[r];
+            if(short>0&&net<=.01){blocked='income';break;}
+            if(short>0)wait=Math.max(wait,short/net);
+          }
+          if(blocked||elapsed+wait+.8>horizon){blocked||='time';break;}
+          advance(wait);for(const r of R.RES)shadow.resources[r]-=price[r]||0;
+          R.setTerrain(shadow,row,col,null);R.recomputeCity(shadow,true);advance(.8);
+        }
+        if(blocked)break;
+        cell=land.cell;
+      }
       const price=R.placementPrice(shadow,type,...cell),flow=operational(shadow,ctx);let wait=0;
       for(const r of R.aiResourceKeys(shadow)){
         if(price[r]>shadow.caps[r]&&price[r]>shadow.resources[r]){blocked='storage';break;}
@@ -103,7 +135,7 @@ export function installAiInvestmentPlan(R){
       shadow.buildings.push({id:'investment:'+steps.length,type,row,col,rotation,level:R.levelOf(shadow,type),progress:0});R.recomputeCity(shadow,true);
       const purpose=ctx.intent.purposes.get(type);
       if(ctx.growth.goals.includes(type)&&!R.aiBuildingMechanics(type).storage)completed+=(purpose?.role==='core'?2:1)/(1+elapsed/70);
-      steps.push({type,at:elapsed,cell,price});advance(Math.min(horizon-elapsed,shadow.buildings.length>=80?2.4:.8));
+      steps.push({type,at:elapsed,cell,price,preparation:land?.ruins.length||0});advance(Math.min(horizon-elapsed,shadow.buildings.length>=80?2.4:.8));
     }
     advance(Math.max(0,horizon-elapsed));
     shadow._forecast={steps,completed,firstWait,blocked,unfunded};
@@ -132,7 +164,7 @@ export function installAiInvestmentPlan(R){
     const old=cache.get(c);if(old?.capital===c.buildings[0]&&old.stamp===stamp)return old.value;
     const supports=R.aiFactionBuildings(c).filter(t=>{const m=R.aiBuildingMechanics(t);return !R.BUILDINGS[t]?.unit&&!m.produces&&!m.capacity&&!m.storage&&eligible(c,t)&&R.findCell(c,t);});
     const extra=supports.length?[supports[Math.floor(R.state.time/6)%supports.length]]:[];
-    const types=[...new Set([...ctx.producers,...ctx.growth.goals,...ctx.military.filter(t=>ctx.intent.purposes.get(t)?.needed),...extra])].filter(t=>eligible(c,t)&&!(R.aiRedevelopmentTypePenalty(c,t,ctx)>0)&&R.findCell(c,t));
+    const types=[...new Set([...ctx.producers,...ctx.growth.goals,...ctx.military.filter(t=>ctx.intent.purposes.get(t)?.needed),...extra])].filter(t=>eligible(c,t)&&!(R.aiRedevelopmentTypePenalty(c,t,ctx)>0)&&(R.findCell(c,t)||R.aiBlockingPlan(c,t,{affordableOnly:false})));
     const waiting=R.aiForecastInvestment(c,null,{...ctx,growth:{...ctx.growth,goals:[]}});let best={type:null,score:waiting.score,steps:[],forecasts:1};
     let forecasts=1;
     for(const type of types.slice(0,8)){

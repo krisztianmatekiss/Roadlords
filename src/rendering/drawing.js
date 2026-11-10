@@ -362,7 +362,7 @@ export function register(runtime) {
   };
   runtime.roadResize = function roadResize() {
     runtime.ROAD.w = Math.max(320, runtime.roadWar.clientWidth);
-    runtime.ROAD.h = Math.max(260, runtime.roadWar.clientHeight);
+    runtime.ROAD.h = Math.max(260, runtime.roadRenderHeight?.(runtime.roadWar.clientHeight) ?? runtime.roadWar.clientHeight);
     if (runtime.canvas.width !== runtime.ROAD.w || runtime.canvas.height !== runtime.ROAD.h) {
       runtime.canvas.width = runtime.ROAD.w;
       runtime.canvas.height = runtime.ROAD.h;

@@ -1,0 +1,82 @@
+#uiTrialDrawer[hidden],#uiTrialOverview[hidden]{display:none!important}
+body.ui-trial{--trial-drawer-width:clamp(176px,12vw,224px);--trial-sidebar-width:var(--trial-drawer-width);--trial-header-height:70px;--trial-line-height:132px}
+html body.ui-trial #app{grid-template-columns:var(--trial-sidebar-width) minmax(0,1fr)!important;grid-template-rows:var(--trial-header-height) minmax(0,1fr) var(--trial-line-height)!important;gap:0!important}
+html body.ui-trial #app>.topbar{grid-column:1/-1;grid-row:1;zoom:1!important;grid-template-columns:minmax(0,1fr) auto!important;grid-template-rows:1fr!important;padding:6px 10px!important;gap:8px!important;overflow:visible!important}
+html body.ui-trial #app .topLeftCluster{grid-row:1!important;grid-column:1!important;gap:6px!important}
+html body.ui-trial #app .topLeftCluster .resources{grid-template-columns:repeat(3,clamp(86px,10vw,150px))!important;gap:5px!important}
+html body.ui-trial #app .topLeftCluster .res{min-height:42px!important;padding:4px 6px!important;gap:5px!important}
+html body.ui-trial #app .topLeftCluster .res b{font-size:12px!important}
+html body.ui-trial #app .topLeftCluster .res small{font-size:10px!important}
+html body.ui-trial #app>.topbar>.run{grid-row:1!important;grid-column:2!important;gap:5px!important}
+html body.ui-trial #app>.war{grid-column:2;grid-row:2;min-width:0!important;min-height:0!important;overflow:auto!important}
+html body.ui-trial #app .roadWorld .gate{height:calc(clamp(156px,8.13vw,312px)*var(--trial-world-scale,1))!important;width:calc(clamp(34px,1.77vw,68px)*var(--trial-world-scale,1))!important}
+html body.ui-trial #app .roadWorld .gate.right{right:calc(clamp(-58px,-1.51vw,-29px)*var(--trial-world-scale,1))!important}
+html body.ui-trial #app .roadWorld .gate.left{left:calc(clamp(-58px,-1.51vw,-29px)*var(--trial-world-scale,1))!important}
+html body.ui-trial #app>.command{display:contents!important}
+html body.ui-trial #app :is(#roadRoster,#roadMinimap,#roadHud,#roadTestSummary){display:none!important}
+#uiTrialDrawer{position:relative;grid-column:1;grid-row:2/4;display:flex;flex-direction:column;min-height:0;min-width:0;padding:7px;background:linear-gradient(110deg,#1f3025,#0c1712);border-right:1px solid #8e7947;box-shadow:5px 0 14px #0005;z-index:24;box-sizing:border-box}
+#uiTrialFold{align-self:stretch;flex-shrink:0;height:27px;border:1px solid #897544;border-radius:5px;background:#28352a;color:#f3df9a;font:800 11px system-ui;cursor:pointer}
+html body.ui-trial #app #uiTrialDrawer .tabs{display:grid!important;grid-template-columns:repeat(2,49px)!important;gap:7px!important;justify-content:center!important;padding:10px 0!important;margin:0!important}
+html body.ui-trial #app #uiTrialDrawer .tab{position:relative;display:block!important;width:49px!important;height:49px!important;min-height:49px!important;flex:0 0 49px;padding:9px!important;border-radius:50%!important;border:2px solid #847c58!important;background:radial-gradient(circle at 35% 25%,#6c7156,#142219 70%)!important;box-shadow:inset 0 0 0 3px #0c1714,0 3px 5px #0008;color:#f3dfa5}
+html body.ui-trial #app #uiTrialDrawer .tab[data-cat="economy"]{background:radial-gradient(circle at 35% 25%,#96742a,#302811 75%)!important}
+html body.ui-trial #app #uiTrialDrawer .tab[data-cat="military"]{background:radial-gradient(circle at 35% 25%,#a8473a,#401a19 75%)!important}
+html body.ui-trial #app #uiTrialDrawer .tab[data-cat="support"]{background:radial-gradient(circle at 35% 25%,#597fb4,#182c46 75%)!important}
+html body.ui-trial #app #uiTrialDrawer .tab.active{border-color:#ffe5a0!important;filter:brightness(1.25)}
+#uiTrialDrawer .tab>svg{width:100%;height:100%}
+#uiTrialDrawer .tabHotkey{position:absolute;right:-3px;bottom:-3px;display:grid;place-items:center;width:18px;height:18px;border:1px solid #d2b360;border-radius:50%;background:#111b15;color:#ffe8a6;font:800 11px system-ui}
+#uiTrialCards{flex:1;min-height:0;min-width:0;overflow:hidden}
+html body.ui-trial #app #uiTrialCards>.catalog{display:block!important;width:100%!important;height:100%!important;min-height:0!important;padding:0!important;margin:0!important;zoom:1!important;border:0!important;background:none!important;overflow:hidden!important}
+html body.ui-trial #app #uiTrialCards .commandRail{display:none!important}
+html body.ui-trial #app #uiTrialCards .buildnav{display:block!important;height:100%!important;min-height:0!important;padding:0!important}
+html body.ui-trial #app :is(#buildPrev,#buildNext){display:none!important}
+html body.ui-trial #app #buildList{display:block!important;box-sizing:border-box;height:100%!important;width:100%!important;padding:2px 4px 6px!important;overflow-x:hidden!important;overflow-y:auto!important;scrollbar-width:thin;scrollbar-color:#b69b58 #111d16}
+html body.ui-trial #app #buildList .buildSlot{position:relative;display:grid!important;grid-template-rows:20px auto!important;width:100%!important;height:calc(var(--trial-card-width,194px)*1.05 + 20px)!important;min-height:0!important;margin:0!important;isolation:auto!important}
+html body.ui-trial #app #buildList .buildSlot:last-child{height:calc(var(--trial-card-width,194px)*1.5 + 20px)!important}
+html body.ui-trial #app #buildList .buildSlot>.buildcard.gamecard{width:100%!important;height:calc(var(--trial-card-width,194px)*1.5)!important;max-height:none!important;min-height:0!important}
+html body.ui-trial #app #buildList .buildSlotBadges{position:relative;z-index:4;background:#15251b}
+html body.ui-trial .buildCardPreview.buildcard.gamecard{pointer-events:auto!important}
+.uiTrialDrawerFoot{flex-shrink:0;padding-top:7px;border-top:1px solid #72603a}
+.uiTrialScale{display:grid;grid-template-columns:1fr 1fr;gap:5px;align-items:end;font:10px system-ui;color:#c5cdb9}
+.uiTrialScale label{display:grid;gap:3px}
+.uiTrialScale :is(select,button){min-width:0;width:100%;min-height:29px;padding:3px;border:1px solid #716540;border-radius:4px;background:#17271d;color:#eadba9;font:10px system-ui;cursor:pointer}
+.uiTrialDeckHome{display:flex;justify-content:center;min-height:70px;align-items:center}
+html body.ui-trial #app #relicBtn{width:108px!important;height:63px!important;min-height:63px!important}
+html body.ui-trial #app #gateControls{position:fixed;left:50%;top:7px;transform:translateX(-50%);z-index:42;display:flex!important;gap:6px;padding:0;background:none}
+html body.ui-trial #app #gateControls button{width:61px!important;min-width:61px!important;height:54px!important;min-height:54px!important;font:800 10px system-ui!important;gap:3px!important}
+html body.ui-trial #app #gateControls svg{width:24px!important;height:27px!important}
+#uiTrialOverview{grid-column:2;grid-row:3;display:grid;grid-template-columns:clamp(180px,17vw,280px) minmax(120px,1fr) clamp(180px,17vw,280px);gap:12px;align-items:stretch;padding:0 8px;background:linear-gradient(#192b21,#0a1510);border-top:1px solid #9a8145;min-height:0;min-width:0;z-index:20}
+.uiTrialTrack{position:relative;min-width:0;min-height:0;height:100%;overflow:hidden;border-inline:1px solid #76623b}
+#uiTrialLine{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+#uiTrialOverview>aside{height:100%;min-height:0;overflow:hidden}
+#uiTrialOverview>aside{position:relative}
+#uiTrialOverview>aside::before{content:'';position:absolute;left:0;right:0;top:calc(50% - 2px);height:1px;background:var(--trial-own-color,#397fc1);opacity:.65;pointer-events:none}
+#uiTrialOverview>.uiTrialEnemySummary::before{background:var(--trial-enemy-color,#ce6267)}
+#uiTrialLine:focus-visible{outline:2px solid #e4c770;outline-offset:-3px}
+.uiTrialTag{position:absolute;top:4px;left:6px;color:#b9a36b;font:800 8px system-ui;letter-spacing:.08em;pointer-events:none}
+html body.ui-trial #uiTrialOverview .roadRosterTeam{display:flex;flex-direction:column;height:100%;justify-content:center;gap:9px;font:800 11px system-ui;color:#eadfb8}
+html body.ui-trial #uiTrialOverview .roadRosterOwner{order:-2;font-size:9px;letter-spacing:.1em}
+html body.ui-trial #uiTrialOverview .roadRosterGroup{display:flex;flex-direction:row-reverse;align-items:center;gap:7px;min-height:30px;min-width:0}
+html body.ui-trial #uiTrialOverview .roadRosterGroup:last-child{order:-1}
+html body.ui-trial #uiTrialOverview .roadRosterHeading{display:flex;flex-direction:column;gap:2px;width:58px;flex-shrink:0;align-items:center}
+html body.ui-trial #uiTrialOverview .roadRosterHeading>span{font-size:8px;color:#c2cbb6}
+html body.ui-trial #uiTrialOverview .roadRosterHeading>b{font:800 12px system-ui}
+html body.ui-trial #uiTrialOverview .roadRosterGroup:last-child .roadRosterHeading>span::before{content:'👣 ';font-size:14px}
+html body.ui-trial #uiTrialOverview .roadRosterGroup:nth-child(2) .roadRosterHeading>span::before{content:'♜ ';font-size:17px}
+html body.ui-trial #uiTrialOverview .unitmix{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:3px;width:100%;min-width:0;max-height:48px;overflow:auto;margin:0;padding:0;scrollbar-width:thin}
+html body.ui-trial #uiTrialOverview .unitchip{width:24px;height:24px;flex-shrink:0}
+html body.ui-trial #uiTrialOverview .unitchip>b{font-size:9px!important}
+html body.ui-trial #uiTrialOverview .uiTrialEnemySummary .roadRosterGroup{flex-direction:row}
+html body.ui-trial #uiTrialOverview .uiTrialEnemySummary .unitmix{justify-content:flex-start}
+body.ui-trial-collapsed{--trial-sidebar-width:50px}
+body.ui-trial-collapsed :is(.uiTrialCategories,#uiTrialCards,.uiTrialScale){display:none!important}
+body.ui-trial-collapsed .uiTrialDrawerFoot{margin-top:auto}
+html body.ui-trial-collapsed #app #relicBtn{width:36px!important;height:60px!important;min-height:60px!important}
+body.ui-trial-collapsed #relicBtn :is(.deckCaption,b){display:none}
+body.ui-trial-collapsed #relicBtn .deckStack{width:27px;height:44px}
+@media(max-width:1100px){
+ body.ui-trial{--trial-header-height:126px;--trial-line-height:146px}
+ html body.ui-trial #app #gateControls{top:68px}
+ html body.ui-trial #app #uiTrialOverview{grid-template-columns:140px minmax(120px,1fr) 140px;gap:5px}
+ html body.ui-trial #uiTrialOverview .roadRosterHeading{width:42px}
+ html body.ui-trial #uiTrialOverview .unitchip{width:20px;height:20px}
+}

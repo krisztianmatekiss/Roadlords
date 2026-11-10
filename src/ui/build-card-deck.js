@@ -4,6 +4,7 @@ import { fitCardText } from './card-text-fit.js';
 export function installBuildCardDeck(R) {
   const list = R.$('#buildList');
   const sizeDeck = () => {
+    if(R.uiTrial?.active)return;
     if (list.clientHeight <= 24) return;
     const width = Math.max(1,Math.min(140,(list.clientHeight - 24) / 1.5,list.clientWidth - 4));
     list.style.setProperty('--deck-card-width', `${width}px`);
@@ -25,6 +26,11 @@ export function installBuildCardDeck(R) {
     const width = Math.min(Math.max(310 * scale,rect.width), innerWidth - 16, (innerHeight - R.$('.topbar').getBoundingClientRect().bottom - 24) / 1.5);
     preview.style.width = `${width}px`;
     preview.style.height = `${width * 1.5}px`;
+    if(R.uiTrial?.active){
+      preview.style.left=`${Math.max(8,Math.min(rect.right+10,innerWidth-width-8))}px`;
+      preview.style.top=`${Math.max(R.$('.topbar').getBoundingClientRect().bottom+8,Math.min(rect.top,innerHeight-width*1.5-8))}px`;
+      preview.style.bottom='auto';preview.querySelector('.previewHitbox').style.height='100%';return;
+    }
     preview.style.left = `${Math.max(8, Math.min(rect.left, innerWidth - width - 8))}px`;
     preview.style.bottom = '8px';
     const top = innerHeight - 8 - width * 1.5;
@@ -64,10 +70,16 @@ export function installBuildCardDeck(R) {
   document.addEventListener('pointermove', e => {
     const inside = box => box && e.clientX >= box.left && e.clientX <= box.right && e.clientY >= box.top && e.clientY <= box.bottom;
     if (preview) {
+      const next=e.target.closest('#buildList .buildSlot');
+      if(R.uiTrial?.active&&next&&next.dataset.k!==key)close();
+      else {
       // The lower, click-through part is still visually part of the large card.
       // Don't dismiss it just because its hitbox no longer receives pointer events.
-      if (inside(preview.getBoundingClientRect()) || inside(cardFor(key)?.getBoundingClientRect())) return;
+      const large=preview.getBoundingClientRect(),small=cardFor(key)?.getBoundingClientRect();
+      const bridge=R.uiTrial?.active&&small&&e.clientX>=small.right&&e.clientX<=large.left&&e.clientY>=Math.min(small.top,large.top)&&e.clientY<=Math.max(small.bottom,large.bottom);
+      if (inside(large) || inside(small) || bridge) return;
       close();
+      }
     }
     const slot = e.target.closest('#buildList .buildSlot');
     if (!slot || e.pointerType === 'touch' || R.state.selectedBuild || R.state.modal ||
@@ -79,7 +91,7 @@ export function installBuildCardDeck(R) {
       const type = hovered;
       hoverTimer = 0;
       if (type) show(type);
-    }, HOVER_DELAY);
+    }, R.uiTrial?.active?0:HOVER_DELAY);
   }, {passive:true});
   document.addEventListener('pointerleave', close);
   window.addEventListener('keydown', e => { if (e.key === 'Escape') close(); }, true);
@@ -117,6 +129,11 @@ export function installBuildCardDeck(R) {
     if (!card) return;
     // Horizontal scrolling must never move the page or the camera vertically.
     const slot = card.closest('.buildSlot'), bounds = list.getBoundingClientRect(), rect = slot.getBoundingClientRect();
+    if(R.uiTrial?.active){
+      if(rect.top<bounds.top)list.scrollTop-=bounds.top-rect.top;
+      if(rect.top+40>bounds.bottom)list.scrollTop+=rect.top+40-bounds.bottom;
+      if(options?.selection){close();return;}show(type,options);return;
+    }
     const zoom = Number(getComputedStyle(R.$('.catalog')).zoom) || 1;
     if (rect.left < bounds.left) list.scrollLeft -= (bounds.left - rect.left) / zoom;
     if (rect.right > bounds.right) list.scrollLeft += (rect.right - bounds.right) / zoom;
@@ -124,4 +141,5 @@ export function installBuildCardDeck(R) {
     show(type, options);
   };
   Object.assign(window.__ROADLORDS__, {renderBuildList:R.renderBuildList});
+  R.closeBuildCardPreview=close;
 }

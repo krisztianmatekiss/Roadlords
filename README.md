@@ -1,4 +1,15 @@
-# Roadlords · V4.68.0
+# Roadlords · V4.69.0
+
+
+## V4.69.0 – Külön UI-próba
+
+A **Tesztek → UI PRÓBA INDÍTÁSA** a valódi egyjátékos módot nyitja, saját és AI-faj választásával. A normál felület továbbra is az alapértelmezett.
+
+- Bal oldali, összecsukható kártyafül, felül a kategóriákkal. A lapok a tényleges leírásmező kezdetén fedik egymást; azonnali, a pálya felé nyíló előnézetükre átvihető az egér. Kiválasztáskor az előnézet eltűnik.
+- A saját pakli bal alul marad. Az alsó csatavonal mindkét fél seregét és helyőrségét, a fővárosokat, az összes tornyot, a térfélhatárt és az egységcsoportokat mutatja. Egy csoport csak azonos oldali és típusú, legfeljebb 20 méteres szakaszon álló egységeket egyesít. A HP és a hirtelen halál jelzése élő adat.
+- Nagy kapugombok a képernyő felső közepén; a felső sávból a seregszámlálók átkerülnek az áttekintőbe. A csatavonal kattintással, húzással vagy billentyűzettel mozgatja a kamerát.
+- Alapból 1,5× város-/objektumnagyítás, változatlan 10×10 mezővel és játékszabályokkal. A magasabb pálya függőlegesen is mozgatható: fel/le nyíl, Shift+görgő vagy görgetősáv. Választható 1×, 1,25× és teljes várost mutató méretezés is.
+- A **Normál nézet** gomb ugyanabban a meccsben visszaállítja az eredeti sávokat és minitérképet. A prototípus nem kerül multiplayerbe, nem mentődik alapbeállításnak.
 
 ## V4.68.0 – Egyszerű állapotjelzések és élőhalott kezdő commonok
 

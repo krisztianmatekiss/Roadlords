@@ -64,8 +64,7 @@ export function installRoadNavigation(R) {
     if (Number.isFinite(enemy)) return enemy;
     return R.PATH_LENGTH / 2;
   }
-  R.roadFocusFront = () => {
-    const lane = frontLane();
+  R.roadFocusLane = lane => {
     const bounds=R.roadViewportBounds(),center=(bounds.left+bounds.right)/2;
     const z = R.ROAD.zoom, w = R.ROAD.w;
     // Invert the renderer's camera mapping, including its clamped end sections.
@@ -79,6 +78,7 @@ export function installRoadNavigation(R) {
     }
     war.scrollLeft = (lo + hi) / 2;
   };
+  R.roadFocusFront=()=>R.roadFocusLane(frontLane());
   function blocked(target) {
     if (target?.closest?.('input,textarea,select,[contenteditable]:not([contenteditable="false"])')) return true;
     return document.body.classList.contains('roadlords-menu-open') || R.state.modal ||
@@ -112,6 +112,7 @@ export function installRoadNavigation(R) {
   war.addEventListener('wheel', e => {
     if (e.ctrlKey || e.metaKey) return;
     const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    if(R.uiTrial?.active&&e.shiftKey){war.scrollTop+=delta;e.preventDefault();return;}
     war.scrollLeft += delta * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? war.clientWidth : 1);
     e.preventDefault();
   }, {passive: false});

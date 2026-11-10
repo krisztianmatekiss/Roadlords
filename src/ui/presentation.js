@@ -74,7 +74,7 @@ export function register(runtime) {
   };
   runtime.tryPlace = function tryPlace(row, col) {
     if (!runtime.state.selectedBuild) {
-      runtime.toast('Előbb válassz épületet az alsó sávból.');
+      runtime.toast(runtime.uiTrial?.active?'Előbb válassz épületet az oldalsó kártyafülből.':'Előbb válassz épületet az alsó sávból.');
       return;
     }
     const origin = runtime.placementOrigin(runtime.state.selectedBuild, runtime.state.buildRotation, row, col),

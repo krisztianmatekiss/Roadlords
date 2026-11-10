@@ -136,7 +136,9 @@ export function register(runtime) {
       // Before-combat hooks consume this flag immediately; preserve the queued throw.
       if (p.a.orcSpear) p.u.orcSpearReady = true;
       try {
-        if (p.structure) runtime.roadRealStructure(p.u, p.t);else runtime.roadRealAttack(p.u, p.t, p.opts);
+        if(p.towerShot){
+          if(p.t.side!==p.u.side)runtime.resolveTowerProjectile(p.t,p.damage);
+        }else if (p.structure) runtime.roadRealStructure(p.u, p.t);else runtime.roadRealAttack(p.u, p.t, p.opts);
         p.a.resolved = true;
         runtime.roadImpactEffect?.(p.u, p.a);
       } finally {

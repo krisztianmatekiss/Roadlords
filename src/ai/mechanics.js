@@ -38,7 +38,7 @@ const GROUPS = [
   [['campaign_feast', 'house_militia', 'armor_extended_range', 'magic_order', 'rally_cavalry_rush', 'high_keep', 'royal_district', 'supply_hub'], .20, ['support']],
   [['castle_defenders', 'tower_salvo', 'tower_rebuild'], .18, ['defense']],
   [['orc_bers_rage', 'orc_bers_blood', 'orc_gob_blood', 'orc_last_blood', 'orc_last_rampage'], .30, ['survival']],
-  [['orc_gob_bow', 'orc_volley', 'orc_warg_instinct', 'orc_predator', 'orc_hunt'], .30, ['attack']],
+  [['orc_gob_bow', 'orc_volley', 'orc_warg_instinct', 'orc_predator', 'orc_warg_hunt'], .30, ['attack']],
   [['orc_curse_spread'], .32, ['curse']],
   [['orc_siege_shield', 'orc_trojan', 'orc_glutton'], .30, ['siege']],
   [['orc_horde_heart', 'orc_transfusion'], .22, ['death']],
@@ -75,8 +75,15 @@ const GROUPS = [
   [['und_territory'], .025, ['territory']], [['garden_chance'], .06, ['revive']],
   [['tower_crews', 'tower_regen'], .04, ['defense']],
 ];
+const REQUIREMENTS = {
+  orc_bers_blood:['bleed'],orc_gob_blood:['bleed'],orc_cursed_damage:['curse'],orc_curse_spread:['curse'],
+  orc_warg_instinct:['spear_crit'],orc_transfusion:['lifesteal'],
+  und_fast_poison:['poison'],und_wandering_plague:['poison'],zombie_leg_poisoned_hunt:['poison'],
+};
+const MEASURED=new Set(['orc_gob_bow','orc_warg_hunt']);
+const BLEED_CARDS=new Set(['orc_bleed','orc_gob_blood','orc_bers_blood']);
 export const CONDITIONAL_EFFECTS = Object.fromEntries(GROUPS.flatMap(([ids, weight, features]) =>
-  ids.map(id => [id, { weight, features }])));
+  ids.map(id => [id, { weight, features:BLEED_CARDS.has(id)?[...features,'bleed']:features,requires:REQUIREMENTS[id]||[],measured:MEASURED.has(id) }])));
 
 export const UNIT_FEATURES = {
   swordsman: ['melee'], spearman: ['melee', 'counter'], archer: ['ranged'], knight: ['charge', 'melee'],
@@ -94,7 +101,7 @@ export function cardTargets(R, card) {
   const specific={
     phalanx:['spearman'],magic_order:['priest','mage'],rally_cavalry_rush:['knight'],
     orc_last_blood:['orc_warrior'],orc_horde_heart:['orc_warrior'],orc_volley:['orc_goblin'],
-    orc_hunt:['orc_warg'],orc_predator:['orc_warg'],
+    orc_warg_hunt:['orc_warg'],orc_predator:['orc_warg'],
     orc_curse_spread:['orc_shaman'],orc_siege_shield:['orc_ram'],
     orc_trojan:['orc_ram'],orc_cargo:['orc_ram'],orc_glutton:['orc_troll'],orc_last_rampage:['orc_troll'],
     orc_bleed:['orc_warrior'],orc_leech:['orc_berserker'],orc_double:['orc_goblin'],

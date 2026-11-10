@@ -1,3 +1,4 @@
+import { installAiConditionalContext } from './conditional-context.js';
 import { BUILDING_MECHANICS, CONDITIONAL_EFFECTS, UNIT_FEATURES, cardTargets } from './mechanics.js';
 import { ORC_REDESIGN, TAVERN, levelValue, undeadEliteChance, REMOVED_BUILDINGS } from '../data/faction-redesign.js';
 import { ARMY_TEMPO } from '../data/unit-balance.js';
@@ -6,6 +7,7 @@ const positive = n => Math.max(0, Number(n) || 0);
 const bounded = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 
 export function installAiEvaluation(R) {
+  installAiConditionalContext(R);
   const effects = new WeakMap();
   function activeEffects(c) {
     const signature=JSON.stringify([c.normal,[...c.legends],c.legendaryStacks]);
@@ -14,7 +16,7 @@ export function installAiEvaluation(R) {
     const items=[];
     for(const [id,effect]of Object.entries(CONDITIONAL_EFFECTS)) {
       const stacks=(c.normal[id]||0)+(c.legends.has(id)?Math.max(1,c.legendaryStacks?.[id]||1):0);
-      if(!stacks||id==='und_soul_might'||effect.features.some(x=>['choices','economy','support','defense','training'].includes(x)))continue;
+      if(!stacks||effect.measured||id==='und_soul_might'||effect.features.some(x=>['choices','economy','support','defense','training'].includes(x)))continue;
       items.push({...effect,stacks,targets:cardTargets(R,{id,kind:c.legends.has(id)?'legendary':'normal'})});
     }
     effects.set(c,{signature,items});return items;
@@ -57,7 +59,7 @@ export function installAiEvaluation(R) {
   };
   R.aiPreviewChoice = (c, o, measure) => R.aiPreview(c, shadow => R.aiProjectChoice(shadow,o), measure);
 
-  R.aiUnitQuality = (c, key, b = null) => {
+  R.aiUnitQuality = (c, key, b = null, combat=R.aiCombatContext(c)) => {
     const base = R.UNITS[key];
     if (!base) return 0;
     const entry = { key, originBuildingId: b?.id, firstMult: 1, firstHits: 0, shieldPct: 0, veteran: R.monoVeteran(c) };
@@ -73,6 +75,13 @@ export function installAiEvaluation(R) {
     if (key === 'und_ghost') {
       const intangible=R.hasLeg(c,'ghost_leg_intangible');
       hp /= Math.max(.2,1-Math.min(intangible ? .8 : .7,.4+.05*R.countNormal(c,'ghost_common_dodge')+(intangible ? .2 : 0)));
+    }
+    if (key === 'orc_warg') {
+      const rain=R.hasBranch(c,'orc_warg','spear_rain'),hunt=R.hasLeg(c,'orc_warg_hunt');
+      // One opening throw per expected 12-second engagement. Hunt covers
+      // melee kills as well; Spear Rain alone chains only spear kills.
+      const throwDamage=stats.dmg*2*(rain?2:1),extraThrows=hunt?1:rain?.4:0;
+      damage+=throwDamage/12*(1+extraThrows);
     }
     if (key === 'und_vampire') hp *= 1.3;
     if (key === 'orc_goblin') hp *= 1.2;
@@ -91,9 +100,10 @@ export function installAiEvaluation(R) {
     }
     for (const effect of activeEffects(c)) {
       const {targets,stacks}=effect;
+      if(!effect.requires.every(f=>combat.active.has(f)))continue;
       if (targets.length && !targets.includes(key)) continue;
-      if (effect.features.includes('poison') && !features.includes('poison') && !R.hasBuilding(c, 'und_plague_chamber')) continue;
-      if (effect.features.includes('curse') && !R.hasBuilding(c, 'orc_shaman')) continue;
+      if (effect.features.includes('poison') && !features.includes('poison') && !combat.plague) continue;
+      if (effect.features.includes('curse') && !combat.active.has('curse')) continue;
       if (effect.features.includes('siege') && !features.includes('siege')) continue;
       damage *= 1 + effect.weight * stacks;
     }
@@ -108,15 +118,15 @@ export function installAiEvaluation(R) {
   R.aiCityMetrics = c => {
     const flow = R.resourceFlowRates(c), units = {}, features = {};
     let power = 0;
-    const active = R.activeSpawners(c).filter(b => !b.inactive);
+    const active = R.activeSpawners(c).filter(b => !b.inactive),combat=R.aiCombatContext(c);
     for (const b of active) {
       const key = R.effectiveUnitKey(c, b), seconds = R.trainingTime(c, b);
       if (!R.UNITS[key] || !Number.isFinite(seconds)) continue;
-      const rate = R.productionBatchSize(c, b) / Math.max(1, seconds), quality = R.aiUnitQuality(c, key, b);
+      const rate = R.productionBatchSize(c, b) / Math.max(1, seconds), quality = R.aiUnitQuality(c, key, b, combat);
       const u = units[key] || (units[key] = { rate: 0, power: 0, count: 0, quality: 0 });
       u.rate += rate; u.power += rate * quality; u.count++; u.quality += quality;
       power += rate * quality;
-      for (const tag of UNIT_FEATURES[key] || []) features[tag] = (features[tag] || 0) + rate;
+      for (const tag of R.aiUnitMechanics(c,key)) features[tag] = (features[tag] || 0) + rate;
     }
     for (const u of Object.values(units)) u.quality /= u.count;
     const totalRate = Object.values(units).reduce((n, u) => n + u.rate, 0);
@@ -188,7 +198,7 @@ export function installAiEvaluation(R) {
     const unlocked = [...c.unlocked].some(type => targets.includes(R.BUILDINGS[type]?.unit));
     return unlocked ? .12 : .015;
   };
-  R.aiConditionalCardValue = (o, c, metrics) => {
+  R.aiConditionalCardValue = (o, c, metrics, readiness=R.aiCardReadiness(c,o)) => {
     const effect = CONDITIONAL_EFFECTS[o.id];
     if (!effect) return 0;
     const relevance = R.aiCardRelevance(o, c, metrics);
@@ -200,6 +210,6 @@ export function installAiEvaluation(R) {
     const matches = effect.features.filter(x => positive(metrics.features[x]) > 0).length;
     value += Math.min(8, matches * effect.weight * 7);
     if (o.id === 'und_soul_might') value *= Math.floor(Math.max(0, c.resources.wood) / 1000);
-    return value * relevance;
+    return value * relevance * readiness;
   };
 }

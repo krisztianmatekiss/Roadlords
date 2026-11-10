@@ -190,7 +190,7 @@ export function installSharedAiPlanner(R) {
     const signature = R.choiceKey(o);
     if (ctx.options.has(signature)) return ctx.options.get(signature);
     const {c,metrics} = ctx;
-    let score;
+    let score,readiness=1;
     if (o.kind === 'building') {
       if(!R.canBuildArmyCapacity(c,o.id))return -100;
       // An unlock has option value but no imaginary free building. Preview its
@@ -209,11 +209,12 @@ export function installSharedAiPlanner(R) {
     } else {
       const measured = R.aiPreviewChoice(c,o,shadow=>{
         const after=R.aiCityMetrics(shadow);
-        return {after,passive:passive(shadow,after)};
+        return {after,passive:passive(shadow,after),readiness:R.aiCardReadiness(shadow,o)};
       });
       const value=valueDelta(metrics,measured.after,c,passive(c,metrics),measured.passive);
       if(BUILDING_MECHANICS[o.id]?.capacity && measured.after.armyCap<=metrics.armyCap && measured.after.reserveCap<=metrics.reserveCap) return -100;
-      score = value + R.aiConditionalCardValue(o,c,metrics);
+      readiness=measured.readiness;
+      score = value + R.aiConditionalCardValue(o,c,metrics,readiness);
       if(ctx.pressure&&CONDITIONAL_EFFECTS[o.id]?.features.includes('defense'))score+=16;
       if (o.kind === 'building_upgrade') score += successorValue(o.id,ctx);
       if (o.kind==='building_upgrade'||o.kind==='building_branch') score += Math.min(4,R.buildingOf(c,o.id).length*.3);
@@ -224,7 +225,7 @@ export function installSharedAiPlanner(R) {
         if (value<.1 && relevance<1) score += relevance*2;
       }
     }
-    score+=R.aiStrategyChoiceBonus(c,o,ctx.strategy)*(ctx.pressure?.25:1);
+    score+=R.aiStrategyChoiceBonus(c,o,ctx.strategy)*(ctx.pressure?.25:1)*readiness;
     score=Number.isFinite(score)?score:-100;
     ctx.options.set(signature,score); return score;
   }

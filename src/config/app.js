@@ -1,6 +1,6 @@
 export const APP = Object.freeze({
-  version: '4.66.1',
-  label: 'V4.66.1 · TORONYHATÓTÁV',
+  version: '4.67.0',
+  label: 'V4.67.0 · HARCI JAVÍTÁSOK',
   title: 'Roadlords – Fajok és területek',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',

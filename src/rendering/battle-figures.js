@@ -310,7 +310,7 @@ export function installBattleFigures(R) {
       const t=clamp((R.ROAD.clock-a.launch)/(a.hit-a.launch||.1));
       if(drawUndeadShot(R,u,a,t)||drawCatapultShot(R,u,a,t)||drawArcherShot(R,u,a,t)||drawCasterShot(R,u,a,t)||drawGoblinShot(R,u,a,t)||drawShamanShot(R,u,a,t)||drawWargShot(R,u,a,t))continue;
       const from=R.pointAt(a.lane,a.offset),to=R.pointAt(a.to,a.toOffset),rock=a.key==='catapult'||a.key==='orc_goblin',magic=R.UNITS[a.key]?.damageType==='magic';
-      const x=mix(from.x,to.x,t),y=mix(from.y,to.y,t)-19*(R.ROAD.h/600)*(R.ROAD.zoom||1)-(rock?Math.sin(t*Math.PI)*(a.key==='catapult'?65:18):0);
+      const x=mix(from.x,to.x,t),y=mix(from.y,to.y,t)-mix(a.originHeight||19,19,t)*(R.ROAD.h/600)*(R.ROAD.zoom||1)-(rock?Math.sin(t*Math.PI)*(a.key==='catapult'?65:18):0);
       if(x< -25||x>R.ROAD.w+25)continue;
       g.save();g.translate(x,y);g.rotate(Math.atan2(to.y-from.y,to.x-from.x));
       if(drawMagicShot(g,a.effect||shotKind(R,u),R.ROAD.h/600*(R.ROAD.zoom||1),R.ROAD.clock)){}

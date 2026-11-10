@@ -13,7 +13,7 @@ export function initializeCombatTimedRegeneration(runtime) {
     orc_last_blood: 'A Harcos halálakor sebzése kétszeresét okozza a közelharci hatótávján belüli ellenfeleknek. Alaphatótáv: 30.',
     orc_transfusion: 'Az életlopásból megmaradó felesleges gyógyítás 30%-át a legközelebbi, legfeljebb 80 távolságra lévő sérült szövetséges kapja.',
     orc_siege_loot: 'Minden lerombolt ellenséges toronyért egy saját épülettípust fejleszthetsz egy szinttel, legfeljebb a 4. szintig. Minden példánya fejlődik. A korábbi toronyrombolásokért is jár.',
-    orc_hunt: 'Ellenség megölésekor a Warglovas azonnal újabb lándzsát dob. A Lándzsazáporral együtt is csak egy új dobás jár ugyanazért az ölésért.'
+    orc_warg_hunt: 'A Warglovas ölés után újabb lándzsát dob egy hatótávon belüli ellenségre.'
   };
   for (const item of runtime.LEGENDARY) if (descriptions[item.id]) item.description = descriptions[item.id];
   const blessing = runtime.NORMAL.find(x => x.id === 'orc_blessing');

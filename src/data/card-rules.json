@@ -1,4 +1,5 @@
 {
+  "orc_warg_hunt": "Közelharci és lándzsával szerzett ölés is indíthatja. A dobáshoz élő Warglovas és hatótávon belüli ellenség szükséges. Egy ölés egyszer indít extra dobást.",
   "frugal_training": "Minden felvétel a már csökkentett árra hat.",
   "orc_bleed": "A Vérzés másodpercenként az értékével sebez, majd 1-gyel csökken.",
   "orc_spear_crit": "Minden teljes 100% kritikus esély duplázza a sebzést; a maradék újabb duplázás esélye.",

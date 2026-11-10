@@ -57,6 +57,10 @@ export function initializeUndeadCombat(R) {
       context = prev;
     }
   };
+  R.resolveTowerProjectile=(target,damage)=>{
+    if(R.MP.enabled&&R.MP.role==='guest')return 0;
+    return withSource({source:null,attack:true,ranged:true,kind:'tower'},()=>R.damageUnit(target,damage,'physical'));
+  };
   installDarkTowers(R, withSource);
   const near = (u, side, radius) => {
     const found = [];

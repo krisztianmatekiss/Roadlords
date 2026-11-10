@@ -136,25 +136,19 @@ export function initializeCityTowerCommand(runtime) {
     return towerComputedStats(t);
   };
   runtime.updateTowers = function (dt) {
+    if(runtime.MP.enabled&&runtime.MP.role==='guest')return;
     for (const t of runtime.towers) {
       if (!t.alive) continue;
       const c = runtime.cityForSide(t.side),
         st = towerComputedStats(t);
       if (st.regen) t.hp = Math.min(t.maxHp, t.hp + st.regen * dt);
       t.cooldown = (t.cooldown || 0) - dt;
-      const mainTargets = t.cooldown <= 0 ? runtime.nearestTowerTargets(t.side, t.lane, st.range, 1 + st.extraProjectiles) : [];
+      const mainTargets = t.cooldown <= 0 ? runtime.towerProjectileTargets(t, st.range, 1 + st.extraProjectiles) : [];
       if (t.cooldown <= 0 && mainTargets.length) {
         const shots = 1 + st.extraProjectiles;
         for (let i = 0; i < shots; i++) {
           const target = mainTargets[Math.min(i, mainTargets.length - 1)];
-          const pseudo = {
-            lane: t.lane,
-            offset: t.lateral || 0,
-            side: t.side,
-            key: 'archer'
-          };
-          runtime.addProjectile(pseudo, target, 'arrow');
-          runtime.damageUnit(target, st.damage, 'physical');
+          runtime.queueTowerProjectile(t, target, st.damage);
         }
         t.cooldown = st.cooldown;
       }
@@ -166,19 +160,11 @@ export function initializeCityTowerCommand(runtime) {
         length: guardCount
       }, (_, i) => i).some(i => !(t.guardCooldowns[i] > 0));
       if (!guardReady) continue;
-      const guardTargets = runtime.nearestTowerTargets(t.side, t.lane, st.guardRange, guardCount);
-      if (!guardTargets.length) continue;
       for (let i = 0; i < guardCount; i++) {
         if (t.guardCooldowns[i] > 0) continue;
-        const target = guardTargets[Math.min(i, guardTargets.length - 1)];
-        const pseudo = {
-          lane: t.lane,
-          offset: (t.lateral || 0) + (i - 1) * 6,
-          side: t.side,
-          key: 'archer'
-        };
-        runtime.addProjectile(pseudo, target, 'arrow');
-        runtime.damageUnit(target, st.guardDamage, 'physical');
+        const target = runtime.towerProjectileTargets(t, st.guardRange, 1)[0];
+        if(!target)break;
+        runtime.queueTowerProjectile(t, target, st.guardDamage, (i-1)*6);
         t.guardCooldowns[i] = st.guardCooldown;
       }
     }

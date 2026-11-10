@@ -1,3 +1,4 @@
+import { installTowerProjectiles } from '../combat/tower-projectiles.js';
 import { initializeFactionRedesign } from '../factions/redesign.js';
 import { initializeUndeadTerritoryLegends } from '../factions/undead/territory-legends.js';
 import { initializeUndeadConvergence } from '../factions/undead/convergence.js';
@@ -287,6 +288,7 @@ export function createGame() {
   initializeUndeadArt(runtime);
   initializeHumanMapArtwork(runtime);
   initializeCombatRoadIntegration(runtime);
+  installTowerProjectiles(runtime);
   initializeUndeadCombat(runtime);
   initializeUndeadExpansion(runtime);
   initializeUndeadUi(runtime);

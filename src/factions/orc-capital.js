@@ -37,7 +37,7 @@ export function initializeFactionsOrcCapital(runtime) {
     id: 'spear_rain',
     name: 'Lándzsazápor',
     icon: '➶',
-    description: 'A nyitó lándzsa sebzése megduplázódik: 60 → 120. Ha megöli a célpontot, azonnal újabb lándzsát dob egy hatótávon belüli ellenségre. A sorozat addig tart, amíg minden dobás öl.'
+    description: 'A lándzsadobások sebzése megduplázódik: 60 → 120. Ha a lándzsa megöli a célpontot, azonnal újabb lándzsát dob egy hatótávon belüli ellenségre. A sorozat addig tart, amíg minden dobás öl.'
   }, {
     id: 'pack',
     name: 'Csordaszellem',

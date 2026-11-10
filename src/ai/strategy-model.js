@@ -24,7 +24,7 @@ const BRANCH_LINKS = {
   veteran_army:{features:['elite']},monsters:{features:['summon']},ruthless:{features:['training']},
 };
 const FEATURE_PARTNERS = {
-  territory:['territory','revive','flank'],poison:['poison','death'],
+  territory:['territory','revive','flank'],poison:['poison','death'],bleed:['bleed','attack'],curse:['curse','attack'],
   summon:['summon','elite','death'],revive:['revive','death','lifesteal'],
   charge:['charge','burst','flank'],elite:['elite','training'],
   burst:['burst','charge'],amplify:['amplify','burst','shield','choices'],
@@ -37,7 +37,7 @@ export function installAiStrategyModel(R) {
   R.aiStrategyDescriptor = (c,o) => {
     if(['building','building_upgrade','building_branch'].includes(o.kind)){
       const m=BUILDING_MECHANICS[o.id]||{},unit=R.BUILDINGS[o.id]?.unit,link=BRANCH_LINKS[o.branch]||{};
-      return {units:link.units || (unit?[unit]:[]),features:unique([...(m.features||[]),...(unit?UNIT_FEATURES[unit]||[]:[]),...(link.features||[])]),needs:link.needs||[],
+      return {units:link.units || (unit?[unit]:[]),features:unique([...(m.features||[]),...(unit?R.aiUnitMechanics(c,unit):[]),...(link.features||[])]),needs:link.needs||[],
         needsUnits:o.id==='und_bone_forge'?['und_skeleton','und_skeleton_archer']:[]};
     }
     return {units:cardTargets(R,o),features:CONDITIONAL_EFFECTS[o.id]?.features||[],needs:[]};

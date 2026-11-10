@@ -1,4 +1,13 @@
-# Roadlords · V4.66.1
+# Roadlords · V4.67.0
+
+## V4.67.0 – Becsapódó toronylövések és feltételes lapértékelés
+
+- A tornyok és a Toronyőrség nyilai a harci óra szerinti becsapódáskor sebeznek; a vendég ugyanazokat a repülő nyilakat látja. A kilőtt nyíl a torony pusztulása után is célba érhet.
+- A meglévő Vérszomjas vadászat külön belső azonosítót kapott a Vadászháztól, így a kártya és a lexikon nem élelemtermelést ír. Lándzsazápor: lándzsával szerzett ölésből folytatódó sorozat; a legendás közelharci ölésből is indít dobást. Egy ölés egyszer indít extra dobást.
+- Az AI tényleges Vérzés-, Méreg-, Átok- és életlopásforrásokat vizsgál a hozzájuk kötött lapoknál. A csupán feloldott lehetőségek kisebb jövőbeli értéket kapnak. A Warg két meglévő útjának közös és eltérő előnyét külön értékeli.
+- Új legendás nem került be. A toronysebzés, lövésköz és hatótáv változatlan. Multiplayer szabályverzió: 19.
+
+Részletek: [a három javítás](docs/combat-repairs-4.67.md).
 
 ## V4.66.1 – Kétszeres toronyhatótáv
 

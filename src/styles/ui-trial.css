@@ -9,6 +9,7 @@ html body.ui-trial #app .topLeftCluster .res b{font-size:12px!important}
 html body.ui-trial #app .topLeftCluster .res small{font-size:10px!important}
 html body.ui-trial #app>.topbar>.run{grid-row:1!important;grid-column:2!important;gap:5px!important}
 html body.ui-trial #app>.war{grid-column:2;grid-row:2;min-width:0!important;min-height:0!important;overflow:auto!important}
+html body.ui-trial #demolitionTool{left:calc(var(--trial-sidebar-width) + 12px);bottom:calc(var(--trial-line-height) + 24px)}
 html body.ui-trial #app .roadWorld .gate{height:calc(clamp(156px,8.13vw,312px)*var(--trial-world-scale,1))!important;width:calc(clamp(34px,1.77vw,68px)*var(--trial-world-scale,1))!important}
 html body.ui-trial #app .roadWorld .gate.right{right:calc(clamp(-58px,-1.51vw,-29px)*var(--trial-world-scale,1))!important}
 html body.ui-trial #app .roadWorld .gate.left{left:calc(clamp(-58px,-1.51vw,-29px)*var(--trial-world-scale,1))!important}

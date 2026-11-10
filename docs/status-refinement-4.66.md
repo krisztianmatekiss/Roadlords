@@ -58,3 +58,10 @@ Helyi ellenőrzés: a 68 fájlból álló teljes böngészőteszt-készlet lefut
 Az új balansszámokra frissített három elvárás után a kapcsolódó tesztek is sikeresek.
 A végső build célzott újrafuttatása a 32 új állapot-/balanszellenőrzést,
 a tömegcsatát, az egységbalance-t és a korábbi balance-szabályokat is ellenőrizte.
+
+
+GitHub-ellenőrzés: [teljes build és tesztcsomag](https://github.com/krisztianmatekiss/Roadlords/actions/runs/42802627846).
+A Pages első publikálása időtúllépéssel leállt; a változatlan, ellenőrzött archívum
+[külön újraközzététele sikeres](https://github.com/krisztianmatekiss/Roadlords/actions/runs/42806309969).
+A normál kiadási workflow most a támogatott 10 perces időkorláttal dolgozik,
+és sikertelen publikálás után egyszer automatikusan újrapróbálkozik.

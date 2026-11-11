@@ -51,20 +51,25 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.roadWar.scrollLeft=0;});await p.waitForTimeout(80);
   check('Returning to the left city does not replay a hidden pick',await p.locator('#playerPickReveal').count()===0);
   const game=await p.evaluate(async()=>{
-   const R=__ROADLORDS_RUNTIME__,random=Math.random;let seed=7;
+   const R=__ROADLORDS_RUNTIME__,random=Math.random,deployed={player:false,enemy:false};let seed=7;
    Math.random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
    try{await R.startSpectator({left:'undead',right:'orc'});R.state.running=true;
-    // Economic openings and the long road do not promise contact by minute
-    // four. Keep real deployment, then wait for actual combat with a hard bound.
-    for(let n=0;n<6000&&!R.state.ended&&(n<2400||R.ROAD.metrics.damage<=0);n++)R.tick(.1);
+    // Tower damage can start before the other AI deploys. Observe both real
+    // armies within the existing hard bound; surviving at the final instant is
+    // not a prerequisite for having deployed successfully.
+    for(let n=0;n<6000&&!R.state.ended&&(n<2400||R.ROAD.metrics.damage<=0||!deployed.player||!deployed.enemy);n++){
+     R.tick(.1);
+     if(!deployed.player||!deployed.enemy)for(const u of R.state.units)if(u.alive)deployed[u.side]=true;
+    }
    }finally{Math.random=random;}
    if(R.state.running)R.$('#pauseBtn').click();R.updateHud();R.renderBattle(0);
    const visibleBuildings=[...document.querySelectorAll('#playerGrid .building')];
    const leftRendered=visibleBuildings.length===R.P.buildings.length&&R.P.buildings.every(b=>visibleBuildings.some(el=>el.dataset.id===b.id&&el.querySelector('.blv')?.textContent===`L${b.level}`&&el.style.gridRowStart===String(b.row+1)&&el.style.gridColumnStart===String(b.col+1)));
    const first=visibleBuildings[0];R.updateHud();R.updateHud();
-   return {leftRendered,stableDom:first===document.querySelector('#playerGrid .building'),time:R.state.time,left:{buildings:R.P.buildings.length,picks:R.P.pickCount,trained:R.P._matchStats?.unitProducedTotal||0,deployed:R.state.units.filter(u=>u.side==='player'&&u.alive).length},right:{buildings:R.E.buildings.length,picks:R.E.pickCount,trained:R.E._matchStats?.unitProducedTotal||0,deployed:R.state.units.filter(u=>u.side==='enemy'&&u.alive).length},damage:R.ROAD.metrics.damage,error:R.state.lastRuntimeErrorV4965};
+   return {leftRendered,stableDom:first===document.querySelector('#playerGrid .building'),time:R.state.time,left:{everDeployed:deployed.player,buildings:R.P.buildings.length,picks:R.P.pickCount,trained:R.P._matchStats?.unitProducedTotal||0,deployed:R.state.units.filter(u=>u.side==='player'&&u.alive).length},right:{everDeployed:deployed.enemy,buildings:R.E.buildings.length,picks:R.E.pickCount,trained:R.E._matchStats?.unitProducedTotal||0,deployed:R.state.units.filter(u=>u.side==='enemy'&&u.alive).length},damage:R.ROAD.metrics.damage,error:R.state.lastRuntimeErrorV4965};
   });report.game=game;
-  check('Both independent AIs actually build, choose, train and deploy through the real game loop',game.time>180&&[game.left,game.right].every(c=>c.buildings>=4&&c.picks>4&&c.trained>0&&c.deployed>0)&&!game.error);
+  if(![game.left,game.right].every(c=>c.everDeployed))console.error('Spectator progress:',JSON.stringify(game));
+  check('Both independent AIs actually build, choose, train and deploy through the real game loop',game.time>180&&[game.left,game.right].every(c=>c.buildings>=4&&c.picks>4&&c.trained>0&&c.everDeployed)&&!game.error);
   check('Left AI buildings, positions and levels appear without a manual full redraw',game.leftRendered);
   check('Unchanged HUD updates preserve existing city DOM instead of rebuilding it',game.stableDom);
   check('The two armies fight with actual timed attack damage',game.damage>0);

@@ -5,7 +5,7 @@ export function initializeProgressionRerolls(runtime) {
     if (!c || runtime.P.rerolls <= 0) return;
     runtime.P.rerolls--;
     runtime.state.banMode = false;
-    c.opts = runtime.makeChoiceOptions(runtime.P, c.source, c.tier, c.subtype);
+    c.opts = runtime.makeChoiceOptions(runtime.P, c.source, c.tier, c.subtype, c.opts.map(runtime.choiceKey), c.opts.map(o=>o.rarity));
     runtime.renderChoiceContext();
     runtime.toast('Újrasorsolás felhasználva.');
   };

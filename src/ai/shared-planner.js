@@ -187,7 +187,7 @@ export function installSharedAiPlanner(R) {
     ctx.successors.set(type,discounted); return discounted;
   }
   function scoreChoice(o, ctx) {
-    const signature = R.choiceKey(o);
+    const signature = `${R.choiceKey(o)}:${o.rarity || ''}`;
     if (ctx.options.has(signature)) return ctx.options.get(signature);
     const {c,metrics} = ctx;
     let score,readiness=1;
@@ -249,7 +249,7 @@ export function installSharedAiPlanner(R) {
     // Estimate the improvement from an entire same-tier reroll pool. A good
     // unseen card alone is insufficient: account for its chance of appearing.
     const pool = tier==='legendary'?R.eligibleLegendary(ctx.c).map(o=>({...o,kind:'legendary'})):
-      tier==='common'?R.eligibleNormal(ctx.c).map(o=>({...o,kind:'normal'})):
+      tier==='common'?[...new Set(options.map(o=>o.rarity || R.upgradeCatalog.option(o.id).rarity))].flatMap(r=>R.normalRarityPool(ctx.c,r)):
       subtype==='unlock'?R.buildingUnlockPool(ctx.c):R.buildingUpgradePool(ctx.c);
     const used=new Set(options.map(R.choiceKey)), remaining=pool.filter(o=>!used.has(R.choiceKey(o)));
     if (ctx.c.rerolls>0 && remaining.length && source!=='start') {
@@ -260,9 +260,24 @@ export function installSharedAiPlanner(R) {
         const bestProbability=probability*n/(scores.length-i);
         expected+=bestProbability*scores[i]; probability-=bestProbability;
       }
+      if(tier==='common') {
+        // Rerolls keep each slot's edition. Estimate the best offered value
+        // from those pools, rather than assuming every reroll can find Rare.
+        const distributions=options.map(o=>{
+          const candidates=R.normalRarityPool(ctx.c,o.rarity || R.upgradeCatalog.option(o.id).rarity);
+          const fresh=candidates.filter(x=>!used.has(R.choiceKey(x)));
+          return rank(fresh.length?fresh:candidates).map(x=>x.score);
+        }).filter(a=>a.length);
+        const values=[...new Set(distributions.flat())].sort((a,b)=>a-b);
+        let previous=0;expected=0;
+        for(const value of values){
+          const cumulative=distributions.reduce((p,arr)=>p*arr.filter(s=>s<=value).length/arr.length,1);
+          expected+=(cumulative-previous)*value;previous=cumulative;
+        }
+      }
       const reserveCost=ctx.c.rerolls<=2?5:ctx.c.rerolls<=5?3:1.5;
       if(expected>ranked[0].score+reserveCost) {
-        const replacement=R.makeChoiceOptions(ctx.c,source,tier,subtype,[...used]);
+        const replacement=R.makeChoiceOptions(ctx.c,source,tier,subtype,[...used],options.map(o=>o.rarity));
         if(replacement.length){ctx.c.rerolls--;options=replacement;ranked=rank(options);}
       }
     }
@@ -271,7 +286,7 @@ export function installSharedAiPlanner(R) {
       if(worst.score<.5&&relevance<.15&&R.activeSpawners(ctx.c).length>=3) {
         ctx.c.banned.add(worst.o.id);ctx.c.bans--;
         const keep=options.filter(o=>R.choiceKey(o)!==R.choiceKey(worst.o));
-        const replacements=R.makeChoiceOptions(ctx.c,source,tier,subtype,keep.map(R.choiceKey));
+        const replacements=R.makeChoiceOptions(ctx.c,source,tier,subtype,keep.map(R.choiceKey),[worst.o.rarity]);
         const replacement=replacements.find(o=>!keep.some(k=>R.choiceKey(k)===R.choiceKey(o)));
         options=replacement?[...keep,replacement]:keep;ranked=rank(options);
       }

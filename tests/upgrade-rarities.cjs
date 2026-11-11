@@ -1,0 +1,87 @@
+const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+(async()=>{
+ const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox','--disable-dev-shm-usage']});
+ const report={checks:[],errors:[]},check=(name,ok)=>{assert(ok,name);report.checks.push(name);console.log('PASS',name)};
+ try{
+  const p=await browser.newPage({viewport:{width:1920,height:1080}});await p.route('https://**/*',r=>r.abort());p.on('pageerror',e=>report.errors.push(e.message));
+  await p.goto(process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/');await p.waitForFunction(()=>window.__ROADLORDS_RUNTIME__);
+  const logic=await p.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,catalog=R.upgradeCatalog,out={};
+   R.state.running=false;R.state.modal=false;R.state.startChoices=0;R.state.pendingChoices=[];
+   const reset=race=>{R.roadResetCity(R.P,race);R.P.legends=new Set();R.P.normal={};R.P.normalRarities={};R.recomputeCity(R.P,false);return R.P;};
+   const add=(type,level)=>{const b={id:'rarity-'+type,type,row:0,col:0,rotation:0,level,progress:0};R.P.buildings.push(b);R.P.levels[type]=level;return b;};
+   out.complete=R.NORMAL.length===87&&R.NORMAL.every(d=>Object.keys(catalog.editions(d.id)).length>0);
+   out.selective=Object.keys(catalog.editions('orc_lifesteal')).join()==='rare'&&Object.keys(catalog.editions('ghost_common_dodge')).join()==='common,rare'&&Object.keys(catalog.editions('orc_bleed')).join()==='common';
+   reset('human');add('barracks',1);
+   out.levels=[];
+   for(let level=1;level<=4;level++){
+    R.P.levels.barracks=level;const b=R.P.buildings.find(b=>b.type==='barracks');b.level=level;
+    out.levels.push(['common','uncommon','rare'].map(r=>R.normalRarityPool(R.P,r).some(o=>o.id==='swordsman_hp')));
+    out.levels.at(-1).push(R.eligibleLegendary(R.P).some(o=>o.id==='sword_execute'));
+   }
+   reset('orc');const war=add('orc_war',3);
+   const before=R.statsFor(R.P,{key:'orc_warrior'}).hp;
+   const copies=['common','uncommon','rare'].map(r=>catalog.option('orc_warrior_hp',r));
+   out.previews=copies.map(o=>R.upgradeCopyPreview(R.P,o).description);
+   for(const o of copies)R.applyChoice(R.P,o);
+   out.mixed={hp:R.statsFor(R.P,{key:'orc_warrior'}).hp,before,strength:R.P.normal.orc_warrior_hp,count:catalog.count(R.P),owned:catalog.owned(R.P).map(x=>[x.option.rarity,x.count]),events:R.P.pickEvents?.map(e=>e.rarity)};
+   const stats=R.mpStrategy(R.P),snap=R.mpRevive(R.mpCitySnapshot(R.P));
+   out.network=JSON.stringify(stats.normalRarities)===JSON.stringify(snap.normalRarities)&&catalog.count(snap)===3&&snap.normal.orc_warrior_hp===4.5&&R.gameRulesVersion===22;
+   R.renderRelics();out.deck=[...R.$$('#relicList [data-relic="orc_warrior_hp"]')].map(c=>({rarity:c.querySelector('.cardFace').dataset.upgradeRarity,count:c.querySelector('.relicOwnedCount').textContent}));
+   R.P.rerolls=2;const options=copies.map((o,i)=>catalog.option(['orc_warrior_hp','orc_warrior_dmg','orc_warrior_hp'][i],o.rarity));
+   R.state.choiceContext={source:'timer',tier:'common',subtype:null,opts:options,remaining:1};
+   R.rerollCurrentChoice();out.reroll=R.state.choiceContext.opts.slice(0,3).map(o=>o.rarity);
+   // Restore actual prerequisites after each sample; no simulator-only grants.
+   R.state.choiceContext.opts=[catalog.option('orc_warrior_hp','common'),catalog.option('orc_warrior_dmg','uncommon'),catalog.option('orc_lifesteal','rare')];
+   R.P.bans=2;R.banChoiceAt(2);
+   out.ban=R.P.banned.has('orc_lifesteal')&&R.state.choiceContext.opts[2]?.rarity==='rare'&&['common','uncommon','rare'].every(r=>!R.normalRarityPool(R.P,r).some(o=>o.id==='orc_lifesteal'));
+   reset('undead');R.P.legends.add('specialization');
+   const savedRandom=Math.random;Math.random=()=>0;
+   try{R.applyChoice(R.P,catalog.option('und_spawn_ward','common'));R.applyChoice(R.P,catalog.option('und_spawn_ward','common'));}finally{Math.random=savedRandom;}
+   out.specialization=R.P.normal.und_spawn_ward===1.5&&catalog.count(R.P)===3;
+   reset('undead');out.early=R.makeChoiceOptions(R.P,'timer','common',null,[],['common','common','common','common']).map(o=>o.id);
+   add('und_ghost_spawner',3);out.ghost=catalog.option('ghost_common_dodge','rare');out.ghostPreview=R.upgradeCopyPreview(R.P,out.ghost).rows;
+   const old=Math.random;let seed=471;
+   Math.random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
+   try{out.distribution={common:0,uncommon:0,rare:0};for(let i=0;i<20000;i++)out.distribution[R.rollNormalRarity()]++;}finally{Math.random=old;}
+   out.sampling=[];
+   for(const race of ['human','orc','undead']){
+    reset(race);for(let i=0;i<40;i++){const offer=R.makeChoiceOptions(R.P,'timer','common');if(new Set(offer.map(o=>o.id)).size!==offer.length||offer.some(o=>!catalog.requirements.allowed(R.P,o)||!R.NORMAL.find(d=>d.id===o.id).eligible(R.P)))out.sampling.push(race);}
+   }
+   reset('undead');out.vampire=R.statsFor(R.P,{key:'und_vampire'}).hp;
+   out.soulWard=catalog.option('und_spawn_ward','common').description;
+   add('und_well',3);out.wellBefore=R.eligibleLegendary(R.P).some(o=>o.id==='und_compact_wells');
+   R.P.levels.und_well=4;R.P.buildings.find(b=>b.type==='und_well').level=4;out.wellAfter=R.eligibleLegendary(R.P).some(o=>o.id==='und_compact_wells');
+   out.progression=R.LEGENDARY.find(o=>o.id==='high_keep').eligible({...R.P,race:'human',levels:{keep:2},buildings:[{type:'keep',level:2}]});
+   return out;
+  });report.logic=logic;
+  check('All 87 normal effects have selective editions, including Rare-only Orc lifesteal and 5/10-point Ghost dodge',logic.complete&&logic.selective&&logic.ghost.description.includes('+10 százalékpont'));
+  check('A real L1/L2/L3/L4 producer unlocks Common/Uncommon/Rare/unit relic respectively',JSON.stringify(logic.levels)===JSON.stringify([[true,false,false,false],[true,true,false,false],[true,true,true,false],[true,true,true,true]]));
+  check('Mixed editions grant actual +10/+15/+20% HP while counting three acquired cards',logic.mixed.strength===4.5&&logic.mixed.count===3&&Math.abs(logic.mixed.hp/logic.mixed.before-1.45)<.01&&logic.mixed.owned.length===3);
+  check('Deck variants, full snapshots, strategy messages and pick flights preserve rarity and real card counts',logic.network&&logic.deck.length===3&&logic.deck.every(x=>x.count==='×1')&&logic.mixed.events.join()==='common,uncommon,rare');
+  check('Reroll keeps slot editions; banning removes every edition without promoting rarity',logic.reroll.join()==='common,uncommon,rare'&&logic.ban);
+  check('Specialization duplicates the chosen strength, including a half-strength Common shield',logic.specialization);
+  check('Early Undead can still receive four distinct general Common cards',logic.early.length===4&&new Set(logic.early).size===4&&logic.soulWard.includes('4%'));
+  check('Offers honor real prerequisites without duplicate effects',!logic.sampling.length);
+  check('Normal rarity distribution is 70/25/5 without changing relic progression',Object.entries({common:.7,uncommon:.25,rare:.05}).every(([k,v])=>Math.abs(logic.distribution[k]/20000-v)<.012));
+  check('Vampire base HP is 440; building relics require L4; level-granting progression cards remain obtainable',logic.vampire===440&&!logic.wellBefore&&logic.wellAfter&&logic.progression);
+  await p.locator('.menuBrand').click();await p.waitForTimeout(500);await p.locator('#rlOpenCodex').click();
+  await p.locator('#codexRace').selectOption('orc');await p.locator('#rlCodexPanel [data-tab="common"]').click();
+  const hp=p.locator('#rlCodexPanel [data-codex-upgrade="orc_warrior_hp"]');await hp.locator('[data-codex-rarity="rare"]').click();
+  check('Codex uses the same Rare +20% description, footer and L3 prerequisite',await hp.evaluate(c=>c.querySelector('.cardFace').dataset.upgradeRarity==='rare'&&c.querySelector('.rlCodexContent').textContent.includes('+20%')&&c.querySelector('.cardFooter').textContent==='RITKA'&&c.querySelector('.upgradeRequirement').textContent.includes('L3')));
+  check('Rare-only lifesteal has one visible edition at its actual +3-point strength',await p.locator('#rlCodexPanel [data-codex-upgrade="orc_lifesteal"]').evaluate(c=>c.querySelectorAll('[data-codex-rarity]').length===1&&c.querySelector('.rlCodexContent').textContent.includes('+3')&&c.querySelector('.cardFace').dataset.upgradeRarity==='rare'));
+  const geometry=[];
+  for(const race of ['orc','undead'])for(const size of [{width:1440,height:900},{width:2840,height:2180}]){
+   await p.setViewportSize(size);await p.locator('#codexRace').selectOption(race);await p.waitForTimeout(150);
+   const result=await p.evaluate(()=>[...document.querySelectorAll('#rlCodexPanel .cardFace')].map(c=>{
+    const title=c.querySelector('.rlCodexTitle').getBoundingClientRect(),body=c.querySelector('.rlCodexContent'),b=body.getBoundingClientRect(),art=(c.querySelector('.cardScene')||c.querySelector('.factionArtwork')).getBoundingClientRect(),r=c.getBoundingClientRect();
+    return {frame:!!c.querySelector('.factionCardFrame'),floating:getComputedStyle(c.querySelector('.cardTextBackdrop')).display,fit:body.scrollHeight<=body.clientHeight+2&&body.scrollWidth<=body.clientWidth+2,geometry:title.bottom<art.top+2&&art.bottom<b.top+2&&b.bottom<r.bottom-5};
+   }));geometry.push({race,...size,results:result});
+  }
+  report.geometry=geometry;
+  check('Orc and Undead titles, illustrations and live text fit their integrated frames at 1440 and 2840px',geometry.every(row=>row.results.length&&row.results.every(c=>c.frame&&c.floating==='none'&&c.fit&&c.geometry)));
+  await p.setViewportSize({width:1920,height:1080});await p.locator('#codexRace').selectOption('orc');await hp.scrollIntoViewIfNeeded();await p.screenshot({path:'artifacts/rarities-orc.png'});
+  await p.locator('#codexRace').selectOption('undead');await p.locator('#rlCodexPanel [data-codex-upgrade="ghost_common_dodge"] [data-codex-rarity="rare"]').click();await p.locator('#rlCodexPanel [data-codex-upgrade="ghost_common_dodge"]').scrollIntoViewIfNeeded();await p.screenshot({path:'artifacts/rarities-undead.png'});
+  check('No runtime errors',!report.errors.length);
+ }finally{fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/upgrade-rarities.json',JSON.stringify(report,null,2));await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1});

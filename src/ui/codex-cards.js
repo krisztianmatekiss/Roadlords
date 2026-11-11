@@ -29,17 +29,17 @@ const BUILDING_RULES = {
 const ruleDetails = text => text ? `<details class="lexBranches"><summary>Részletek</summary><p>${effectText(text)}</p></details>` : '';
 
 export function createCodexCards(R) {
-  const levels = new Map();
+  const levels = new Map(), rarities = new Map();
   const { metrics, costText, cityFor } = R.cardBuildingCopy;
   const undead = () => window.__ROADLORDS_UNDEAD__;
   const definitions = (race, type) => race === 'undead' ? undead().buildings[type] : R.BUILDINGS[type];
   const branches = (race, type) => race === 'undead' ? definitions(race, type).branches
     : race === 'orc' && type === 'keep' ? window.__ROADLORDS_ORCS__.keepBranches : R.V4_BRANCHES[type] || [];
-  function face({ id, kind, race, name, category, art, body, meta = '', price = '', footprint = '', mark = '', metaInBody = false }) {
+  function face({ id, kind, race, name, category, art, body, meta = '', price = '', footprint = '', mark = '', rarity = null, metaInBody = false }) {
     const src = cardFrameUrl(id, kind, race);
     const unitKey=kind==='unit'?id:kind==='normal'?R.PICK_UNIT_IMAGES[id]:null;
-    const caption=race==='human'?`<span class="cardFooter">${kind==='legendary'?'LEGENDÁS':kind==='normal'?'GYAKORI':kind==='unit'?'EGYSÉG':mark?'EGYEDI ÉPÜLET':'ÉPÜLET'}</span>`:'';
-    return symbolizeResourceHtml(`<div class="cardFace illustratedCard ${src ? 'hasCardFrame' : ''}" data-race="${race}" data-frame="${category || 'support'}">${frameImage(src)}${upgradeScene(R,id,kind,race)}${unitKey?unitTraitIcons(R,unitKey,null,'cardPortraitTraits'):''}${cardTextBackdrop}
+    const caption=`<span class="cardFooter">${kind==='legendary'?'LEGENDÁS':kind==='normal'?R.upgradeCatalog.rarities[rarity].label:kind==='unit'?'EGYSÉG':mark?'EGYEDI ÉPÜLET':'ÉPÜLET'}</span>`;
+    return symbolizeResourceHtml(`<div class="cardFace illustratedCard ${src ? 'hasCardFrame' : ''}" data-race="${race}" data-frame="${category || 'support'}"${rarity ? ` data-upgrade-rarity="${rarity}"` : ''}>${frameImage(src,false,race)}${upgradeScene(R,id,kind,race)}${unitKey?unitTraitIcons(R,unitKey,null,'cardPortraitTraits'):''}${cardTextBackdrop}
       <header class="rlCodexCardHead"><span class="rlCodexIcon">${src ? '' : art}${footprint}</span><div class="rlCodexTitle"><h3>${esc(name)}</h3></div></header>
       ${price}${mark}${metaInBody ? '' : `<div class="rlCodexMeta">${meta}</div>`}<div class="rlCodexContent">${body}${metaInBody ? `<div class="productionMeta">${meta}</div>` : ''}</div>${caption}</div>`,R,race);
   }
@@ -72,12 +72,13 @@ export function createCodexCards(R) {
       ${selected?`<p class="deckBuildingBranch"><b>${esc(selected.name)}</b> · ${effectText(selected.description)}</p>`:''}${extraRules(type,race,level)}</article>`;
   }
   function upgrade(item, kind, race, city = null) {
+    if(kind==='normal') item=R.upgradeCatalog.option(item.id,item.rarity || rarities.get(item.id));
     const key = R.PICK_UNIT_IMAGES[item.id], src = R.PICK_IMAGES[item.id];
     const art = key && R.UNITS[key] ? R.unitImageTag(key, 'lexUnitImg') : src ? `<img src="${src}" alt="" loading="lazy">` : esc(item.icon || '✦');
     const reference=city || cityFor(race,'keep',1)[0];
     const preview=R.upgradeCopyPreview(reference,{...item,kind});
     const changes=preview?.rows.length ? `<div class="upgradeComparison" aria-label="${city ? 'Jelenlegi hatás' : 'Első felvétel változása'}">${preview.rows.map(row=>`<span class="upgradeRow"><span class="upgradeMetric">${esc(upgradeMetricLabel(row.label))}</span><b class="upgradeValues">${city ? `<span class="upgradeCurrent">${esc(row.before)}</span>` : `<span class="upgradeBefore">${esc(row.before)}</span> → <span class="upgradeAfter effect-positive">${esc(row.after)}</span>`}</b></span>`).join('')}</div>` : '';
-    return `<article class="rlCodexCard ${kind === 'legendary' ? 'rlLegendCard' : ''}" data-codex-upgrade="${item.id}">${face({id:item.id,kind,race,name:item.name,category:kind === 'legendary' ? 'legendary' : 'common',art,body:`<p>${effectText(item.description)}</p>${changes}`})}${ruleDetails(cardRules[item.id])}</article>`;
+    return `<article class="rlCodexCard ${kind === 'legendary' ? 'rlLegendCard' : ''}" data-codex-upgrade="${item.id}">${face({id:item.id,kind,race,name:item.name,category:kind === 'legendary' ? 'legendary' : 'common',rarity:item.rarity,art,body:`<p>${effectText(item.description)}</p>${changes}`})}${!city && R.upgradeCatalog.requirements.text({...item,kind}) ? `<p class="upgradeRequirement">${esc(R.upgradeCatalog.requirements.text({...item,kind}))}</p>`:''}${kind==='normal'&&!city ? `<nav class="lexRarities" aria-label="Ritkaság">${Object.keys(R.upgradeCatalog.editions(item.id)).map(r=>`<button type="button" data-codex-rarity="${r}" aria-pressed="${r===item.rarity}" style="--rarity-color:${R.upgradeCatalog.rarities[r].color}">${R.upgradeCatalog.rarities[r].label}</button>`).join('')}</nav>`:''}${ruleDetails(cardRules[item.id])}</article>`;
   }
   function unit(key, u, race) {
     const copy=UNIT_COPY[key] || {role:'Harci egység',ability:u.description || ''};
@@ -89,5 +90,5 @@ export function createCodexCards(R) {
   function selectLevel(article, level) {
     levels.set(`${article.dataset.race}:${article.dataset.codexBuilding}`, Number(level));
   }
-  return { building, unit, upgrade, selectLevel };
+  return { building, unit, upgrade, selectLevel, selectRarity: (id,rarity)=>rarities.set(id,rarity) };
 }

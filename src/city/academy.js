@@ -40,10 +40,7 @@ export function initializeCityAcademy(runtime) {
     return b.level <= 1 ? 1 : b.level === 2 ? 2 : 3;
   }
   function capitalCommonOptions(c) {
-    return runtime.shuffle(runtime.eligibleNormal(c).map(o => ({
-      ...o,
-      kind: 'normal'
-    }))).slice(0, Math.max(1, runtime.choiceCount(c)));
+    return runtime.makeChoiceOptions(c, CAPITAL_SOURCE, 'common');
   }
   function buyCapitalStudy(c, showChoice = true) {
     if (!runtime.hasLeg(c, CAPITAL_STUDIES)) return false;
@@ -87,8 +84,8 @@ export function initializeCityAcademy(runtime) {
         doubleTake: false,
         remaining: 1,
         kicker: 'FŐVÁROS · HADITANULMÁNYOK',
-        title: 'Válassz egy Common fejlesztést',
-        desc: 'Megvásárolt haditanulmány. Csak Common fejlesztések jelennek meg; a vásárlás nem lépteti tovább a normál pick-ciklust.',
+        title: 'Válassz egy fejlesztést',
+        desc: 'Megvásárolt haditanulmány. A fejlesztések ritkasága külön sorsolódik; a vásárlás nem lépteti tovább a normál pick-ciklust.',
         opts: capitalCommonOptions(runtime.P),
         freeRerolls: free,
         freeRerollsMax: free

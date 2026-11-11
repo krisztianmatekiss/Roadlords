@@ -1,3 +1,4 @@
+import { installUpgradeCatalog } from '../progression/upgrade-catalog.js';
 import { installTowerProjectiles } from '../combat/tower-projectiles.js';
 import { initializeFactionRedesign } from '../factions/redesign.js';
 import { initializeUndeadTerritoryLegends } from '../factions/undead/territory-legends.js';
@@ -301,6 +302,7 @@ export function createGame() {
   initializeUndeadConvergence(runtime);
   installUnitCardIllustrations(runtime);
   installArmyCapacity(runtime);
+  installUpgradeCatalog(runtime);
   installSharedAiPlanner(runtime);
   return runtime;
 }

@@ -19,7 +19,7 @@ await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,towers=structuredClone(R.tow
  window.policyFighter=(c,key,d)=>{const u=R.releaseUnit(c,R.makeEntry(c,key));if(!u)throw Error('No fighter '+key);u.lane=R.sideForCity(c)==='player'?d:R.PATH_LENGTH-d;u.roadPrev=u.lane;return u;};
 });
 check('Shared race reset gives Humans 110 wood and preserves Orc and Undead starts',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;
- return policyReset('human').resources.wood===110&&policyReset('orc').resources.wood===90&&policyReset('undead').resources.wood===280&&R.gameRulesVersion===21;
+ return policyReset('human').resources.wood===110&&policyReset('orc').resources.wood===90&&policyReset('undead').resources.wood===280&&R.gameRulesVersion===22;
 }));
 check('Soul Rift is absent from definitions, unlocks, upgrades and strategic anchors',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,c=policyReset('undead');
  return !R.BUILDINGS.und_soul_rift&&!R.UNLOCKABLE.includes('und_soul_rift')&&![...R.buildingUnlockPool(c),...R.buildingUpgradePool(c)].some(o=>o.id==='und_soul_rift')&&!R.aiStrategyAnchors(c).some(p=>p.anchor.id==='und_soul_rift');

@@ -141,7 +141,7 @@ export function initializeCityLibraryAndGuild(runtime) {
     } else runtime.P.rerolls--;
     if (runtime.hasBranch(runtime.P, LIBRARY, LIB_FEVER)) runtime.P.libraryResearchRerolls = Math.min(40, (runtime.P.libraryResearchRerolls || 0) + 1);
     runtime.state.banMode = false;
-    c.opts = c.source === MASTERS_CHOICE ? mastersChoiceOptions(runtime.P) : runtime.makeChoiceOptions(runtime.P, c.source, c.tier, c.subtype);
+    c.opts = c.source === MASTERS_CHOICE ? mastersChoiceOptions(runtime.P) : runtime.makeChoiceOptions(runtime.P, c.source, c.tier, c.subtype, c.opts.map(runtime.choiceKey), c.opts.map(o=>o.rarity));
     runtime.renderChoiceContext();
     runtime.toast(usedFree ? 'Ingyenes újrasorsolás felhasználva.' : 'Újrasorsolás felhasználva.');
   };
@@ -151,7 +151,7 @@ export function initializeCityLibraryAndGuild(runtime) {
     const c = runtime.state.choiceContext,
       o = c?.opts?.[i];
     if (!o || c.tier !== 'common' || o.kind !== 'normal') {
-      runtime.toast('Csak gyakori fejlesztést lehet kitiltani.');
+      runtime.toast('Csak normál fejlesztést lehet kitiltani.');
       return;
     }
     if (runtime.P.bans <= 0) return;
@@ -159,7 +159,7 @@ export function initializeCityLibraryAndGuild(runtime) {
     if (runtime.hasBranch(runtime.P, LIBRARY, LIB_FORBIDDEN)) for(let copy=0;copy<(runtime.townhallPower?.(runtime.P,runtime.buildingOf(runtime.P,LIBRARY)[0])||1);copy++) runtime.applyChoice(runtime.P, o, false);
     runtime.P.banned.add(o.id);
     const used = c.opts.filter((_, j) => j !== i).map(runtime.choiceKey);
-    const replacement = runtime.makeChoiceOptions(runtime.P, c.source, c.tier, c.subtype, used).find(x => !used.includes(runtime.choiceKey(x)) && !runtime.P.banned.has(x.id));
+    const replacement = runtime.makeChoiceOptions(runtime.P, c.source, c.tier, c.subtype, used, [o.rarity]).find(x => !used.includes(runtime.choiceKey(x)) && !runtime.P.banned.has(x.id));
     if (replacement) c.opts[i] = replacement;else c.opts.splice(i, 1);
     runtime.state.banMode = false;
     runtime.renderChoiceContext();

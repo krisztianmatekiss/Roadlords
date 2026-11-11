@@ -1,0 +1,61 @@
+html body .illustratedCard:has(>.factionCardFrame) .cardTextBackdrop { display:none; }
+html body .illustratedCard:has(>.factionCardFrame) .cardScene {
+  left:6.5%!important;top:11.7%!important;width:87%!important;height:46.3%!important;
+  clip-path:polygon(3% 0,97% 0,100% 4%,100% 96%,97% 100%,3% 100%,0 96%,0 4%);
+}
+html body .illustratedCard:has(>.factionCardFrame) .constructionPrice { right:8%;bottom:43%; }
+html body .illustratedCard:has(>.factionCardFrame) .uniqueBuildingMark { top:13.5%;right:8.5%; }
+html body .illustratedCard:has(>.factionCardFrame) .cardPortraitTraits { bottom:43%;left:8%;right:8%; }
+
+html body .cardFace:has(>.factionCardFrame) .rlCodexTitle,
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard:has(>.factionCardFrame) h3,
+html body :is(#buildList .buildcard,.buildCardPreview).illustratedCard:has(>.factionCardFrame) .cardname {
+  left:13%!important;top:1.8%!important;width:74%!important;height:7%!important;
+}
+html body .cardFace:has(>.factionCardFrame) .rlCodexIcon,
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard:has(>.factionCardFrame) .choiceArt.card-media,
+html body :is(#buildList .buildcard,.buildCardPreview).illustratedCard:has(>.factionCardFrame) .cardart {
+  left:6.5%!important;top:11.7%!important;width:87%!important;height:46.3%!important;
+}
+html body .cardFace:has(>.factionCardFrame) .rlCodexContent,
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard:has(>.factionCardFrame) .choiceBody,
+html body :is(#buildList .buildcard,.buildCardPreview).illustratedCard:has(>.factionCardFrame) .cardinfo {
+  left:9%!important;top:63%!important;width:82%!important;height:28.5%!important;
+  background:none!important;border:0!important;box-shadow:none!important;
+}
+html body .illustratedCard:has(>.factionCardFrame) :is(.cardFooter,.choiceFooter) {
+  position:absolute!important;
+  left:13%!important;right:auto!important;width:74%!important;bottom:2%!important;
+  height:3%!important;font-size:2.8cqw!important;text-align:center!important;
+}
+html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard:has(>.factionCardFrame) .choiceFooter {
+  inset:auto 13% 2%!important;width:74%!important;height:3%!important;
+}
+html body :is(#buildList .buildcard,.buildCardPreview).illustratedCard:has(>.factionCardFrame) .cardFooter {
+  inset:auto 13% 2%!important;width:74%!important;height:3%!important;
+}
+html body .illustratedCard:has(>.factionCardFrame) .pickFootprint.inArtwork {
+  left:8%!important;bottom:43%!important;
+}
+html body .illustratedCard:has(>.factionCardFrame) { background:#18211e; }
+html body .illustratedCard:has(>.factionCardFrame)>.cardFrameImage { opacity:0; }
+html body .illustratedCard>.factionCardFrame { position:absolute!important;inset:0;width:100%;height:100%;z-index:3!important;pointer-events:none; }
+html body .illustratedCard>.factionArtwork { position:absolute!important;left:6.5%;top:11.7%;width:87%;height:46.3%;overflow:hidden;z-index:1!important; }
+html body .illustratedCard .factionArtwork>.cardIllustration { position:absolute!important;left:-5.1724%!important;top:-23.888%!important;width:110.345%!important;height:179.856%!important;max-width:none!important;clip-path:none!important;object-fit:fill!important; }
+html body .illustratedCard:has(>.cardScene)>.factionArtwork { display:none; }
+html body .illustratedCard:has(>.factionCardFrame) :is(.rlCodexTitle,h3.cardname,h3,.choiceBody,.cardinfo,.rlCodexContent,.cardFooter,.choiceFooter,.constructionPrice,.uniqueBuildingMark) { z-index:4!important; }
+html body .illustratedCard[data-upgrade-rarity="common"] { --card-border:#ecebe2!important; }
+html body .illustratedCard[data-upgrade-rarity="uncommon"] { --card-border:#6ed58a!important; }
+html body .illustratedCard[data-upgrade-rarity="rare"] { --card-border:#bd8bef!important; }
+html body .illustratedCard[data-upgrade-rarity] :is(.cardFooter,.choiceFooter) { color:var(--card-border)!important;letter-spacing:.08em;font-weight:900; }
+html body .illustratedCard[data-upgrade-rarity]:has(>.humanFrameAccent) .humanFrameAccent { stroke:var(--card-border)!important; }
+.lexRarities { display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:10px 0; }
+.lexRarities button { border:1px solid #526158;background:#131e19;color:var(--rarity-color);border-radius:5px;padding:8px;font:700 12px Georgia,serif;cursor:pointer; }
+.lexRarities button[aria-pressed="true"] { border-color:var(--rarity-color);background:#29352e;box-shadow:0 0 5px #0008; }
+.upgradeRequirement { margin:8px 0 0;text-align:center;color:#b7c3b7;font:14px Georgia,serif; }
+html body .illustratedCard>.factionFrameTexture { position:absolute!important;inset:0;width:100%;height:100%;object-fit:fill;z-index:0!important;pointer-events:none; }
+html body .illustratedCard[data-race="orc"]>.factionFrameTexture { filter:sepia(.5) saturate(.75) brightness(.84); }
+html body .illustratedCard[data-race="undead"]>.factionFrameTexture { filter:grayscale(.65) sepia(.22) hue-rotate(95deg) brightness(.8); }
+/* The original frame has an opaque picture backing. Paint the live artwork
+   above that backing, with faction trim above the artwork. */
+html body .illustratedCard:has(>.factionCardFrame)>.cardScene { z-index:1!important; }

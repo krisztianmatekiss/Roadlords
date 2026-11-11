@@ -70,7 +70,7 @@ export function initializeUiUpgradeCopy(R) {
     if (!normal && kind !== 'legendary') return null;
     const n = normal ? R.countNormal(c, id) : Math.max(Number(c.legendaryStacks?.[id]) || 0, R.hasLeg(c, id) ? 1 : 0);
     const limit = normal ? NORMAL_LIMITS[id] ?? Infinity : LEGEND_LIMITS[id] ?? 1;
-    const next = Math.min(n + 1, limit);
+    const next = Math.min(n + (normal ? R.normalOptionPower?.(option) || 1 : 1), limit);
     const rows = [];
     let context = '';
     if (normal && MODIFIERS[id]) {

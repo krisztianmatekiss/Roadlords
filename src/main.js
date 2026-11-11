@@ -8,6 +8,7 @@ import './styles/choice-layout.css';
 import './styles/cards.css';
 import './styles/build-card-deck.css';
 import './styles/human-cards.css';
+import './styles/faction-cards.css';
 import './styles/balance-update.css';
 import './styles/inspector-windows.css';
 import './styles/demolition-tool.css';

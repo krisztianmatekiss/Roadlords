@@ -61,9 +61,8 @@ export function initializeUiMatchSummary(runtime) {
   }
   function ownedUpgrades(c) {
     const out = [];
-    for (const [id, count] of Object.entries(c.normal || {})) {
-      if (!count) continue;
-      const d = runtime.NORMAL.find(x => x.id === id);
+    for (const {option: d, count} of runtime.upgradeCatalog.owned(c)) {
+      const id=d.id;
       out.push({
         kind: 'common',
         name: d?.name || id,

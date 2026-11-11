@@ -45,7 +45,7 @@ export function installAiEvaluation(R) {
   };
   R.aiProjectChoice = (shadow,o) => {
     if (o.kind === 'building') shadow.unlocked.add(o.id);
-    else if (o.kind === 'normal') shadow.normal[o.id] = (shadow.normal[o.id] || 0) + 1;
+    else if (o.kind === 'normal') shadow.normal[o.id] = (shadow.normal[o.id] || 0) + (R.normalOptionPower?.(o) || 1);
     else if (o.kind === 'legendary') {
       const count = shadow.legendaryStacks?.[o.id] || (shadow.legends.has(o.id) ? 1 : 0);
       shadow.legends.add(o.id);

@@ -20,7 +20,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    function morgue(c){c.buildings.push({id:'test-morgue',type:'und_morgue',level:1,row:3,col:3,rotation:0,progress:0});}
    function own(lane,offset=0,side='player'){return R.isOwnHalf({side,lane,offset});}
    let c=reset();const defs=['und_grave_islands','und_withered_foundations','zombie_leg_half_poison','und_ranged_adaptation','und_fast_poison'].map(id=>R.LEGENDARY.find(o=>o.id===id));
-   const empty=defs.every(o=>!o.eligible(c));morgue(c);const zombie=defs[0].eligible(c)&&defs[2].eligible(c)&&!defs[1].eligible(c);c.legends.add('und_grave_islands');
+   const empty=defs.every(o=>!o.eligible(c));morgue(c);c.levels.und_morgue=4;c.buildings.find(b=>b.type==='und_morgue').level=4;const zombie=defs[0].eligible(c)&&defs[2].eligible(c)&&!defs[1].eligible(c);c.legends.add('und_grave_islands');
    check('Five one-time legendaries require meaningful producers and decay requires access to enemy territory',empty&&zombie&&defs[1].eligible(c)&&defs.every(o=>o.race==='undead'&&!o.repeatable));
    c=reset();c.legends.add('und_grave_islands');dead(c,'und_zombie',5000,40);
    check('A zombie combat death creates a true 8-metre circular island without moving the main boundary',own(5000,40)&&own(5079,40)&&!own(5081,40)&&!own(5000,121)&&!own(5000,40,'enemy')&&R.territoryBoundary()===4800);

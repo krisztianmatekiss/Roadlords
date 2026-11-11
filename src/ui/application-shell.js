@@ -148,7 +148,7 @@ export function installApplicationShell(game) {
     window.__ROADLORDS_VERSION__ = '4.9.88-ai-planner-final-qa';
   })();
   (() => {
-    const R = window.__ROADLORDS__ || {};
+    const R = game;
     const X = window.__ROADLORDS_LEXICON_BRIDGE__ || {};
     const {
       BUILDINGS = {},
@@ -218,11 +218,13 @@ export function installApplicationShell(game) {
     const hotkeys = [[['Q'], 'Mind építési fül'], [['W'], 'Gazdaság fül'], [['E'], 'Hadsereg fül'], [['R'], 'Támogatás fül'], [['1–9'], 'Az adott látható építőkártya kiválasztása'], [['SHIFT'], 'Folyamatos építés ugyanabból az épületből'], [['JOBB KLIKK'], 'Épület forgatása lerakás közben'], [['ESC'], 'Építés megszakítása / utolsó épületablak bezárása'], [['T'], 'Játéksebesség váltása. Multiban a gyorsításhoz mindkét játékos jóváhagyása kell.'], [['SPACE'], 'Szünet / folytatás, csak egyjátékos módban.']];
     settingsBody.querySelector('.rlHotkeys').innerHTML = hotkeys.map(([keys, desc]) => `<div class="rlHotkeyRow"><span class="rlHotkeyKeys">${keys.map(k => `<kbd class="rlKey">${k}</kbd>`).join('')}</span><span class="rlHotkeyText">${desc}</span></div>`).join('');
     const codexBody = codex.querySelector('.rlPanelBody');
-    codexBody.innerHTML = `<div class="rlCodexTools"><div class="rlCodexTabs"><button class="rlCodexTab active" data-tab="buildings" type="button">ÉPÜLETEK</button><button class="rlCodexTab" data-tab="units" type="button">EGYSÉGEK</button><button class="rlCodexTab" data-tab="common" type="button">GYAKORI</button><button class="rlCodexTab" data-tab="legendary" type="button">LEGENDÁS</button><button class="rlCodexTab" data-tab="statuses" type="button">ÁLLAPOTOK</button></div><input class="rlCodexSearch" type="search" placeholder="Keresés név vagy leírás alapján…" autocomplete="off"></div><div class="rlCodexCount"></div><div class="rlCodexGrid"></div>`;
+    codexBody.innerHTML = `<div class="rlCodexTools"><div class="rlCodexTabs"><button class="rlCodexTab active" data-tab="buildings" type="button">ÉPÜLETEK</button><button class="rlCodexTab" data-tab="units" type="button">EGYSÉGEK</button><button class="rlCodexTab" data-tab="common" type="button">FEJLESZTÉSEK</button><button class="rlCodexTab" data-tab="legendary" type="button">LEGENDÁS</button><button class="rlCodexTab" data-tab="statuses" type="button">ÁLLAPOTOK</button></div><input class="rlCodexSearch" type="search" placeholder="Keresés név vagy leírás alapján…" autocomplete="off"></div><div class="rlCodexCount"></div><div class="rlCodexGrid"></div>`;
     const search = codexBody.querySelector('.rlCodexSearch');
     const grid = codexBody.querySelector('.rlCodexGrid');
     const cards = createCodexCards(game);
     grid.addEventListener('click', event => {
+      const rarity=event.target.closest('[data-codex-rarity]');
+      if(rarity){cards.selectRarity(rarity.closest('[data-codex-upgrade]').dataset.codexUpgrade,rarity.dataset.codexRarity);renderCodex();return;}
       const button = event.target.closest('[data-codex-level]');
       if (!button) return;
       cards.selectLevel(button.closest('[data-codex-building]'), button.dataset.codexLevel);
@@ -284,7 +286,7 @@ export function installApplicationShell(game) {
       grid.querySelectorAll('.illustratedCard').forEach(fitCardText);
       const total = (codexTab === 'buildings' ? Object.entries(BUILDINGS) : codexTab === 'units' ? Object.entries(UNITS) : (codexTab === 'common' ? NORMAL : LEGENDARY).map(x => [x.id, x])).filter(([k, d]) => raceMatches(d, k)).length;
       const factionCount = entries => entries.filter(([k,d])=>raceMatches(d,k)).length;
-      raceBar.querySelector('.orcNote').textContent = codexRace==='human'?'':`${factionCount(Object.entries(UNITS))} egység · ${factionCount(Object.entries(BUILDINGS))} épület · ${NORMAL.filter(d=>raceMatches(d,d.id)).length} gyakori és ${LEGENDARY.filter(d=>raceMatches(d,d.id)).length} legendás fejlesztés`;
+      raceBar.querySelector('.orcNote').textContent = codexRace==='human'?'':`${factionCount(Object.entries(UNITS))} egység · ${factionCount(Object.entries(BUILDINGS))} épület · ${NORMAL.filter(d=>raceMatches(d,d.id)).length} fejlesztés és ${LEGENDARY.filter(d=>raceMatches(d,d.id)).length} legendás fejlesztés`;
       countEl.textContent = `${rows.length} / ${total} bejegyzés`;
     }
     codexBody.querySelectorAll('.rlCodexTab').forEach(btn => btn.onclick = () => {

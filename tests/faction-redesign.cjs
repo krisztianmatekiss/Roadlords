@@ -28,7 +28,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs');
     check('Deleted buildings cannot appear in any faction unlock pool',['human','orc','undead'].every(race=>{R.roadResetCity(R.P,race);return R.buildingUnlockPool(R.P).every(o=>!['hospital','towercommand','alchemist','academy','orc_altar','und_soul_harvester'].includes(o.id));}));
     c=reset();check('The new elite legendary has no capital or producer prerequisite',R.eligibleLegendary(c).some(o=>o.id==='und_elite_birth'));
     const base=R.statsFor(c,{key:'und_vampire'}),elite=R.statsFor(c,{key:'und_vampire',veteran:true,undElite:true});
-    check('Vampires have 600 base HP; both legacy elite flags apply the 50-percent bonus only once',base.hp===600&&elite.hp===900&&elite.dmg===base.dmg*1.5,{base,elite});
+    check('Vampires have 440 base HP; both legacy elite flags apply the 50-percent bonus only once',base.hp===440&&elite.hp===660&&elite.dmg===base.dmg*1.5,{base,elite});
     branch(c,'keep','elite_dominion');c.legends.add('und_elite_birth');
     Math.random=()=>.65;const produced=R.makeEntry(c,'und_zombie',{producerMade:true}),notSummoned=R.makeEntry(c,'und_zombie',{undSummoned:true});
     Math.random=()=>.15;const summoned=R.makeEntry(c,'und_skeleton',{undSummoned:true}),reborn=R.makeEntry(c,'und_skeleton',{undReborn:true});

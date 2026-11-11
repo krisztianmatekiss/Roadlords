@@ -4,7 +4,7 @@ import {deckBack,deckStack} from './deck-back.js';
 import {GATE_ICONS} from './command-icons.js';
 
 const PICK_KINDS=new Set(['building','building_upgrade','building_branch','normal','legendary']);
-const countCards=c=>Object.values(c.normal||{}).reduce((n,v)=>n+v,0)+
+const countCards=(R,c)=>R.upgradeCatalog.count(c)+
  [...(c.legends||[])].reduce((n,id)=>n+Math.max(1,Number(c.legendaryStacks?.[id])||0),0)+
  Object.values(c.deckBuildings||{}).reduce((n,v)=>n+v.count,0);
 
@@ -18,7 +18,7 @@ export function installCommandDock(R){
  function backs(){
   if(ownRace!==R.P.race){ownRace=R.P.race;own.innerHTML=deckStack(ownRace)+'<span class="deckCaption">PAKLI</span><b id="relicCount">0</b>';}
   if(enemyRace!==R.E.race){enemyRace=R.E.race;enemy.innerHTML=deckStack(enemyRace)+'<b id="enemyDeckCount">0</b>';}
-  R.$('#relicCount').textContent=countCards(R.P);R.$('#enemyDeckCount').textContent=countCards(R.E);
+  R.$('#relicCount').textContent=countCards(R,R.P);R.$('#enemyDeckCount').textContent=countCards(R,R.E);
  }
  const gate=document.createElement('div');gate.id='gateControls';gate.setAttribute('role','group');gate.setAttribute('aria-label','Kapu vezérlése');
  const names={open:'Nyitva',closed:'Zárva',auto:'Auto'};
@@ -59,7 +59,7 @@ export function installCommandDock(R){
  }
  function face(event,c){
   if(event.kind==='normal'||event.kind==='legendary'){
-   const def=R[event.kind==='normal'?'NORMAL':'LEGENDARY'].find(o=>o.id===event.id);
+   const def=event.kind==='normal'?R.upgradeCatalog.option(event.id,event.rarity):R.LEGENDARY.find(o=>o.id===event.id);
    return def?cards.upgrade(def,event.kind,c.race,c):'';
   }
   return R.BUILDINGS[event.id]?cards.building(event.id,c.race,c):'';
@@ -103,7 +103,7 @@ export function installCommandDock(R){
  R.applyChoice=(c,o,...args)=>{
   const out=apply(c,o,...args);if(!PICK_KINDS.has(o.kind)||R.ROAD.test)return out;
   const before=c.pickSerial||0,seq=before+1;c.pickSerial=seq;
-  const event={seq,id:o.id,kind:o.kind};if(o.branch)event.branch=o.branch;
+  const event={seq,id:o.id,kind:o.kind};if(o.branch)event.branch=o.branch;if(o.kind==='normal')event.rarity=R.upgradeCatalog.option(o.id,o.rarity).rarity;
   c.pickEvents=[...(c.pickEvents||[]),event].slice(-24);
   if(o.kind.startsWith('building')){
    c.deckBuildings||={};c.deckBuildings[o.id]={count:(c.deckBuildings[o.id]?.count||0)+1};

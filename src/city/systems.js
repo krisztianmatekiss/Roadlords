@@ -51,6 +51,7 @@ export function register(runtime) {
       spawnCounter: 0,
       capShotCd: 0,
       normal: {},
+      normalRarities: {},
       legends: new Set(),
       pickCount: 0,
       towerReward: new Set(),

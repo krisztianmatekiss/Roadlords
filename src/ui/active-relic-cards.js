@@ -6,7 +6,7 @@ export function installActiveRelicCards(R) {
   const updateHud = R.updateHud;
   R.updateHud = (...args) => {
     const out = updateHud(...args), c = R.P;
-    R.$('#relicCount').textContent = Object.values(c.normal).reduce((a,n)=>a+n,0) +
+    R.$('#relicCount').textContent = R.upgradeCatalog.count(c) +
       [...c.legends].reduce((n,id)=>n+Math.max(1,Number(c.legendaryStacks?.[id])||0),0);
     return out;
   };
@@ -14,7 +14,7 @@ export function installActiveRelicCards(R) {
     const list = R.$('#relicList');
     list.replaceChildren();
     const owned = [
-      ...Object.entries(c.normal).filter(([,n])=>n>0).map(([id,n])=>[R.NORMAL.find(o=>o.id===id),'normal',n]),
+      ...R.upgradeCatalog.owned(c).map(({option,count})=>[option,'normal',count]),
       ...[...c.legends].map(id=>[R.LEGENDARY.find(o=>o.id===id),'legendary',Math.max(1,Number(c.legendaryStacks?.[id])||0)]),
     ];
     for (const [def,kind,count] of owned) {

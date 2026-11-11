@@ -71,7 +71,7 @@ export function initializeUndeadUi(R) {
     const d = defs.get(o.id);
     if (!d) return preview(c, o);
     const n = o.kind === 'normal' ? R.countNormal(c, o.id) : R.undLegendStacks(c,o.id),
-      next = o.kind === 'normal' || d.repeatable ? n + 1 : Math.min(1,n+1),
+      next = o.kind === 'normal' ? n + (R.normalOptionPower?.(o) || 1) : d.repeatable ? n + 1 : Math.min(1,n+1),
       rows = [];
     const key = Object.keys(U).find((k) => U[k].name === d.scope);
     if (key && o.kind === 'normal' && /_(hp|damage)$/.test(o.id)) {

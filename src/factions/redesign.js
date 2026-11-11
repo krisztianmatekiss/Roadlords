@@ -141,7 +141,7 @@ export function initializeFactionRedesign(R) {
   R.upgradeCopyPreview=(c,o)=>{
     if(o.id==='und_territory'||o.id==='spear_range'){
       const n=R.countNormal(c,o.id),value=k=>o.id==='und_territory'?`+${12*k*territoryPower(c)} m`:`−${Math.min(75,5*k)}%`;
-      return {description:R.NORMAL.find(d=>d.id===o.id)?.description||o.description||'',context:'Egy felvétel hatása.',stacking:`Halmozható. Felvéve: ${n}×`,rows:[{label:o.id==='und_territory'?'Térfélnövelés':'Közelharcból kapott sebzés',before:value(n),after:value(n+1)}]};
+      return {description:R.NORMAL.find(d=>d.id===o.id)?.description||o.description||'',context:'Egy felvétel hatása.',stacking:`Halmozható. Felvéve: ${n}×`,rows:[{label:o.id==='und_territory'?'Térfélnövelés':'Közelharcból kapott sebzés',before:value(n),after:value(n+(R.normalOptionPower?.(o)||1))}]};
     }
     return preview(c,o);
   };

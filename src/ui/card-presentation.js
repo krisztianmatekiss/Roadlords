@@ -1,3 +1,4 @@
+import { factionCardFrame } from './faction-card-frame.js';
 import { cardImageSource } from '../assets/card-loading.js';
 import upgradeArt from '../data/upgrade-art-manifest.json';
 import manifest from '../data/orc-card-manifest.json';
@@ -42,7 +43,7 @@ export function cardFrameUrl(id, kind, race) {
   const file = manifest.cards[`${building ? 'building' : 'upgrade'}:${key}`];
   return file ? assetUrl('cards/orc/' + file) : '';
 }
-export function frameImage(src, eager = false) {
+export function frameImage(src, eager = false, race = null) {
   if (!src) return '';
   const human=src.endsWith('/cards/human/frame.png'), loading=eager?'eager':'lazy';
   const accent=human?'<svg class="humanFrameAccent" viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden="true"><path d="M2.9 17V86M97.1 17V86M2.9 95V139M97.1 95V139"/></svg>':'';
@@ -50,6 +51,7 @@ export function frameImage(src, eager = false) {
   // Human cards have their own empty aperture and integrated writing panel.
   // Only older full-card illustrations need a second clipped image layer.
   const illustration=human?'':`<img class="cardIllustration" ${cardImageSource(src)} alt="" loading="${loading}" decoding="async" draggable="false">`;
+  if (race === 'orc' || race === 'undead') return frame + `<span class="factionArtwork">${illustration}</span><img class="factionFrameTexture" ${cardImageSource(assetUrl(upgradeArt.sources['human-frame'].file))} alt="" loading="${loading}" decoding="async" draggable="false">` + factionCardFrame(race);
   return accent+frame+illustration;
 }
 
@@ -218,12 +220,18 @@ export function installCardPresentation(R) {
       }
       card.querySelector('.ctype')?.remove();
       const tag=card.querySelector('.picktag');
-      if(tag&&o.kind==='normal')tag.textContent=R.P.normal[o.id] ? `GYAKORI · ×${R.P.normal[o.id]}` : 'GYAKORI';
+      if(o.kind==='normal') {
+        const model=R.upgradeCatalog.option(o.id,o.rarity), label=R.upgradeCatalog.rarities[model.rarity].label;
+        card.dataset.upgradeRarity=model.rarity;
+        const count=R.upgradeCatalog.count(R.P,o.id);
+        if(tag)tag.textContent=count ? `${label} · ×${count}` : label;
+        const footer=card.querySelector('.choiceFooter');if(footer)footer.textContent=label;
+      }
       const branchTag=card.querySelector('.branchTag');
       if(branchTag)branchTag.textContent='L3 → L4';
       if (src) {
         card.classList.add('hasCardFrame');
-        card.insertAdjacentHTML('afterbegin', frameImage(src, true));
+        card.insertAdjacentHTML('afterbegin', frameImage(src, true, R.P.race));
         card.querySelector('.choiceArt')?.querySelectorAll(':scope > img, :scope > .undeadBuildingArt').forEach(el => el.remove());
       }
       card.insertAdjacentHTML('beforeend',upgradeScene(R,o.id,o.kind,R.P.race));
@@ -245,7 +253,7 @@ export function installCardPresentation(R) {
       card.dataset.race=R.P.race;card.dataset.frame=d.category||'support';
       if (src) card.classList.add('hasCardFrame');
       const upkeep = R.P.race === 'undead' ? buildingUpkeep(R,type) : '';
-      card.innerHTML = `${frameImage(src)}${upgradeScene(R,type,'building',R.P.race)}${cardTextBackdrop}${uniqueBuildingMark(R,R.P,type)}<h3 class="cardname">${escapeText(d.name)}</h3><span class="cardart card-media">${src ? '' : R.cardBuildingImageTag(type, 'cardBuildingImage')}${productionFootprint(R,R.P,type)}</span>${constructionPrice(R,R.buildPrice(R.P,type),R.P.race)}<span class="cardinfo">${d.unit ? productionFacts(R,R.P,type,level) : `<p>${effectText(model.description)}</p>`}${upkeep}</span><span class="cardFooter">${R.isUniqueBuilding(R.P,type) ? 'EGYEDI ÉPÜLET' : 'ÉPÜLET'} · L${level}</span>`;
+      card.innerHTML = `${frameImage(src, false, R.P.race)}${upgradeScene(R,type,'building',R.P.race)}${cardTextBackdrop}${uniqueBuildingMark(R,R.P,type)}<h3 class="cardname">${escapeText(d.name)}</h3><span class="cardart card-media">${src ? '' : R.cardBuildingImageTag(type, 'cardBuildingImage')}${productionFootprint(R,R.P,type)}</span>${constructionPrice(R,R.buildPrice(R.P,type),R.P.race)}<span class="cardinfo">${d.unit ? productionFacts(R,R.P,type,level) : `<p>${effectText(model.description)}</p>`}${upkeep}</span><span class="cardFooter">${R.isUniqueBuilding(R.P,type) ? 'EGYEDI ÉPÜLET' : 'ÉPÜLET'} · L${level}</span>`;
       card.setAttribute('aria-label', d.name);
       card.removeAttribute('title');
       decorateEffects(card.querySelector('.cardinfo'));

@@ -146,8 +146,9 @@ export function register(runtime) {
     }));
     return subtype === 'upgrade' ? runtime.buildingUpgradePool(c) : runtime.buildingUnlockPool(c);
   };
-  runtime.makeChoiceOptions = function makeChoiceOptions(c, source, tier = 'common', subtype = null, exclude = []) {
+  runtime.makeChoiceOptions = function makeChoiceOptions(c, source, tier = 'common', subtype = null, exclude = [], rarities = null) {
     if (typeof tier === 'boolean') tier = tier ? 'legendary' : 'common';
+    if (tier === 'common' && source !== 'start' && runtime.makeNormalOptions) return runtime.makeNormalOptions(c, exclude, rarities);
     const count = runtime.choiceCount(c);
     if (tier === 'rare') subtype = runtime.chooseRareSubtype(c, subtype, count);
     let pool = runtime.pickPoolFor(c, source, tier, subtype),
@@ -258,10 +259,10 @@ export function register(runtime) {
       legendary = tier === 'legendary',
       doubleTake = !legendary && source !== 'start' && runtime.hasLeg(runtime.P, 'double_choice') && ((runtime.P.nonLegendaryPicks || 0) + 1) % 3 === 0,
       n = runtime.choiceCount(runtime.P);
-    let kicker = source === 'start' ? `KEZDŐ ÉPÜLETVÁLASZTÁS · ${5 - runtime.state.startChoices}/4` : source === 'ancient' ? 'ŐSI ROM · GYAKORI JUTALOM' : source === 'tower' ? `TORONYJUTALOM · ${runtime.rarityLabel(tier, subtype)}` : runtime.rarityLabel(tier, subtype),
+    let kicker = source === 'start' ? `KEZDŐ ÉPÜLETVÁLASZTÁS · ${5 - runtime.state.startChoices}/4` : source === 'ancient' ? 'ŐSI ROM · FEJLESZTÉS' : source === 'tower' ? `TORONYJUTALOM · ${runtime.rarityLabel(tier, subtype)}` : runtime.rarityLabel(tier, subtype),
       title = source === 'start' ? 'Válassz egy épületet' : legendary ? 'Válassz legendás ereklyét' : tier === 'rare' ? subtype === 'upgrade' ? 'Válassz épületfejlesztést' : 'Válassz új épületet' : 'Válassz fejlesztést';
     if (doubleTake) title = 'Válassz KÉT fejlesztést';
-    const desc = source === 'start' ? 'A játékidő még nem fut. Az első négy választás csak új épületet old fel.' : source === 'ancient' ? 'Az ősi rom jutalma mindig gyakori fejlesztés.' : legendary ? '5% alap esély; 19 legendás nélküli alkalom után a 20. garantált.' : tier === 'rare' ? subtype === 'upgrade' ? `Mind a(z) ${n} lap meglévő épülettípust fejleszt.` : `Mind a(z) ${n} lap új épületet old fel.` : `Mind a(z) ${n} lap halmozható, kisebb fejlesztés.`;
+    const desc = source === 'start' ? 'A játékidő még nem fut. Az első négy választás csak új épületet old fel.' : source === 'ancient' ? 'Az ősi rom fejlesztést ad; a lapok ritkasága külön sorsolódik.' : legendary ? '5% alap esély; 19 legendás nélküli alkalom után a 20. garantált.' : tier === 'rare' ? subtype === 'upgrade' ? `Mind a(z) ${n} lap meglévő épülettípust fejleszt.` : `Mind a(z) ${n} lap új épületet old fel.` : `Mind a(z) ${n} lap halmozható, kisebb fejlesztés.`;
     return {
       source,
       tier,
@@ -281,7 +282,7 @@ export function register(runtime) {
     runtime.P.rerolls--;
     runtime.state.banMode = false;
     const old = c.opts.map(runtime.choiceKey);
-    c.opts = runtime.makeChoiceOptions(runtime.P, c.source, c.tier, c.subtype, old);
+    c.opts = runtime.makeChoiceOptions(runtime.P, c.source, c.tier, c.subtype, old, c.opts.map(o=>o.rarity));
     runtime.renderChoiceContext();
     runtime.toast('Újrasorsolás felhasználva.');
   };
@@ -296,7 +297,7 @@ export function register(runtime) {
     runtime.P.bans--;
     runtime.P.banned.add(o.id);
     const used = c.opts.filter((_, j) => j !== i).map(runtime.choiceKey),
-      replacement = runtime.makeChoiceOptions(runtime.P, c.source, c.tier, c.subtype, used).find(x => !used.includes(runtime.choiceKey(x)));
+      replacement = runtime.makeChoiceOptions(runtime.P, c.source, c.tier, c.subtype, used, [o.rarity]).find(x => !used.includes(runtime.choiceKey(x)));
     if (replacement) c.opts[i] = replacement;else c.opts.splice(i, 1);
     runtime.state.banMode = false;
     runtime.renderChoiceContext();
@@ -331,7 +332,7 @@ export function register(runtime) {
     })).sort((a, b) => b.score - a.score);
     if (!runtime.aiChooseOptions && runtime.E.rerolls > 0 && scored(options)[0].score < 6) {
       const old = options.map(runtime.choiceKey),
-        rerolled = runtime.makeChoiceOptions(runtime.E, source, tier, subtype, old);
+        rerolled = runtime.makeChoiceOptions(runtime.E, source, tier, subtype, old, options.map(o=>o.rarity));
       if (rerolled.length) {
         options = rerolled;
         runtime.E.rerolls--;
@@ -369,8 +370,10 @@ export function register(runtime) {
       runtime.setBuildingLevel(c, o.id, target);
     } else if (o.kind === 'normal') {
       const had = c.normal[o.id] || 0,
-        bonus = runtime.hasLeg(c, 'specialization') && had >= 1 && Math.random() < .5;
-      c.normal[o.id] = had + 1 + (bonus ? 1 : 0);
+        bonus = runtime.hasLeg(c, 'specialization') && (runtime.upgradeCatalog ? runtime.upgradeCatalog.count(c,o.id)>0 : had>=1) && Math.random() < .5;
+      const copies = 1 + (bonus ? 1 : 0);
+      runtime.recordNormalPick?.(c, o, copies);
+      c.normal[o.id] = had + copies * (runtime.normalOptionPower?.(o) || 1);
       if (bonus && c === runtime.P) runtime.flashX2();
       runtime.refreshExistingUnitsForCity(c);
       if (o.id === 'tower_crews') runtime.refreshTowerHpFor(c, runtime.sideForCity(c), true);

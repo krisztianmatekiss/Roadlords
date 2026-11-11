@@ -12,8 +12,8 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   await page.evaluate(()=>__ROADLORDS_RUNTIME__.loadProductionBattleArt(['undead']));
   const models=await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,Q=R.ROAD;R.state.running=false;R.state.modal=false;R.state.pregame=false;Q.test=false;Q.clock=10;const out={};for(const race of ['human','orc','undead']){R.roadResetCity(R.P,race);for(const key of Object.keys(R.UNITS).filter(k=>R.factionUnitMatches(race,R.UNITS[k]))){Q.sprites.clear();const u=R.releaseUnit(R.P,{key});u.lane=Q.camera+350;u.offset=0;u.roadMoving=false;R.roadDrawUnit(u);const sprite=[...Q.sprites.values()].at(-1);out[key]={painted:sprite?.figureRig?.painted,style:sprite?.figureRig?.style,range:u.range};}}R.state.units=[];return out;});report.models=models;
   check('All 21 units use painted models in a normal game, outside diagnostics',Object.keys(models).length===21&&Object.values(models).every(m=>m.painted));
-  const ranges={archer:300,priest:240,catapult:800,mage:300,orc_goblin:230,orc_shaman:300,und_skeleton_archer:260,und_necromancer:240,und_lich:280};
-  check('All nine ranged base ranges are doubled',Object.entries(ranges).every(([key,n])=>models[key].range===n));
+  const ranges={archer:300,priest:240,catapult:800,mage:240,orc_goblin:230,orc_shaman:300,und_skeleton_archer:260,und_necromancer:240,und_lich:280};
+  check('All nine ranged base ranges use their current balanced values',Object.entries(ranges).every(([key,n])=>models[key].range===n));
   check('Melee ranges stay suited to their original weapons',models.swordsman.range===30&&models.spearman.range===45&&models.knight.range===32&&models.orc_troll.range===30&&models.und_ghost.range===30);
   const combat=await page.evaluate(keys=>{
    const R=__ROADLORDS_RUNTIME__,Q=R.ROAD,reset=(race='human')=>{R.roadResetCity(R.P,race);R.roadResetCity(R.E,'human');R.P.normal={};R.P.legends=new Set();R.P.levels={};R.P.l4Branches={};R.state.units=[];R.battleSearch=null;R.state.running=false;R.state.modal=false;R.state.pregame=false;Q.pending=[];Q.dead=[];Q.clock=20;R.state.combatStep=(R.state.combatStep||0)+1;},out=[];
@@ -48,7 +48,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   const visual=await page.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return R.mpFactionUnitPayload({key:'und_necromancer',roadUndSummon:{start:R.ROAD.clock,end:R.ROAD.clock+.75}})});
   check('Active summoning poses share the existing optional multiplayer metadata',!!visual.roadUndSummon&&visual.roadUndSummon.end>visual.roadUndSummon.start);
   const version=await guest.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,sent=[];let closed=false;R.MP.conn={open:true,send:data=>sent.push(data),close:()=>closed=true};R.mpSend({type:'hello'});R.mpHandle({type:'hello',pathLength:R.PATH_LENGTH,gameRules:10,factionProtocol:2,race:'orc'});return {rules:sent[0].gameRules,closed}});
-  check('Multiplayer prevents mixing the old and new range rules',version.rules===20&&version.closed);
+  check('Multiplayer prevents mixing the old and new unit balance rules',version.rules===21&&version.closed);
   check('No runtime errors in production rendering or combat',report.errors.length===0);
  }finally{fs.writeFileSync('artifacts/production-figures-and-range.json',JSON.stringify(report,null,2));await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

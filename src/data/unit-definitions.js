@@ -2,6 +2,7 @@ import { rangedRange } from './ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { trainingPrice, ARMY_TEMPO } from './unit-balance.js';
 import { MOVEMENT_BALANCE } from './movement-balance.js';
+import { WORLD_UNITS_PER_METRE } from '../world/measurements.js';
 export function initializeDataUnitDefinitions(runtime) {
   runtime.UNITS = {
     swordsman: {
@@ -102,15 +103,15 @@ export function initializeDataUnitDefinitions(runtime) {
       battleIcon: '✦',
       cat: 'magic',
       tags: ['ranged'],
-      hp: 75,
-      damage: 24,
-      cooldown: 1.7,
-      range: rangedRange(150),
+      hp: 90,
+      damage: 18,
+      cooldown: 2,
+      range: 24 * WORLD_UNITS_PER_METRE,
       speed: 36,
       train: 12,
       cost: runtime.C(16, 16, 12),
       damageType: 'magic',
-      aoe: 62
+      aoe: 4 * WORLD_UNITS_PER_METRE
     }
   };
   for (const unit of Object.values(runtime.UNITS)) {unit.cost = trainingPrice(unit.cost);unit.train*=ARMY_TEMPO.trainingTime;}

@@ -1,0 +1,852 @@
+{
+  "version": "4.71.0",
+  "profiles": [
+    {
+      "key": "swordsman",
+      "cost": {
+        "wood": 0,
+        "stone": 8,
+        "food": 10
+      },
+      "stats": {
+        "hp": 100,
+        "dmg": 12,
+        "cooldown": 1,
+        "speed": 52.5,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 12,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        6.25,
+        5,
+        3.75
+      ],
+      "cells": 1,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "spearman",
+      "cost": {
+        "wood": 8,
+        "stone": 0,
+        "food": 10
+      },
+      "stats": {
+        "hp": 90,
+        "dmg": 10,
+        "cooldown": 1.1,
+        "speed": 50,
+        "range": 45,
+        "heal": 0,
+        "buildingDamage": 10,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        6.25,
+        5,
+        3.75
+      ],
+      "cells": 1,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "archer",
+      "cost": {
+        "wood": 11,
+        "stone": 0,
+        "food": 9
+      },
+      "stats": {
+        "hp": 55,
+        "dmg": 5.5,
+        "cooldown": 1.2,
+        "speed": 52.5,
+        "range": 300,
+        "heal": 0,
+        "buildingDamage": 5.5,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        7.5,
+        6,
+        4.5
+      ],
+      "cells": 1,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "knight",
+      "cost": {
+        "wood": 0,
+        "stone": 25,
+        "food": 24
+      },
+      "stats": {
+        "hp": 240,
+        "dmg": 30,
+        "cooldown": 1.25,
+        "speed": 147,
+        "range": 32,
+        "heal": 0,
+        "buildingDamage": 30,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        11.25,
+        9,
+        6.75
+      ],
+      "cells": 2,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "priest",
+      "cost": {
+        "wood": 16,
+        "stone": 15,
+        "food": 19
+      },
+      "stats": {
+        "hp": 90,
+        "dmg": 6,
+        "cooldown": 1.4,
+        "speed": 47.5,
+        "range": 240,
+        "heal": 30,
+        "buildingDamage": 6,
+        "aoe": 0,
+        "healCooldown": 4.2,
+        "healRange": 300,
+        "lifeSteal": 0
+      },
+      "times": [
+        11.25,
+        9,
+        6.75
+      ],
+      "cells": 2,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "catapult",
+      "cost": {
+        "wood": 41,
+        "stone": 33,
+        "food": 14
+      },
+      "stats": {
+        "hp": 220,
+        "dmg": 12,
+        "cooldown": 2.4,
+        "speed": 30,
+        "range": 800,
+        "heal": 0,
+        "buildingDamage": 65,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        15,
+        12,
+        9
+      ],
+      "cells": 3,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "mage",
+      "cost": {
+        "wood": 25,
+        "stone": 25,
+        "food": 19
+      },
+      "stats": {
+        "hp": 90,
+        "dmg": 18,
+        "cooldown": 2,
+        "speed": 45,
+        "range": 240,
+        "heal": 0,
+        "buildingDamage": 18,
+        "aoe": 40,
+        "lifeSteal": 0
+      },
+      "times": [
+        15,
+        12,
+        9
+      ],
+      "cells": 4,
+      "unique": true,
+      "slots": 1
+    },
+    {
+      "key": "orc_warrior",
+      "cost": {
+        "wood": 0,
+        "stone": 11,
+        "food": 14
+      },
+      "stats": {
+        "hp": 300,
+        "dmg": 20,
+        "cooldown": 1.25,
+        "speed": 42.5,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 20,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        10.625,
+        9.375,
+        8.125
+      ],
+      "cells": 2,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "orc_berserker",
+      "cost": {
+        "wood": 6,
+        "stone": 10,
+        "food": 13
+      },
+      "stats": {
+        "hp": 220,
+        "dmg": 16,
+        "cooldown": 0.65,
+        "speed": 52.5,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 16,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        10,
+        8.75,
+        7.5
+      ],
+      "cells": 2,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "orc_goblin",
+      "cost": {
+        "wood": 5,
+        "stone": 2,
+        "food": 6
+      },
+      "stats": {
+        "hp": 30,
+        "dmg": 3,
+        "cooldown": 0.55,
+        "speed": 70,
+        "range": 230,
+        "heal": 0,
+        "buildingDamage": 3,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        4.375,
+        3.4375,
+        2.5
+      ],
+      "cells": 1,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "orc_warg",
+      "cost": {
+        "wood": 7,
+        "stone": 25,
+        "food": 29
+      },
+      "stats": {
+        "hp": 400,
+        "dmg": 30,
+        "cooldown": 1.5,
+        "speed": 136,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 30,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        13.75,
+        12.5,
+        11.25
+      ],
+      "cells": 2,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "orc_shaman",
+      "cost": {
+        "wood": 16,
+        "stone": 13,
+        "food": 19
+      },
+      "stats": {
+        "hp": 170,
+        "dmg": 8,
+        "cooldown": 2.5,
+        "speed": 47.5,
+        "range": 300,
+        "heal": 0,
+        "buildingDamage": 8,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        11.25,
+        9,
+        6.75
+      ],
+      "cells": 2,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "orc_ram",
+      "cost": {
+        "wood": 29,
+        "stone": 35,
+        "food": 15
+      },
+      "stats": {
+        "hp": 1100,
+        "dmg": 8,
+        "cooldown": 2,
+        "speed": 25,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 130,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        15,
+        13.75,
+        12.5
+      ],
+      "cells": 2,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "orc_troll",
+      "cost": {
+        "wood": 39,
+        "stone": 94,
+        "food": 93
+      },
+      "stats": {
+        "hp": 3200,
+        "dmg": 110,
+        "cooldown": 2,
+        "speed": 32.5,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 110,
+        "aoe": 55,
+        "lifeSteal": 0
+      },
+      "times": [
+        30,
+        24,
+        18
+      ],
+      "cells": 9,
+      "unique": true,
+      "slots": 4
+    },
+    {
+      "key": "und_skeleton",
+      "cost": {
+        "wood": 16,
+        "stone": 0,
+        "food": 0
+      },
+      "stats": {
+        "hp": 85,
+        "dmg": 10,
+        "cooldown": 1,
+        "speed": 52.5,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 10,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        6.25,
+        5,
+        3.75
+      ],
+      "cells": 1,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "und_skeleton_archer",
+      "cost": {
+        "wood": 16,
+        "stone": 0,
+        "food": 0
+      },
+      "stats": {
+        "hp": 85,
+        "dmg": 8,
+        "cooldown": 1.25,
+        "speed": 50,
+        "range": 260,
+        "heal": 0,
+        "buildingDamage": 8,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        6.25,
+        5,
+        3.75
+      ],
+      "cells": 1,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "und_zombie",
+      "cost": {
+        "wood": 33,
+        "stone": 0,
+        "food": 0
+      },
+      "stats": {
+        "hp": 280,
+        "dmg": 12,
+        "cooldown": 1.8,
+        "speed": 32.5,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 12,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        10,
+        8,
+        6
+      ],
+      "cells": 2,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "und_ghost",
+      "cost": {
+        "wood": 23,
+        "stone": 0,
+        "food": 0
+      },
+      "stats": {
+        "hp": 70,
+        "dmg": 8,
+        "cooldown": 1.4,
+        "speed": 57.5,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 8,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        7.5,
+        6,
+        4.5
+      ],
+      "cells": 1,
+      "unique": false,
+      "slots": 1
+    },
+    {
+      "key": "und_necromancer",
+      "cost": {
+        "wood": 88,
+        "stone": 0,
+        "food": 0
+      },
+      "stats": {
+        "hp": 280,
+        "dmg": 5,
+        "cooldown": 2,
+        "speed": 45,
+        "range": 240,
+        "heal": 0,
+        "buildingDamage": 5,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        17.5,
+        14,
+        10.5
+      ],
+      "cells": 4,
+      "unique": true,
+      "slots": 1
+    },
+    {
+      "key": "und_vampire",
+      "cost": {
+        "wood": 94,
+        "stone": 0,
+        "food": 0
+      },
+      "stats": {
+        "hp": 600,
+        "dmg": 45,
+        "cooldown": 1.25,
+        "speed": 62.5,
+        "range": 30,
+        "heal": 0,
+        "buildingDamage": 45,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        20,
+        16,
+        12
+      ],
+      "cells": 4,
+      "unique": true,
+      "slots": 1
+    },
+    {
+      "key": "und_lich",
+      "cost": {
+        "wood": 125,
+        "stone": 0,
+        "food": 0
+      },
+      "stats": {
+        "hp": 380,
+        "dmg": 5,
+        "cooldown": 5,
+        "speed": 40,
+        "range": 280,
+        "heal": 0,
+        "buildingDamage": 25,
+        "aoe": 0,
+        "lifeSteal": 0
+      },
+      "times": [
+        22.5,
+        18,
+        13.5
+      ],
+      "cells": 4,
+      "unique": true,
+      "slots": 1
+    }
+  ],
+  "mageComparisons": [
+    {
+      "variant": "baseline",
+      "composition": "orc-shaman",
+      "level": 1,
+      "results": [
+        {
+          "seed": 11,
+          "mirror": false,
+          "winner": "human",
+          "human": 15,
+          "other": 0,
+          "seconds": 39
+        },
+        {
+          "seed": 11,
+          "mirror": true,
+          "winner": "orc",
+          "human": 0,
+          "other": 46,
+          "seconds": 27
+        }
+      ]
+    },
+    {
+      "variant": "baseline",
+      "composition": "orc-shaman",
+      "level": 3,
+      "results": [
+        {
+          "seed": 11,
+          "mirror": false,
+          "winner": "human",
+          "human": 44,
+          "other": 0,
+          "seconds": 34
+        },
+        {
+          "seed": 11,
+          "mirror": true,
+          "winner": "human",
+          "human": 44,
+          "other": 0,
+          "seconds": 32
+        }
+      ]
+    },
+    {
+      "variant": "baseline",
+      "composition": "undead-elites",
+      "level": 1,
+      "results": [
+        {
+          "seed": 11,
+          "mirror": false,
+          "winner": "human",
+          "human": 65,
+          "other": 0,
+          "seconds": 21
+        },
+        {
+          "seed": 11,
+          "mirror": true,
+          "winner": "human",
+          "human": 67,
+          "other": 0,
+          "seconds": 20
+        }
+      ]
+    },
+    {
+      "variant": "baseline",
+      "composition": "undead-elites",
+      "level": 3,
+      "results": [
+        {
+          "seed": 11,
+          "mirror": false,
+          "winner": "human",
+          "human": 118,
+          "other": 0,
+          "seconds": 21
+        },
+        {
+          "seed": 11,
+          "mirror": true,
+          "winner": "human",
+          "human": 113,
+          "other": 0,
+          "seconds": 21
+        }
+      ]
+    },
+    {
+      "variant": "recommended",
+      "composition": "orc-shaman",
+      "level": 1,
+      "results": [
+        {
+          "seed": 11,
+          "mirror": false,
+          "winner": "orc",
+          "human": 0,
+          "other": 70,
+          "seconds": 25
+        },
+        {
+          "seed": 11,
+          "mirror": true,
+          "winner": "orc",
+          "human": 0,
+          "other": 70,
+          "seconds": 25
+        }
+      ]
+    },
+    {
+      "variant": "recommended",
+      "composition": "orc-shaman",
+      "level": 3,
+      "results": [
+        {
+          "seed": 11,
+          "mirror": false,
+          "winner": "human",
+          "human": 34,
+          "other": 0,
+          "seconds": 46
+        },
+        {
+          "seed": 11,
+          "mirror": true,
+          "winner": "human",
+          "human": 35,
+          "other": 0,
+          "seconds": 42
+        }
+      ]
+    },
+    {
+      "variant": "recommended",
+      "composition": "undead-elites",
+      "level": 1,
+      "results": [
+        {
+          "seed": 11,
+          "mirror": false,
+          "winner": "human",
+          "human": 63,
+          "other": 0,
+          "seconds": 23
+        },
+        {
+          "seed": 11,
+          "mirror": true,
+          "winner": "human",
+          "human": 61,
+          "other": 0,
+          "seconds": 23
+        }
+      ]
+    },
+    {
+      "variant": "recommended",
+      "composition": "undead-elites",
+      "level": 3,
+      "results": [
+        {
+          "seed": 11,
+          "mirror": false,
+          "winner": "human",
+          "human": 111,
+          "other": 0,
+          "seconds": 24
+        },
+        {
+          "seed": 11,
+          "mirror": true,
+          "winner": "human",
+          "human": 100,
+          "other": 0,
+          "seconds": 26
+        }
+      ]
+    },
+    {
+      "variant": "proposed",
+      "composition": "orc-shaman",
+      "level": 1,
+      "results": [
+        {
+          "seed": 11,
+          "mirror": false,
+          "winner": "orc",
+          "human": 0,
+          "other": 76,
+          "seconds": 23
+        },
+        {
+          "seed": 11,
+          "mirror": true,
+          "winner": "orc",
+          "human": 0,
+          "other": 70,
+          "seconds": 24
+        }
+      ]
+    },
+    {
+      "variant": "proposed",
+      "composition": "orc-shaman",
+      "level": 3,
+      "results": [
+        {
+          "seed": 11,
+          "mirror": false,
+          "winner": "orc",
+          "human": 0,
+          "other": 28,
+          "seconds": 41
+        },
+        {
+          "seed": 11,
+          "mirror": true,
+          "winner": "orc",
+          "human": 0,
+          "other": 61,
+          "seconds": 34
+        }
+      ]
+    },
+    {
+      "variant": "proposed",
+      "composition": "undead-elites",
+      "level": 1,
+      "results": [
+        {
+          "seed": 11,
+          "mirror": false,
+          "winner": "human",
+          "human": 62,
+          "other": 0,
+          "seconds": 23
+        },
+        {
+          "seed": 11,
+          "mirror": true,
+          "winner": "human",
+          "human": 59,
+          "other": 0,
+          "seconds": 25
+        }
+      ]
+    },
+    {
+      "variant": "proposed",
+      "composition": "undead-elites",
+      "level": 3,
+      "results": [
+        {
+          "seed": 11,
+          "mirror": false,
+          "winner": "human",
+          "human": 106,
+          "other": 0,
+          "seconds": 26
+        },
+        {
+          "seed": 11,
+          "mirror": true,
+          "winner": "human",
+          "human": 92,
+          "other": 0,
+          "seconds": 29
+        }
+      ]
+    }
+  ]
+}

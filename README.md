@@ -1,5 +1,14 @@
-# Roadlords · V4.70.0
+# Roadlords · V4.71.0
 
+
+## V4.71.0 – Mágus és multiplayer romeltakarítás
+
+- Mágus: 90 HP, 18 sebzés, 2 mp támadásköz, 24 m hatótáv és 4 m területi sugár. Képzési ára és ideje változatlan. A másodlagos találatok továbbra is 45%-ot sebeznek; a meglévő fejlesztések az új alapértékekből számolnak.
+- A sikeres vendégoldali terepbontás azonnal elküldi a fizetett módosítást. A már úton lévő korábbi állapotcsomag így nem állítja vissza a romot és a korábbi készletet. Az ismételt/régebbi vendégparancsok nem írhatják felül az újabb állapotot.
+- Mindhárom nép rom-, ősirom-, erdő- és kőlelőhely-bontása ellenőrzött; az ősi rom egyszer ad választást. Sikertelen fizetés nem küld módosítást. A host saját bontása is azonnali állapotküldést indít.
+- [A 21 egység áttekintése és a további javaslatok](docs/unit-review-4.71.md). A többi egység értékei változatlanok.
+
+Multiplayer szabályverzió: **21**. Mindkét játékos frissítsen a meccs előtt.
 
 ## V4.70.0 – Új alapnézet és AI-területfelszabadítás
 

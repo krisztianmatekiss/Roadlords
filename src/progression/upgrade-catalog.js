@@ -3,7 +3,7 @@ import { UPGRADE_RARITIES, upgradeEditions, upgradeRarity, upgradeDescription, n
 
 export function installUpgradeCatalog(R) {
   const requirements=createUpgradeRequirements(R);
-  const definition = id => R.NORMAL.find(d => d.id === id);
+  const definition = (id, kind='normal') => (kind==='legendary'?R.LEGENDARY:R.NORMAL).find(d => d.id === id);
   const option = (id, rarity) => {
     const def = definition(id); if (!def) return null;
     const selected = upgradeRarity({id, rarity});
@@ -86,8 +86,9 @@ export function installUpgradeCatalog(R) {
   const preview=R.upgradeCopyPreview;
   R.upgradeCopyPreview=(c,o)=>{
     const result=preview(c,o);
-    if (!result || o.kind!=='normal') return result;
-    const def=definition(o.id);
+    if (!result || !['normal','legendary'].includes(o.kind)) return result;
+    const def=definition(o.id,o.kind);
+    if(o.kind==='legendary')return {...result,description:def?.description || o.description};
     return {...result, description: o.rarity ? option(o.id,o.rarity)?.description || o.description : def?.description || o.description};
   };
   // All screens obtain definitions from the live runtime, after faction layers

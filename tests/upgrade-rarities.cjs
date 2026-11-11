@@ -10,6 +10,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    R.state.running=false;R.state.modal=false;R.state.startChoices=0;R.state.pendingChoices=[];
    const reset=race=>{R.roadResetCity(R.P,race);R.P.legends=new Set();R.P.normal={};R.P.normalRarities={};R.recomputeCity(R.P,false);return R.P;};
    const add=(type,level)=>{const b={id:'rarity-'+type,type,row:0,col:0,rotation:0,level,progress:0};R.P.buildings.push(b);R.P.levels[type]=level;return b;};
+   out.canonical=R.LEGENDARY.every(def=>R.upgradeCopyPreview(R.P,{...def,kind:'legendary'}).description===catalog.definition(def.id,'legendary').description);
    out.complete=R.NORMAL.length===87&&R.NORMAL.every(d=>Object.keys(catalog.editions(d.id)).length>0);
    out.selective=Object.keys(catalog.editions('orc_lifesteal')).join()==='rare'&&Object.keys(catalog.editions('ghost_common_dodge')).join()==='common,rare'&&Object.keys(catalog.editions('orc_bleed')).join()==='common';
    reset('human');add('barracks',1);
@@ -82,6 +83,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   check('Orc and Undead titles, illustrations and live text fit their integrated frames at 1440 and 2840px',geometry.every(row=>row.results.length&&row.results.every(c=>c.frame&&c.floating==='none'&&c.fit&&c.geometry)));
   await p.setViewportSize({width:1920,height:1080});await p.locator('#codexRace').selectOption('orc');await hp.scrollIntoViewIfNeeded();await p.screenshot({path:'artifacts/rarities-orc.png'});
   await p.locator('#codexRace').selectOption('undead');await p.locator('#rlCodexPanel [data-codex-upgrade="ghost_common_dodge"] [data-codex-rarity="rare"]').click();await p.locator('#rlCodexPanel [data-codex-upgrade="ghost_common_dodge"]').scrollIntoViewIfNeeded();await p.screenshot({path:'artifacts/rarities-undead.png'});
+  check('Relics also use canonical live descriptions in the codex and picks',logic.canonical);
   check('No runtime errors',!report.errors.length);
  }finally{fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/upgrade-rarities.json',JSON.stringify(report,null,2));await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1});

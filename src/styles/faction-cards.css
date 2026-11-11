@@ -1,46 +1,46 @@
 html body .illustratedCard:has(>.factionCardFrame) .cardTextBackdrop { display:none; }
 html body .illustratedCard:has(>.factionCardFrame) .cardScene {
-  left:6.5%!important;top:11.7%!important;width:87%!important;height:46.3%!important;
+  left:13.5%!important;top:19.1%!important;width:73%!important;height:38.3%!important;
   clip-path:polygon(3% 0,97% 0,100% 4%,100% 96%,97% 100%,3% 100%,0 96%,0 4%);
 }
-html body .illustratedCard:has(>.factionCardFrame) .constructionPrice { right:8%;bottom:43%; }
-html body .illustratedCard:has(>.factionCardFrame) .uniqueBuildingMark { top:13.5%;right:8.5%; }
-html body .illustratedCard:has(>.factionCardFrame) .cardPortraitTraits { bottom:43%;left:8%;right:8%; }
+html body .illustratedCard:has(>.factionCardFrame) .constructionPrice { right:14%;bottom:43%; }
+html body .illustratedCard:has(>.factionCardFrame) .uniqueBuildingMark { top:20.5%;right:14%; }
+html body .illustratedCard:has(>.factionCardFrame) .cardPortraitTraits { bottom:43%;left:14%;right:14%; }
 
 html body .cardFace:has(>.factionCardFrame) .rlCodexTitle,
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard:has(>.factionCardFrame) h3,
 html body :is(#buildList .buildcard,.buildCardPreview).illustratedCard:has(>.factionCardFrame) .cardname {
-  left:13%!important;top:1.8%!important;width:74%!important;height:7%!important;
+  left:18%!important;top:9.4%!important;width:64%!important;height:6.5%!important;
 }
 html body .cardFace:has(>.factionCardFrame) .rlCodexIcon,
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard:has(>.factionCardFrame) .choiceArt.card-media,
 html body :is(#buildList .buildcard,.buildCardPreview).illustratedCard:has(>.factionCardFrame) .cardart {
-  left:6.5%!important;top:11.7%!important;width:87%!important;height:46.3%!important;
+  left:13.5%!important;top:19.1%!important;width:73%!important;height:38.3%!important;
 }
 html body .cardFace:has(>.factionCardFrame) .rlCodexContent,
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard:has(>.factionCardFrame) .choiceBody,
 html body :is(#buildList .buildcard,.buildCardPreview).illustratedCard:has(>.factionCardFrame) .cardinfo {
-  left:9%!important;top:63%!important;width:82%!important;height:28.5%!important;
+  left:13.5%!important;top:63%!important;width:73%!important;height:23.4%!important;
   background:none!important;border:0!important;box-shadow:none!important;
 }
 html body .illustratedCard:has(>.factionCardFrame) :is(.cardFooter,.choiceFooter) {
   position:absolute!important;
-  left:13%!important;right:auto!important;width:74%!important;bottom:2%!important;
-  height:3%!important;font-size:2.8cqw!important;text-align:center!important;
+  left:25%!important;right:auto!important;width:50%!important;bottom:6.6%!important;
+  height:3.8%!important;font-size:3cqw!important;text-align:center!important;
 }
 html body[data-ui-scale] #choiceOverlay #choiceList .choice.gamecard.illustratedCard:has(>.factionCardFrame) .choiceFooter {
-  inset:auto 13% 2%!important;width:74%!important;height:3%!important;
+  inset:auto 25% 6.6%!important;width:50%!important;height:3.8%!important;
 }
 html body :is(#buildList .buildcard,.buildCardPreview).illustratedCard:has(>.factionCardFrame) .cardFooter {
-  inset:auto 13% 2%!important;width:74%!important;height:3%!important;
+  inset:auto 25% 6.6%!important;width:50%!important;height:3.8%!important;
 }
 html body .illustratedCard:has(>.factionCardFrame) .pickFootprint.inArtwork {
-  left:8%!important;bottom:43%!important;
+  left:14%!important;bottom:43%!important;
 }
-html body .illustratedCard:has(>.factionCardFrame) { background:#18211e; }
+html body .illustratedCard:has(>.factionCardFrame) { background:transparent!important; }
 html body .illustratedCard:has(>.factionCardFrame)>.cardFrameImage { opacity:0; }
-html body .illustratedCard>.factionCardFrame { position:absolute!important;inset:0;width:100%;height:100%;z-index:3!important;pointer-events:none; }
-html body .illustratedCard>.factionArtwork { position:absolute!important;left:6.5%;top:11.7%;width:87%;height:46.3%;overflow:hidden;z-index:1!important; }
+html body .illustratedCard>.factionCardFrame { position:absolute!important;inset:0;width:100%;height:100%;z-index:0!important;pointer-events:none; }
+html body .illustratedCard>.factionArtwork { position:absolute!important;left:13.5%;top:19.1%;width:73%;height:38.3%;overflow:hidden;z-index:1!important; }
 html body .illustratedCard .factionArtwork>.cardIllustration { position:absolute!important;left:-5.1724%!important;top:-23.888%!important;width:110.345%!important;height:179.856%!important;max-width:none!important;clip-path:none!important;object-fit:fill!important; }
 html body .illustratedCard:has(>.cardScene)>.factionArtwork { display:none; }
 html body .illustratedCard:has(>.factionCardFrame) :is(.rlCodexTitle,h3.cardname,h3,.choiceBody,.cardinfo,.rlCodexContent,.cardFooter,.choiceFooter,.constructionPrice,.uniqueBuildingMark) { z-index:4!important; }
@@ -53,9 +53,28 @@ html body .illustratedCard[data-upgrade-rarity]:has(>.humanFrameAccent) .humanFr
 .lexRarities button { border:1px solid #526158;background:#131e19;color:var(--rarity-color);border-radius:5px;padding:8px;font:700 12px Georgia,serif;cursor:pointer; }
 .lexRarities button[aria-pressed="true"] { border-color:var(--rarity-color);background:#29352e;box-shadow:0 0 5px #0008; }
 .upgradeRequirement { margin:8px 0 0;text-align:center;color:#b7c3b7;font:14px Georgia,serif; }
-html body .illustratedCard>.factionFrameTexture { position:absolute!important;inset:0;width:100%;height:100%;object-fit:fill;z-index:0!important;pointer-events:none; }
-html body .illustratedCard[data-race="orc"]>.factionFrameTexture { filter:sepia(.5) saturate(.75) brightness(.84); }
-html body .illustratedCard[data-race="undead"]>.factionFrameTexture { filter:grayscale(.65) sepia(.22) hue-rotate(95deg) brightness(.8); }
-/* The original frame has an opaque picture backing. Paint the live artwork
-   above that backing, with faction trim above the artwork. */
+/* The live illustration is above the painted empty aperture backing. */
 html body .illustratedCard:has(>.factionCardFrame)>.cardScene { z-index:1!important; }
+html body .illustratedCard:has(>.factionCardFrame) .cardRarityMark { top:21%;right:14%; }
+html body .illustratedCard .factionRarityTrim { opacity:.65; }
+html body .illustratedCard[data-upgrade-rarity="common"] .factionRarityTrim { opacity:.18; }
+html body .illustratedCard[data-upgrade-rarity="uncommon"] .factionRarityTrim { stroke-width:1.1;opacity:1;filter:drop-shadow(0 0 1.5px #56df87); }
+html body .illustratedCard[data-upgrade-rarity="rare"] .factionRarityTrim { stroke-width:1.5;opacity:1;filter:drop-shadow(0 0 2px #b85dff); }
+html body .illustratedCard[data-upgrade-rarity="uncommon"] { box-shadow:inset 0 0 0 2px #71e59a66,0 0 0 2px #71e59a99,0 0 14px #46c87455!important; }
+html body .illustratedCard[data-upgrade-rarity="rare"] { box-shadow:inset 0 0 0 3px #c084ff88,0 0 0 3px #bc78f3cc,0 0 23px #ac51ee77!important; }
+html body .illustratedCard[data-upgrade-rarity="uncommon"] .humanFrameAccent { stroke-width:2;filter:drop-shadow(0 0 2px #56df87); }
+html body .illustratedCard[data-upgrade-rarity="rare"] .humanFrameAccent { stroke-width:2.8;filter:drop-shadow(0 0 3px #b85dff); }
+html body .illustratedCard .cardRarityMark {
+  position:absolute;right:8%;top:13.3%;z-index:6!important;pointer-events:none;
+  display:flex;align-items:center;justify-content:center;gap:.4em;
+  min-height:6%;max-width:48%;padding:.3em .65em;box-sizing:border-box;
+  border:1px solid var(--card-border);border-radius:.5em;
+  color:#e1ffe9;background:linear-gradient(135deg,#123420f5,#1c5939f5);
+  font:900 3.1cqw/1.1 "Roadlords Copy",Georgia,serif;letter-spacing:.05em;
+  text-shadow:0 1px 2px #000;box-shadow:0 2px 5px #000a,0 0 10px #54da8866;
+}
+html body .illustratedCard .cardRarityMark svg { width:1.8em;height:1.8em;flex:none;fill:#86ffc2;stroke:#ddffee;stroke-width:.7;filter:drop-shadow(0 0 2px #54ffaa); }
+html body .illustratedCard .cardRarityMark .rarityGemFacet { fill:#efffff;stroke:none;opacity:.75; }
+html body .illustratedCard[data-upgrade-rarity="rare"] .cardRarityMark { color:#f6e5ff;background:linear-gradient(135deg,#3b1558fa,#692a8afa);box-shadow:0 2px 5px #000a,0 0 14px #b95bff99; }
+html body .illustratedCard[data-upgrade-rarity="rare"] .cardRarityMark svg { fill:#d49aff;stroke:#fae2ff;filter:drop-shadow(0 0 3px #d28aff); }
+html body .illustratedCard[data-upgrade-rarity]:not([data-upgrade-rarity="common"]) :is(.cardFooter,.choiceFooter) { background:color-mix(in srgb,var(--card-border) 25%,#111b18);border:1px solid var(--card-border)!important;border-radius:5px;display:grid;place-items:center; }

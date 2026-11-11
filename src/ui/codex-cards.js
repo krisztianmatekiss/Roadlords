@@ -1,3 +1,4 @@
+import { cardRarityMark } from './faction-card-frame.js';
 import { cardFrameUrl, frameImage, cardTextBackdrop, constructionPrice, productionFacts, productionFootprint, capitalFacts, buildingUpkeep, uniqueBuildingMark, effectText, escapeText as esc } from './card-presentation.js';
 import { symbolizeResourceHtml } from './resource-symbols.js';
 import { UNIT_COPY } from './unit-copy.js';
@@ -39,7 +40,7 @@ export function createCodexCards(R) {
     const src = cardFrameUrl(id, kind, race);
     const unitKey=kind==='unit'?id:kind==='normal'?R.PICK_UNIT_IMAGES[id]:null;
     const caption=`<span class="cardFooter">${kind==='legendary'?'LEGENDÁS':kind==='normal'?R.upgradeCatalog.rarities[rarity].label:kind==='unit'?'EGYSÉG':mark?'EGYEDI ÉPÜLET':'ÉPÜLET'}</span>`;
-    return symbolizeResourceHtml(`<div class="cardFace illustratedCard ${src ? 'hasCardFrame' : ''}" data-race="${race}" data-frame="${category || 'support'}"${rarity ? ` data-upgrade-rarity="${rarity}"` : ''}>${frameImage(src,false,race)}${upgradeScene(R,id,kind,race)}${unitKey?unitTraitIcons(R,unitKey,null,'cardPortraitTraits'):''}${cardTextBackdrop}
+    return symbolizeResourceHtml(`<div class="cardFace illustratedCard ${src ? 'hasCardFrame' : ''}" data-race="${race}" data-frame="${category || 'support'}"${rarity ? ` data-upgrade-rarity="${rarity}"` : ''}>${frameImage(src,false,race)}${cardRarityMark(rarity)}${upgradeScene(R,id,kind,race)}${unitKey?unitTraitIcons(R,unitKey,null,'cardPortraitTraits'):''}${cardTextBackdrop}
       <header class="rlCodexCardHead"><span class="rlCodexIcon">${src ? '' : art}${footprint}</span><div class="rlCodexTitle"><h3>${esc(name)}</h3></div></header>
       ${price}${mark}${metaInBody ? '' : `<div class="rlCodexMeta">${meta}</div>`}<div class="rlCodexContent">${body}${metaInBody ? `<div class="productionMeta">${meta}</div>` : ''}</div>${caption}</div>`,R,race);
   }

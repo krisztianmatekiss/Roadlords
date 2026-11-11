@@ -1,4 +1,4 @@
-import { factionCardFrame } from './faction-card-frame.js';
+import { factionCardFrame, cardRarityMark } from './faction-card-frame.js';
 import { cardImageSource } from '../assets/card-loading.js';
 import upgradeArt from '../data/upgrade-art-manifest.json';
 import manifest from '../data/orc-card-manifest.json';
@@ -51,7 +51,7 @@ export function frameImage(src, eager = false, race = null) {
   // Human cards have their own empty aperture and integrated writing panel.
   // Only older full-card illustrations need a second clipped image layer.
   const illustration=human?'':`<img class="cardIllustration" ${cardImageSource(src)} alt="" loading="${loading}" decoding="async" draggable="false">`;
-  if (race === 'orc' || race === 'undead') return frame + `<span class="factionArtwork">${illustration}</span><img class="factionFrameTexture" ${cardImageSource(assetUrl(upgradeArt.sources['human-frame'].file))} alt="" loading="${loading}" decoding="async" draggable="false">` + factionCardFrame(race);
+  if (race === 'orc' || race === 'undead') return frame + `<span class="factionArtwork">${illustration}</span>` + factionCardFrame(race);
   return accent+frame+illustration;
 }
 
@@ -223,6 +223,7 @@ export function installCardPresentation(R) {
       if(o.kind==='normal') {
         const model=R.upgradeCatalog.option(o.id,o.rarity), label=R.upgradeCatalog.rarities[model.rarity].label;
         card.dataset.upgradeRarity=model.rarity;
+        card.insertAdjacentHTML('beforeend',cardRarityMark(model.rarity));
         const count=R.upgradeCatalog.count(R.P,o.id);
         if(tag)tag.textContent=count ? `${label} · ×${count}` : label;
         const footer=card.querySelector('.choiceFooter');if(footer)footer.textContent=label;

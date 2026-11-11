@@ -94,6 +94,22 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   check('Every common-starting card offers all three editions in the codex',await p.locator('#rlCodexPanel [data-codex-upgrade="orc_bleed"]').evaluate(c=>[...c.querySelectorAll('[data-codex-rarity]')].map(b=>b.dataset.codexRarity).join()==='common,uncommon,rare'));
   check('Uncommon-starting cards offer both higher editions and no Common',await p.locator('#rlCodexPanel [data-codex-upgrade="orc_leech"]').evaluate(c=>[...c.querySelectorAll('[data-codex-rarity]')].map(b=>b.dataset.codexRarity).join()==='uncommon,rare'));
   check('Rare-only lifesteal has one visible edition at its actual +3-point strength',await p.locator('#rlCodexPanel [data-codex-upgrade="orc_lifesteal"]').evaluate(c=>c.querySelectorAll('[data-codex-rarity]').length===1&&c.querySelector('.rlCodexContent').textContent.includes('+3')&&c.querySelector('.cardFace').dataset.upgradeRarity==='rare'));
+  const appearance=[];
+  for(const [race,id]of [['human','swordsman_hp'],['orc','orc_warrior_hp'],['undead','skeleton_common_hp']]){
+   await p.locator('#codexRace').selectOption(race);
+   for(const rarity of ['common','uncommon','rare']){
+    const article=p.locator(`#rlCodexPanel [data-codex-upgrade="${id}"]`);
+    await article.locator(`[data-codex-rarity="${rarity}"]`).click();
+    appearance.push(await article.evaluate((a,{race,rarity})=>{
+     const face=a.querySelector('.cardFace'),mark=face.querySelector('.cardRarityMark'),art=(face.querySelector('.cardScene')||face.querySelector('.factionArtwork')||face.querySelector('.rlCodexIcon')).getBoundingClientRect(),badge=mark?.getBoundingClientRect();
+     return {race,rarity,shadow:getComputedStyle(face).boxShadow,mark:mark?.textContent,inside:!mark||badge.left>=art.left-1&&badge.right<=art.right+1&&badge.top>=art.top-1&&badge.bottom<art.bottom,frame:face.querySelector('.factionCardFrame')?.dataset.frameArt,humanTexture:!!face.querySelector('.factionFrameTexture')};
+    },{race,rarity}));
+   }
+  }
+  report.appearance=appearance;
+  check('All factions make Uncommon and Rare immediately visible with coloured glow and a labelled gem badge',appearance.every(a=>a.inside&&(a.rarity==='common'?!a.mark:a.shadow!=='none'&&a.mark===(a.rarity==='rare'?'RITKA':'NEM GYAKORI'))));
+  check('Orc and Undead use distinct painted faction viewports without a recoloured Human texture',appearance.filter(a=>a.race!=='human').every(a=>a.frame===a.race&&!a.humanTexture));
+  check('The shared new faction-frame artwork decodes locally',await p.evaluate(async()=>{const svg=document.querySelector('#rlCodexPanel .factionFrameArtwork'),img=new Image();img.src=svg.querySelector('image').getAttribute('href');await img.decode();return img.naturalWidth===1536&&img.naturalHeight===1024&&img.src.includes('/cards/frames/');}));
   const geometry=[];
   for(const race of ['orc','undead'])for(const size of [{width:1440,height:900},{width:2840,height:2180}]){
    await p.setViewportSize(size);await p.locator('#codexRace').selectOption(race);await p.waitForTimeout(150);

@@ -59,5 +59,15 @@ export function createUpgradeRequirements(R) {
     const units=targets.units.map(k=>R.UNITS[k]?.name || k);
     return names.length ? `${names.join(' / ')} · L${level}` : `${units.join(' / ')} termelője · L${level}`;
   };
-  return {allowed,text,targets:upgradeTargets};
+  const path=(c,option)=>{
+    const targets=upgradeTargets(option.id);
+    if(!targets.units.length&&!targets.buildings.length)return null;
+    const types=Object.keys(R.BUILDINGS).filter(type=>R.factionMatches(c.race,R.BUILDINGS[type],type) &&
+      (targets.buildings.includes(type)||targets.units.includes(R.buildingDefinition(c,type)?.unit)||
+        c.buildings.some(b=>b.type===type&&matches(c,b,targets))));
+    const rank=type=>(R.hasBuilding(c,type)?100:0)+(c.unlocked.has(type)?10:0)+R.levelOf(c,type);
+    types.sort((a,b)=>rank(b)-rank(a)||a.localeCompare(b));
+    return types.length?{type:types[0],level:levelFor(option.kind,option.rarity)}:null;
+  };
+  return {allowed,text,path,targets:upgradeTargets};
 }

@@ -94,7 +94,18 @@ export function installAiStrategyPlanner(R) {
         const option=R.buildingUpgradePool(c).find(o=>o.id===a.id&&(R.levelOf(c,a.id)<3||!a.branch||o.branch===a.branch));
         if(option)out.push({...option,level:R.upgradeTargetLevel(c,a.id)});
       }
-    }else if(!owned(c,a))out.push({...a});
+    }else if(!owned(c,a)){
+      const gate=R.upgradeCatalog?.requirements.path(c,a);
+      if(gate&&!R.upgradeCatalog.requirements.allowed(c,a)){
+        building(gate.type);
+        if(R.hasBuilding(c,gate.type)&&R.levelOf(c,gate.type)<gate.level){
+          const options=R.buildingUpgradePool(c).filter(o=>o.id===gate.type);
+          const relevance=o=>{const r=R.aiStrategyRelated(plan,R.aiStrategyDescriptor(c,o));return (r.direct?3:0)+r.shared;};
+          options.sort((a,b)=>relevance(b)-relevance(a)||String(a.branch||'').localeCompare(String(b.branch||'')));
+          if(options[0])out.push({...options[0],level:R.upgradeTargetLevel(c,gate.type)});
+        }
+      }else out.push({...a});
+    }
     for(const type of extra)building(type);
     return out;
   };

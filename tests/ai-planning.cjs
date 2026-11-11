@@ -46,8 +46,14 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    },side));
   }
   check('The legendary guarantee does not guarantee a specific desired card',await p.evaluate(()=>{
-   const R=__ROADLORDS_RUNTIME__,c=vampirePlan('enemy');c.legends.delete('vampire_leg_infection');c.legendaryDrought=19;
+   const R=__ROADLORDS_RUNTIME__,c=vampirePlan('enemy');c.legends.delete('vampire_leg_infection');R.setBuildingLevel(c,'und_vampire_castle',4,'blood_brotherhood');c.legendaryDrought=19;
    const p=R.aiStrategyOffer(c,{kind:'legendary',id:'vampire_leg_infection'});return p.chance>0&&p.chance<1&&p.wait>0;
+  }));
+  check('A unit relic plan first projects the real L2/L3/L4 prerequisites',await p.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__,c=vampirePlan('enemy');c.legends.delete('vampire_leg_infection');
+   const endpoint=R.aiStrategyAnchors(c).find(p=>p.anchor.id==='vampire_leg_infection'),before=JSON.stringify(c);
+   const result=R.aiStrategyProject(c,{...endpoint,producer:'und_vampire_castle'},{budget:{remaining:4,used:0}});
+   return result.actions.length===4&&result.actions.slice(0,3).map(o=>o.level).join(',')==='2,3,4'&&result.actions.at(-1).id==='vampire_leg_infection'&&result.actions.at(-1).chance>0&&before===JSON.stringify(c);
   }));
   check('A card outside the forecast window is not treated as an imminent draw',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=vampirePlan('enemy');c.legends.delete('vampire_leg_infection');c._aiPickDue=R.state.time+240;

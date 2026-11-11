@@ -24,13 +24,13 @@ const { chromium } = require('playwright'), assert = require('node:assert/strict
     while(!R.findCell(c,type)&&clears<4){if(!R.aiMakeRoomFor(type))return false;clears++;}
     return clears>0&&R.RES.every(k=>Math.abs(before[k]-c.resources[k]-clears*price[k])<1e-8)&&R.aiBuild(type);
    },race));
-   check(race+': ancient excavation preserves operating cash and awards exactly one common pick',await page.evaluate(race=>{
+   check(race+': ancient excavation preserves operating cash and awards exactly one normal pick',await page.evaluate(race=>{
     const R=__ROADLORDS_RUNTIME__,c=ruinFixture(race),filler={human:'farm',orc:'orc_hunt',undead:'und_well'}[race];
     const occupied=R.occupancy(c);for(let row=0;row<R.GRID;row++)for(let col=0;col<R.GRID;col++)if(!occupied.has(R.idx(row,col))&&!(row===0&&col<=1))c.buildings.push({id:'fill-'+row+'-'+col,type:filler,row,col,rotation:0,level:1,inactive:true,progress:0});
     R.setTerrain(c,0,0,'ancient');const price=R.terrainClearPrice(c,'ancient');c.resources={...price};
     if(R.aiExcavateAncient()||!R.terrainAt(c,0,0))return false;
-    c.resources=R.C(price.wood+100,price.stone+100,100);const before={...c.resources},normal=Object.values(c.normal).reduce((a,b)=>a+b,0),legends=c.legends.size;
-    return R.aiExcavateAncient()&&!R.terrainAt(c,0,0)&&R.RES.every(k=>Math.abs(before[k]-c.resources[k]-price[k])<1e-8)&&Object.values(c.normal).reduce((a,b)=>a+b,0)===normal+1&&c.legends.size===legends;
+    c.resources=R.C(price.wood+100,price.stone+100,100);const before={...c.resources},normal=R.upgradeCatalog.count(c),legends=c.legends.size;
+    return R.aiExcavateAncient()&&!R.terrainAt(c,0,0)&&R.RES.every(k=>Math.abs(before[k]-c.resources[k]-price[k])<1e-8)&&R.upgradeCatalog.count(c)===normal+1&&c.legends.size===legends;
    },race));
    check(race+': the real AI turn excavates an affordable ancient ruin after its opening',await page.evaluate(race=>{
     const R=__ROADLORDS_RUNTIME__,c=ruinFixture(race);

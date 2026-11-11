@@ -1,4 +1,4 @@
-# Kártyaritkaságok – 4.72
+# Kártyaritkaságok – 4.72.1
 
 Normál fejlesztésen belül, laponként: 70% gyakori, 25% nem gyakori, 5% ritka. A legendás ereklyék továbbra is külön választástípus; a 20. ajánlat garanciája változatlan.
 
@@ -8,9 +8,9 @@ A laphoz tartozó, megépített termelő/épület szükséges: L1 → gyakori, L
 
 A ritkaságot a keret és felirat jelzi: fehér / zöld / lila. A lexikonban a kiadások a lap alatti gombbal válthatók, a pakli megőrzi a megszerzett kiadást. Minden megjelenítés ugyanabból a futásidejű katalógusból dolgozik.
 
-A szorzó a meglévő hatás erősségére vonatkozik, nem a felvett lapok számára. Az eltérő kiadások összeadódnak, a meglévő maximumok maradnak. A nem lineáris, egész darabszámos vagy több eltérő értéket tartalmazó hatások nem kapnak automatikusan erősebb kiadást.
+A szorzó a meglévő hatás erősségére vonatkozik, nem a felvett lapok számára. Az eltérő kiadások összeadódnak, a meglévő maximumok maradnak. Minden lapnak van minimumritkasága: a gyakori lapnak nem gyakori és ritka kiadása is van, a nem gyakori lapnak ritka is, a ritka lap pedig csak ritka. Lefelé nem bővítünk. Az egész darabszámos és nem lineáris hatások külön értékeket kapnak, hogy a kijelzett és tényleges hatás megegyezzen.
 
-Kiemelések: ork általános életlopás csak ritka, +3 százalékpont; szellem kitérés gyakori +5 / ritka +10 százalékpont; Lélekpáncél gyakori 4% / nem gyakori 8% Max HP. Vámpír alap HP: 600 → 440.
+Kiemelések: ork általános életlopás csak ritka, +3 százalékpont; szellem kitérés +5 / +7,5 / +10 százalékpont; Lélekpáncél 4% / 8% / 12% Max HP. Vérzés első felvétele 2 / 3 / 4, további felvétele +1 / +2 / +3. Zombi halálkori méregbónusz +1 / +2 / +3. Kapufegyelem +10% / +20% / +30% kiengedés és +5 / +10 / +15 férőhely. Képzési takarékosság: nem gyakori 5%, ritka 7,5% kedvezmény; a további kedvezmények szorzódnak. Vámpír alap HP: 600 → 440.
 
 Az esélyek kezdeti hangolásnak számítanak; a ritkaság önmagában nem egyenlíti ki a különböző buildek erejét.
 
@@ -18,100 +18,100 @@ Az esélyek kezdeti hangolásnak számítanak; a ritkaság önmagában nem egyen
 
 | Fejlesztés | Gyakori | Nem gyakori | Ritka |
 | --- | --- | --- | --- |
-| Gyorsított gyártás | 1× | 1.5× | — |
-| Fokozott termelés | 1× | — | — |
-| Általános harci kiképzés | — | 1× | — |
-| Kardos – Sebzés | 1× | 1.5× | 2× |
-| Kardos – Életerő | 1× | 1.5× | 2× |
-| Kardforgatás | — | 1× | — |
-| Lándzsás – Sebzés | 1× | 1.5× | — |
-| Lándzsás – Életerő | 1× | 1.5× | — |
-| Szívós lándzsások | 1× | — | 2× |
-| Íjász – Sebzés | 1× | 1.5× | — |
-| Íjász – Életerő | 1× | 1.5× | — |
-| Erősebb íj | — | 1× | — |
-| Lovag – Sebzés | 1× | 1.5× | — |
-| Lovag – Életerő | 1× | 1.5× | — |
-| Harci mén | — | 1× | — |
-| Pap – Harci szolgálat | 1× | 1.5× | — |
-| Pap – Életerő | 1× | 1.5× | — |
-| Katapult – Sebzés | 1× | 1.5× | — |
-| Katapult – Életerő | 1× | 1.5× | — |
-| Nehéz lövedék | — | 1× | — |
-| Mágus – Sebzés | 1× | 1.5× | — |
-| Mágus – Életerő | 1× | 1.5× | — |
-| Szélesebb tűzgolyó | — | 1× | — |
-| Takarékos kiképzés | — | 1× | — |
+| Gyorsított gyártás | 1× | 1,5× | 2× |
+| Fokozott termelés | 1× | 1,5× | 2× |
+| Általános harci kiképzés | — | 1× | 1,5× |
+| Kardos – Sebzés | 1× | 1,5× | 2× |
+| Kardos – Életerő | 1× | 1,5× | 2× |
+| Kardforgatás | — | 1× | 1,5× |
+| Lándzsás – Sebzés | 1× | 1,5× | 2× |
+| Lándzsás – Életerő | 1× | 1,5× | 2× |
+| Szívós lándzsások | 1× | 1,5× | 2× |
+| Íjász – Sebzés | 1× | 1,5× | 2× |
+| Íjász – Életerő | 1× | 1,5× | 2× |
+| Erősebb íj | — | 1× | 1,5× |
+| Lovag – Sebzés | 1× | 1,5× | 2× |
+| Lovag – Életerő | 1× | 1,5× | 2× |
+| Harci mén | — | 1× | 1,5× |
+| Pap – Harci szolgálat | 1× | 1,5× | 2× |
+| Pap – Életerő | 1× | 1,5× | 2× |
+| Katapult – Sebzés | 1× | 1,5× | 2× |
+| Katapult – Életerő | 1× | 1,5× | 2× |
+| Nehéz lövedék | — | 1× | 1,5× |
+| Mágus – Sebzés | 1× | 1,5× | 2× |
+| Mágus – Életerő | 1× | 1,5× | 2× |
+| Szélesebb tűzgolyó | — | 1× | 1,5× |
+| Takarékos kiképzés | — | 1× | 1,52× |
 | Toronykezelők | — | — | 1× |
-| Kapufegyelem | 1× | — | — |
-| Takarékos építkezés | — | 1× | — |
-| Karbantartók | 1× | — | — |
+| Kapufegyelem | 1× | 2× | 3× |
+| Takarékos építkezés | — | 1× | 1,5× |
+| Karbantartók | 1× | 1,5× | 2× |
 
 ## Orkok
 
 | Fejlesztés | Gyakori | Nem gyakori | Ritka |
 | --- | --- | --- | --- |
-| Ork Harcos · Életerő | 1× | 1.5× | 2× |
-| Ork Harcos · Sebzés | 1× | 1.5× | 2× |
-| Dühöngő · Életerő | 1× | 1.5× | — |
-| Dühöngő · Sebzés | 1× | 1.5× | — |
-| Goblin · Életerő | 1× | 1.5× | — |
-| Goblin · Sebzés | 1× | 1.5× | — |
-| Vérző sebek | 1× | — | — |
-| Vérivás | — | 1× | — |
-| Kettős parittya | 1× | — | 2× |
-| Fa · Termelés | 1× | — | — |
-| Kő · Termelés | 1× | — | — |
-| Élelem · Termelés | 1× | — | — |
-| Ork harci tempó | — | 1× | — |
-| Szívós horda | — | 1× | — |
-| Warglovas · Életerő | 1× | 1.5× | — |
-| Warglovas · Sebzés | 1× | 1.5× | — |
-| Sámán · Életerő | 1× | 1.5× | — |
-| Sámán · Sebzés | 1× | 1.5× | — |
-| Faltörő kos · Életerő | 1× | 1.5× | — |
-| Faltörő kos · Sebzés | 1× | 1.5× | — |
-| Troll · Életerő | 1× | 1.5× | — |
-| Troll · Sebzés | 1× | 1.5× | — |
-| Kritikus lándzsák | — | 1× | — |
-| Tartós rontás | 1× | — | — |
-| Trollregeneráció | — | 1× | — |
+| Ork Harcos · Életerő | 1× | 1,5× | 2× |
+| Ork Harcos · Sebzés | 1× | 1,5× | 2× |
+| Dühöngő · Életerő | 1× | 1,5× | 2× |
+| Dühöngő · Sebzés | 1× | 1,5× | 2× |
+| Goblin · Életerő | 1× | 1,5× | 2× |
+| Goblin · Sebzés | 1× | 1,5× | 2× |
+| Vérző sebek | 1× | 2× | 3× |
+| Vérivás | — | 1× | 2× |
+| Kettős parittya | 1× | 1,5× | 2× |
+| Fa · Termelés | 1× | 1,5× | 2× |
+| Kő · Termelés | 1× | 1,5× | 2× |
+| Élelem · Termelés | 1× | 1,5× | 2× |
+| Ork harci tempó | — | 1× | 1,5× |
+| Szívós horda | — | 1× | 1,5× |
+| Warglovas · Életerő | 1× | 1,5× | 2× |
+| Warglovas · Sebzés | 1× | 1,5× | 2× |
+| Sámán · Életerő | 1× | 1,5× | 2× |
+| Sámán · Sebzés | 1× | 1,5× | 2× |
+| Faltörő kos · Életerő | 1× | 1,5× | 2× |
+| Faltörő kos · Sebzés | 1× | 1,5× | 2× |
+| Troll · Életerő | 1× | 1,5× | 2× |
+| Troll · Sebzés | 1× | 1,5× | 2× |
+| Kritikus lándzsák | — | 1× | 1,5× |
+| Tartós rontás | 1× | 1,5× | 2× |
+| Trollregeneráció | — | 1× | 1,5× |
 | Kritikus csapások | — | — | 1× |
 | Kontár építkezés | — | — | 1× |
-| Hadizsákmány | 1× | — | — |
-| Tágasabb ostromgépek | 1× | — | — |
-| Rontott sebek | 1× | 1.5× | — |
-| Hordamenet | 1× | — | — |
-| Erődrombolók | — | 1× | — |
+| Hadizsákmány | 1× | 1,5× | 2× |
+| Tágasabb ostromgépek | 1× | 1,5× | 2× |
+| Rontott sebek | 1× | 1,5× | 2× |
+| Hordamenet | 1× | 1,5× | 2× |
+| Erődrombolók | — | 1× | 1,5× |
 | Vérszomjas horda | — | — | 1× |
-| Hadi fejadag | — | 1× | — |
+| Hadi fejadag | — | 1× | 1,5× |
 
 ## Élőhalottak
 
 | Fejlesztés | Gyakori | Nem gyakori | Ritka |
 | --- | --- | --- | --- |
-| Lélekbőség | 1× | — | — |
-| Sírontás | — | 1× | — |
-| Csontváz · Életerő +10% | 1× | 1.5× | 2× |
-| Csontváz · Sebzés +10% | 1× | 1.5× | 2× |
-| Zombi · Életerő +10% | 1× | 1.5× | — |
-| Zombi · Sebzés +10% | 1× | 1.5× | — |
-| Szellem · Életerő +10% | 1× | 1.5× | — |
-| Szellem · Sebzés +10% | 1× | 1.5× | — |
-| Nekromanta · Életerő +10% | 1× | 1.5× | — |
-| Nekromanta · Sebzés +10% | 1× | 1.5× | — |
-| Vámpír · Életerő +10% | 1× | 1.5× | — |
-| Vámpír · Sebzés +10% | 1× | 1.5× | — |
-| Lich · Életerő +10% | 1× | 1.5× | — |
-| Lich · Sebzés +10% | 1× | 1.5× | — |
-| Csontkeménység | 1× | 1.5× | — |
-| Fertőző hulla | 1× | — | — |
-| Kísérteties mozgás | 1× | — | 2× |
-| Erősített idézés | 1× | 1.5× | — |
-| Vérszomj | — | 1× | — |
+| Lélekbőség | 1× | 1,5× | 2× |
+| Sírontás | — | 1× | 1,5× |
+| Csontváz · Életerő +10% | 1× | 1,5× | 2× |
+| Csontváz · Sebzés +10% | 1× | 1,5× | 2× |
+| Zombi · Életerő +10% | 1× | 1,5× | 2× |
+| Zombi · Sebzés +10% | 1× | 1,5× | 2× |
+| Szellem · Életerő +10% | 1× | 1,5× | 2× |
+| Szellem · Sebzés +10% | 1× | 1,5× | 2× |
+| Nekromanta · Életerő +10% | 1× | 1,5× | 2× |
+| Nekromanta · Sebzés +10% | 1× | 1,5× | 2× |
+| Vámpír · Életerő +10% | 1× | 1,5× | 2× |
+| Vámpír · Sebzés +10% | 1× | 1,5× | 2× |
+| Lich · Életerő +10% | 1× | 1,5× | 2× |
+| Lich · Sebzés +10% | 1× | 1,5× | 2× |
+| Csontkeménység | 1× | 1,5× | 2× |
+| Fertőző hulla | 1× | 2× | 3× |
+| Kísérteties mozgás | 1× | 1,5× | 2× |
+| Erősített idézés | 1× | 1,5× | 2× |
+| Vérszomj | — | 1× | 1,5× |
 | Halhatatlanság | — | — | 1× |
 | Lélekörökség | — | — | 1× |
-| Síri menet | 1× | — | — |
-| Holtak ostroma | 1× | — | — |
-| Lélekpáncél | 0.5× | 1× | — |
-| Terjeszkedő sírok | 1× | — | — |
+| Síri menet | 1× | 1,5× | 2× |
+| Holtak ostroma | 1× | 1,5× | 2× |
+| Lélekpáncél | 0,5× | 1× | 1,5× |
+| Terjeszkedő sírok | 1× | 1,5× | 2× |

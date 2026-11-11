@@ -89,7 +89,7 @@ export function installUpgradeCatalog(R) {
     if (!result || !['normal','legendary'].includes(o.kind)) return result;
     const def=definition(o.id,o.kind);
     if(o.kind==='legendary')return {...result,description:def?.description || o.description};
-    return {...result, description: o.rarity ? option(o.id,o.rarity)?.description || o.description : def?.description || o.description};
+    return {...result, description: o.rarity ? option(o.id,o.rarity)?.description || o.description : def?.description || o.description, stacking:`Halmozható · Felvéve: ${count(c,o.id)}×.`};
   };
   // All screens obtain definitions from the live runtime, after faction layers
   // have finished applying their final copy and balance changes.

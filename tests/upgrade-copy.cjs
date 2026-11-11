@@ -51,7 +51,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     check('Attack-speed preview shows a shorter attack interval, not a false additive reduction', audit.speed.rows.some(r => r.before === '1 mp' && r.after === '0,87 mp'));
     check('Orc unit preview uses the orc stat chain', audit.orc.rows.some(r => r.before === '20' && r.after === '22'));
     check('Bleed and lifesteal correctly distinguish first and subsequent pickups', audit.bleed[0].rows[0].after === '2' && audit.bleed[1].rows[0].after === '3' && audit.leech[0].rows[0].after === '5%' && audit.leech[1].rows[0].after === '7%');
-    check('Building discount caps at 50%; repeated training discounts multiply', audit.discount.rows[0].after === '50%' && audit.discount.stacking.includes('5×') && audit.frugal.rows[0].after === '90,25%');
+    check('Building discount caps at 50%; repeated training discounts multiply', audit.discount.rows[0].after === '50%' && audit.discount.stacking.includes('4×') && audit.discount.description.includes('50%') && audit.frugal.rows[0].after === '90,25%');
     check('Critical chance above 100% remains visible', audit.crit.rows[0].after === '104%');
     check('Legendary cards distinguish one-time effects, repeatable relics and 5/4-stack limits', audit.repeats[0].stacking.includes('5×') && audit.repeats[1].stacking.includes('4×') && audit.repeats[2].stacking.includes('Korlátlanul') && audit.repeats[3].stacking.includes('Korlátlanul') && audit.repeats[4].stacking.includes('Egyszer'));
     check('Specialization preview explains the extra chance without rolling it', audit.specialization.specialization.includes('50%') && audit.specialization.rows[0].after === '14,4');

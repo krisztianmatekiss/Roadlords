@@ -12,7 +12,8 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    const add=(type,level)=>{const b={id:'rarity-'+type,type,row:0,col:0,rotation:0,level,progress:0};R.P.buildings.push(b);R.P.levels[type]=level;return b;};
    out.canonical=R.LEGENDARY.every(def=>R.upgradeCopyPreview(R.P,{...def,kind:'legendary'}).description===catalog.definition(def.id,'legendary').description);
    out.complete=R.NORMAL.length===87&&R.NORMAL.every(d=>Object.keys(catalog.editions(d.id)).length>0);
-   out.selective=Object.keys(catalog.editions('orc_lifesteal')).join()==='rare'&&Object.keys(catalog.editions('ghost_common_dodge')).join()==='common,rare'&&Object.keys(catalog.editions('orc_bleed')).join()==='common';
+   out.upward=R.NORMAL.every(d=>{const keys=Object.keys(catalog.editions(d.id)),all=['common','uncommon','rare'];return keys.join()===all.slice(all.indexOf(keys[0])).join();});
+   out.selective=Object.keys(catalog.editions('orc_lifesteal')).join()==='rare'&&Object.keys(catalog.editions('ghost_common_dodge')).join()==='common,uncommon,rare'&&Object.keys(catalog.editions('orc_bleed')).join()==='common,uncommon,rare';
    reset('human');add('barracks',1);
    out.levels=[];
    for(let level=1;level<=4;level++){
@@ -27,7 +28,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    for(const o of copies)R.applyChoice(R.P,o);
    out.mixed={hp:R.statsFor(R.P,{key:'orc_warrior'}).hp,before,strength:R.P.normal.orc_warrior_hp,count:catalog.count(R.P),owned:catalog.owned(R.P).map(x=>[x.option.rarity,x.count]),events:R.P.pickEvents?.map(e=>e.rarity)};
    const stats=R.mpStrategy(R.P),snap=R.mpRevive(R.mpCitySnapshot(R.P));
-   out.network=JSON.stringify(stats.normalRarities)===JSON.stringify(snap.normalRarities)&&catalog.count(snap)===3&&snap.normal.orc_warrior_hp===4.5&&R.gameRulesVersion===22;
+   out.network=JSON.stringify(stats.normalRarities)===JSON.stringify(snap.normalRarities)&&catalog.count(snap)===3&&snap.normal.orc_warrior_hp===4.5&&R.gameRulesVersion===23;
    R.renderRelics();out.deck=[...R.$$('#relicList [data-relic="orc_warrior_hp"]')].map(c=>({rarity:c.querySelector('.cardFace').dataset.upgradeRarity,count:c.querySelector('.relicOwnedCount').textContent}));
    R.P.rerolls=2;const options=copies.map((o,i)=>catalog.option(['orc_warrior_hp','orc_warrior_dmg','orc_warrior_hp'][i],o.rarity));
    R.state.choiceContext={source:'timer',tier:'common',subtype:null,opts:options,remaining:1};
@@ -49,6 +50,23 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    for(const race of ['human','orc','undead']){
     reset(race);for(let i=0;i<40;i++){const offer=R.makeChoiceOptions(R.P,'timer','common');if(new Set(offer.map(o=>o.id)).size!==offer.length||offer.some(o=>!catalog.requirements.allowed(R.P,o)||!R.NORMAL.find(d=>d.id===o.id).eligible(R.P)))out.sampling.push(race);}
    }
+   out.newEditions={};
+   reset('orc');
+   for(const rarity of ['common','uncommon','rare']){
+    const bleed=catalog.option('orc_bleed',rarity),cargo=catalog.option('orc_cargo',rarity);
+    out.newEditions[rarity]={bleed:bleed.description,bleedAfter:R.upgradeCopyPreview(R.P,bleed).rows[0].after,cargo:cargo.description,cargoAfter:R.upgradeCopyPreview(R.P,cargo).rows[0].after};
+   }
+   out.newEditions.leech=catalog.option('orc_leech','rare').description;
+   reset('human');R.applyChoice(R.P,catalog.option('gate_discipline','rare'));R.recomputeCity(R.P,false);
+   out.newEditions.capacity=R.P.garrisonCap;
+   reset('human');const frugal=catalog.option('frugal_training','rare');
+   out.newEditions.frugal={description:frugal.description,after:R.upgradeCopyPreview(R.P,frugal).rows[0].after};
+   for(let i=0;i<4;i++)R.applyChoice(R.P,catalog.option('building_discount','rare'));
+   out.newEditions.discount={count:catalog.count(R.P),raw:R.P.normal.building_discount,eligible:R.eligibleNormal(R.P).some(o=>o.id==='building_discount')};
+   reset('undead');for(const rarity of ['common','uncommon','rare']){
+    const o=catalog.option('und_territory',rarity),before=R.undTerritoryAdvance(R.P)/10,preview=R.upgradeCopyPreview(R.P,o);
+    R.applyChoice(R.P,o);out.newEditions[rarity].territory={description:o.description,preview:preview.rows[0].after,actual:R.undTerritoryAdvance(R.P)/10,delta:R.undTerritoryAdvance(R.P)/10-before};
+   }
    reset('undead');out.vampire=R.statsFor(R.P,{key:'und_vampire'}).hp;
    out.soulWard=catalog.option('und_spawn_ward','common').description;
    add('und_well',3);out.wellBefore=R.eligibleLegendary(R.P).some(o=>o.id==='und_compact_wells');
@@ -56,7 +74,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    out.progression=R.LEGENDARY.find(o=>o.id==='high_keep').eligible({...R.P,race:'human',levels:{keep:2},buildings:[{type:'keep',level:2}]});
    return out;
   });report.logic=logic;
-  check('All 87 normal effects have selective editions, including Rare-only Orc lifesteal and 5/10-point Ghost dodge',logic.complete&&logic.selective&&logic.ghost.description.includes('+10 százalékpont'));
+  check('All 87 upgrades extend upward through Rare without adding editions below their minimum',logic.complete&&logic.upward&&logic.selective&&logic.ghost.description.includes('+10 százalékpont'));
   check('A real L1/L2/L3/L4 producer unlocks Common/Uncommon/Rare/unit relic respectively',JSON.stringify(logic.levels)===JSON.stringify([[true,false,false,false],[true,true,false,false],[true,true,true,false],[true,true,true,true]]));
   check('Mixed editions grant actual +10/+15/+20% HP while counting three acquired cards',logic.mixed.strength===4.5&&logic.mixed.count===3&&Math.abs(logic.mixed.hp/logic.mixed.before-1.45)<.01&&logic.mixed.owned.length===3);
   check('Deck variants, full snapshots, strategy messages and pick flights preserve rarity and real card counts',logic.network&&logic.deck.length===3&&logic.deck.every(x=>x.count==='×1')&&logic.mixed.events.join()==='common,uncommon,rare');
@@ -64,12 +82,17 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   check('Specialization duplicates the chosen strength, including a half-strength Common shield',logic.specialization);
   check('Early Undead can still receive four distinct general Common cards',logic.early.length===4&&new Set(logic.early).size===4&&logic.soulWard.includes('4%'));
   check('Offers honor real prerequisites without duplicate effects',!logic.sampling.length);
+  check('New whole-number editions describe actual bleeding and cargo values',logic.newEditions.uncommon.bleed.includes('3 Vérzést')&&logic.newEditions.uncommon.bleedAfter==='3'&&logic.newEditions.rare.bleed.includes('4 Vérzést')&&logic.newEditions.rare.bleedAfter==='4'&&logic.newEditions.uncommon.cargo.includes('+6')&&logic.newEditions.uncommon.cargoAfter==='16'&&logic.newEditions.rare.cargo.includes('+8')&&logic.newEditions.rare.cargoAfter==='18'&&logic.newEditions.leech.includes('7%')&&logic.newEditions.capacity===45);
+  check('Rare training discount is exactly 7.5%, and mixed rarity purchases respect the building discount cap',logic.newEditions.frugal.description.includes('7,5%')&&logic.newEditions.frugal.after==='92,5%'&&logic.newEditions.discount.count===4&&logic.newEditions.discount.raw===5&&!logic.newEditions.discount.eligible);
+  check('Territory editions grant and preview 12/18/24 real metres', ['common','uncommon','rare'].every((r,i)=>{const t=logic.newEditions[r].territory;return t.delta===[12,18,24][i]&&t.preview===`+${t.actual} m`&&t.description.includes(String(t.delta));}));
   check('Normal rarity distribution is 70/25/5 without changing relic progression',Object.entries({common:.7,uncommon:.25,rare:.05}).every(([k,v])=>Math.abs(logic.distribution[k]/20000-v)<.012));
   check('Vampire base HP is 440; building relics require L4; level-granting progression cards remain obtainable',logic.vampire===440&&!logic.wellBefore&&logic.wellAfter&&logic.progression);
   await p.locator('.menuBrand').click();await p.waitForTimeout(500);await p.locator('#rlOpenCodex').click();
   await p.locator('#codexRace').selectOption('orc');await p.locator('#rlCodexPanel [data-tab="common"]').click();
   const hp=p.locator('#rlCodexPanel [data-codex-upgrade="orc_warrior_hp"]');await hp.locator('[data-codex-rarity="rare"]').click();
   check('Codex uses the same Rare +20% description, footer and L3 prerequisite',await hp.evaluate(c=>c.querySelector('.cardFace').dataset.upgradeRarity==='rare'&&c.querySelector('.rlCodexContent').textContent.includes('+20%')&&c.querySelector('.cardFooter').textContent==='RITKA'&&c.querySelector('.upgradeRequirement').textContent.includes('L3')));
+  check('Every common-starting card offers all three editions in the codex',await p.locator('#rlCodexPanel [data-codex-upgrade="orc_bleed"]').evaluate(c=>[...c.querySelectorAll('[data-codex-rarity]')].map(b=>b.dataset.codexRarity).join()==='common,uncommon,rare'));
+  check('Uncommon-starting cards offer both higher editions and no Common',await p.locator('#rlCodexPanel [data-codex-upgrade="orc_leech"]').evaluate(c=>[...c.querySelectorAll('[data-codex-rarity]')].map(b=>b.dataset.codexRarity).join()==='uncommon,rare'));
   check('Rare-only lifesteal has one visible edition at its actual +3-point strength',await p.locator('#rlCodexPanel [data-codex-upgrade="orc_lifesteal"]').evaluate(c=>c.querySelectorAll('[data-codex-rarity]').length===1&&c.querySelector('.rlCodexContent').textContent.includes('+3')&&c.querySelector('.cardFace').dataset.upgradeRarity==='rare'));
   const geometry=[];
   for(const race of ['orc','undead'])for(const size of [{width:1440,height:900},{width:2840,height:2180}]){

@@ -117,7 +117,7 @@ export function initializeUndeadConvergence(R) {
   const preview=R.upgradeCopyPreview;
   R.upgradeCopyPreview=(c,o)=>o.id==='und_territory'?{
     description:R.NORMAL.find(d=>d.id===o.id).description,context:'A jelenlegi területnövelésekkel.',stacking:'Halmozható.',
-    rows:[{label:'Saját térfélnövelés',before:`+${(R.undTerritoryAdvance(c)/10).toLocaleString('hu-HU')} m`,after:`+${(Math.min(R.PATH_LENGTH/2-20,R.undTerritoryAdvance(c)+120*R.undTerritoryScale(c))/10).toLocaleString('hu-HU')} m`}],
+    rows:[{label:'Saját térfélnövelés',before:`+${(R.undTerritoryAdvance(c)/10).toLocaleString('hu-HU')} m`,after:`+${(Math.min(R.PATH_LENGTH/2-20,R.undTerritoryAdvance(c)+120*(R.normalOptionPower?.(o)||1)*R.undTerritoryScale(c))/10).toLocaleString('hu-HU')} m`}],
   }:preview(c,o);
   R.undPortalOperational=c=>undead(c)&&!!c.undPortalEnabled&&active(c,'und_otherworld_portal').some(b=>!(b.undStarve>0))&&c.resources.wood>=0;
   const release=R.releaseUnit;

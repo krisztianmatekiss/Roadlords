@@ -285,15 +285,11 @@ export function register(runtime) {
     runtime.ctx.restore();
   };
   runtime.towerStatsV496 = function towerStatsV496(t) {
-    const c = runtime.cityForSide(t.side),
-      crewStacks = runtime.countNormal(c, 'tower_crews'),
-      crew = 1 + .08 * crewStacks;
     return {
-      crewStacks,
-      damage: (t.baseDamage || 96) * crew,
-      range: (t.baseRange || (t.gateTower ? TOWER_RANGE.gate : TOWER_RANGE.road)) * crew,
-      cooldown: (t.baseCooldown || 1) / crew,
-      attacksPerSecond: crew / (t.baseCooldown || 1),
+      damage: t.baseDamage || 96,
+      range: t.baseRange || (t.gateTower ? TOWER_RANGE.gate : TOWER_RANGE.road),
+      cooldown: t.baseCooldown || 1,
+      attacksPerSecond: 1 / (t.baseCooldown || 1),
       regen: t.regen || 0
     };
   };

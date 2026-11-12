@@ -2,8 +2,8 @@
 // Relics and building offers use their existing, separate rules.
 export const UPGRADE_RARITIES = Object.freeze({
   common: { label: 'GYAKORI', color: '#ecebe2', chance: .70 },
-  uncommon: { label: 'NEM GYAKORI', color: '#6ed58a', chance: .25 },
-  rare: { label: 'RITKA', color: '#bd8bef', chance: .05 },
+  uncommon: { label: 'RITKA', color: '#83b5e8', chance: .25 },
+  rare: { label: 'EPIKUS', color: '#b394df', chance: .05 },
 });
 const C = Object.freeze({ common: 1, uncommon: 1.5, rare: 2 });
 const U = Object.freeze({ uncommon: 1, rare: 1.5 });
@@ -18,8 +18,8 @@ export const UPGRADE_EDITIONS = Object.freeze({
   knight_dmg: C, knight_hp: C, knight_move: U,
   priest_dmg: C, priest_hp: C, catapult_dmg: C, catapult_hp: C,
   cat_build: U, mage_dmg: C, mage_hp: C, mage_aoe: U,
-  frugal_training: {uncommon:1, rare:Math.log(.925)/Math.log(.95)}, tower_crews: R, gate_discipline: WHOLE,
-  building_discount: U, tower_regen: C,
+  frugal_training: {uncommon:1, rare:Math.log(.925)/Math.log(.95)}, gate_discipline: WHOLE,
+  building_discount: U,
   orc_warrior_hp: C, orc_warrior_dmg: C,
   orc_berserker_hp: C, orc_berserker_dmg: C,
   orc_goblin_hp: C, orc_goblin_dmg: C,

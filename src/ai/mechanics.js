@@ -73,7 +73,6 @@ const GROUPS = [
   [['und_death_mend', 'und_spawn_ward'], .045, ['survival', 'death']],
   [['und_home_march'], .035, ['territory']], [['und_siege_force'], .045, ['siege']],
   [['und_territory'], .025, ['territory']], [['garden_chance'], .06, ['revive']],
-  [['tower_crews', 'tower_regen'], .04, ['defense']],
 ];
 const REQUIREMENTS = {
   orc_bers_blood:['bleed'],orc_gob_blood:['bleed'],orc_cursed_damage:['curse'],orc_curse_spread:['curse'],

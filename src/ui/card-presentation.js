@@ -1,4 +1,4 @@
-import { factionCardFrame, cardRarityMark } from './faction-card-frame.js';
+import { factionCardFrame } from './faction-card-frame.js';
 import { cardImageSource } from '../assets/card-loading.js';
 import upgradeArt from '../data/upgrade-art-manifest.json';
 import manifest from '../data/orc-card-manifest.json';
@@ -223,7 +223,6 @@ export function installCardPresentation(R) {
       if(o.kind==='normal') {
         const model=R.upgradeCatalog.option(o.id,o.rarity), label=R.upgradeCatalog.rarities[model.rarity].label;
         card.dataset.upgradeRarity=model.rarity;
-        card.insertAdjacentHTML('beforeend',cardRarityMark(model.rarity));
         const count=R.upgradeCatalog.count(R.P,o.id);
         if(tag)tag.textContent=count ? `${label} · ×${count}` : label;
         const footer=card.querySelector('.choiceFooter');if(footer)footer.textContent=label;

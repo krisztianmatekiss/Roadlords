@@ -1,22 +1,26 @@
-# Kártyaritkaságok – 4.72.1
+# Kártyaepikusságok – 4.73.0
 
-Normál fejlesztésen belül, laponként: 70% gyakori, 25% nem gyakori, 5% ritka. A legendás ereklyék továbbra is külön választástípus; a 20. ajánlat garanciája változatlan.
+Normál fejlesztésen belül, laponként: 70% gyakori, 25% ritka, 5% epikus. A legendás ereklyék továbbra is külön választástípus; a 20. ajánlat garanciája változatlan.
 
-A laphoz tartozó, megépített termelő/épület szükséges: L1 → gyakori, L2 → nem gyakori, L3 → ritka, L4 → célzott legendás. Az alternatív termelők is számítanak. Az egész népre ható általános lapok megőrzik saját feltételeiket. Több megnevezett épületnél legalább egy megfelelő L4 szükséges; az eredeti előfeltételek ezenfelül is érvényesek. A szintet emelő Magasvár és Királyi negyed kivétel, mert eredeti feltételük L1–L3.
+A laphoz tartozó, megépített termelő/épület szükséges: L1 → gyakori, L2 → ritka, L3 → epikus, L4 → célzott legendás. Az alternatív termelők is számítanak. Az egész népre ható általános lapok megőrzik saját feltételeiket. Több megnevezett épületnél legalább egy megfelelő L4 szükséges; az eredeti előfeltételek ezenfelül is érvényesek. A szintet emelő Magasvár és Királyi negyed kivétel, mert eredeti feltételük L1–L3.
 
-Újrasorsolás és kitiltás megtartja a hely ritkaságát. Ha nincs több megfelelő, választható lap, csak alacsonyabb ritkaság helyettesítheti. Egy ajánlatban ugyanaz a hatás egyszer jelenhet meg. Egy kitiltás minden kiadást kizár.
+Újrasorsolás és kitiltás megtartja a hely epikusságát. Ha nincs több megfelelő, választható lap, csak alacsonyabb epikusság helyettesítheti. Egy ajánlatban ugyanaz a hatás egyszer jelenhet meg. Egy kitiltás minden kiadást kizár.
 
-A ritkaságot a keret és felirat jelzi: fehér / zöld / lila. A lexikonban a kiadások a lap alatti gombbal válthatók, a pakli megőrzi a megszerzett kiadást. Minden megjelenítés ugyanabból a futásidejű katalógusból dolgozik.
+A epikusságot a keret és felirat jelzi: fehér / kék / lila. A lexikonban a kiadások a lap alatti gombbal válthatók, a pakli megőrzi a megszerzett kiadást. Minden megjelenítés ugyanabból a futásidejű katalógusból dolgozik.
 
-A szorzó a meglévő hatás erősségére vonatkozik, nem a felvett lapok számára. Az eltérő kiadások összeadódnak, a meglévő maximumok maradnak. Minden lapnak van minimumritkasága: a gyakori lapnak nem gyakori és ritka kiadása is van, a nem gyakori lapnak ritka is, a ritka lap pedig csak ritka. Lefelé nem bővítünk. Az egész darabszámos és nem lineáris hatások külön értékeket kapnak, hogy a kijelzett és tényleges hatás megegyezzen.
+A szorzó a meglévő hatás erősségére vonatkozik, nem a felvett lapok számára. Az eltérő kiadások összeadódnak, a meglévő maximumok maradnak. Minden lapnak van minimumepikussága: a gyakori lapnak ritka és epikus kiadása is van, a ritka lapnak epikus is, a epikus lap pedig csak epikus. Lefelé nem bővítünk. Az egész darabszámos és nem lineáris hatások külön értékeket kapnak, hogy a kijelzett és tényleges hatás megegyezzen.
 
-Kiemelések: ork általános életlopás csak ritka, +3 százalékpont; szellem kitérés +5 / +7,5 / +10 százalékpont; Lélekpáncél 4% / 8% / 12% Max HP. Vérzés első felvétele 2 / 3 / 4, további felvétele +1 / +2 / +3. Zombi halálkori méregbónusz +1 / +2 / +3. Kapufegyelem +10% / +20% / +30% kiengedés és +5 / +10 / +15 férőhely. Képzési takarékosság: nem gyakori 5%, ritka 7,5% kedvezmény; a további kedvezmények szorzódnak. Vámpír alap HP: 600 → 440.
+Kiemelések: ork általános életlopás csak epikus, +3 százalékpont; szellem kitérés +5 / +7,5 / +10 százalékpont; Lélekpáncél 4% / 8% / 12% Max HP. Vérzés első felvétele 2 / 3 / 4, további felvétele +1 / +2 / +3. Zombi halálkori méregbónusz +1 / +2 / +3. Kapufegyelem +10% / +20% / +30% kiengedés és +5 / +10 / +15 férőhely. Képzési takarékosság: ritka 5%, epikus 7,5% kedvezmény; a további kedvezmények szorzódnak. Vámpír alap HP: 600 → 440.
 
-Az esélyek kezdeti hangolásnak számítanak; a ritkaság önmagában nem egyenlíti ki a különböző buildek erejét.
+A három nép az emberi kártyák egyszerű keretelrendezését használja, enyhe anyagszínnel, fényudvar és külön ritkaságjelvény nélkül. A belső `common` / `uncommon` / `rare` azonosítók kompatibilitás miatt változatlanok; a látható nevek Gyakori / Ritka / Epikus.
+
+Toronykezelők és Karbantartók törölve. A Sortűz álló saját torony mellett, az Újjáépítés legalább két ledőlt saját toronynál továbbra is elérhető, a törölt lapok előfeltétele nélkül.
+
+Az esélyek kezdeti hangolásnak számítanak; a epikusság önmagában nem egyenlíti ki a különböző buildek erejét.
 
 ## Emberek
 
-| Fejlesztés | Gyakori | Nem gyakori | Ritka |
+| Fejlesztés | Gyakori | Ritka | Epikus |
 | --- | --- | --- | --- |
 | Gyorsított gyártás | 1× | 1,5× | 2× |
 | Fokozott termelés | 1× | 1,5× | 2× |
@@ -42,14 +46,12 @@ Az esélyek kezdeti hangolásnak számítanak; a ritkaság önmagában nem egyen
 | Mágus – Életerő | 1× | 1,5× | 2× |
 | Szélesebb tűzgolyó | — | 1× | 1,5× |
 | Takarékos kiképzés | — | 1× | 1,52× |
-| Toronykezelők | — | — | 1× |
 | Kapufegyelem | 1× | 2× | 3× |
 | Takarékos építkezés | — | 1× | 1,5× |
-| Karbantartók | 1× | 1,5× | 2× |
 
 ## Orkok
 
-| Fejlesztés | Gyakori | Nem gyakori | Ritka |
+| Fejlesztés | Gyakori | Ritka | Epikus |
 | --- | --- | --- | --- |
 | Ork Harcos · Életerő | 1× | 1,5× | 2× |
 | Ork Harcos · Sebzés | 1× | 1,5× | 2× |
@@ -88,7 +90,7 @@ Az esélyek kezdeti hangolásnak számítanak; a ritkaság önmagában nem egyen
 
 ## Élőhalottak
 
-| Fejlesztés | Gyakori | Nem gyakori | Ritka |
+| Fejlesztés | Gyakori | Ritka | Epikus |
 | --- | --- | --- | --- |
 | Lélekbőség | 1× | 1,5× | 2× |
 | Sírontás | — | 1× | 1,5× |

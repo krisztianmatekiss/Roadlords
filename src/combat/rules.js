@@ -51,7 +51,7 @@ export function register(runtime) {
     };
   };
   runtime.refreshTowerHpFor = function refreshTowerHpFor(c, side, preserve = true) {
-    const mult = (1 + .10 * runtime.countNormal(c, 'building_hp')) * (1 + .08 * runtime.countNormal(c, 'tower_crews'));
+    const mult = (1 + .10 * runtime.countNormal(c, 'building_hp'));
     for (const t of runtime.towers.filter(t => t.side === side)) {
       const r = t.maxHp ? t.hp / t.maxHp : 1;
       t.maxHp = t.baseHp * mult;

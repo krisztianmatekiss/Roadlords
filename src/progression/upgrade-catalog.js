@@ -80,7 +80,7 @@ export function installUpgradeCatalog(R) {
     if(result.source==='ancient'){
       result.kicker='ŐSI ROM · FEJLESZTÉS';
       result.desc='A lapok ritkasága külön sorsolódik.';
-    } else if(result.tier==='common') result.desc='Gyakori, nem gyakori és ritka fejlesztések.';
+    } else if(result.tier==='common') result.desc='Gyakori, ritka és epikus fejlesztések.';
     return result;
   };
   const preview=R.upgradeCopyPreview;

@@ -1042,7 +1042,6 @@ export function initializeCoreFeatures2(runtime) {
         if (o.id === 'all_damage') s += 4 + Math.min(3, sp * .3);
         if (o.id === 'building_discount') s += runtime.state.time < 360 ? 5 : 2;
         if (o.id === 'tavern_damage') s += runtime.hasBuilding(runtime.E, 'tavern') ? 2 + (runtime.hasLeg(runtime.E, 'campaign_feast') ? 2 : 0) : -10;
-        if (['tower_crews', 'tower_regen', 'tower_guard'].includes(o.id)) s += aiAdapt4980().level ? 3 : 1;
         if (o.id === 'gate_discipline') s += runtime.reserveCount(runtime.E) > runtime.E.garrisonCap * .6 ? 4 : 1;
         for (const u of AI4980_UNITS) if ((AI4980_UNIT_COMMON[u] || []).includes(o.id)) {
           const target = aiTargetWeights4980(false)[u] || 0,

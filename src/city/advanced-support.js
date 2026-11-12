@@ -198,12 +198,6 @@ export function initializeCityAdvancedSupport(runtime) {
     description: 'Minden egység nyersanyagköltsége 5%-kal csökken.',
     eligible: s => runtime.hasSpawner(s)
   }, {
-    id: 'tower_crews',
-    icon: '🏹',
-    name: 'Toronykezelők',
-    description: 'Minden torony támadási sebessége, sebzése, maximális HP-ja és hatótávja +8%.',
-    eligible: () => true
-  }, {
     id: 'gate_discipline',
     icon: '🚪',
     name: 'Kapufegyelem',
@@ -310,7 +304,6 @@ export function initializeCityAdvancedSupport(runtime) {
     all_damage: runtime.PICK_IMAGES.all_damage || runtime.PICK_IMAGES.production,
     all_hp: runtime.PICK_IMAGES.all_hp || runtime.PICK_IMAGES.building_hp,
     frugal_training: runtime.PICK_IMAGES.production,
-    tower_crews: runtime.PICK_IMAGES.building_hp,
     gate_discipline: runtime.PICK_IMAGES.all_as,
     supply_hub: runtime.PICK_IMAGES.production,
     castle_defenders: runtime.PICK_IMAGES.building_hp

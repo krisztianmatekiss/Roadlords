@@ -6,13 +6,11 @@ export function initializeCityTowerCommand(runtime) {
   const TOWER_SALVO_ID = 'tower_salvo';
   const TOWER_REBUILD_ID = 'tower_rebuild';
   const TOWER_GUARD_ID = 'tower_guard';
-  const TOWER_REGEN_ID = 'tower_regen';
-  const TOWER_REGEN_PER_STACK = 5;
   const sideOf = c => runtime.sideForCity(c);
-  const hasTowerTech = c => (runtime.countNormal(c, 'tower_crews') || 0) > 0;
+  const hasStandingTowers = c => [...runtime.towers,...(runtime.capitalTowers || [])].some(t => t.side === sideOf(c) && t.alive);
   const towerCommandCount = c => Math.min(1, runtime.buildingOf(c, TOWER_COMMAND_ID).length);
   const towerCommandMult = c => 1 + .20 * towerCommandCount(c);
-  const towerBaseStatMult = c => (1 + .08 * runtime.countNormal(c, 'tower_crews')) * towerCommandMult(c);
+  const towerBaseStatMult = c => towerCommandMult(c);
   const towerGuardStacks = c => runtime.unitAvailable(c, 'archer') ? Math.min(3, runtime.countNormal(c, TOWER_GUARD_ID) || 0) : 0;
   const aliveOwnTowers = c => runtime.towers.filter(t => t.side === sideOf(c) && t.alive);
   const deadOwnTowers = c => runtime.towers.filter(t => t.side === sideOf(c) && !t.alive);
@@ -25,35 +23,27 @@ export function initializeCityTowerCommand(runtime) {
     if (!runtime.LEGENDARY.some(x => x.id === def.id)) runtime.LEGENDARY.push(def);
   }
   ensureNormal({
-    id: TOWER_REGEN_ID,
-    icon: '🛠️',
-    name: 'Karbantartók',
-    description: `Minden torony +${TOWER_REGEN_PER_STACK} HP/mp regenerációt kap. Halmozható.`,
-    eligible: s => hasTowerTech(s)
-  });
-  ensureNormal({
     id: TOWER_GUARD_ID,
     icon: '🏹',
     name: 'Toronyőrség',
     description: 'Minden toronyba +1 automatikus íjász kerül, legfeljebb 3-ig. Ezek az íjászok a saját íjász statjaiddal lőnek, és beleszámítanak a sereglimitbe.',
-    eligible: s => hasTowerTech(s) && runtime.unitAvailable(s, 'archer')
+    eligible: s => hasStandingTowers(s) && runtime.unitAvailable(s, 'archer')
   });
   ensureLegend({
     id: TOWER_SALVO_ID,
     icon: '🏹',
     name: 'Sortűz',
     description: 'Minden torony minden támadásnál +1 extra lövedéket lő ki. A plusz lövedék teljes sebzést okoz.',
-    eligible: s => hasTowerTech(s)
+    eligible: s => hasStandingTowers(s)
   });
   ensureLegend({
     id: TOWER_REBUILD_ID,
     icon: '🏗️',
     name: 'Újjáépítés',
     description: 'Azonnal újjáépít 2 ledőlt saját tornyot teljes HP-n.',
-    eligible: s => hasTowerTech(s) && missingTowerCount(s) >= 2
+    eligible: s => missingTowerCount(s) >= 2
   });
   Object.assign(runtime.PICK_IMAGES, {
-    [TOWER_REGEN_ID]: runtime.PICK_IMAGES.building_hp || runtime.PICK_IMAGES.production,
     [TOWER_GUARD_ID]: runtime.PICK_IMAGES.archer_range || runtime.PICK_IMAGES.all_damage,
     [TOWER_SALVO_ID]: runtime.PICK_IMAGES.all_damage || runtime.PICK_IMAGES.production,
     [TOWER_REBUILD_ID]: runtime.PICK_IMAGES.building_hp || runtime.PICK_IMAGES.production
@@ -78,7 +68,7 @@ export function initializeCityTowerCommand(runtime) {
     runtime.BUILDING_IMAGE_META[TOWER_COMMAND_ID] = runtime.BUILDING_IMAGE_META.guildhouse || runtime.BUILDING_IMAGE_META.townhall || runtime.BUILDING_IMAGE_META.warehouse || null;
   }
   if (typeof runtime.V4_BRANCHES === 'object' && runtime.V4_BRANCHES) runtime.V4_BRANCHES[TOWER_COMMAND_ID] = [];
-  const canOfferTowerCommand = c => hasTowerTech(c);
+  const canOfferTowerCommand = c => hasStandingTowers(c);
   const oldBuildingUnlockPool = runtime.buildingUnlockPool;
   runtime.buildingUnlockPool = function (c) {
     return oldBuildingUnlockPool(c).filter(o => o.id !== TOWER_COMMAND_ID || canOfferTowerCommand(c));
@@ -116,13 +106,12 @@ export function initializeCityTowerCommand(runtime) {
       },
       guardStats = guardCount ? runtime.statsFor(c, guardEntry) : null;
     return {
-      crewStacks: runtime.countNormal(c, 'tower_crews') || 0,
       commandCount: towerCommandCount(c),
       damage: (t.baseDamage || 96) * statMult,
       range: (t.baseRange || (t.gateTower ? TOWER_RANGE.gate : TOWER_RANGE.road)) * statMult,
       cooldown: (t.baseCooldown || 1) / statMult,
       attacksPerSecond: statMult / (t.baseCooldown || 1),
-      regen: (runtime.countNormal(c, TOWER_REGEN_ID) || 0) * TOWER_REGEN_PER_STACK,
+      regen: 0,
       extraProjectiles: runtime.hasLeg(c, TOWER_SALVO_ID) ? 1 : 0,
       guardCount,
       guardDamage: guardStats ? guardStats.dmg : 0,
@@ -194,8 +183,7 @@ export function initializeCityTowerCommand(runtime) {
     const out = oldApplyChoiceTower(c, o, countEvent);
     if (!o) return out;
     if (o.kind === 'legendary' && o.id === TOWER_REBUILD_ID) rebuildOwnTowers(c, 2);
-    if (o.kind === 'normal' && o.id === 'tower_crews') runtime.refreshTowerHpFor(c, sideOf(c), true);
-    if (c === runtime.P && (o.id === TOWER_REGEN_ID || o.id === TOWER_GUARD_ID || o.id === TOWER_SALVO_ID || o.id === TOWER_REBUILD_ID)) {
+    if (c === runtime.P && (o.id === TOWER_GUARD_ID || o.id === TOWER_SALVO_ID || o.id === TOWER_REBUILD_ID)) {
       runtime.renderStatic();
       runtime.updateHud();
     }
@@ -249,7 +237,6 @@ export function initializeCityTowerCommand(runtime) {
       hpPct = t.maxHp ? Math.round(t.hp / t.maxHp * 100) : 0;
     el.classList.add('show');
     const extra = [];
-    extra.push(`<div class="istat"><span>Toronykezelők</span><b>${st.crewStacks}× · +${st.crewStacks * 8}%</b></div>`);
     if (st.commandCount) extra.push(`<div class="istat"><span>Őrségparancsnokság</span><b>${st.commandCount}× · +${st.commandCount * 20}% alap stat</b></div>`);
     if (st.regen) extra.push(`<div class="istat"><span>HP regeneráció</span><b>+${st.regen.toFixed(1)} /mp</b></div>`);
     if (st.guardCount) extra.push(`<div class="istat"><span>Toronyőrség</span><b>${st.guardCount} íjász / torony</b></div>`);

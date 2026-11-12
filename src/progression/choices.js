@@ -376,7 +376,6 @@ export function register(runtime) {
       c.normal[o.id] = had + copies * (runtime.normalOptionPower?.(o) || 1);
       if (bonus && c === runtime.P) runtime.flashX2();
       runtime.refreshExistingUnitsForCity(c);
-      if (o.id === 'tower_crews') runtime.refreshTowerHpFor(c, runtime.sideForCity(c), true);
     } else {
       c.legends.add(o.id);
       runtime.recomputeCity(c, true);

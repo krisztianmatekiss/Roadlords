@@ -1,6 +1,6 @@
 import { assetUrl } from '../assets/urls.js';
 export function initializeDataRosterCleanup(runtime) {
-  const removed = id => id === 'merc_tent' || id?.startsWith('merc_') || id === 'mercenary_network' || id?.startsWith('alc_') || ['tavern_damage', 'tower_guard'].includes(id);
+  const removed = id => id === 'merc_tent' || id?.startsWith('merc_') || id === 'mercenary_network' || id?.startsWith('alc_') || ['tavern_damage', 'tower_guard', 'tower_crews', 'tower_regen'].includes(id);
   for (const list of [runtime.NORMAL, runtime.LEGENDARY]) for (let i = list.length - 1; i >= 0; i--) if (removed(list[i].id)) list.splice(i, 1);
   for (let i = runtime.UNLOCKABLE.length - 1; i >= 0; i--) if (runtime.UNLOCKABLE[i] === 'merc_tent') runtime.UNLOCKABLE.splice(i, 1);
   delete runtime.BUILDINGS.merc_tent;

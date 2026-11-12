@@ -6,5 +6,5 @@ export const cardRarityPanels = '<svg class="cardRarityPanels" viewBox="0 0 100 
 
 export function factionCardFrame(race, eager = false) {
   if (!['orc','undead'].includes(race)) return '';
-  return `<span class="factionCardFrame" data-frame-art="${race}" aria-hidden="true"><img class="factionFrameImage" ${cardImageSource(assetUrl(`cards/frames/${race}.png`))} alt="" loading="${eager?'eager':'lazy'}" decoding="async" draggable="false">${cardRarityPanels}<svg class="factionFrameAccent" viewBox="0 0 100 150" preserveAspectRatio="none"><path d="M2.9 17V86M97.1 17V86M2.9 95V139M97.1 95V139"/></svg></span>`;
+  return `<span class="factionCardFrame" data-frame-art="${race}" aria-hidden="true"><img class="factionFrameImage" ${cardImageSource(assetUrl(`cards/frames/${race}.png`))} alt="" loading="${eager?'eager':'lazy'}" decoding="async" draggable="false">${cardRarityPanels}<svg class="factionFrameAccent" viewBox="0 0 100 150" preserveAspectRatio="none"><path d="M9 90H91"/></svg></span>`;
 }

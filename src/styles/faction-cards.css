@@ -41,7 +41,7 @@ html body .illustratedCard:has(>.factionCardFrame) .pickFootprint.inArtwork {
 html body .illustratedCard:has(>.factionCardFrame)>.cardFrameImage { opacity:0; }
 html body .illustratedCard>.factionCardFrame { position:absolute!important;inset:0;width:100%;height:100%;z-index:0!important;pointer-events:none; }
 .factionFrameImage { position:absolute;inset:0;width:100%;height:100%;object-fit:fill; }
-.factionFrameAccent { position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:var(--card-border);stroke-width:1.1;opacity:.9;filter:drop-shadow(0 0 1px #000); }
+.factionFrameAccent { position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:var(--card-border);stroke-width:.6;opacity:.7; }
 html body .illustratedCard>.factionArtwork { position:absolute!important;left:6.5%;top:11.7%;width:87%;height:46.3%;overflow:hidden;z-index:1!important; }
 html body .illustratedCard .factionArtwork>.cardIllustration { position:absolute!important;left:-5.1724%!important;top:-23.888%!important;width:110.345%!important;height:179.856%!important;max-width:none!important;clip-path:none!important;object-fit:fill!important; }
 html body .illustratedCard:has(>.cardScene)>.factionArtwork { display:none; }

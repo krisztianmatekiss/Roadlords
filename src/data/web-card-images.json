@@ -381,23 +381,23 @@
     "webBytes": 1186394
   },
   "cards/frames/orc.png": {
-    "file": "web-images/cd7efdc73f18feee99cf-q94.webp",
-    "sourceSha256": "cd7efdc73f18feee99cfd38984f286eac0b0c5a8fcb66e5fbbc308fe2a18fa25",
-    "sha256": "f4119bf16e2171fa5e9862391bbab663e03f22d62aae34162846e667295dc46a",
+    "file": "web-images/04ae6d3b31f9634b4abf-q94.webp",
+    "sourceSha256": "04ae6d3b31f9634b4abf6987fa3750ad5d473336524d78d046518607178a2793",
+    "sha256": "b751867c57938addfa269f7806737cbc1803804acea2f694aff58de064cfe8f1",
     "width": 1024,
     "height": 1536,
-    "originalBytes": 2085605,
-    "webBytes": 313654,
+    "originalBytes": 2377229,
+    "webBytes": 344610,
     "encoding": "webp-quality-94"
   },
   "cards/frames/undead.png": {
-    "file": "web-images/2fee4165bd16d66e990d-q94.webp",
-    "sourceSha256": "2fee4165bd16d66e990d913f9782b63d7828affcc8b81f830b446eb051a554a2",
-    "sha256": "32527d098da97796581788e584d821fd74df39f302b6e129adec4601108d8f1d",
+    "file": "web-images/1f5784d5a3e6821d1d0f-q94.webp",
+    "sourceSha256": "1f5784d5a3e6821d1d0f731883a728fe631965615a2a8e19fd6a39e706686b9a",
+    "sha256": "1c631c3b9d28a30bb040ce9e40de2910b25e582b4f5923a6c2b9caac5143da6d",
     "width": 1024,
     "height": 1536,
-    "originalBytes": 2162737,
-    "webBytes": 307832,
+    "originalBytes": 2009424,
+    "webBytes": 273410,
     "encoding": "webp-quality-94"
   }
 }

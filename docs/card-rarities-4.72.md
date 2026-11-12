@@ -1,4 +1,4 @@
-# Kártyaepikusságok – 4.73.1
+# Kártyaepikusságok – 4.73.2
 
 Normál fejlesztésen belül, laponként: 70% gyakori, 25% ritka, 5% epikus. A legendás ereklyék továbbra is külön választástípus; a 20. ajánlat garanciája változatlan.
 

@@ -379,5 +379,25 @@
     "height": 1536,
     "originalBytes": 1795010,
     "webBytes": 1186394
+  },
+  "cards/frames/orc.png": {
+    "file": "web-images/cd7efdc73f18feee99cf-q94.webp",
+    "sourceSha256": "cd7efdc73f18feee99cfd38984f286eac0b0c5a8fcb66e5fbbc308fe2a18fa25",
+    "sha256": "f4119bf16e2171fa5e9862391bbab663e03f22d62aae34162846e667295dc46a",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2085605,
+    "webBytes": 313654,
+    "encoding": "webp-quality-94"
+  },
+  "cards/frames/undead.png": {
+    "file": "web-images/2fee4165bd16d66e990d-q94.webp",
+    "sourceSha256": "2fee4165bd16d66e990d913f9782b63d7828affcc8b81f830b446eb051a554a2",
+    "sha256": "32527d098da97796581788e584d821fd74df39f302b6e129adec4601108d8f1d",
+    "width": 1024,
+    "height": 1536,
+    "originalBytes": 2162737,
+    "webBytes": 307832,
+    "encoding": "webp-quality-94"
   }
 }

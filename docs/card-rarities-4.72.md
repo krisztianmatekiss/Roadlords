@@ -1,4 +1,4 @@
-# Kártyaepikusságok – 4.73.0
+# Kártyaepikusságok – 4.73.1
 
 Normál fejlesztésen belül, laponként: 70% gyakori, 25% ritka, 5% epikus. A legendás ereklyék továbbra is külön választástípus; a 20. ajánlat garanciája változatlan.
 
@@ -12,7 +12,7 @@ A szorzó a meglévő hatás erősségére vonatkozik, nem a felvett lapok szám
 
 Kiemelések: ork általános életlopás csak epikus, +3 százalékpont; szellem kitérés +5 / +7,5 / +10 százalékpont; Lélekpáncél 4% / 8% / 12% Max HP. Vérzés első felvétele 2 / 3 / 4, további felvétele +1 / +2 / +3. Zombi halálkori méregbónusz +1 / +2 / +3. Kapufegyelem +10% / +20% / +30% kiengedés és +5 / +10 / +15 férőhely. Képzési takarékosság: ritka 5%, epikus 7,5% kedvezmény; a további kedvezmények szorzódnak. Vámpír alap HP: 600 → 440.
 
-A három nép az emberi kártyák egyszerű keretelrendezését használja, enyhe anyagszínnel, fényudvar és külön ritkaságjelvény nélkül. A belső `common` / `uncommon` / `rare` azonosítók kompatibilitás miatt változatlanok; a látható nevek Gyakori / Ritka / Epikus.
+A három nép az emberi kártyák egyszerű keretelrendezését használja, de saját festett kerettel: emberi fém/arany, ork vas/bőr/agyar, élőhalott kő/csont/rúna. A ritkaság a cím, leírás és alsó felirat mögötti mezőt is színezi: gyakori semleges, ritka kék, epikus lila. Nincs fényudvar vagy külön ritkaságjelvény. A belső `common` / `uncommon` / `rare` azonosítók kompatibilitás miatt változatlanok; a látható nevek Gyakori / Ritka / Epikus.
 
 Toronykezelők és Karbantartók törölve. A Sortűz álló saját torony mellett, az Újjáépítés legalább két ledőlt saját toronynál továbbra is elérhető, a törölt lapok előfeltétele nélkül.
 

@@ -42,17 +42,20 @@ html body .illustratedCard:has(>.factionCardFrame)>.cardFrameImage { opacity:0; 
 html body .illustratedCard>.factionCardFrame { position:absolute!important;inset:0;width:100%;height:100%;z-index:0!important;pointer-events:none; }
 .factionFrameImage { position:absolute;inset:0;width:100%;height:100%;object-fit:fill; }
 .factionFrameAccent { position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:var(--card-border);stroke-width:1.1;opacity:.9;filter:drop-shadow(0 0 1px #000); }
-html body .illustratedCard[data-race="orc"] .factionFrameImage { filter:sepia(.2) saturate(.8) brightness(.97); }
-html body .illustratedCard[data-race="undead"] .factionFrameImage { filter:grayscale(.35) sepia(.1) hue-rotate(110deg) brightness(.97); }
 html body .illustratedCard>.factionArtwork { position:absolute!important;left:6.5%;top:11.7%;width:87%;height:46.3%;overflow:hidden;z-index:1!important; }
 html body .illustratedCard .factionArtwork>.cardIllustration { position:absolute!important;left:-5.1724%!important;top:-23.888%!important;width:110.345%!important;height:179.856%!important;max-width:none!important;clip-path:none!important;object-fit:fill!important; }
 html body .illustratedCard:has(>.cardScene)>.factionArtwork { display:none; }
 html body .illustratedCard:has(>.factionCardFrame)>.cardScene { z-index:1!important; }
 html body .illustratedCard:has(>.factionCardFrame) :is(.rlCodexTitle,h3.cardname,h3,.choiceBody,.cardinfo,.rlCodexContent,.cardFooter,.choiceFooter,.constructionPrice,.uniqueBuildingMark) { z-index:4!important; }
 /* Storage keys stay stable; visible names are Gyakori / Ritka / Epikus. */
-html body .illustratedCard[data-upgrade-rarity="common"] { --card-border:#ecebe2!important; }
-html body .illustratedCard[data-upgrade-rarity="uncommon"] { --card-border:#83b5e8!important; }
-html body .illustratedCard[data-upgrade-rarity="rare"] { --card-border:#b394df!important; }
+html body .illustratedCard[data-upgrade-rarity="common"] { --card-border:#ecebe2!important;--rarity-panel:rgb(204 214 227 / .07);--rarity-heading:rgb(204 214 227 / .10); }
+html body .illustratedCard[data-upgrade-rarity="uncommon"] { --card-border:#83b5e8!important;--rarity-panel:rgb(31 100 184 / .46);--rarity-heading:rgb(39 113 205 / .58); }
+html body .illustratedCard[data-upgrade-rarity="rare"] { --card-border:#b394df!important;--rarity-panel:rgb(116 55 180 / .46);--rarity-heading:rgb(133 65 202 / .58); }
+/* Paint the physical writing panels, below live text and above their texture. */
+html body .illustratedCard .cardRarityPanels { position:absolute!important;inset:0;width:100%;height:100%;z-index:0!important;pointer-events:none;display:none; }
+html body .illustratedCard[data-upgrade-rarity] .cardRarityPanels { display:block; }
+.cardRarityPanels rect { fill:var(--rarity-heading); }
+.cardRarityPanels .rarityDescriptionPanel { fill:var(--rarity-panel); }
 html body .illustratedCard[data-upgrade-rarity] :is(.cardFooter,.choiceFooter) { color:var(--card-border)!important;letter-spacing:.08em;font-weight:900; }
 html body .illustratedCard[data-upgrade-rarity]:has(>.humanFrameAccent) .humanFrameAccent { stroke:var(--card-border)!important; }
 .lexRarities { display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:10px 0; }

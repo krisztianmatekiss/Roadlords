@@ -110,13 +110,14 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
     await article.locator(`[data-codex-rarity="${rarity}"]`).click();
     appearance.push(await article.evaluate((a,{race,rarity})=>{
      const face=a.querySelector('.cardFace'),mark=face.querySelector('.cardRarityMark');
-     return {race,rarity,shadow:getComputedStyle(face).boxShadow,mark:mark?.textContent,footer:face.querySelector('.cardFooter').textContent,color:getComputedStyle(face.querySelector('.cardFooter')).color,frame:face.querySelector('.factionCardFrame')?.dataset.frameArt,source:face.querySelector('.factionFrameImage')?.getAttribute('src')};
+     return {race,rarity,shadow:getComputedStyle(face).boxShadow,mark:mark?.textContent,footer:face.querySelector('.cardFooter').textContent,color:getComputedStyle(face.querySelector('.cardFooter')).color,frame:face.querySelector('.factionCardFrame')?.dataset.frameArt,source:face.querySelector('.factionFrameImage')?.getAttribute('src'),panels:[...face.querySelectorAll('.cardRarityPanels rect')].map(el=>({fill:getComputedStyle(el).fill,visible:getComputedStyle(el.parentElement).display!=='none'}))};
     },{race,rarity}));
    }
   }
   report.appearance=appearance;
   check('All factions show Gyakori / Ritka / Epikus in quiet coloured footers without glow or gem badges',appearance.every(a=>!a.mark&&a.shadow==='none'&&a.footer===({common:'GYAKORI',uncommon:'RITKA',rare:'EPIKUS'})[a.rarity])&&new Set(appearance.map(a=>a.color)).size===3);
-  check('Orc and Undead use the simple Human frame composition',appearance.filter(a=>a.race!=='human').every(a=>a.frame===a.race&&a.source.endsWith('/cards/human/frame.png')));
+  check('Orc and Undead use their own generated frame paintings with the approved panel layout',appearance.filter(a=>a.race!=='human').every(a=>a.frame===a.race&&a.source.endsWith(`/cards/frames/${a.race}.png`)));
+  check('All three writing panels visibly distinguish each rarity in every faction',appearance.every(a=>a.panels.length===3&&a.panels.every(p=>p.visible))&&['human','orc','undead'].every(race=>[0,1,2].every(i=>new Set(appearance.filter(a=>a.race===race).map(a=>a.panels[i].fill)).size===3)));
   check('The shared simple faction frame decodes locally',await p.evaluate(async()=>{const img=document.querySelector('#rlCodexPanel .factionFrameImage');await img.decode();return img.naturalWidth>100&&Math.abs(img.naturalWidth/img.naturalHeight-2/3)<.01;}));
   const geometry=[];
   for(const race of ['orc','undead'])for(const size of [{width:1440,height:900},{width:2840,height:2180}]){

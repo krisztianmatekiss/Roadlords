@@ -1,4 +1,4 @@
-import { factionCardFrame } from './faction-card-frame.js';
+import { factionCardFrame, cardRarityPanels } from './faction-card-frame.js';
 import { cardImageSource } from '../assets/card-loading.js';
 import upgradeArt from '../data/upgrade-art-manifest.json';
 import manifest from '../data/orc-card-manifest.json';
@@ -51,8 +51,8 @@ export function frameImage(src, eager = false, race = null) {
   // Human cards have their own empty aperture and integrated writing panel.
   // Only older full-card illustrations need a second clipped image layer.
   const illustration=human?'':`<img class="cardIllustration" ${cardImageSource(src)} alt="" loading="${loading}" decoding="async" draggable="false">`;
-  if (race === 'orc' || race === 'undead') return frame + `<span class="factionArtwork">${illustration}</span>` + factionCardFrame(race);
-  return accent+frame+illustration;
+  if (race === 'orc' || race === 'undead') return frame + `<span class="factionArtwork">${illustration}</span>` + factionCardFrame(race,eager);
+  return accent+frame+(human?cardRarityPanels:'')+illustration;
 }
 
 export const cardTextBackdrop = '<span class="cardTextBackdrop" aria-hidden="true"></span>';

@@ -3,6 +3,7 @@ import { assetUrl } from '../assets/urls.js';
 import { CHRONICLE_THEMES, installChronicleTerrain } from './chronicle-terrain.js';
 import { chronicleWalls, chronicleDoor, chronicleTowerMarkup } from './chronicle-fortifications.js';
 
+const css=(node,key,value)=>{if(node.style.getPropertyValue(key)!==value)node.style.setProperty(key,value);};
 const short=n=>n>=1000?(n/1000).toLocaleString('hu-HU',{maximumFractionDigits:1})+'k':String(Math.ceil(Math.max(0,n)));
 // All match modes share these visuals. Combat coordinates, stats and ownership stay in the game.
 export function installChronicleWorld(R){
@@ -21,18 +22,19 @@ export function installChronicleWorld(R){
   }
   function syncCities(){
     for(const {side,city,frame,gate,towers}of cities){
-      const c=R.cityForSide(side),race=CHRONICLE_THEMES[c.race]?c.race:'human',theme=CHRONICLE_THEMES[race],color=R.unitTeamFill({side});city.dataset.race=race;
-      if(frame.dataset.chronicleRace!==race){
-        frame.querySelector('.chronicleWalls')?.remove();frame.insertAdjacentHTML('afterbegin',chronicleWalls(race,side));gate.querySelector('.chronicleDoor')?.remove();gate.insertAdjacentHTML('beforeend',chronicleDoor(race));
-        for(const {button}of towers){button.innerHTML=chronicleTowerMarkup(race)+'<span class="chronicleTowerHealth"></span>';button.dataset.race=race;}
-        frame.dataset.chronicleRace=race;
+      const c=R.cityForSide(side),race=CHRONICLE_THEMES[c.race]?c.race:'human',theme=CHRONICLE_THEMES[race],color=R.unitTeamFill({side});if(city.dataset.race!==race)city.dataset.race=race;
+      const ready=!!view.assets.get(race)?.ready;
+      if(frame.dataset.chronicleRace!==race||frame.dataset.chronicleArtReady!==String(ready)){
+        frame.querySelector('.chronicleWalls')?.remove();frame.insertAdjacentHTML('afterbegin',chronicleWalls(race,side,ready));gate.querySelector('.chronicleDoor')?.remove();gate.insertAdjacentHTML('beforeend',chronicleDoor(race));
+        for(const [index,{button}]of towers.entries()){button.innerHTML=(ready?chronicleTowerMarkup(race,index):'')+'<span class="chronicleTowerHealth"></span>';button.dataset.race=race;}
+        frame.dataset.chronicleRace=race;frame.dataset.chronicleArtReady=String(ready);
       }
-      for(const [name,value]of Object.entries(theme))city.style.setProperty('--chronicle-'+name,value);
+      for(const [name,value]of Object.entries(theme))css(city,'--chronicle-'+name,value);
       const paint=view.tile(race),paintWidth=paint?paint.width*R.ROAD.h/paint.height:0;
-      city.style.setProperty('--chronicle-team',color);city.style.setProperty('--chronicle-terrain',paint?.cssUrl?`url("${paint.cssUrl}")`:'none');city.style.setProperty('--chronicle-paint-width',paintWidth+'px');city.style.setProperty('--chronicle-paint-phase',side==='player'?R.ROAD.city+'px':-R.PATH_LENGTH+'px');R.roadWorld.style.setProperty('--chronicle-height',R.ROAD.h+'px');
-      if(side==='player'){R.roadWorld.style.setProperty('--chronicle-terrain',city.style.getPropertyValue('--chronicle-terrain'));R.roadWorld.style.setProperty('--chronicle-ground',theme.ground);R.roadWorld.style.setProperty('--chronicle-paint-width',paintWidth+'px');}
-      for(const {t,button}of towers){button.style.color=color;button.classList.toggle('destroyed',!t.alive);button.classList.toggle('sudden',!!t.sdActive&&t.alive);button.classList.toggle('selected',R.state.selectedTowerId===t.id);button.title=`Vártorony · ${Math.ceil(Math.max(0,t.hp))} / ${Math.ceil(t.maxHp)} HP`;button.setAttribute('aria-label',button.title);button.querySelector('.chronicleTowerHealth').textContent=t.alive?short(t.hp):'×';}
-      frame.dataset.gateMode=c.gateMode;
+      css(city,'--chronicle-team',color);css(city,'--chronicle-terrain',paint?.cssUrl?`url("${paint.cssUrl}")`:'none');css(city,'--chronicle-paint-width',paintWidth+'px');css(city,'--chronicle-paint-phase',side==='player'?R.ROAD.city+'px':-R.PATH_LENGTH+'px');css(R.roadWorld,'--chronicle-height',R.ROAD.h+'px');
+      if(side==='player'){css(R.roadWorld,'--chronicle-terrain',city.style.getPropertyValue('--chronicle-terrain'));css(R.roadWorld,'--chronicle-ground',theme.ground);css(R.roadWorld,'--chronicle-paint-width',paintWidth+'px');}
+      for(const {t,button}of towers){if(button.style.color!==color)button.style.color=color;button.classList.toggle('destroyed',!t.alive);frame.classList.toggle(button.classList.contains('upper')?'gate-upper-lost':'gate-lower-lost',!t.alive);button.classList.toggle('sudden',!!t.sdActive&&t.alive);button.classList.toggle('selected',R.state.selectedTowerId===t.id);const title=`Vártorony · ${Math.ceil(Math.max(0,t.hp))} / ${Math.ceil(t.maxHp)} HP`;if(button.title!==title){button.title=title;button.setAttribute('aria-label',title);}const label=t.alive?short(t.hp):'×',health=button.querySelector('.chronicleTowerHealth');if(health.textContent!==label)health.textContent=label;}
+      if(frame.dataset.gateMode!==c.gateMode)frame.dataset.gateMode=c.gateMode;
     }
   }
   const hud=R.updateHud;R.updateHud=(...args)=>{const out=hud(...args);if(view.active())syncCities();return out;};
@@ -40,8 +42,8 @@ export function installChronicleWorld(R){
   R.roadLayoutCities=()=>{
     if(!view.active())return layout();
     const old=R.ROAD.city,scroll=R.roadWar.scrollLeft,oldEnd=R.roadWorld.offsetWidth-(R.ROAD.layoutWidth||R.roadWar.clientWidth);
-    const side=Math.round(Math.min(R.ROAD.h*.82,R.ROAD.w*.42)),top=(R.ROAD.h-side)/2;R.ROAD.layoutWidth=R.roadWar.clientWidth;R.ROAD.city=side;R.ROAD.cityTop=top;
-    R.roadWorld.style.setProperty('--road-city-size',side+'px');R.roadWorld.style.setProperty('--road-city-top',top+'px');R.roadWorld.style.width=`${R.PATH_LENGTH+side*2}px`;
+    const side=Math.round(Math.min(R.ROAD.h*.88,R.ROAD.w*.46)),top=(R.ROAD.h-side)/2;R.ROAD.layoutWidth=R.roadWar.clientWidth;R.ROAD.city=side;R.ROAD.cityTop=top;
+    css(R.roadWorld,'--road-city-size',side+'px');css(R.roadWorld,'--road-city-top',top+'px');R.roadWorld.style.width=`${R.PATH_LENGTH+side*2}px`;
     if(scroll>1&&side!==old)R.roadWar.scrollLeft=oldEnd>0&&scroll>=oldEnd-2?R.roadWorld.offsetWidth:scroll+side-old;
     R.roadPositionPinnedCity?.();R.ROAD.gateExits=null;syncCities();R.roadNoticeBottom=R.roadWar.getBoundingClientRect().bottom-8;document.documentElement.style.setProperty('--road-notice-anchor',R.roadNoticeBottom+'px');
   };

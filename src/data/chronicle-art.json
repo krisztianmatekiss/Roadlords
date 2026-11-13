@@ -39,6 +39,19 @@
         512,
         494
       ]
+    },
+    "fortress": {
+      "file": "art/chronicle/human-fortress.png",
+      "webFile": "art/chronicle/human-fortress.webp",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "28e61db129e917fe2220507a8be1baa9c88f73499691ccadece2c9448680ae71",
+      "courtyard": [
+        0.18,
+        0.18,
+        0.64,
+        0.64
+      ]
     }
   },
   "orc": {
@@ -80,6 +93,19 @@
         530,
         512,
         494
+      ]
+    },
+    "fortress": {
+      "file": "art/chronicle/orc-fortress.png",
+      "webFile": "art/chronicle/orc-fortress.webp",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "0972f07378894c1dc6c56acb793b0b4477b6fc27844da4a2e7632ffdc2285da1",
+      "courtyard": [
+        0.18,
+        0.18,
+        0.64,
+        0.64
       ]
     }
   },
@@ -123,6 +149,24 @@
         512,
         494
       ]
+    },
+    "fortress": {
+      "file": "art/chronicle/undead-fortress.png",
+      "webFile": "art/chronicle/undead-fortress.webp",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "b75f05d07d12fe02f063edf568864696ea1095b035e67f207446b3a513b29feb",
+      "courtyard": [
+        0.18,
+        0.18,
+        0.64,
+        0.64
+      ]
+    },
+    "roadTexture": {
+      "file": "art/chronicle/undead-paving.png",
+      "webFile": "art/chronicle/undead-paving.webp",
+      "sha256": "c6ab0d6966478a8720e1d031e5fe99a9aaefe1e5e3c5335ff4ad97e4916da609"
     }
   }
 }

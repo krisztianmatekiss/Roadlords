@@ -53,7 +53,7 @@ export function installTowerPresentation(R) {
     if(R.canvas.dataset.towerRange!==label){R.canvas.dataset.towerRange=label;R.canvas.setAttribute('aria-description',`${R.towerNameV496(t)} · ${label}`);}
     if(b.right<0||b.left>R.ROAD.w)return;
     // Tower targeting uses lane distance across the road, so show the real band.
-    g.save();g.fillStyle='#f6c94b2b';g.fillRect(b.left,b.top,b.right-b.left,b.bottom-b.top);
+    g.save();g.fillStyle=R.chronicle?.active()?'#f6c94b08':'#f6c94b2b';g.fillRect(b.left,b.top,b.right-b.left,b.bottom-b.top);
     g.strokeStyle='#ffe18b';g.lineWidth=3;g.beginPath();g.moveTo(b.left,b.top);g.lineTo(b.left,b.bottom);g.moveTo(b.right,b.top);g.lineTo(b.right,b.bottom);g.stroke();
     g.setLineDash([8,6]);g.lineWidth=1.5;g.strokeRect(b.left,b.top,b.right-b.left,b.bottom-b.top);g.setLineDash([]);
     g.font='800 13px system-ui';g.textAlign='center';g.textBaseline='middle';const w=g.measureText(label).width+18;

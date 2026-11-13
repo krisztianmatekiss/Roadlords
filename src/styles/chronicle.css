@@ -125,3 +125,28 @@ html body.chronicle #app .topLeftCluster .res b{white-space:nowrap!important}
 html body.chronicle #app #pauseBtn{font-size:0!important;display:grid;place-items:center}
 html body.chronicle #pauseBtn:before{content:"";display:block;width:14px;height:17px;background:linear-gradient(to right,#344b3a 0 32%,transparent 32% 68%,#344b3a 68% 100%)}
 html body.chronicle #pauseBtn.on:before{width:0;height:0;background:none;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:12px solid #344b3a;transform:translateX(1px)}
+/* Complete illustrated enclosures; the playable courtyard remains a free layer. */
+html body.chronicle #app .roadWorld .cityframe{padding:18%!important}
+html body.chronicle #app .roadWorld .cityframe:before{inset:12%}
+html body.chronicle #app .roadWorld .cityframe:after{content:"";position:absolute;z-index:1;left:85%;top:43%;width:21%;height:14%;background:repeating-linear-gradient(0deg,#51432b55 0 1px,transparent 1px 10px),repeating-linear-gradient(90deg,#51432b45 0 1px,transparent 1px 17px),var(--gate-paving,#c9b787);clip-path:polygon(0 0,100% 4%,100% 96%,0 100%);mask-image:linear-gradient(to right,#000 55%,transparent);pointer-events:none}
+html body.chronicle #app .roadWorld .cityframe[data-chronicle-race="orc"]{--gate-paving:#94684b}
+html body.chronicle #app .roadWorld .cityframe[data-chronicle-race="undead"]{--gate-paving:#716d77}
+html body.chronicle #app .roadWorld .enemyframe:after{left:auto;right:85%;mask-image:linear-gradient(to left,#000 55%,transparent)}
+body.chronicle .chronicleWalls{overflow:visible}
+body.chronicle .chronicleGateTower{right:0;width:17%;height:16%;filter:none}
+body.chronicle .enemyframe .chronicleGateTower{left:0}
+body.chronicle .chronicleGateTower.upper{top:31%}body.chronicle .chronicleGateTower.lower{top:53%}
+body.chronicle .fortressGateDamage{visibility:hidden}
+body.chronicle .chronicleGateTower.destroyed .fortressGateDamage{visibility:visible;filter:grayscale(1) brightness(.65);opacity:1;clip-path:polygon(0 65%,17% 50%,31% 69%,42% 48%,59% 66%,77% 51%,100% 67%,100% 100%,0 100%)}
+body.chronicle .gate-upper-lost .fortressGateCut.upper,body.chronicle .gate-lower-lost .fortressGateCut.lower{fill:black}
+body.chronicle .gateTeamMedallion{position:absolute;left:43%;top:68%;width:14%;height:16%;background:currentColor;clip-path:polygon(0 0,100% 0,100% 65%,50% 100%,0 65%);border:1px solid #26372e}
+body.chronicle .chronicleTowerHealth{top:2%}
+html body.chronicle #app .roadWorld .gate.right{right:3%!important}
+html body.chronicle #app .roadWorld .gate.left{left:3%!important}
+html body.chronicle #app .roadWorld .gate{width:6%!important;height:12%!important}
+body.chronicle .chronicleGateLeaf{transition:transform .2s}
+body.chronicle .gate[data-mode="open"] .chronicleGateLeaf.upper{transform:translateY(-62px)}
+body.chronicle .gate[data-mode="open"] .chronicleGateLeaf.lower{transform:translateY(62px)}
+
+html body.chronicle #app .roadWorld .gate{height:18%!important;display:grid;place-items:center}
+body.chronicle .chronicleDoor{height:67%;width:100%}

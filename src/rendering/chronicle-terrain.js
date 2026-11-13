@@ -14,9 +14,9 @@ export function installChronicleTerrain(R,view,syncCities){
   R.loadChronicleArt=(races=[R.P.race,R.E.race])=>Promise.all([...new Set(races)].map(key=>{
     const race=art[key]?key:'human';if(assets.has(race))return assets.get(race).promise;
     const entry={ready:false};assets.set(race,entry);
-    entry.promise=Promise.all([image(art[race].webFile),image(art[race].structures.webFile)]).then(async([terrain,structures])=>{
-      if(!terrain||!structures){assets.delete(race);return false;}
-      entry.image=terrain;entry.structures=structures;entry.ready=true;await view.tile(race).cssReady;syncCities();return true;
+    entry.promise=Promise.all([image(art[race].webFile),image(art[race].structures.webFile),image(art[race].fortress.webFile),art[race].roadTexture?image(art[race].roadTexture.webFile):Promise.resolve(null)]).then(async([terrain,structures,fortress,road])=>{
+      if(!terrain||!structures||!fortress||art[race].roadTexture&&!road){assets.delete(race);return false;}
+      entry.image=terrain;entry.structures=structures;entry.fortress=fortress;entry.road=road;entry.ready=true;await view.tile(race).cssReady;syncCities();return true;
     });return entry.promise;
   })).then(values=>values.every(Boolean));
   const load=R.loadProductionBattleArt;R.loadProductionBattleArt=async(races=[R.P.race,R.E.race])=>(await Promise.all([load(races),R.loadChronicleArt(races)])).every(Boolean);
@@ -26,20 +26,30 @@ export function installChronicleTerrain(R,view,syncCities){
     if(tiles.has(key))return tiles.get(key);
     const canvas=document.createElement('canvas');canvas.width=2048;canvas.height=height;const g=canvas.getContext('2d');
     const rows=[['background',0,bounds.top*ratio],['road',bounds.top*ratio,bounds.height*ratio],['foreground',bounds.bottom*ratio,height-bounds.bottom*ratio]];
-    for(const [name,y,h]of rows){if(h<=0)continue;const [sx,sy,sw,sh]=art[race].layers[name],part=document.createElement('canvas');part.width=sw;part.height=sh;part.getContext('2d').drawImage(entry.image,sx,sy,sw,sh,0,0,sw,sh);
-      g.save();g.beginPath();g.rect(0,y,1024,h);g.clip();
-      if(name==='road'){
-        // Keep stones and footprints small instead of stretching them into giant props.
-        const pattern=g.createPattern(part,'repeat');pattern.setTransform(new DOMMatrix().scale(.55*ratio));g.fillStyle=pattern;g.fillRect(0,y,1024,h);
-      }else{const width=sw*h/sh;for(let x=0;x<1024;x+=width)g.drawImage(part,x,y,width,h);}
+    for(const [name,y,h]of rows){
+      if(h<=0)continue;g.save();g.beginPath();g.rect(0,y,1024,h);g.clip();
+      if(name==='foreground'){
+        // The event line owns the bottom edge: no rocks, roots, bones or shrubs.
+        g.fillStyle=CHRONICLE_THEMES[race].ground;g.fillRect(0,y,1024,h);
+      }else{
+        const [sx,sy,sw,sh]=art[race].layers[name],part=document.createElement('canvas');
+        if(name==='road'&&entry.road){part.width=part.height=512;part.getContext('2d').drawImage(entry.road,0,0,512,512);}
+        else{const trim=name==='background'?Math.round(sh*.72):0;part.width=sw;part.height=sh-trim;part.getContext('2d').drawImage(entry.image,sx,sy+trim,sw,sh-trim,0,0,sw,sh-trim);}
+        const pattern=g.createPattern(part,'repeat');pattern.setTransform(new DOMMatrix().scale((name==='road'?.55:.4)*ratio));g.fillStyle=pattern;g.fillRect(0,y,1024,h);
+      }
       g.restore();
     }
+    g.save();g.strokeStyle='#27352a40';g.lineWidth=1.5*ratio;
+    for(const edge of [bounds.top,bounds.bottom]){g.beginPath();g.moveTo(0,edge*ratio);for(let x=0;x<1024;x+=128)g.bezierCurveTo(x+32,edge*ratio-2*ratio,x+80,edge*ratio+2*ratio,x+128,edge*ratio);g.stroke();}
+    // A continuous pair of worn wheel tracks ties both gate approaches together.
+    g.strokeStyle=race==='undead'?'#202d3040':'#5b462728';g.lineWidth=2*ratio;
+    for(const fraction of [.38,.62]){g.beginPath();g.moveTo(0,(bounds.top+bounds.height*fraction)*ratio);g.lineTo(1024,(bounds.top+bounds.height*fraction)*ratio);g.stroke();}g.restore();
     g.save();g.translate(2048,0);g.scale(-1,1);g.drawImage(canvas,0,0,1024,height,0,0,1024,height);g.restore();
     for(const oldKey of tiles.keys())if(oldKey.startsWith(race+':')){const old=tiles.get(oldKey);if(old.cssUrl)URL.revokeObjectURL(old.cssUrl);tiles.delete(oldKey);}
     canvas.cssReady=new Promise(resolve=>canvas.toBlob(blob=>{if(tiles.get(key)===canvas){canvas.cssUrl=blob?URL.createObjectURL(blob):'';syncCities();}resolve();},'image/webp',.93));tiles.set(key,canvas);return canvas;
   };
   view.drawGround=()=>{
-    const g=R.ctx,z=R.ROAD.zoom||1,boundary=R.territoryBoundary(),mid=R.pointAt(boundary).x;view.boundary=boundary;view.segments=[];
+    const g=R.ctx;g.globalAlpha=1;g.globalCompositeOperation='source-over';g.filter='none';const z=R.ROAD.zoom||1,boundary=R.territoryBoundary(),mid=R.pointAt(boundary).x;view.boundary=boundary;view.segments=[];
     if(!document.body.classList.contains('roadlords-menu-open')&&[R.P.race,R.E.race].some(r=>!assets.get(r)?.ready))R.loadChronicleArt();
     for(const [side,start,end]of [['player',0,Math.min(R.ROAD.w,mid)],['enemy',Math.max(0,mid),R.ROAD.w]]){
       if(end<=start)continue;const race=R.cityForSide(side).race,theme=CHRONICLE_THEMES[race]||CHRONICLE_THEMES.human,t=view.tile(race);view.segments.push({side,race,start,end,boundary});

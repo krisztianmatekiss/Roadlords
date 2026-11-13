@@ -1,6 +1,7 @@
 import { formatMetres } from '../world/measurements.js';
 
 export function drawRoadScale(R) {
+  if(R.chronicle?.active())return; // The overview owns the bottom edge.
   const g=R.ctx, y=R.ROAD.h*551/600+4, step=500;
   const first=Math.max(0,Math.ceil(R.ROAD.camera/step)*step);
   const end=Math.min(R.PATH_LENGTH,R.ROAD.camera+R.ROAD.w/R.ROAD.zoom);

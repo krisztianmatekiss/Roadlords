@@ -26,6 +26,9 @@ export function initializeHumanRedesign(R) {
   const passes=R.unitPassesEnemies;
   R.unitPassesEnemies=u=>{
     if(!passes?.(u))return false;
+    // No opposing Bulwark branch means no blocker can exist. Avoid a nested
+    // spatial search for every pair in dense Ghost formations.
+    if(!R.hasBranch(R.cityForSide(u.side==='player'?'enemy':'player'),'spearhall','bulwark'))return true;
     let blocked=false;
     R.roadVisit(u,Math.max(100,(u.speed||0)*.1),v=>{if(v.side!==u.side&&R.spearBastion(v)&&Math.abs((v.offset||0)-(u.offset||0))<30)blocked=true;},u.side==='player'?'enemy':'player');
     return !blocked;

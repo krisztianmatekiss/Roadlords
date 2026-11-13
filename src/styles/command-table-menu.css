@@ -1,0 +1,51 @@
+/* The atlas is the menu: no separate floating menu-card painted over the book. */
+.atlasEyebrow,.atlasTagline{display:none}
+.commandTableMenu .atlasEyebrow,.commandTableMenu .atlasTagline{display:block}
+.mpLobby:not(.commandTableMenu) :is(.atlasActionIcon,.atlasActionArrow,.atlasActionText small){display:none}
+.mpLobby:not(.commandTableMenu) .atlasActionText b{font:inherit}
+html body.chronicle .mpLobby.commandTableMenu{background:#241b15!important}
+html body.chronicle .mpLobby.commandTableMenu:before{background-image:var(--chronicle-menu-scene)!important;background-position:center!important;background-size:cover!important}
+html body.chronicle .mpLobby.commandTableMenu:after{background:linear-gradient(90deg,#3b24150a,transparent 62%,#10271a12)!important;box-shadow:inset 0 0 90px #1c110d66!important}
+html body.chronicle .commandTableMenu .mpLobbyCard{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;min-height:0!important;margin:0!important;padding:0!important;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;transform:none!important;pointer-events:none}
+html body.chronicle .commandTableMenu .mpLobbyCard>*{pointer-events:auto}
+html body.chronicle .commandTableMenu .mpLobbyCard .menuBrand{position:absolute!important;left:9.5%!important;top:17%!important;width:min(36vw,620px)!important;height:auto!important;padding:0!important;margin:0!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;text-align:left!important;transform:none!important;cursor:default}
+html body.chronicle .commandTableMenu .mpLobbyCard .menuBrand h2{font:950 clamp(36px,4.8vw,88px)/1 Georgia,serif!important;letter-spacing:-.035em!important;text-align:left!important;margin:0!important;color:#342818!important;-webkit-text-fill-color:#342818!important;text-shadow:0 2px 0 #fff0bb!important;max-width:100%!important}
+html body.chronicle .commandTableMenu .menuStartHint{display:none!important}
+html body.chronicle .commandTableMenu .atlasEyebrow{order:-1;margin:0;font:850 clamp(9px,.8vw,14px)/1.2 system-ui;letter-spacing:.26em;color:#795128}
+html body.chronicle .commandTableMenu .atlasTagline{margin:3px 0 0;font:500 clamp(15px,1.25vw,23px)/1.3 Georgia,serif;color:#76532f;font-style:italic}
+html body.chronicle .commandTableMenu .mpLobbyGrid{position:absolute!important;left:9.5%!important;top:36%!important;width:min(36vw,620px)!important;margin:0!important;display:block!important;transform:none!important}
+html body.chronicle .commandTableMenu .menuMain{display:grid;grid-template-columns:1fr 1fr;gap:11px 14px!important;max-height:49vh;overflow:auto;scrollbar-width:thin;scrollbar-color:#9a7b43 transparent;padding:0 4px 5px 0}
+html body.chronicle .commandTableMenu .menuMain>.menuButton{position:relative!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:16px!important;width:100%!important;min-height:74px!important;height:auto!important;padding:13px 16px!important;grid-column:1/-1;border:1px solid #846034aa!important;border-radius:3px 10px 4px 8px!important;background:linear-gradient(100deg,#fff0bd91,#ebc98155)!important;box-shadow:1px 3px 0 #8d622d36!important;color:#432d19!important;animation:none!important;transform:none!important;text-align:left!important;letter-spacing:0!important;transition:background .15s,box-shadow .15s!important}
+html body.chronicle .commandTableMenu .menuMain>.menuButton:hover{background:#fff1c6d6!important;box-shadow:3px 4px 0 #8d622d55!important}
+html body.chronicle .commandTableMenu .menuMain>.menuButton.primary{background:linear-gradient(110deg,#3d554ae8,#243e37ed)!important;border-color:#283b31!important;color:#fff1c4!important;box-shadow:2px 4px 0 #50361f66!important}
+html body.chronicle .commandTableMenu .menuMain>.menuButton.primary:hover{background:#486c58!important}
+html body.chronicle .commandTableMenu .atlasActionIcon{flex:0 0 38px;width:38px;height:40px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.9}
+html body.chronicle .commandTableMenu .atlasActionText{flex:1;min-width:0;display:grid;gap:4px}
+html body.chronicle .commandTableMenu .atlasActionText b{font:850 clamp(14px,1.2vw,22px)/1.15 Georgia,serif!important;letter-spacing:.02em}
+html body.chronicle .commandTableMenu .atlasActionText small{font:500 clamp(10px,.72vw,13px)/1.3 system-ui;letter-spacing:0;color:inherit;opacity:.82}
+html body.chronicle .commandTableMenu .atlasActionArrow{font:30px Georgia;opacity:.65}
+html body.chronicle .commandTableMenu .menuMain>.menuButton[data-atlas-action="settings"],html body.chronicle .commandTableMenu .menuMain>.menuButton[data-atlas-action="codex"]{grid-column:auto;min-height:56px!important;padding:10px!important;gap:10px!important;background:#f5dda755!important;border-color:#9b7a474d!important;box-shadow:none!important}
+html body.chronicle .commandTableMenu :is([data-atlas-action="settings"],[data-atlas-action="codex"]) .atlasActionIcon{flex-basis:26px;width:26px;height:30px}
+html body.chronicle .commandTableMenu :is([data-atlas-action="settings"],[data-atlas-action="codex"]) .atlasActionText b{font:850 clamp(10px,.8vw,14px)/1.2 system-ui!important}
+html body.chronicle .commandTableMenu :is([data-atlas-action="settings"],[data-atlas-action="codex"]) .atlasActionText small{font-size:10px}
+html body.chronicle .commandTableMenu :is([data-atlas-action="settings"],[data-atlas-action="codex"]) .atlasActionArrow{display:none}
+html body.chronicle .commandTableMenu .menuMulti{padding:14px;background:#f5e1b4c9;border:1px solid #8f6f40;border-radius:7px;gap:13px}
+html body.chronicle .commandTableMenu .menuMulti:before{content:"MEGHÍVÁS PÁRBAJRA";font:850 14px Georgia;color:#694c2c;letter-spacing:.1em}
+html body.chronicle .commandTableMenu .menuVersion{position:absolute!important;left:9.5%;bottom:12%;text-align:left!important;color:#73592f!important;letter-spacing:.12em;opacity:.8;font-size:9px!important;margin:0!important}
+html body.chronicle .commandTableMenu .mpRoomWait{position:absolute;left:9.5%;top:37%;width:36vw;max-width:620px;background:#f4e2b1e8;color:#49361c;border:1px solid #927243;padding:20px;box-sizing:border-box;border-radius:6px}
+html body.chronicle .commandTableMenu .mpRoomWait :is(b,small){color:#49361c!important}
+html body.chronicle .commandTableMenu .mpLobbyError{position:absolute;left:9.5%;bottom:17%;width:36vw;color:#8b3c28!important;text-shadow:none!important;font-size:12px}
+@media(max-height:720px) and (min-width:1001px){html body.chronicle .commandTableMenu .mpLobbyCard .menuBrand{top:13%!important}html body.chronicle .commandTableMenu .mpLobbyGrid{top:34%!important}html body.chronicle .commandTableMenu .menuMain{gap:7px!important;max-height:52vh}html body.chronicle .commandTableMenu .menuMain>.menuButton{min-height:58px!important;padding:8px 12px!important}html body.chronicle .commandTableMenu .atlasActionText small{font-size:10px}html body.chronicle .commandTableMenu .menuVersion{bottom:9%}}
+@media(max-width:1000px),(max-aspect-ratio:1.1){
+ html body.chronicle .mpLobby.commandTableMenu:before{background-position:left center!important}
+ html body.chronicle .commandTableMenu .mpLobbyCard{position:relative!important;inset:auto!important;width:min(560px,94vw)!important;height:auto!important;max-height:94dvh!important;padding:26px!important;background:#f6dfadef!important;border:2px solid #775b34!important;border-radius:5px 16px 5px 9px!important;box-shadow:5px 7px 0 #3f2a1b66!important;overflow:auto!important}
+ html body.chronicle .commandTableMenu .mpLobbyCard .menuBrand{position:relative!important;left:auto!important;top:auto!important;width:100%!important;margin:0 0 24px!important}
+ html body.chronicle .commandTableMenu .mpLobbyCard .menuBrand h2{font-size:clamp(31px,8vw,58px)!important}
+ html body.chronicle .commandTableMenu .mpLobbyGrid{position:relative!important;left:auto!important;top:auto!important;width:100%!important}
+ html body.chronicle .commandTableMenu .menuMain{max-height:none;overflow:visible;gap:10px!important}
+ html body.chronicle .commandTableMenu .menuMain>.menuButton{min-height:64px!important}
+ html body.chronicle .commandTableMenu .atlasActionText b{font-size:17px!important}
+ html body.chronicle .commandTableMenu .atlasActionText small{font-size:11px}
+ html body.chronicle .commandTableMenu :is(.menuVersion,.mpLobbyError,.mpRoomWait){position:relative!important;left:auto;bottom:auto;top:auto;width:100%;margin-top:18px!important}
+}
+@media(prefers-reduced-motion:reduce){html body.chronicle .commandTableMenu .menuMain>.menuButton{transition:none!important}}

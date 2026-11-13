@@ -285,7 +285,7 @@ export function installBattleFigures(R) {
     const p=R.pointAt(u.lane,u.offset||0),zoom=R.ROAD.zoom||1;
     if(p.x < -90||p.x>R.ROAD.w+90)return;
     const age=dead?R.ROAD.clock-u.death:0,pose=R.battleFigurePose(u,R.ROAD.clock,dead);
-    if(R.ROAD.lowDetail&&(pose.state==='walk'||pose.state==='death'))pose.frame-=pose.frame%2;
+    if(R.ROAD.lowDetail){if(pose.state==='walk'||pose.state==='death')pose.frame-=pose.frame%2;else if(pose.state==='attack')pose.frame=pose.frame<4?pose.frame-pose.frame%2:pose.frame<7?pose.frame:7+Math.floor((pose.frame-7)/2)*2;}
     const image=sprite(R,u,pose);
     if(!image)return;
     const detail=!R.ROAD.lowDetail;

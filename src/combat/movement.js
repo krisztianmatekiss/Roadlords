@@ -48,8 +48,9 @@ export function installRoadMovement(R) {
     if (distance < .5) return;
     let vx = dx / distance, vy = dy / distance;
     let repelX = 0, repelY = R.roadFriendlyBias(u), obstacle = 0, wall = false;
-    R.roadVisit(u, 43, v => {
-      if(v.side!==u.side&&((R.unitPassesEnemies?.(u)||R.unitPassesEnemies?.(v))&&!R.spearBastion?.(u)&&!R.spearBastion?.(v)))return;
+    const ownPass=!!R.unitPassesEnemies?.(u),ownBastion=!!R.spearBastion?.(u);
+    if(!ownPass||ownBastion)R.roadVisit(u, 43, v => {
+      if(v.side!==u.side&&((ownPass||R.unitPassesEnemies?.(v))&&!ownBastion&&!R.spearBastion?.(v)))return;
       const ox = v.lane - u.lane, oy = (v.offset || 0) - (u.offset || 0);
       const d = Math.hypot(ox, oy) || .01, gap = gapFor(u, v);
       const ahead = ox * vx + oy * vy, across = Math.abs(ox * vy - oy * vx);
@@ -79,8 +80,8 @@ export function installRoadMovement(R) {
     // Sweep against enemies so a fast mover cannot step through an opposing body.
     let fraction = 1;
     const length2 = dx*dx + dy*dy;
-    if (length2 > 1e-8) R.roadVisit(u, Math.sqrt(length2)+28, v => {
-      if (v.side === u.side||R.unitPassesEnemies?.(u)||R.unitPassesEnemies?.(v)) return;
+    if (length2 > 1e-8&&!ownPass) R.roadVisit(u, Math.sqrt(length2)+28, v => {
+      if (v.side === u.side||R.unitPassesEnemies?.(v)) return;
       const ox = v.lane-u.lane, oy = (v.offset||0)-(u.offset||0), gap = gapFor(u,v);
       const dot = ox*dx+oy*dy, c = ox*ox+oy*oy-gap*gap;
       if (dot <= 0) return;
@@ -102,11 +103,15 @@ export function installRoadMovement(R) {
       R.roadReindex();
       for (const u of R.state.units) {
         if (!u.alive) continue;
+        const ownPass=!!R.unitPassesEnemies?.(u),ownBastion=!!R.spearBastion?.(u);
+        if(ownPass&&!ownBastion)continue;
         R.roadVisit(u, 28, v => {
-          if (v.id <= u.id||v.side!==u.side&&((R.unitPassesEnemies?.(u)||R.unitPassesEnemies?.(v))&&!R.spearBastion?.(u)&&!R.spearBastion?.(v))) return;
-          let dx = v.lane - u.lane, dy = (v.offset || 0) - (u.offset || 0), d = Math.hypot(dx, dy);
-          const gap = gapFor(u, v);
-          if (d >= gap) return;
+          if(v.id<=u.id)return;
+          let dx=v.lane-u.lane,dy=(v.offset||0)-(u.offset||0);
+          const gap=gapFor(u,v);
+          if(Math.abs(dx)>=gap||Math.abs(dy)>=gap)return;
+          let d=Math.hypot(dx,dy);if(d>=gap)return;
+          if(v.side!==u.side&&(ownPass||R.unitPassesEnemies?.(v))&&!ownBastion&&!R.spearBastion?.(v))return;
           if (d < .001) { const angle = ((u.id * 17 + v.id * 13) % 64) / 64 * Math.PI*2; dx = Math.cos(angle); dy = Math.sin(angle); d = 1; }
           const mass = x => (anchored(x, R.ROAD.clock) ? .12 : 1) / (x.cat === 'siege' ? 2 : x.cat === 'cavalry' ? 1.5 : 1);
           const a = mass(u), b = mass(v), push = Math.min(5, gap - d) / (a + b);

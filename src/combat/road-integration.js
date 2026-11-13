@@ -1,3 +1,4 @@
+import { selectVisibleFigures } from '../rendering/battle-presentation-budget.js';
 import { SPEAR_VOLLEY_RANGE } from '../data/ranged-balance.js';
 import { isMixedFigureTrial } from '../config/figure-trials.js';
 import { installTowerFrontiers } from './frontiers.js';
@@ -247,6 +248,9 @@ export function initializeCombatRoadIntegration(runtime) {
   runtime.renderBattle = function (raw) {
     const begin = performance.now();
     runtime.roadUpdateNavigation(raw);
+    const budget=runtime.battlePresentation?.frame(raw);
+    if(budget?.skip)return;
+    raw=budget?.elapsed??raw;
     const guest=runtime.MP.enabled&&runtime.MP.role==='guest';
     if(guest)for(const u of runtime.state.units)u.roadRenderPrev=u.lane;
     runtime.mpInterpolateUnits(raw);
@@ -299,7 +303,9 @@ export function initializeCombatRoadIntegration(runtime) {
     runtime.ROAD.lowDetail = visible.length > 240 && runtime.ROAD.zoom <= 1.25;
     visible.sort((a, b) => (a.offset || 0) - (b.offset || 0) || a.id - b.id);
     runtime.roadBeginUnitEffects?.();
-    for (const u of visible) runtime.roadDrawUnit(u);
+    const figures=selectVisibleFigures(runtime,visible);
+    if(runtime.battlePresentation)Object.assign(runtime.battlePresentation.metrics,{candidates:visible.length,drawn:figures.length});
+    for (const u of figures) runtime.roadDrawUnit(u);
     runtime.roadFlushUnitEffects?.();
     runtime.roadDrawShots();
     runtime.roadDrawEffects?.();

@@ -1,0 +1,23 @@
+{
+  "human": {
+    "file": "art/chronicle/human-terrain.png",
+    "webFile": "art/chronicle/human-terrain.webp",
+    "width": 1672,
+    "height": 941,
+    "sha256": "3a189dbb7cc7d631eaf41acf96919d32143a43461a9af0e87cc30f9390fd905a"
+  },
+  "orc": {
+    "file": "art/chronicle/orc-terrain.png",
+    "webFile": "art/chronicle/orc-terrain.webp",
+    "width": 1672,
+    "height": 941,
+    "sha256": "4b8d8a850fc05bafd0909626770b661cc50b75543c6adbd3ce3cb44dd4c8916d"
+  },
+  "undead": {
+    "file": "art/chronicle/undead-terrain.png",
+    "webFile": "art/chronicle/undead-terrain.webp",
+    "width": 1672,
+    "height": 941,
+    "sha256": "27e262a7337b13891b5decefb591b7b998e8478ffe8549f49631904b8fa2eeba"
+  }
+}

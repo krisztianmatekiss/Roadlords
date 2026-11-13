@@ -20,9 +20,9 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   check('Each AI receives its own bonus choices without changing the other AI state',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,a=R.P.pickCount,b=R.E.pickCount;R.aiGrantPick(R.P,'ancient');const first=R.P.pickCount===a+1&&R.E.pickCount===b;R.aiGrantPick(R.E,'ancient');return first&&R.P.pickCount===a+1&&R.E.pickCount===b+1;
   }));
-  check('Only the normal controls remain; the left deck is visible at the bottom left',await p.evaluate(()=>{
-   const deck=document.querySelector('#relicBtn'),a=deck.getBoundingClientRect(),b=document.querySelector('.command').getBoundingClientRect();
-   return !document.querySelector('#spectatorControls')&&getComputedStyle(deck).visibility==='visible'&&a.width>30&&a.left<200&&a.top>=b.top&&a.bottom<=b.bottom+1&&getComputedStyle(document.querySelector('.commandRail .tabs')).visibility==='hidden';
+  check('Only normal controls remain; the left deck is visible beside the closed construction tab',await p.evaluate(()=>{
+   const deck=document.querySelector('#relicBtn'),a=deck.getBoundingClientRect(),b=document.querySelector('.topbar').getBoundingClientRect();
+   return !document.querySelector('#spectatorControls')&&getComputedStyle(deck).visibility==='visible'&&a.width>30&&a.left<300&&a.top>=b.bottom&&a.bottom<=b.bottom+80&&document.querySelector('#uiTrialDrawer').hidden&&__ROADLORDS_RUNTIME__.chronicle.active();
   }));
   await p.locator('#relicBtn').click();
   check('The left AI deck is inspectable without controlling its choices',await p.locator('#relicOverlay').getAttribute('data-deck-side')==='player');await p.keyboard.press('Escape');
@@ -35,7 +35,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   });
   check('Both AIs reveal their own real picked card independently at their visible cities',await p.locator('#playerPickReveal .cardFace').count()===1&&await p.locator('#enemyPickReveal .cardFace').count()===1);
   await p.waitForTimeout(3100);
-  check('The left card flips to its own faction back and flies toward the bottom-left deck',await p.evaluate(()=>{
+  check('The left card flips to its own faction back and flies toward the upper-left deck',await p.evaluate(()=>{
    const e=document.querySelector('#playerPickReveal'),deck=document.querySelector('#relicBtn').getBoundingClientRect(),flight=e?.getAnimations()[0];
    if(!e?.querySelector('.deckFlightBack [data-deck-race="undead"]')||!e.querySelector('.deckFlipInner').getAnimations().length||!flight)return false;
    const transform=new DOMMatrix(flight.effect.getKeyframes().at(-1).transform);

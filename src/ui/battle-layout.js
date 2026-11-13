@@ -3,14 +3,16 @@ import { installBattleRosters } from './battle-rosters.js';
 
 // Default battle layout around the same solo, spectator and multiplayer game.
 export function installBattleLayout(R) {
-  const state=R.battleLayout={active:false,scale:'1.5',collapsed:false};
+  const state=R.battleLayout={active:false,scale:'fit',collapsed:true};
   const rosters=installBattleRosters(R,()=>state.active);
   const app=R.$('#app'),catalog=R.$('.catalog'),tabs=R.$('.commandRail .tabs'),deck=R.$('#relicBtn'),gate=R.$('#gateControls');
   const drawer=document.createElement('aside');drawer.id='uiTrialDrawer';drawer.hidden=true;
-  drawer.innerHTML='<button id="uiTrialFold" type="button" aria-expanded="true" aria-controls="uiTrialCards">ÉPÍTÉS ‹</button><div class="uiTrialCategories"></div><div id="uiTrialCards"></div><footer class="uiTrialDrawerFoot"><div class="uiTrialScale"><label>Nagyítás<select id="uiTrialScale"><option value="1">1×</option><option value="1.25">1,25×</option><option value="1.5" selected>1,5×</option><option value="fit">Teljes város</option></select></label><button id="uiTrialExit" type="button">Régi nézet</button></div><div class="uiTrialDeckHome"></div></footer>';
+  drawer.innerHTML='<div class="uiTrialCategories"></div><div id="uiTrialCards"></div><footer class="uiTrialDrawerFoot"><div class="uiTrialScale"><label>Nagyítás<select id="uiTrialScale"><option value="1">1×</option><option value="1.25">1,25×</option><option value="1.5">1,5×</option><option value="fit" selected>Teljes város</option></select></label><button id="uiTrialExit" type="button">Korábbi nézet</button></div></footer>';
+  const launchers=document.createElement('nav');launchers.id='chronicleTools';launchers.hidden=true;launchers.setAttribute('aria-label','Építés és pakli');
+  launchers.innerHTML='<button id="uiTrialFold" type="button" aria-expanded="false" aria-controls="uiTrialDrawer">ÉPÍTÉS ▸</button><div class="uiTrialDeckHome"></div>';
   const line=document.createElement('section');line.id='uiTrialOverview';line.hidden=true;
   line.innerHTML='<aside class="uiTrialOwnSummary"></aside><div class="uiTrialTrack"><canvas id="uiTrialLine" tabindex="0" role="slider" aria-label="Csataáttekintő és pályamozgatás" aria-valuemin="0" aria-valuemax="9600"></canvas></div><aside class="uiTrialEnemySummary"></aside>';
-  app.append(drawer,line);
+  app.append(drawer,line,launchers);
   const restore=[];
   function move(node,parent){const mark=document.createComment('UI trial return point');node.before(mark);restore.push(()=>{mark.replaceWith(node)});parent.append(node);}
   state.line=createBattleLine(R,line.querySelector('canvas'),()=>state.active);
@@ -21,27 +23,33 @@ export function installBattleLayout(R) {
     if(state.active)return;
     baselineOffset=R.roadWar.clientHeight-(innerHeight-viewport()-dock());oldHeight=R.roadWorld.style.height;oldZoom=R.ROAD.zoom;oldPinned=R.ROAD.enemyPinned;
     oldWarTitle=R.roadWar.title;R.roadWar.title='A / D vagy görgő: balra / jobbra · ↑ / ↓ vagy Shift+görgő: fel / le · F: harci front';
-    state.active=true;state.collapsed=false;document.body.classList.add('ui-trial');drawer.hidden=line.hidden=false;
-    drawer.querySelector('#uiTrialFold').textContent='ÉPÍTÉS ‹';drawer.querySelector('#uiTrialFold').setAttribute('aria-expanded','true');
-    move(tabs,drawer.querySelector('.uiTrialCategories'));move(catalog,drawer.querySelector('#uiTrialCards'));move(deck,drawer.querySelector('.uiTrialDeckHome'));move(gate,R.$('.topbar'));
+    state.active=true;state.collapsed=true;document.body.classList.add('ui-trial','ui-trial-collapsed','chronicle');drawer.hidden=true;line.hidden=launchers.hidden=false;
+    state.setCollapsed(true);
+    move(tabs,drawer.querySelector('.uiTrialCategories'));move(catalog,drawer.querySelector('#uiTrialCards'));move(deck,launchers.querySelector('.uiTrialDeckHome'));move(gate,app);
     for(const side of ['player','enemy'])move(R.$(`.roadRosterTeam[data-side="${side}"]`),line.querySelector(side==='player'?'.uiTrialOwnSummary':'.uiTrialEnemySummary'));
     R.ROAD.zoom=1;if(R.ROAD.enemyPinned)R.$('#enemyCityPin').click();
     R.closeBuildCardPreview?.();R.roadResize();state.line.resize();R.renderBuildList();R.updateHud();
   };
   state.exit=()=>{
     if(!state.active)return;
-    state.active=false;rosters.reset();R.closeBuildCardPreview?.();document.body.classList.remove('ui-trial','ui-trial-collapsed');drawer.hidden=line.hidden=true;
+    state.active=false;rosters.reset();R.closeBuildCardPreview?.();document.body.classList.remove('ui-trial','ui-trial-collapsed','chronicle');drawer.hidden=line.hidden=launchers.hidden=true;
     while(restore.length)restore.pop()();
     R.roadWorld.style.height=oldHeight;R.roadWorld.style.removeProperty('--trial-world-scale');R.roadWar.title=oldWarTitle;R.ROAD.zoom=oldZoom;
     if(R.ROAD.enemyPinned!==oldPinned)R.$('#enemyCityPin').click();
     R.roadWar.scrollTop=0;R.roadResize();R.renderBuildList();R.updateHud();
   };
   drawer.querySelector('#uiTrialExit').onclick=()=>state.setMode('classic');
-  drawer.querySelector('#uiTrialFold').onclick=()=>{
-    state.collapsed=!state.collapsed;document.body.classList.toggle('ui-trial-collapsed',state.collapsed);
-    const button=drawer.querySelector('#uiTrialFold');button.textContent=state.collapsed?'›':'ÉPÍTÉS ‹';button.setAttribute('aria-expanded',String(!state.collapsed));
-    R.closeBuildCardPreview?.();requestAnimationFrame(()=>{R.roadResize();state.line.resize();});
+  state.setCollapsed=collapsed=>{
+    state.collapsed=collapsed;drawer.hidden=collapsed;document.body.classList.toggle('ui-trial-collapsed',collapsed);
+    const button=launchers.querySelector('#uiTrialFold');button.textContent=collapsed?'ÉPÍTÉS ▸':'ÉPÍTÉS ▾';button.setAttribute('aria-expanded',String(!collapsed));
+    R.closeBuildCardPreview?.();if(!collapsed)requestAnimationFrame(layoutCards);
   };
+  launchers.querySelector('#uiTrialFold').onclick=()=>state.setCollapsed(!state.collapsed);
+  document.addEventListener('pointerdown',e=>{
+    if(state.active&&!state.collapsed&&!e.target.closest('#uiTrialDrawer,#chronicleTools,.buildCardPreview'))state.setCollapsed(true);
+  });
+  const buildList=R.renderBuildList;
+  R.renderBuildList=(...args)=>{const out=buildList(...args);if(state.active&&R.state.selectedBuild&&!state.collapsed)state.setCollapsed(true);return out;};
   drawer.querySelector('#uiTrialScale').onchange=e=>{state.scale=e.target.value;R.roadResize();};
   const renderHeight=R.roadRenderHeight;
   R.roadRenderHeight=height=>{
@@ -51,7 +59,7 @@ export function installBattleLayout(R) {
     R.roadWorld.style.height=h+'px';R.roadWorld.style.setProperty('--trial-world-scale',String(h/reference));return h;
   };
   const resize=R.roadResize;
-  R.roadResize=(...args)=>{const out=resize(...args);if(state.active){document.documentElement.style.setProperty('--road-notice-anchor',`${R.roadWar.getBoundingClientRect().bottom-6}px`);state.line.resize();}return out;};
+  R.roadResize=(...args)=>{const out=resize(...args);if(state.active){R.roadNoticeBottom=line.getBoundingClientRect().top-8;document.documentElement.style.setProperty('--road-notice-anchor',`${R.roadNoticeBottom}px`);state.line.resize();}return out;};
   const minimap=R.roadDrawMinimap;
   R.roadDrawMinimap=(force=false)=>state.active?state.line.draw(force):minimap(force);
   let cardLayoutFrame=0;
@@ -71,22 +79,28 @@ export function installBattleLayout(R) {
   new MutationObserver(scheduleCards).observe(R.$('#buildList'),{childList:true});
   window.addEventListener('roadlords:ui-scale',()=>{if(state.active)requestAnimationFrame(R.roadResize);});
   document.addEventListener('keydown',e=>{
+    if(state.active&&e.key==='Escape'&&!state.collapsed)state.setCollapsed(true);
     if(!state.active||!['ArrowUp','ArrowDown'].includes(e.key)||e.target.closest('input,select,textarea')||R.state.modal||document.body.classList.contains('roadlords-menu-open'))return;
     e.preventDefault();R.roadWar.scrollTop+=e.key==='ArrowUp'?-80:80;
   });
+  window.addEventListener('keydown',e=>{
+    if(state.active&&['q','w','e','r'].includes(e.key.toLowerCase())&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.target.closest('input,select,textarea')&&!R.state.modal&&!document.body.classList.contains('roadlords-menu-open'))state.setCollapsed(false);
+  },true);
   const settings=document.querySelector('.rlSettingsPanel .rlPanelBody');
   const field=document.createElement('section');field.className='rlSection';
-  field.innerHTML='<h3 class="rlSectionTitle">JÁTÉKNÉZET</h3><label>Elrendezés <select id="battleLayoutMode"><option value="modern">Oldalsó kártyák és csatavonal</option><option value="classic">Régi alsó építési sáv</option></select></label>';
+  field.innerHTML='<h3 class="rlSectionTitle">JÁTÉKNÉZET</h3><label>Elrendezés <select id="battleLayoutMode"><option value="modern">Rajzolt világ · lebegő kezelőfelület</option><option value="classic">Korábbi elrendezés</option></select></label>';
   settings.append(field);
   const select=field.querySelector('select');
   state.setMode=(mode,persist=true)=>{
     mode=mode==='classic'?'classic':'modern';select.value=mode;
-    if(persist)try{localStorage.setItem('roadlords-battle-layout',mode);}catch{}
+    if(persist)try{localStorage.setItem('roadlords-battle-layout-v2',mode);}catch{}
     if(mode==='classic')state.exit();else state.enter();
   };
   select.onchange=()=>state.setMode(select.value);
+  const spectator=R.startSpectator;
+  R.startSpectator=(...args)=>{state.setMode('modern',false);return spectator(...args);};
   // Explicit classic links also keep the retained legacy UI fixtures usable.
   let mode=new URL(location.href).searchParams.get('layout');
-  if(!mode)try{mode=localStorage.getItem('roadlords-battle-layout');}catch{}
+  if(!mode)try{mode=localStorage.getItem('roadlords-battle-layout-v2');}catch{}
   state.setMode(mode||'modern',false);
 }

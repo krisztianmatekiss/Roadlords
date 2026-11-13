@@ -70,6 +70,7 @@ export function installRoadCities(R) {
     R.ROAD.layoutWidth = R.roadWar.clientWidth;
     // The dirt-road walls are at 49 and 551 in the 600-high terrain tile.
     const side = Math.round(R.ROAD.h * 502 / 600), top = R.ROAD.h * 49 / 600;
+    R.ROAD.cityTop = top;
     R.ROAD.city = side;
     R.roadWorld.style.setProperty('--road-city-size', `${side}px`);
     R.roadWorld.style.setProperty('--road-city-top', `${top}px`);

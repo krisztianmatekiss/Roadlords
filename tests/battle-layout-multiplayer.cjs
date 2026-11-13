@@ -19,19 +19,25 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
    R.mpSend=p=>sent.push(p);R.mpSendSnapshot(true);return sent.findLast(p=>p.type==='snapshot');
   });
   assert(packet,'Host sends a real snapshot');
-  await guest.evaluate(packet=>{
+  await guest.evaluate(async packet=>{
    const R=__ROADLORDS_RUNTIME__;Object.assign(R.MP,{enabled:true,role:'guest',started:true,peer:true});
    R.MP.lobby.style.display='none';R.mpApplySnapshot(packet);R.state.running=false;R.state.modal=false;
-   document.body.classList.remove('roadlords-menu-open','pregame-active');R.renderStatic();R.updateHud();R.roadResize();R.battleLayout.line.draw(true);
+   document.body.classList.remove('roadlords-menu-open','pregame-active');await R.loadChronicleArt();R.renderStatic();R.updateHud();R.roadResize();R.roadFocusLane(R.territoryBoundary());R.renderBattle(0);R.battleLayout.line.draw(true);
   },packet);
   assert(await guest.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,line=R.battleLayout.line;
    return R.battleLayout.active&&R.E.hp===12345&&line.structures.some(s=>s.capital&&s.side==='enemy'&&s.hp===12345)&&line.groups.reduce((n,g)=>n+g.count,0)===5&&R.$('#uiTrialOverview').contains(R.$('#playerArmy'));
   }),'Default guest layout shows mirrored live units, capital HP and rosters');
   console.log('PASS Default multiplayer layout reads real host snapshots with mirrored units and HP');
+  assert(await guest.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return R.chronicle.active()&&R.P.race==='orc'&&R.E.race==='human'&&R.chronicle.segments.length===2&&R.chronicle.segments[0].race==='orc'&&R.chronicle.segments[1].race==='human';}),'The guest paints mirrored faction territory through the shared renderer');
+  console.log('PASS Multiplayer terrain follows the local player and mirrored opponent races');
   await guest.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;window.gatePackets=[];R.mpSend=p=>gatePackets.push(p);});
   await guest.locator('#gateControls [data-gate="closed"]').click();
   assert(await guest.evaluate(()=>__ROADLORDS_RUNTIME__.P.gateMode==='closed'&&gatePackets.some(p=>p.type==='strategy')),'Guest gate buttons still send actual strategy updates');
+  const changed=await host.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,sent=[];R.roadResetCity(R.P,'undead');R.roadResetCity(R.E,'orc');R.P.normal.und_territory=3;R.mpSend=p=>sent.push(p);R.mpSendSnapshot(true);return{packet:sent.findLast(p=>p.type==='snapshot'),boundary:R.territoryBoundary()};});
+  await guest.evaluate(async packet=>{const R=__ROADLORDS_RUNTIME__;R.mpApplySnapshot(packet);await R.loadChronicleArt();R.roadFocusLane(R.territoryBoundary());R.renderBattle(0);},changed.packet);
+  assert(await guest.evaluate(boundary=>{const R=__ROADLORDS_RUNTIME__;return R.territoryBoundary()===R.PATH_LENGTH-boundary&&R.chronicle.boundary===R.territoryBoundary()&&R.chronicle.segments.some(s=>s.race==='undead');},changed.boundary),'Real snapshots mirror the advancing Undead terrain boundary');
+  console.log('PASS The advancing Undead terrain cut mirrors correctly through real host snapshots');
   assert.equal(errors.length,0,errors.join('\n'));console.log('PASS Default multiplayer gate controls send strategy updates without browser errors');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

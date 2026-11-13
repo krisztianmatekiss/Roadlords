@@ -29,7 +29,7 @@ export function installRoadNavigation(R) {
     world.classList.toggle('both-cities-pinned',both);
     world.style.setProperty('--pinned-city-scale',String(scale));
     world.style.setProperty('--pinned-city-width',`${R.ROAD.city*scale}px`);
-    world.style.setProperty('--pinned-city-top',`${R.ROAD.h*49/600+R.ROAD.city*(1-scale)/2}px`);
+    world.style.setProperty('--pinned-city-top',`${(R.ROAD.cityTop??R.ROAD.h*49/600)+R.ROAD.city*(1-scale)/2}px`);
   }
   R.roadPositionPinnedCity = positionCity;
   R.roadViewportBounds=()=>{

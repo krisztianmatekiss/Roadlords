@@ -13,8 +13,9 @@ export function groupBattleUnits(units, span=20*WORLD_UNITS_PER_METRE) {
   for(const units of buckets.values()){
     units.sort((a,b)=>a.lane-b.lane);let group;
     for(const u of units){
-      if(!group||u.lane-group.start>span){group={side:u.side,key:u.key,start:u.lane,end:u.lane,lane:0,count:0};groups.push(group);}
+      if(!group||u.lane-group.start>span){group={side:u.side,key:u.key,start:u.lane,end:u.lane,lane:0,count:0,hp:0,maxHp:0,id:`${u.side}:${u.key}:${u.id}`};groups.push(group);}
       group.end=u.lane;group.lane+=u.lane;group.count++;
+      group.hp+=Math.max(0,u.hp||0);group.maxHp+=Math.max(0,u.maxHp||0);
     }
   }
   for(const group of groups)group.lane/=group.count;

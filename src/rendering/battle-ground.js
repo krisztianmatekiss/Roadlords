@@ -1,5 +1,10 @@
 // A small deterministic terrain tile is reused while scrolling. No per-frame noise generation.
 export function drawBattleGround(R) {
+  if (R.chronicle?.active()) {
+    R.chronicle.drawGround();
+    drawTerritoryBoundary(R);
+    return;
+  }
   if (!R.ROAD.ground) {
     const tile = document.createElement('canvas'); tile.width = 512; tile.height = 600;
     const g = tile.getContext('2d'); let seed = 7319;

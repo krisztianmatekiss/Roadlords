@@ -1,12 +1,12 @@
 // Match the real gate opening, including responsive layout and battlefield zoom.
 // Geometry is shared by a release wave and refreshed only when its size changes.
 export function gateExitOffset(R, u) {
-  const stamp = `${R.ROAD.w}:${R.ROAD.h}:${R.ROAD.zoom}:${innerWidth}:${innerHeight}`;
+  const stamp = `${R.ROAD.w}:${R.ROAD.h}:${R.ROAD.city}:${R.chronicle?.active()}:${R.ROAD.zoom}:${innerWidth}:${innerHeight}`;
   if (R.ROAD.gateExits?.stamp !== stamp) R.ROAD.gateExits = {stamp};
   let opening = R.ROAD.gateExits[u.side];
   if (!opening) {
     const gate = R.$(u.side === 'player' ? '#playerGate' : '#enemyGate').getBoundingClientRect();
-    const war = R.roadWar.getBoundingClientRect(), scale = R.ROAD.h / 600 * R.ROAD.zoom;
+    const war = R.roadWar.getBoundingClientRect(), scale = R.chronicle?.active() ? R.chronicle.lateralScale() : R.ROAD.h / 600 * R.ROAD.zoom;
     opening = {
       center: (gate.top + gate.height / 2 - war.top - R.ROAD.h / 2) / scale,
       half: gate.height / scale / 2

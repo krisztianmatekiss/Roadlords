@@ -86,7 +86,11 @@ export function installBattleLayout(R) {
   window.addEventListener('keydown',e=>{
     if(state.active&&['q','w','e','r'].includes(e.key.toLowerCase())&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.target.closest('input,select,textarea')&&!R.state.modal&&!document.body.classList.contains('roadlords-menu-open'))state.setCollapsed(false);
   },true);
+  const pause=R.$('#pauseBtn'),pauseLabel=()=>pause.setAttribute('aria-label',pause.classList.contains('on')?'Folytatás':'Szünet');
+  new MutationObserver(pauseLabel).observe(pause,{attributes:true,attributeFilter:['class']});pauseLabel();
   const settings=document.querySelector('.rlSettingsPanel .rlPanelBody');
+  const help=settings.querySelector('.rlHotkeys');
+  for(const [key,description]of [['A / D','Pályamozgatás balra / jobbra. Dupla lenyomás: ugrás a pálya szélére.'],['F','Ugrás a harci frontra.'],['GÖRGŐ','Pályamozgatás; az építőmenü fölött a kártyalista görgetése.']]){const row=document.createElement('div');row.className='rlHotkeyRow';row.innerHTML=`<span class="rlHotkeyKeys"><kbd class="rlKey">${key}</kbd></span><span class="rlHotkeyText">${description}</span>`;help?.append(row);}
   const field=document.createElement('section');field.className='rlSection';
   field.innerHTML='<h3 class="rlSectionTitle">JÁTÉKNÉZET</h3><label>Elrendezés <select id="battleLayoutMode"><option value="modern">Rajzolt világ · lebegő kezelőfelület</option><option value="classic">Korábbi elrendezés</option></select></label>';
   settings.append(field);

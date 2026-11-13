@@ -44,7 +44,7 @@ html body.chronicle #uiTrialDrawer .uiTrialScale{display:none}
 html body.chronicle #uiTrialDrawer .uiTrialDrawerFoot{padding:0;border:0}
 html body.chronicle #app #buildList .buildSlotBadges{background:transparent!important}
 html body.chronicle #app #buildList{scrollbar-color:#a78a50 #e5ca91}
-html body.chronicle #app .roadWorld .cityframe{padding:5%!important;border:0!important;background:none!important;border-radius:0!important;box-shadow:none!important;overflow:visible}
+html body.chronicle #app .roadWorld .cityframe{padding:8%!important;border:0!important;background:none!important;border-radius:0!important;box-shadow:none!important;overflow:visible}
 html body.chronicle #app .roadWorld .cityframe:before{content:"";position:absolute;inset:3%;z-index:0;background-color:var(--chronicle-floor,#dfc78c);background-image:radial-gradient(ellipse at 25% 35%,#ffffff17,transparent 65%),repeating-linear-gradient(6deg,transparent 0 40px,#64533e0c 41px 42px)}
 html body.chronicle #app .roadWorld .citygrid{gap:0!important;z-index:2;background:none!important}
 html body.chronicle #app .roadWorld .plot{background:transparent!important;border:1px solid #75604433!important;border-radius:0!important;box-shadow:none!important}
@@ -108,3 +108,20 @@ body.chronicle .spectatorNotice{color:#29332c;background:#f2dfad;border-color:#3
  html body.chronicle #uiTrialDrawer{left:10px;top:calc(var(--trial-header-height) + 53px);bottom:112px}
  html body.chronicle #app #uiTrialOverview{left:5px;right:5px}
 }
+/* Live faction fortifications use independent sprite silhouettes. */
+body.chronicle .chronicleGateTower{right:-10.5%;width:14%;height:19%;filter:drop-shadow(2px 3px 0 #25292345)}
+body.chronicle .enemyframe .chronicleGateTower{left:-10.5%}
+body.chronicle .chronicleGateTower.upper{top:25.5%}body.chronicle .chronicleGateTower.lower{top:54.5%}
+body.chronicle .chronicleGateTower svg{overflow:hidden}
+body.chronicle .chronicleTowerHealth{top:-1%;font-size:clamp(10px,.75vw,14px);padding:2px 6px}
+html body.chronicle #app .topLeftCluster .res small{display:flex;flex-wrap:nowrap;gap:6px;white-space:nowrap;line-height:1.2}
+html body.chronicle #app .topLeftCluster .res{flex-basis:190px}
+html body.chronicle #app .topLeftCluster .res b{font-variant-numeric:tabular-nums}
+html body.chronicle .uiTrialTrack{background:linear-gradient(transparent 25%,#eee1bf55 40%,#eee1bf66 60%,transparent 78%)}
+html body.chronicle #uiTrialLine{cursor:pointer}
+@media(max-width:1200px){html body.chronicle #app .topLeftCluster .res small{gap:3px;font-size:9px!important}}
+@media(prefers-reduced-motion:reduce){html body.chronicle :is(.menuButton,.rlIngameMenuBtn,.rlPanelBack){transition:none!important}}
+html body.chronicle #app .topLeftCluster .res b{white-space:nowrap!important}
+html body.chronicle #app #pauseBtn{font-size:0!important;display:grid;place-items:center}
+html body.chronicle #pauseBtn:before{content:"";display:block;width:14px;height:17px;background:linear-gradient(to right,#344b3a 0 32%,transparent 32% 68%,#344b3a 68% 100%)}
+html body.chronicle #pauseBtn.on:before{width:0;height:0;background:none;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:12px solid #344b3a;transform:translateX(1px)}

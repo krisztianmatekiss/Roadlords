@@ -1,0 +1,74 @@
+/* The same ink, paper and muted heraldic colours across every surrounding UI. */
+body.chronicle{--paper:#f3e4bd;--paper-light:#fff3d3;--paper-shade:#d4ba88;--ink:#303931;--muted-ink:#665d49;--accent:#596f73;--panel-line:#70664e}
+html body.chronicle .mpLobby{background:radial-gradient(ellipse at 20% 85%,#697e6560,transparent 50%),radial-gradient(ellipse at 85% 10%,#7b9da773,transparent 60%),linear-gradient(155deg,#a8bec0,#ded7b5 62%,#81906b)!important;backdrop-filter:none!important;color:var(--ink)!important}
+html body.chronicle .mpLobby:before{content:"";position:absolute;inset:14px;pointer-events:none;border:2px solid #37463b;border-radius:12px 4px 16px 7px;box-shadow:inset 0 0 0 5px #f9eaca66}
+html body.chronicle .mpLobby:after{content:"";position:absolute;left:-5%;right:-5%;bottom:-12%;height:38%;border-radius:50% 70% 0 0;background:#607c63aa;border-top:3px solid #3e5143;pointer-events:none;z-index:0}
+html body.chronicle .mpLobbyCard{z-index:1;background:linear-gradient(105deg,#fff1cf,#e9d7ad)!important;border:3px solid var(--ink)!important;border-radius:7px 19px 9px 14px!important;box-shadow:9px 12px 0 #34473c40,inset 0 0 0 5px #cbb384!important;color:var(--ink)!important;padding:clamp(22px,4vh,50px) clamp(24px,4vw,66px)!important;max-height:calc(100dvh - 50px)!important;overflow:auto!important;scrollbar-color:#8d7955 #e9d6ac}
+html body.chronicle .mpLobbyCard .menuBrand{position:relative!important;left:auto!important;transform:none!important;width:100%!important;display:flex!important;flex-direction:column!important;gap:17px!important;margin:8px auto 38px!important}
+html body.chronicle .mpLobbyCard .menuBrand:before,html body.chronicle .mpLobbyCard .menuBrand:after{display:none!important}
+html body.chronicle .mpLobbyCard .menuBrand h2{font-family:Georgia,serif!important;font-size:clamp(38px,5vw,74px)!important;font-weight:950!important;letter-spacing:.04em!important;line-height:1!important;color:#2f443a!important;background:none!important;-webkit-text-fill-color:#2f443a!important;-webkit-text-stroke:0!important;filter:none!important;text-shadow:2px 3px 0 #c7ad7b!important;white-space:nowrap!important}
+html body.chronicle .menuStartHint{color:#4b5b4c!important;text-shadow:none!important;letter-spacing:.12em!important;font-weight:800!important}
+html body.chronicle :is(.menuVersion,.rlIngameMenuVersion){color:#6d644e!important;text-shadow:none!important;font-size:11px!important}
+html body.chronicle :is(.menuButton,.rlIngameMenuBtn,.rlPanelBack,.pregameReady,.end .btn){color:var(--ink)!important;background:linear-gradient(110deg,#fff3d3,#e8d3a6)!important;border:2px solid #354339!important;border-radius:5px 9px 5px 8px!important;box-shadow:2px 3px 0 #8c79574d!important;font-weight:850!important;min-height:44px;transition:background .12s,transform .12s}
+html body.chronicle :is(.menuButton,.rlIngameMenuBtn,.rlPanelBack):hover{background:#e2bd72!important;transform:translateY(-1px)}
+html body.chronicle :is(.menuButton,.rlIngameMenuBtn,.rlPanelBack):disabled{opacity:.55;transform:none}
+html body.chronicle :is(.menuButton,.rlIngameMenuBtn).primary{background:#b9c8a0!important}
+html body.chronicle :is(.menuButton,.rlIngameMenuBtn).danger{background:#dfb4a0!important;color:#703b30!important}
+html body.chronicle :is(.rlMenuPanel,.roadTestsPanel,.rlIngameMenu,.overlay){background:#263d354d!important;backdrop-filter:blur(4px)!important}
+html body.chronicle :is(.rlMenuPanelCard,.rlIngameMenuCard,.modal,.end,.pregameCard,.racePanel,.raceCard){background:linear-gradient(115deg,var(--paper-light),var(--paper))!important;color:var(--ink)!important;border:2px solid var(--ink)!important;border-radius:7px 14px 6px 10px!important;box-shadow:6px 8px 0 #26382d55!important}
+html body.chronicle :is(.rlPanelHead,.rlIngameMenuHead,.modalhead,.modal-head,.endHead){border-color:#aa956c!important;background:#ddc89b!important;color:#303b30!important}
+html body.chronicle :is(.rlPanelHead h2,.rlIngameMenuHead h2,.modal h2,.end h2,.racePanel h2){color:#34473a!important;text-shadow:none!important;font-family:Georgia,serif!important;letter-spacing:.03em!important}
+html body.chronicle :is(.rlPanelBody,.rlIngameMenuCard,.modal,.racePanel,.pregameCard){scrollbar-color:#8c7957 #e8d7b1}
+html body.chronicle :is(.rlSection,.rlHotkeyRow,.rlSettingsNote,.rlMusicRow,.spectatorSetup,.raceOption,.rlIngameMenuNote,.rlIngameMenuMode){color:#4e5849!important;background:#e7d8b555!important;border-color:#b7a27b!important;box-shadow:none!important}
+html body.chronicle :is(.rlSectionTitle,.spectatorSetup h3,.rlSettingsNote strong,.rlHotkeyText,.rlMusicRow strong){color:#374c3f!important}
+html body.chronicle :is(.rlSettingsNote,.rlMusicRow small,.spectatorSetup p,.rlIngameMenuNote){color:#655f4e!important}
+html body.chronicle :is(.rlKey,kbd){color:#30463c!important;background:#ecdbb4!important;border-color:#7f765d!important;box-shadow:0 2px 0 #b19b73!important}
+html body.chronicle :is(.rlMenuPanel,.mpLobby,.rlIngameMenu,.modal,.pregameCard) :is(input:not([type="range"]),select){color:#344236!important;background:#fff1cf!important;border:1px solid #918367!important;border-radius:4px;min-height:34px;padding:5px 8px;font:600 13px system-ui;accent-color:#466f63}
+html body.chronicle input[type="range"]{accent-color:#687e62}
+html body.chronicle :is(.uiScaleControl button,.rlMusicToggle,.rlCodexTab,.rlCodexSearch){background:#f5e7c6!important;color:#37493d!important;border-color:#9d8a66!important;box-shadow:none!important}
+html body.chronicle :is(.uiScaleControl button.active,.rlCodexTab.active){background:#aabc9b!important;border-color:#3b5545!important;color:#283e30!important}
+html body.chronicle :is(.rlCodexBar,.rlCodexTabs,.rlCodexMeta){color:#53604f!important;background:none!important;border-color:#b29a71!important}
+html body.chronicle :is(#inspector.show,.buildingInspectorWindow){color:#354036!important;border:2px solid #384338!important;border-radius:7px 10px 6px 8px!important;background:#f4e4bd!important;box-shadow:4px 6px 0 #2f3b2e55!important}
+html body.chronicle :is(#inspector.show,.buildingInspectorWindow)>.inspectorCard{background:#f4e4bd!important;color:#354036!important;scrollbar-color:#8a7957 #e9d6ad}
+html body.chronicle :is(#inspector.show,.buildingInspectorWindow) .ihead{background:#e3cfa6!important;box-shadow:0 5px 0 #e3cfa6!important;color:#30473b!important;padding:8px 12px!important}
+html body.chronicle :is(#inspector.show,.buildingInspectorWindow) :is(h3,.desc,.small,.irow,.iStats,.towerInspectorStats){color:#35473a!important}
+html body.chronicle :is(#inspector.show,.buildingInspectorWindow) :is(button,select,input){background:#fff1d0!important;color:#344537!important;border:1px solid #9b8865!important}
+html body.chronicle :is(#inspector.show,.buildingInspectorWindow) :is(.meter,.bar){background:#a89c7c!important}
+html body.chronicle :is(.modal,.end,.pregameCard) :is(.muted,.hint,p,small){color:#615d4b}
+html body.chronicle .buildCardPreview{box-shadow:3px 5px 0 #20332855!important}
+html body.chronicle :is(button,a,input,select,canvas):focus-visible{outline:3px solid #4b7c85!important;outline-offset:3px}
+.battleLineTip{position:fixed;z-index:200;max-width:320px;pointer-events:none;padding:11px 14px;background:#fff0cc;border:2px solid #354238;border-radius:5px 8px 5px 6px;box-shadow:3px 4px 0 #26362955;font:13px/1.4 system-ui;color:#344235}
+.battleLineTip[hidden]{display:none}.battleLineTip strong{display:block;max-width:280px;margin-bottom:6px;font:800 14px/1.4 Georgia}.battleLineTip span{display:flex;justify-content:space-between;gap:24px}.battleLineTip small{display:block;border-top:1px solid #bdab84;padding-top:6px;margin-top:7px;color:#71694f;font-size:11px}
+@media(max-width:760px){html body.chronicle .mpLobbyCard{padding:20px!important;max-height:calc(100dvh - 24px)!important}html body.chronicle .mpLobby:before{inset:5px}html body.chronicle .menuBrand{margin-bottom:24px!important}html body.chronicle :is(.rlMenuPanel,.roadTestsPanel){padding:8px!important}}
+/* Reset the old animated photographic menu backdrop and its inherited insets. */
+html body.chronicle .mpLobby:before{inset:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background-image:var(--chronicle-menu-scene)!important;background-position:center!important;background-size:cover!important;animation:none!important;filter:none!important;transform:none!important;opacity:1!important}
+html body.chronicle .mpLobby:after{inset:0!important;background:#d7d7b815!important;border:0!important;border-radius:0!important;box-shadow:none!important;opacity:1!important}
+html body.chronicle .mpLobbyCard{width:min(560px,92vw)!important;box-sizing:border-box!important;overflow:auto!important;min-width:0!important;padding:38px!important}
+html body.chronicle .mpLobbyCard .menuBrand h2{font-size:clamp(30px,4vw,56px)!important;letter-spacing:.015em!important;max-width:100%!important}
+html body.chronicle .menuStartHint{font-size:12px!important;white-space:normal!important;opacity:1!important}
+html body.chronicle :is(.rlSoundRow,.uiScaleControl){background:#e1d1ae!important;border-color:#b6a17b!important}
+html body.chronicle .rlSoundRow :is(b,small){color:#52604d!important}
+html body.chronicle #uiViewportSize{color:#4d5e4d!important}
+html body.chronicle .spectatorRaces label{color:#40523f!important}
+@media(max-width:760px){html body.chronicle .mpLobbyCard{padding:22px!important}html body.chronicle .mpLobbyCard .menuBrand h2{font-size:clamp(28px,8vw,46px)!important}}
+html body.chronicle :is(.orcSoloPanel){background:#263d3555!important;backdrop-filter:blur(4px)!important}
+html body.chronicle .orcSoloCard{color:#344338!important;background:linear-gradient(110deg,#fff0cc,#eddbb4)!important;border:2px solid #37473b!important;border-radius:7px 13px 6px 9px!important;box-shadow:5px 7px 0 #263a3055!important;max-height:calc(100dvh - 24px);overflow:auto}
+html body.chronicle .orcSoloCard :is(h2,label,p,.orcNote){color:#40513e!important}
+html body.chronicle .orcSoloCard :is(input,select){background:#fff2d0!important;color:#344338!important;border-color:#9c8967!important;min-height:40px}
+html body.chronicle :is(.pregameSideLabel,.pregameReadyText){background:#f5e3b9f5!important;color:#3d503b!important;border:1px solid #7e775b!important;text-shadow:none!important}
+html body.chronicle .pregameBtn{border-color:#3a4d38!important;box-shadow:2px 4px 0 #344a3544!important;background:#e4c57f!important;color:#3d4934!important;text-shadow:none!important}
+html body.chronicle .pregameBtn.ready{background:#aabd91!important;color:#2f4832!important}
+html body.chronicle :is(.choiceTool,#restartBtn,#closeRelics){background:#eddbb2!important;color:#394c3e!important;border:2px solid #68745a!important;border-radius:5px 8px 4px 7px!important;box-shadow:2px 3px 0 #77684833!important}
+html body.chronicle #choiceKicker{color:#725d35!important}
+html body.chronicle :is(.endVsPanelV4995,.endSection,.endDetailSideV4995){background:#e7d7b5!important;border-color:#a08d6a!important;color:#354a3c!important;box-shadow:none!important}
+html body.chronicle :is(.endVsHeadV4995,.endVsRowV4995){background:#f8e9c8!important;border-color:#b4a17c!important}
+html body.chronicle :is(.endVsLabelV4995,.endVsValueV4995,.endVsCenterV4995,.endDetailSideV4995 h4,.endSideV4995 .who b,.endSideV4995 .who small){color:#38523e!important}
+html body.chronicle :is(#inspector.show,.buildingInspectorWindow) :is(.idesc,.istat,.boxlabel,.upgradeNote,.unitTitle,.unitTitle b,.unitTitle span,.unitstat b,.unitstat span){color:#3d4e3c!important}
+html body.chronicle :is(#inspector.show,.buildingInspectorWindow) :is(.spawnCompact,.unitstat,.upgradeNote,.mercHeader,.mercRow){background:#e5d3ad!important;border-color:#af9d78!important}
+html body.chronicle :is(#inspector.show,.buildingInspectorWindow) :is(.effectbox,.unitbox){background:#e6d6b3!important;border-color:#ae9b75!important}
+html body.chronicle :is(#inspector.show,.buildingInspectorWindow) :is(.ihead small,.istat span,.istat b,.boxlabel){color:#3b503c!important}
+html body.chronicle #endOverlay .end.v4995ReadableEnd :is(.endVsLabelV4995,.endVsValueV4995,#endText){color:#3b503c!important}
+html body.chronicle #endOverlay .endDetailsV4995{background:#e1ce9f!important;border-color:#9c8a66!important}
+html body.chronicle #endOverlay .endDetailsV4995>summary{color:#3e563e!important}
+html body.chronicle .choiceTool :is(.dockCount,.dockIcon){color:#40513c!important;text-shadow:none!important}
+html body.chronicle .choiceTool{text-shadow:none!important}

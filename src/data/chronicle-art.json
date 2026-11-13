@@ -1,23 +1,128 @@
 {
   "human": {
-    "file": "art/chronicle/human-terrain.png",
-    "webFile": "art/chronicle/human-terrain.webp",
-    "width": 1672,
-    "height": 941,
-    "sha256": "3a189dbb7cc7d631eaf41acf96919d32143a43461a9af0e87cc30f9390fd905a"
+    "file": "art/chronicle/human-layers.png",
+    "webFile": "art/chronicle/human-layers.webp",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "c090ee503f647dda319b2082871d4ad9a7aae26189583a4e98a7d7f32a76e477",
+    "layers": {
+      "background": [
+        0,
+        0,
+        1536,
+        340
+      ],
+      "road": [
+        0,
+        344,
+        1536,
+        336
+      ],
+      "foreground": [
+        0,
+        684,
+        1536,
+        340
+      ]
+    },
+    "structures": {
+      "webFile": "art/chronicle/human-structures.webp",
+      "tower": [
+        0,
+        0,
+        512,
+        520
+      ],
+      "corner": [
+        0,
+        530,
+        512,
+        494
+      ]
+    }
   },
   "orc": {
-    "file": "art/chronicle/orc-terrain.png",
-    "webFile": "art/chronicle/orc-terrain.webp",
-    "width": 1672,
-    "height": 941,
-    "sha256": "4b8d8a850fc05bafd0909626770b661cc50b75543c6adbd3ce3cb44dd4c8916d"
+    "file": "art/chronicle/orc-layers.png",
+    "webFile": "art/chronicle/orc-layers.webp",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "61e2070dbc8765efb8b353a696b9117ce5f4179e5c4ba93571cb869a0fa63432",
+    "layers": {
+      "background": [
+        0,
+        0,
+        1536,
+        340
+      ],
+      "road": [
+        0,
+        344,
+        1536,
+        336
+      ],
+      "foreground": [
+        0,
+        684,
+        1536,
+        340
+      ]
+    },
+    "structures": {
+      "webFile": "art/chronicle/orc-structures.webp",
+      "tower": [
+        0,
+        0,
+        512,
+        520
+      ],
+      "corner": [
+        0,
+        530,
+        512,
+        494
+      ]
+    }
   },
   "undead": {
-    "file": "art/chronicle/undead-terrain.png",
-    "webFile": "art/chronicle/undead-terrain.webp",
-    "width": 1672,
-    "height": 941,
-    "sha256": "27e262a7337b13891b5decefb591b7b998e8478ffe8549f49631904b8fa2eeba"
+    "file": "art/chronicle/undead-layers.png",
+    "webFile": "art/chronicle/undead-layers.webp",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "fce1c05fa7a373b16a7bdfc869eece077438c2b2c5f7f5a7300b7c121b5a4e54",
+    "layers": {
+      "background": [
+        0,
+        0,
+        1536,
+        340
+      ],
+      "road": [
+        0,
+        344,
+        1536,
+        336
+      ],
+      "foreground": [
+        0,
+        684,
+        1536,
+        340
+      ]
+    },
+    "structures": {
+      "webFile": "art/chronicle/undead-structures.webp",
+      "tower": [
+        0,
+        0,
+        512,
+        520
+      ],
+      "corner": [
+        0,
+        530,
+        512,
+        494
+      ]
+    }
   }
 }

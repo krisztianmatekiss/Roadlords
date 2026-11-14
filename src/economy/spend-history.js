@@ -1,3 +1,4 @@
+import { CIVILIAN_MILITIA_INTERVAL } from '../data/economy-balance.js';
 import { assetUrl } from '../assets/urls.js';
 export function initializeEconomySpendHistory(runtime) {
   for (const [id, description] of Object.entries({
@@ -8,7 +9,7 @@ export function initializeEconomySpendHistory(runtime) {
     "campaign_feast": "Szomszédos Kocsma–Gyülekezőtér: fél Kocsma-sebzésbónusz állandóan. A nyitó támadásokon a teljes bónusz jár, a kettő nem adódik össze.",
     "long_training": "A főhelyőrségben, kiengedési sorban vagy Gyülekezőtérben összesen 20 másodpercet váró egység Veteránná válik: +50% HP és +50% sebzés.",
     "factory_network": "Normál egységgyártáskor minden közvetlenül szomszédos aktív katonai termelő +15% gyártási előrehaladást kap.",
-    "arm_the_people": "Minden Favágó, Kővágó és Farm 40 másodpercenként kiállít 1 ingyenes Kardost a normál termelése mellett.",
+    "arm_the_people": `Minden Favágó, Kővágó és Farm ${CIVILIAN_MILITIA_INTERVAL} másodpercenként kiállít 1 ingyenes Kardost a normál termelése mellett.`,
     "no_food": "Az egységgyártás többé nem fogyaszt Élelmet, viszont minden egység gyártási ideje +25%.",
     "house_militia": "Minden Lakóház a tényleges úti sereglimit-bónuszának 100%-át helyőrségkapacitásként is megadja.",
     "sword_execute": "Kardos: 4% kivégzési esély az elsődleges célpontra. +4 százalékpont/stack, max. 5× (20%). Csak egységre hat."

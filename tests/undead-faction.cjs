@@ -286,7 +286,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     check(
       'The HUD budgets full training demand while actual upkeep is charged separately',
       Math.abs(economy.flow.gain.wood - 7) < 1e-6 &&
-        Math.abs(economy.flow.use.wood - 5.02) < 1e-6 &&
+        Math.abs(economy.flow.use.wood - (2.46 + 16 / 9.375)) < 1e-6 &&
         Math.abs(economy.net - 4.54) < 1e-6 &&
         economy.cost === 16,
     );
@@ -296,10 +296,10 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     );
     check(
       'Graveyard recruits retain full HP and the training legendary boosts cadence',
-      Math.abs(economy.time - 6.25) < 1e-6 &&
+      Math.abs(economy.time - 9.375) < 1e-6 &&
         economy.spawnRatio === 1 &&
         economy.overIncome === 7 &&
-        Math.abs(economy.overTime - 6.25 / 1.25) < 1e-6,
+        Math.abs(economy.overTime - 9.375 / 1.25) < 1e-6,
     );
     const deaths = await page.evaluate(() => {
       const R = __ROADLORDS_RUNTIME__,
@@ -442,7 +442,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         reflected = R.UNITS.swordsman.hp - foe.hp;
       undReset();
       const n = undUnit('und_necromancer', 'player', 2200);
-      n.undSummonClock = 18.65;
+      n.undSummonClock = 28.025;
       R.updateBattle(0.1);
       const summons = R.state.units.filter((u) => u.undSummoned),
         summonInfo = {
@@ -457,7 +457,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       R.setBuildingLevel(R.P, 'und_necro_spawner', 4, 'eternal_army');
       R.P.legends.add('necro_leg_spirits');
       const eternal = undUnit('und_necromancer', 'player', 2200);
-      eternal.undSummonClock = 18.65;
+      eternal.undSummonClock = 28.025;
       R.updateBattle(0.1);
       const permanent =
         R.state.units.filter((u) => u.undSummoned).every((u) => u.key === 'und_ghost' && !u.temporary) &&

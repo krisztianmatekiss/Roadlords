@@ -1,11 +1,5 @@
 // Presentation only: simulation, damage, targeting and network cadence are untouched.
-// Crowded bodies hide the figures behind them; the overview still counts every actor.
-export function selectVisibleFigures(R,units){
-  if(units.length<120||R.ROAD.zoom>1.5)return units;
-  const scale=R.ROAD.h/600*R.ROAD.zoom,cells=new Map(),chosen=new Set(),limit=units.length>=360?1:2;
-  for(let i=units.length-1;i>=0;i--){const u=units[i],p=R.pointAt(u.lane,u.offset||0),key=u.side+':'+Math.floor(p.x/(34*scale))+':'+Math.floor(p.y/(26*scale));let cell=cells.get(key);if(!cell){cell=[];cells.set(key,cell);}if(cell.length<limit){cell.push(u);chosen.add(u);}}
-  return units.filter(u=>chosen.has(u));
-}
+// Never drop visible actors: density budgets affect cadence/animation, not bodies.
 export function installBattlePresentationBudget(R){
   let last=-Infinity,signature='',pending=0;
   const metrics={rendered:0,skipped:0,candidates:0,drawn:0};

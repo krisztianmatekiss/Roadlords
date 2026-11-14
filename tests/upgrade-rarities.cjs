@@ -28,7 +28,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    for(const o of copies)R.applyChoice(R.P,o);
    out.mixed={hp:R.statsFor(R.P,{key:'orc_warrior'}).hp,before,strength:R.P.normal.orc_warrior_hp,count:catalog.count(R.P),owned:catalog.owned(R.P).map(x=>[x.option.rarity,x.count]),events:R.P.pickEvents?.map(e=>e.rarity)};
    const stats=R.mpStrategy(R.P),snap=R.mpRevive(R.mpCitySnapshot(R.P));
-   out.network=JSON.stringify(stats.normalRarities)===JSON.stringify(snap.normalRarities)&&catalog.count(snap)===3&&snap.normal.orc_warrior_hp===4.5&&R.gameRulesVersion===24;
+   out.network=JSON.stringify(stats.normalRarities)===JSON.stringify(snap.normalRarities)&&catalog.count(snap)===3&&snap.normal.orc_warrior_hp===4.5&&R.gameRulesVersion===25;
    R.renderRelics();out.deck=[...R.$$('#relicList [data-relic="orc_warrior_hp"]')].map(c=>({rarity:c.querySelector('.cardFace').dataset.upgradeRarity,count:c.querySelector('.relicOwnedCount').textContent}));
    R.P.rerolls=2;const options=copies.map((o,i)=>catalog.option(['orc_warrior_hp','orc_warrior_dmg','orc_warrior_hp'][i],o.rarity));
    R.state.choiceContext={source:'timer',tier:'common',subtype:null,opts:options,remaining:1};

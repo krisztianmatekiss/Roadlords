@@ -2,6 +2,7 @@ import shellArt from '../data/chronicle-shell-art.json';
 import { assetUrl } from '../assets/urls.js';
 import { CHRONICLE_THEMES, installChronicleTerrain } from './chronicle-terrain.js';
 import { chronicleWalls, chronicleDoor, chronicleTowerMarkup } from './chronicle-fortifications.js';
+import art from '../data/chronicle-art.json';
 
 const css=(node,key,value)=>{if(node.style.getPropertyValue(key)!==value)node.style.setProperty(key,value);};
 const short=n=>n>=1000?(n/1000).toLocaleString('hu-HU',{maximumFractionDigits:1})+'k':String(Math.ceil(Math.max(0,n)));
@@ -9,7 +10,9 @@ const short=n=>n>=1000?(n/1000).toLocaleString('hu-HU',{maximumFractionDigits:1}
 export function installChronicleWorld(R){
   document.documentElement.style.setProperty('--chronicle-menu-scene',`url("${assetUrl(shellArt.menu.webFile)}")`);
   const cities=[],view=R.chronicle={version:2,active:()=>!!R.battleLayout?.active,assets:new Map(),tiles:new Map(),segments:[]};
+  view.terrainAtlas=assetUrl('art/terrain/terrain-atlas.webp');
   view.roadBounds=()=>({top:R.ROAD.cityTop,bottom:R.ROAD.cityTop+R.ROAD.city,height:R.ROAD.city});
+  view.gateOpening=side=>{const item=cities.find(c=>c.side===side),bounds=item.frame.getBoundingClientRect(),race=R.cityForSide(side).race,[,y,,height]=art[race].fortress.portal;return{top:bounds.top+bounds.height*y/1000,height:bounds.height*height/1000};};
   view.lateralScale=()=>R.ROAD.city/(2*(R.ROAD.half+24));
   const point=R.pointAt;R.pointAt=(distance,lateral=0)=>{const p=point(distance,lateral);if(view.active())p.y=R.ROAD.h/2+lateral*view.lateralScale();return p;};
   installChronicleTerrain(R,view,syncCities);
@@ -22,19 +25,21 @@ export function installChronicleWorld(R){
   }
   function syncCities(){
     for(const {side,city,frame,gate,towers}of cities){
-      const c=R.cityForSide(side),race=CHRONICLE_THEMES[c.race]?c.race:'human',theme=CHRONICLE_THEMES[race],color=R.unitTeamFill({side});if(city.dataset.race!==race)city.dataset.race=race;
+      const c=R.cityForSide(side),race=CHRONICLE_THEMES[c.race]?c.race:'human',theme=CHRONICLE_THEMES[race],color=R.unitTeamFill({side}),raceChanged=city.dataset.race!==race;if(raceChanged)city.dataset.race=race;
       const ready=!!view.assets.get(race)?.ready;
       if(frame.dataset.chronicleRace!==race||frame.dataset.chronicleArtReady!==String(ready)){
-        frame.querySelector('.chronicleWalls')?.remove();frame.insertAdjacentHTML('afterbegin',chronicleWalls(race,side,ready));gate.querySelector('.chronicleDoor')?.remove();gate.insertAdjacentHTML('beforeend',chronicleDoor(race));
+        frame.querySelector('.chronicleWalls')?.remove();frame.insertAdjacentHTML('afterbegin',chronicleWalls(race,side,ready));gate.querySelector('.chronicleDoor')?.remove();gate.insertAdjacentHTML('beforeend',chronicleDoor(race,side,ready));
         for(const [index,{button}]of towers.entries()){button.innerHTML=(ready?chronicleTowerMarkup(race,index):'')+'<span class="chronicleTowerHealth"></span>';button.dataset.race=race;}
         frame.dataset.chronicleRace=race;frame.dataset.chronicleArtReady=String(ready);
       }
       for(const [name,value]of Object.entries(theme))css(city,'--chronicle-'+name,value);
+      css(city,'--chronicle-courtyard',ready?`url("${assetUrl(art[race].courtyard.webFile)}")`:'none');
       const paint=view.tile(race),paintWidth=paint?paint.width*R.ROAD.h/paint.height:0;
-      css(city,'--chronicle-team',color);css(city,'--chronicle-terrain',paint?.cssUrl?`url("${paint.cssUrl}")`:'none');css(city,'--chronicle-paint-width',paintWidth+'px');css(city,'--chronicle-paint-phase',side==='player'?R.ROAD.city+'px':-R.PATH_LENGTH+'px');css(R.roadWorld,'--chronicle-height',R.ROAD.h+'px');
+      css(city,'--chronicle-team',color);if(paint?.cssUrl)css(city,'--chronicle-terrain',`url("${paint.cssUrl}")`);else if(raceChanged||!city.style.getPropertyValue('--chronicle-terrain'))css(city,'--chronicle-terrain','none');css(city,'--chronicle-paint-width',paintWidth+'px');css(city,'--chronicle-paint-phase',side==='player'?R.ROAD.city+'px':-R.PATH_LENGTH+'px');css(R.roadWorld,'--chronicle-height',R.ROAD.h+'px');
       if(side==='player'){css(R.roadWorld,'--chronicle-terrain',city.style.getPropertyValue('--chronicle-terrain'));css(R.roadWorld,'--chronicle-ground',theme.ground);css(R.roadWorld,'--chronicle-paint-width',paintWidth+'px');}
       for(const {t,button}of towers){if(button.style.color!==color)button.style.color=color;button.classList.toggle('destroyed',!t.alive);frame.classList.toggle(button.classList.contains('upper')?'gate-upper-lost':'gate-lower-lost',!t.alive);button.classList.toggle('sudden',!!t.sdActive&&t.alive);button.classList.toggle('selected',R.state.selectedTowerId===t.id);const title=`Vártorony · ${Math.ceil(Math.max(0,t.hp))} / ${Math.ceil(t.maxHp)} HP`;if(button.title!==title){button.title=title;button.setAttribute('aria-label',title);}const label=t.alive?short(t.hp):'×',health=button.querySelector('.chronicleTowerHealth');if(health.textContent!==label)health.textContent=label;}
       if(frame.dataset.gateMode!==c.gateMode)frame.dataset.gateMode=c.gateMode;
+      const open=String(R.gateActuallyOpen(c));if(gate.dataset.open!==open)gate.dataset.open=open;
     }
   }
   const hud=R.updateHud;R.updateHud=(...args)=>{const out=hud(...args);if(view.active())syncCities();return out;};

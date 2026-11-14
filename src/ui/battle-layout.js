@@ -1,5 +1,6 @@
 import { createBattleLine } from './battle-line.js';
 import { installBattleRosters } from './battle-rosters.js';
+const BUILD_ICON='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 26h20V13H6Zm-2-13L16 4l12 9M12 26v-9h8v9"/><path d="m3 6 5-3 5 6-4 4Z"/></svg>';
 
 // Default battle layout around the same solo, spectator and multiplayer game.
 export function installBattleLayout(R) {
@@ -9,7 +10,7 @@ export function installBattleLayout(R) {
   const drawer=document.createElement('aside');drawer.id='uiTrialDrawer';drawer.hidden=true;
   drawer.innerHTML='<div class="uiTrialCategories"></div><div id="uiTrialCards"></div><footer class="uiTrialDrawerFoot"><div class="uiTrialScale"><label>Nagyítás<select id="uiTrialScale"><option value="1">1×</option><option value="1.25">1,25×</option><option value="1.5">1,5×</option><option value="fit" selected>Teljes város</option></select></label><button id="uiTrialExit" type="button">Korábbi nézet</button></div></footer>';
   const launchers=document.createElement('nav');launchers.id='chronicleTools';launchers.hidden=true;launchers.setAttribute('aria-label','Építés és pakli');
-  launchers.innerHTML='<button id="uiTrialFold" type="button" aria-expanded="false" aria-controls="uiTrialDrawer">ÉPÍTÉS ▸</button><div class="uiTrialDeckHome"></div>';
+  launchers.innerHTML=`<button id="uiTrialFold" type="button" aria-label="Építőmenü" title="Építőmenü · Q / W / E / R" aria-expanded="false" aria-controls="uiTrialDrawer">${BUILD_ICON}</button><div class="uiTrialDeckHome"></div>`;
   const line=document.createElement('section');line.id='uiTrialOverview';line.hidden=true;
   line.innerHTML='<aside class="uiTrialOwnSummary"></aside><div class="uiTrialTrack"><canvas id="uiTrialLine" tabindex="0" role="slider" aria-label="Csataáttekintő és pályamozgatás" aria-valuemin="0" aria-valuemax="9600"></canvas></div><aside class="uiTrialEnemySummary"></aside>';
   app.append(drawer,line,launchers);
@@ -41,7 +42,7 @@ export function installBattleLayout(R) {
   drawer.querySelector('#uiTrialExit').onclick=()=>state.setMode('classic');
   state.setCollapsed=collapsed=>{
     state.collapsed=collapsed;drawer.hidden=collapsed;document.body.classList.toggle('ui-trial-collapsed',collapsed);
-    const button=launchers.querySelector('#uiTrialFold');button.textContent=collapsed?'ÉPÍTÉS ▸':'ÉPÍTÉS ▾';button.setAttribute('aria-expanded',String(!collapsed));
+    const button=launchers.querySelector('#uiTrialFold');button.setAttribute('aria-expanded',String(!collapsed));
     R.closeBuildCardPreview?.();if(!collapsed)requestAnimationFrame(layoutCards);
   };
   launchers.querySelector('#uiTrialFold').onclick=()=>state.setCollapsed(!state.collapsed);

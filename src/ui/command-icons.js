@@ -11,3 +11,4 @@ export const GATE_ICONS={
  closed:svg('<path d="M5 29V12a11 11 0 0 1 22 0v17Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 12v16m6-18v18m6-16v16M7 18h18m-18 7h18" stroke="currentColor" stroke-width="2.5"/>'),
  auto:svg('<path d="M7 27V13a9 9 0 0 1 18 0v14Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 17a6 6 0 0 1 10-3m0-4v5h-5M21 22a6 6 0 0 1-10 2m0 4v-5h5" fill="none" stroke="currentColor" stroke-width="2"/>'),
 };
+export const DECK_ICON='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="m7 7 13-3 6 22-13 3Z"/><rect x="7" y="6" width="17" height="23" rx="2"/><path d="m15.5 11 5 6-5 6-5-6Z"/></svg>';

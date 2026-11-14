@@ -1,3 +1,4 @@
+import { CIVILIAN_MILITIA_INTERVAL } from '../data/economy-balance.js';
 import { assetUrl } from '../assets/urls.js';
 export function initializeUiChoiceText(runtime) {
   const NORMAL_TEXT = {
@@ -68,7 +69,7 @@ export function initializeUiChoiceText(runtime) {
     "road_rush": "Az út saját térfelén minden egységed +75% mozgási sebességet kap.",
     "overproduction": "Minden összesen 500 egységnyi túltermelt nyersanyag után minden jelenlegi és jövőbeli egységed +1% sebzést kap. Nincs felső korlát.",
     "instant_l3": "Egy épületfejlesztés egyszerre +2 szintet ad, de ezzel legfeljebb L3-ig juthatsz. L4 továbbra is csak külön L4-fejlesztéssel vagy specializációval érhető el.",
-    "arm_the_people": "Minden Favágó, Kővágó és Farm 40 másodpercenként kiállít 1 ingyenes Kardost a normál termelése mellett.",
+    "arm_the_people": `Minden Favágó, Kővágó és Farm ${CIVILIAN_MILITIA_INTERVAL} másodpercenként kiállít 1 ingyenes Kardost a normál termelése mellett.`,
     "mage_proliferation": "A Mágustorony elveszíti az Egyedi korlátozást: mostantól korlátlan számú Mágustornyot építhetsz.",
     "mage_triple": "Minden Mágus-támadás 3 tűzgolyót lő ki egyszerre, legfeljebb 3 különböző célpontra. Mindegyik 50% sebzést és teljes AOE-t okoz.",
     "holy_wave": "Minden Pap-gyógyítás 5 másodpercre a célpont maximális HP-jának 25%-ával megegyező pajzsot is ad.",

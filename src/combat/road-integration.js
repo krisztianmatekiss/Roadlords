@@ -1,4 +1,3 @@
-import { selectVisibleFigures } from '../rendering/battle-presentation-budget.js';
 import { SPEAR_VOLLEY_RANGE } from '../data/ranged-balance.js';
 import { isMixedFigureTrial } from '../config/figure-trials.js';
 import { installTowerFrontiers } from './frontiers.js';
@@ -303,7 +302,7 @@ export function initializeCombatRoadIntegration(runtime) {
     runtime.ROAD.lowDetail = visible.length > 240 && runtime.ROAD.zoom <= 1.25;
     visible.sort((a, b) => (a.offset || 0) - (b.offset || 0) || a.id - b.id);
     runtime.roadBeginUnitEffects?.();
-    const figures=selectVisibleFigures(runtime,visible);
+    const figures=visible;
     if(runtime.battlePresentation)Object.assign(runtime.battlePresentation.metrics,{candidates:visible.length,drawn:figures.length});
     for (const u of figures) runtime.roadDrawUnit(u);
     runtime.roadFlushUnitEffects?.();

@@ -1,7 +1,7 @@
 import {createCodexCards} from './codex-cards.js';
 import {fitCardText} from './card-text-fit.js';
 import {deckBack,deckStack} from './deck-back.js';
-import {GATE_ICONS} from './command-icons.js';
+import {GATE_ICONS,DECK_ICON} from './command-icons.js';
 
 const PICK_KINDS=new Set(['building','building_upgrade','building_branch','normal','legendary']);
 const countCards=(R,c)=>R.upgradeCatalog.count(c)+
@@ -16,7 +16,7 @@ export function installCommandDock(R){
  own.className='deckButton ownDeckButton';own.title='Saját pakli';own.setAttribute('aria-label','Saját pakli');
  let ownRace='',enemyRace='',viewSide='player';
  function backs(){
-  if(ownRace!==R.P.race){ownRace=R.P.race;own.innerHTML=deckStack(ownRace)+'<span class="deckCaption">PAKLI</span><b id="relicCount">0</b>';}
+  if(ownRace!==R.P.race){ownRace=R.P.race;own.innerHTML=`<span class="chronicleDeckIcon">${DECK_ICON}</span>`+deckStack(ownRace)+'<span class="deckCaption">PAKLI</span><b id="relicCount">0</b>';}
   if(enemyRace!==R.E.race){enemyRace=R.E.race;enemy.innerHTML=deckStack(enemyRace)+'<b id="enemyDeckCount">0</b>';}
   R.$('#relicCount').textContent=countCards(R,R.P);R.$('#enemyDeckCount').textContent=countCards(R,R.E);
  }
@@ -122,7 +122,7 @@ export function installCommandDock(R){
   Object.assign(element.style,{left:`${rect.left}px`,top:`${rect.top}px`,width:`${rect.width}px`,height:`${rect.height}px`});document.body.append(element);ownFlights.add(element);
   if(ownFlights.size>4){const oldest=ownFlights.values().next().value;oldest.remove();ownFlights.delete(oldest);}
   fitCardText(element.querySelector('.cardFace'));
-  const dest=own.querySelector('.deckStack').getBoundingClientRect();
+  const dest=(R.battleLayout?.active?own:own.querySelector('.deckStack')).getBoundingClientRect();
   const dx=dest.left+dest.width/2-rect.left-rect.width/2,dy=dest.top+dest.height/2-rect.top-rect.height/2;
   element.querySelector('.deckFlipInner').animate([{transform:'rotateY(0deg)'},{transform:'rotateY(0deg)',offset:.22},{transform:'rotateY(180deg)',offset:.75},{transform:'rotateY(180deg)'}],{duration:950,easing:'ease-in-out',fill:'forwards'});
   element.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${dx*.25}px,${dy*.15-30}px) scale(.65)`,opacity:1,offset:.35},{transform:`translate(${dx}px,${dy}px) scale(${Math.min(dest.width/rect.width,dest.height/rect.height)})`,opacity:.7}],{duration:950,easing:'cubic-bezier(.4,0,.8,.65)',fill:'forwards'}).finished.then(()=>{element.remove();ownFlights.delete(element);own.classList.remove('deckReceived');void own.offsetWidth;own.classList.add('deckReceived');},()=>{element.remove();ownFlights.delete(element);});

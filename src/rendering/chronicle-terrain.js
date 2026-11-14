@@ -9,14 +9,14 @@ export const CHRONICLE_THEMES={
 // Cropped source layers are composed once per viewport, then reused while moving.
 // The road and city share the very same bounds; texture proportions cannot move it.
 export function installChronicleTerrain(R,view,syncCities){
-  const {assets,tiles}=view;
+  const {assets,tiles}=view,retiredUrls=new Map();
   const image=src=>new Promise(resolve=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>resolve(null);img.src=assetUrl(src);});
   R.loadChronicleArt=(races=[R.P.race,R.E.race])=>Promise.all([...new Set(races)].map(key=>{
     const race=art[key]?key:'human';if(assets.has(race))return assets.get(race).promise;
     const entry={ready:false};assets.set(race,entry);
-    entry.promise=Promise.all([image(art[race].webFile),image(art[race].structures.webFile),image(art[race].fortress.webFile),art[race].roadTexture?image(art[race].roadTexture.webFile):Promise.resolve(null)]).then(async([terrain,structures,fortress,road])=>{
-      if(!terrain||!structures||!fortress||art[race].roadTexture&&!road){assets.delete(race);return false;}
-      entry.image=terrain;entry.structures=structures;entry.fortress=fortress;entry.road=road;entry.ready=true;await view.tile(race).cssReady;syncCities();return true;
+    entry.promise=Promise.all([image(art[race].webFile),image(art[race].structures.webFile),image(art[race].fortress.webFile),art[race].roadTexture?image(art[race].roadTexture.webFile):Promise.resolve(null),image(art[race].courtyard.webFile)]).then(async([terrain,structures,fortress,road,courtyard])=>{
+      if(!terrain||!structures||!fortress||!courtyard||art[race].roadTexture&&!road){assets.delete(race);return false;}
+      entry.image=terrain;entry.structures=structures;entry.fortress=fortress;entry.road=road;entry.courtyard=courtyard;entry.ready=true;await view.tile(race).cssReady;syncCities();return true;
     });return entry.promise;
   })).then(values=>values.every(Boolean));
   const load=R.loadProductionBattleArt;R.loadProductionBattleArt=async(races=[R.P.race,R.E.race])=>(await Promise.all([load(races),R.loadChronicleArt(races)])).every(Boolean);
@@ -45,8 +45,8 @@ export function installChronicleTerrain(R,view,syncCities){
     g.strokeStyle=race==='undead'?'#202d3040':'#5b462728';g.lineWidth=2*ratio;
     for(const fraction of [.38,.62]){g.beginPath();g.moveTo(0,(bounds.top+bounds.height*fraction)*ratio);g.lineTo(1024,(bounds.top+bounds.height*fraction)*ratio);g.stroke();}g.restore();
     g.save();g.translate(2048,0);g.scale(-1,1);g.drawImage(canvas,0,0,1024,height,0,0,1024,height);g.restore();
-    for(const oldKey of tiles.keys())if(oldKey.startsWith(race+':')){const old=tiles.get(oldKey);if(old.cssUrl)URL.revokeObjectURL(old.cssUrl);tiles.delete(oldKey);}
-    canvas.cssReady=new Promise(resolve=>canvas.toBlob(blob=>{if(tiles.get(key)===canvas){canvas.cssUrl=blob?URL.createObjectURL(blob):'';syncCities();}resolve();},'image/webp',.93));tiles.set(key,canvas);return canvas;
+    for(const oldKey of tiles.keys())if(oldKey.startsWith(race+':')){const old=tiles.get(oldKey);if(old.cssUrl){if(!retiredUrls.has(race))retiredUrls.set(race,new Set());retiredUrls.get(race).add(old.cssUrl);}tiles.delete(oldKey);}
+    canvas.cssReady=new Promise(resolve=>canvas.toBlob(blob=>{if(tiles.get(key)===canvas){canvas.cssUrl=blob?URL.createObjectURL(blob):'';syncCities();if(blob){for(const url of retiredUrls.get(race)||[])URL.revokeObjectURL(url);retiredUrls.delete(race);}}resolve();},'image/webp',.93));tiles.set(key,canvas);return canvas;
   };
   view.drawGround=()=>{
     const g=R.ctx;g.globalAlpha=1;g.globalCompositeOperation='source-over';g.filter='none';const z=R.ROAD.zoom||1,boundary=R.territoryBoundary(),mid=R.pointAt(boundary).x;view.boundary=boundary;view.segments=[];

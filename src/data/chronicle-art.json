@@ -41,17 +41,30 @@
       ]
     },
     "fortress": {
-      "file": "art/chronicle/human-fortress.png",
-      "webFile": "art/chronicle/human-fortress.webp",
+      "file": "art/chronicle/human-fortress-gate.png",
+      "webFile": "art/chronicle/human-fortress-gate.webp",
       "width": 1254,
       "height": 1254,
-      "sha256": "28e61db129e917fe2220507a8be1baa9c88f73499691ccadece2c9448680ae71",
+      "sha256": "40d05790459b8ba8c6501411949055f1a1839889c52f4040d20f1cc219bc04e1",
       "courtyard": [
         0.18,
         0.18,
         0.64,
         0.64
+      ],
+      "portal": [
+        878,
+        456,
+        67,
+        82
       ]
+    },
+    "courtyard": {
+      "file": "art/chronicle/human-courtyard.png",
+      "webFile": "art/chronicle/human-courtyard.webp",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "0b230a8682f5a17c2d2a44996e3595270871a05c699cc084b4c261c0867d6fd2"
     }
   },
   "orc": {
@@ -96,17 +109,30 @@
       ]
     },
     "fortress": {
-      "file": "art/chronicle/orc-fortress.png",
-      "webFile": "art/chronicle/orc-fortress.webp",
+      "file": "art/chronicle/orc-fortress-gate.png",
+      "webFile": "art/chronicle/orc-fortress-gate.webp",
       "width": 1254,
       "height": 1254,
-      "sha256": "0972f07378894c1dc6c56acb793b0b4477b6fc27844da4a2e7632ffdc2285da1",
+      "sha256": "a01dbd14a08a5d2cdf3b2bcc280f3d04451ee71952b14e989503eaaa234749d0",
       "courtyard": [
         0.18,
         0.18,
         0.64,
         0.64
+      ],
+      "portal": [
+        865,
+        454,
+        92,
+        82
       ]
+    },
+    "courtyard": {
+      "file": "art/chronicle/orc-courtyard.png",
+      "webFile": "art/chronicle/orc-courtyard.webp",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "2f553a2da71ca3b6ba5efb369047bc071c1251ffd983badc73b6a0b97f7dabcb"
     }
   },
   "undead": {
@@ -151,16 +177,22 @@
       ]
     },
     "fortress": {
-      "file": "art/chronicle/undead-fortress.png",
-      "webFile": "art/chronicle/undead-fortress.webp",
+      "file": "art/chronicle/undead-fortress-gate.png",
+      "webFile": "art/chronicle/undead-fortress-gate.webp",
       "width": 1254,
       "height": 1254,
-      "sha256": "b75f05d07d12fe02f063edf568864696ea1095b035e67f207446b3a513b29feb",
+      "sha256": "c3803b2b7148006552a1c6391ca7dec199dbed5ae952629eb3d3fd594bf6c2eb",
       "courtyard": [
         0.18,
         0.18,
         0.64,
         0.64
+      ],
+      "portal": [
+        880,
+        448,
+        64,
+        98
       ]
     },
     "roadTexture": {
@@ -169,6 +201,13 @@
       "width": 1254,
       "height": 1254,
       "sha256": "307413a4ee840aba4663fd19ce5249d54323469d3a4a2ef1a25056e73615d94d"
+    },
+    "courtyard": {
+      "file": "art/chronicle/undead-courtyard.png",
+      "webFile": "art/chronicle/undead-courtyard.webp",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "d04d0d3469364de96ae4a497f04727fef9fba2fdca6535acb608afb7d34c5619"
     }
   }
 }

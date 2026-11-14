@@ -1,7 +1,7 @@
 // V4.54: construction slows expansion; training times and terrain rewards stay intact.
 import { UNDEAD_CONVERGENCE } from './undead-convergence.js';
 import { ARMY_TEMPO } from './unit-balance.js';
-export const CIVILIAN_MILITIA_INTERVAL = 40;
+export const CIVILIAN_MILITIA_INTERVAL = 56;
 export const ECONOMY_BALANCE = Object.freeze({
   basicBuildingPrice: 1.25,
   advancedBuildingPrice: 1.4,

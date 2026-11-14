@@ -1,0 +1,45 @@
+/* Small, shared controls; never widen the existing resource bar. */
+.chronicleDeckIcon{display:none}
+html body.chronicle #app #uiTrialFold,html body.chronicle #app #relicBtn{min-width:48px!important;width:48px!important;height:48px!important;padding:8px!important;position:relative}
+html body.chronicle #uiTrialFold>svg,html body.chronicle .chronicleDeckIcon svg{width:29px;height:29px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}
+html body.chronicle #app #relicBtn .deckCaption{display:none!important}
+html body.chronicle .chronicleDeckIcon{display:block;line-height:0}
+html body.chronicle #app #relicBtn b{position:absolute!important;right:-6px;bottom:-6px;min-width:19px;padding:2px 4px!important;border:1px solid #2e4536!important;border-radius:50%;background:#fff0c7!important;font:800 12px/1 system-ui!important}
+html body.chronicle #demolitionTool{left:18px!important;bottom:calc(clamp(88px,10vh,116px) + 25px)!important;width:52px!important;height:52px!important;padding:8px!important;z-index:41!important;box-shadow:0 3px 0 #34483266!important}
+html body.chronicle #demolitionTool svg{filter:drop-shadow(0 1px 1px #654a23)}
+html body.chronicle #app .topLeftCluster .res{display:grid!important;grid-template-columns:24px minmax(0,1fr)!important;grid-template-rows:24px auto!important;row-gap:0!important;align-items:center!important;min-height:48px!important;max-width:190px;box-sizing:border-box}
+html body.chronicle #app .topLeftCluster .res>div{display:contents!important}
+html body.chronicle #app .topLeftCluster .res>.ri{grid-column:1;grid-row:1}
+html body.chronicle #app .topLeftCluster .res b{grid-column:2;grid-row:1;min-width:0;font-size:clamp(12px,1vw,19px)!important;line-height:1.1!important}
+html body.chronicle #app .topLeftCluster .res small{grid-column:1/-1;grid-row:2;display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:0!important;margin:0!important;line-height:1.1!important;font-size:clamp(9px,.66vw,12px)!important;width:100%;font-variant-numeric:tabular-nums}
+html body.chronicle #app .topLeftCluster .res small>span{min-width:0;max-width:100%;line-height:1.1!important}
+html body.chronicle #app .res .ri,html body.chronicle #app .res .resourceIcon{width:28px!important;height:28px!important}
+/* Legible HP on an opaque ink label, independent of the ground behind it. */
+html body.chronicle #app .roadCapitalHealth{width:62%;max-width:340px;font:700 clamp(12px,.9vw,18px)/1.2 'Roadlords Display',Georgia,serif!important;color:#fff0c8!important;text-shadow:none!important;bottom:calc(100% + 5px)!important}
+html body.chronicle #app .roadCapitalLabel{display:inline-block;padding:3px 12px;margin-top:0;border:1px solid #c9b77e;border-top:0;border-radius:0 0 5px 5px;background:#1d342bf2;color:#fff0c8!important;letter-spacing:.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+html body.chronicle #app .roadCapitalTrack{height:11px;background:#26352d;border:1px solid #26372c;box-shadow:0 0 0 1px #d8c48e}
+html body.chronicle #app .roadCityName{color:#f5e2b9!important;text-shadow:0 2px 2px #163024;background:#20382ad9;border-radius:4px}
+/* The cards themselves are the choices; there is no surrounding paper window. */
+html body.chronicle #choiceOverlay{background:#152d2866!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
+html body.chronicle #choiceOverlay .modal{background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;color:#fff0cb!important}
+html body.chronicle #choiceOverlay :is(#choiceTitle,#choiceKicker,#choiceDesc,#choiceBanHint){color:#fff0cb!important;text-shadow:0 2px 4px #14291f!important}
+html body.chronicle #choiceOverlay #choiceTitle{font-family:'Roadlords Display',Georgia,serif!important}
+html body.chronicle #choiceOverlay #choiceList{background:none!important;scrollbar-color:#c5aa70 transparent}
+/* A textured courtyard stays independent from the unchanged building sprites. */
+html body.chronicle #app .roadWorld .cityframe:before{background:var(--chronicle-courtyard) center/560px 560px repeat,var(--chronicle-floor)!important}
+html body.chronicle #app .roadWorld .cityframe:after{display:none!important}
+html body.chronicle #app .roadWorld .plot{border-color:#53483325!important}
+html body.chronicle #app .roadWorld .plot.terrain{border-color:transparent!important;background:none!important}
+html body.chronicle #app .roadWorld .plot.terrain .ticonimg{width:100%!important;height:100%!important;object-fit:contain}
+.chronicleTerrainGlyph{display:block;background-size:300% 200%;background-repeat:no-repeat;background-position:0 0}
+.chronicleTerrainGlyph.quarry{background-position:50% 0}.chronicleTerrainGlyph.fertile{background-position:100% 0}.chronicleTerrainGlyph.foundation{background-position:0 100%}.chronicleTerrainGlyph.ruin{background-position:50% 100%}.chronicleTerrainGlyph.ancient{background-position:100% 100%}
+/* A broad framed timber gate and irregular threshold replace the thin strip/grid. */
+html body.chronicle #app .roadWorld .gate{width:20%!important;height:18%!important}
+html body.chronicle #app .roadWorld .gate.right{right:0!important}
+html body.chronicle #app .roadWorld .gate.left{left:0!important}
+body.chronicle .chronicleDoor{height:100%;width:100%;overflow:hidden}
+body.chronicle .enemyframe .chronicleDoor{transform:scaleX(-1)}
+body.chronicle .gate[data-open="true"] .chronicleGateLeaf.upper{transform:translateY(-60px)}
+body.chronicle .gate[data-open="true"] .chronicleGateLeaf.lower{transform:translateY(60px)}
+body.chronicle .gate[data-open="false"] .chronicleGateLeaf{transform:none}
+@media(max-width:900px){html body.chronicle #app .topLeftCluster .res{grid-template-columns:20px minmax(0,1fr)!important;gap:3px!important}html body.chronicle #app .res .ri,html body.chronicle #app .res .resourceIcon{width:20px!important;height:20px!important}html body.chronicle #app #chronicleTools{gap:10px}html body.chronicle #app #uiTrialFold,html body.chronicle #app #relicBtn{width:42px!important;height:42px!important;min-width:42px!important;padding:5px!important}}

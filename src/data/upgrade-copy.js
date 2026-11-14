@@ -1,4 +1,5 @@
 import { GOBLIN_BOW_COPY } from './combat-balance.js';
+import { CIVILIAN_MILITIA_INTERVAL } from './economy-balance.js';
 // Player-facing copy, independent of the preserved legacy initialization order.
 import { ORC_COMMON_ADDITIONS, ORC_LEGEND_ADDITIONS } from './orc-expansion.js';
 export const NORMAL_COPY = Object.freeze({
@@ -87,7 +88,7 @@ export const LEGENDARY_COPY = Object.freeze({
   "road_rush": "Az út saját térfelén minden egységed +75% mozgási sebességet kap.",
   "overproduction": "Minden 500 túltermelt nyersanyag után +1% sebzés az egységeidnek. Korlátlanul nő.",
   "instant_l3": "Az épületfejlesztések 2 szintet emelnek, legfeljebb L3-ig.",
-  "arm_the_people": "Minden Favágó, Kővágó és Farm 40 mp-enként 1 ingyenes Kardost ad. A termelésük megmarad.",
+  "arm_the_people": `Minden Favágó, Kővágó és Farm ${CIVILIAN_MILITIA_INTERVAL} mp-enként 1 ingyenes Kardost ad. A termelésük megmarad.`,
   "mage_proliferation": "A Mágustorony többé nem egyedi: korlátlanul építhető.",
   "mage_triple": "A Mágus 3 célpontra lő tűzgolyót, egyenként 50% sebzéssel és teljes területi hatással.",
   "holy_wave": "A Pap gyógyítása 5 mp-re a célpont maximális életerejének 25%-ával egyenlő pajzsot is ad.",

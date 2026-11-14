@@ -179,7 +179,9 @@ export function register(runtime) {
       p.style.gridRow = r + 1;
       p.style.gridColumn = col + 1;
       if (t) {
-        const visual = def.image ? `<img class="ticonimg" src="${def.image}" alt="${def.name}">` : `<span class="ticon">${def.icon}</span>`;
+        const visual = runtime.chronicle?.active()
+          ? `<span class="ticonimg chronicleTerrainGlyph ${t.type}" role="img" aria-label="${def.name}" style="background-image:url('${runtime.chronicle.terrainAtlas}')"></span>`
+          : def.image ? `<img class="ticonimg" src="${def.image}" alt="${def.name}">` : `<span class="ticon">${def.icon}</span>`;
         p.innerHTML = visual;
         p.onmousemove = e => runtime.moveTerrainTooltip(e);
         p.onmouseenter = e => runtime.showTerrainTooltip(def, t, e);

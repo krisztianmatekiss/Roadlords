@@ -5,7 +5,7 @@ export function gateExitOffset(R, u) {
   if (R.ROAD.gateExits?.stamp !== stamp) R.ROAD.gateExits = {stamp};
   let opening = R.ROAD.gateExits[u.side];
   if (!opening) {
-    const gate = R.$(u.side === 'player' ? '#playerGate' : '#enemyGate').getBoundingClientRect();
+    const gate = R.chronicle?.active()?R.chronicle.gateOpening(u.side):R.$(u.side === 'player' ? '#playerGate' : '#enemyGate').getBoundingClientRect();
     const war = R.roadWar.getBoundingClientRect(), scale = R.chronicle?.active() ? R.chronicle.lateralScale() : R.ROAD.h / 600 * R.ROAD.zoom;
     opening = {
       center: (gate.top + gate.height / 2 - war.top - R.ROAD.h / 2) / scale,

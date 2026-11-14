@@ -19,7 +19,7 @@ await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,towers=structuredClone(R.tow
  window.policyFighter=(c,key,d)=>{const u=R.releaseUnit(c,R.makeEntry(c,key));if(!u)throw Error('No fighter '+key);u.lane=R.sideForCity(c)==='player'?d:R.PATH_LENGTH-d;u.roadPrev=u.lane;return u;};
 });
 check('Shared race reset gives Humans 110 wood and preserves Orc and Undead starts',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;
- return policyReset('human').resources.wood===110&&policyReset('orc').resources.wood===90&&policyReset('undead').resources.wood===280&&R.gameRulesVersion===24;
+ return policyReset('human').resources.wood===110&&policyReset('orc').resources.wood===90&&policyReset('undead').resources.wood===280&&R.gameRulesVersion===25;
 }));
 check('Soul Rift is absent from definitions, unlocks, upgrades and strategic anchors',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,c=policyReset('undead');
  return !R.BUILDINGS.und_soul_rift&&!R.UNLOCKABLE.includes('und_soul_rift')&&![...R.buildingUnlockPool(c),...R.buildingUpgradePool(c)].some(o=>o.id==='und_soul_rift')&&!R.aiStrategyAnchors(c).some(p=>p.anchor.id==='und_soul_rift');
@@ -67,7 +67,8 @@ check('The forecast inserts funding/operating income between economy and its mil
 check('Abundant income cannot justify an extra Well before a funded useful support',await p.evaluate(()=>{
  const R=__ROADLORDS_RUNTIME__,c=policyReset('undead');R.state.time=180;
  c.unlocked=new Set(['keep','und_well','und_graveyard','und_bone_forge','und_crypt']);
- for(let n=0;n<5;n++)policyPut(c,'und_well',4);for(let n=0;n<3;n++)policyPut(c,'und_graveyard');c.resources.wood=10000;
+ // Five slower Graveyards provide the same supplied-army premise as the old three.
+ for(let n=0;n<5;n++)policyPut(c,'und_well',4);for(let n=0;n<5;n++)policyPut(c,'und_graveyard');c.resources.wood=10000;
  const plan=R.aiPlanInvestment(c,policyThought(c));if(plan.type!=='und_bone_forge')throw Error(JSON.stringify(plan));
  c.aiThink=0;R.aiStepCity(c,1);const next=R.aiPlanInvestment(c,policyThought(c));
  return R.buildingOf(c,'und_bone_forge').length===1&&!next.goals.includes('und_bone_forge')&&next.type!=='und_well'&&next.type!=='und_bone_forge';

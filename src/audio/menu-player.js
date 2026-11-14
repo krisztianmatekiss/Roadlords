@@ -40,6 +40,7 @@ export function installMenuMusic() {
   audio.src = MUSIC_URL;
   audio.preload = 'metadata';
   audio.loop = true;
+  audio.autoplay = music.enabled;
   audio.playsInline = true;
   audio.volume = music.enabled ? music.volume : 0;
   document.body.appendChild(audio);

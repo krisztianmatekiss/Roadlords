@@ -91,7 +91,8 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    return !!plan&&R.aiExecuteRedevelopment(c,plan)&&R.hasBuilding(c,'orc_war')&&!R.hasBuilding(c,'orc_arena');
   }));
   check('A unique military producer can move into effective armor support',await p.evaluate(()=>{
-   const R=__ROADLORDS_RUNTIME__,c=rebuildReset('human'),old=rebuildPut(c,'magetower',0,0);
+   // Match the old production value with an established producer after the slower training patch.
+   const R=__ROADLORDS_RUNTIME__,c=rebuildReset('human'),old=rebuildPut(c,'magetower',0,0,3);
    rebuildPut(c,'armorsmith',5,0,4);c.l4Branches.armorsmith='heavy_armor';rebuildHistory(c);
    const plan=R.aiFindRedevelopment(c,{type:'magetower'});
    return plan?.ids.includes(old.id)&&R.aiExecuteRedevelopment(c,plan)&&R.buildingOf(c,'magetower').length===1&&R.armorSmithForSpawner(c,R.buildingOf(c,'magetower')[0]);

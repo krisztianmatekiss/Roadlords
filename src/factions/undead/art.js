@@ -33,7 +33,7 @@ export function initializeUndeadArt(R) {
     if(index<0)return unitImage(key,cls);
     // Viewports share one decoded atlas. The generated original stays intact.
     const x=index%4*384,y=Math.floor(index/4)*512;
-    return `<svg class="${cls} undeadUnitPortrait" data-unit-portrait="${key}" viewBox="${x} ${y} 384 512" preserveAspectRatio="xMidYMin slice" role="img" aria-label="${U[key].name}"><image href="${portraits}" width="1536" height="1024"/></svg>`;
+    return `<svg class="${cls} undeadUnitPortrait" data-unit-portrait="${key}" viewBox="${x} ${y} 384 512" preserveAspectRatio="xMidYMin slice" role="img" aria-label="${U[key].name}"><image ${cardImageSource(portraits,'href')} width="1536" height="1024"/></svg>`;
   };
   const image = (type, cls, rotation = 0) => {
     const turn=((rotation%4)+4)%4;

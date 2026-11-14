@@ -95,7 +95,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   check('Normal rarity distribution is 70/25/5 without changing relic progression',Object.entries({common:.7,uncommon:.25,rare:.05}).every(([k,v])=>Math.abs(logic.distribution[k]/20000-v)<.012));
   check('Vampire base HP is 440; building relics require L4; level-granting progression cards remain obtainable',logic.vampire===440&&!logic.wellBefore&&logic.wellAfter&&logic.progression);
   check('Retired tower upgrades are absent and cannot affect tower stats; remaining relics are obtainable',logic.removed&&logic.retiredEffects&&logic.salvo&&logic.rebuild);
-  await p.locator('.menuBrand').click();await p.waitForTimeout(500);await p.locator('#rlOpenCodex').click();
+  await p.waitForFunction(()=>__ROADLORDS_RUNTIME__.menuOpening.ready);await p.locator('.menuBrand').click();await p.waitForTimeout(500);await p.locator('#rlOpenCodex').click();
   await p.locator('#codexRace').selectOption('orc');await p.locator('#rlCodexPanel [data-tab="common"]').click();
   const hp=p.locator('#rlCodexPanel [data-codex-upgrade="orc_warrior_hp"]');await hp.locator('[data-codex-rarity="rare"]').click();
   check('Codex uses the same Rare +20% description, footer and L3 prerequisite',await hp.evaluate(c=>c.querySelector('.cardFace').dataset.upgradeRarity==='rare'&&c.querySelector('.rlCodexContent').textContent.includes('+20%')&&c.querySelector('.cardFooter').textContent==='EPIKUS'&&c.querySelector('.upgradeRequirement').textContent.includes('L3')));

@@ -28,11 +28,10 @@ html body.chronicle #choiceOverlay #choiceList{background:none!important;scrollb
 /* A textured courtyard stays independent from the unchanged building sprites. */
 html body.chronicle #app .roadWorld .cityframe:before{background:var(--chronicle-courtyard) center/560px 560px repeat,var(--chronicle-floor)!important}
 html body.chronicle #app .roadWorld .cityframe:after{display:none!important}
-html body.chronicle #app .roadWorld .plot{border-color:#53483325!important}
-html body.chronicle #app .roadWorld .plot.terrain{border-color:transparent!important;background:none!important}
+/* Keep the ten-by-ten building grid readable over all courtyard textures. */
+html body.chronicle #app .roadWorld .plot{border-color:#58432c9e!important;box-shadow:inset 0 0 0 1px #fff3ca4d!important}
+html body.chronicle #app .roadWorld .buildingOutline path{stroke-width:2.5;filter:drop-shadow(0 0 1px #15231eee)}
 html body.chronicle #app .roadWorld .plot.terrain .ticonimg{width:100%!important;height:100%!important;object-fit:contain}
-.chronicleTerrainGlyph{display:block;background-size:300% 200%;background-repeat:no-repeat;background-position:0 0}
-.chronicleTerrainGlyph.quarry{background-position:50% 0}.chronicleTerrainGlyph.fertile{background-position:100% 0}.chronicleTerrainGlyph.foundation{background-position:0 100%}.chronicleTerrainGlyph.ruin{background-position:50% 100%}.chronicleTerrainGlyph.ancient{background-position:100% 100%}
 /* A broad framed timber gate and irregular threshold replace the thin strip/grid. */
 html body.chronicle #app .roadWorld .gate{width:20%!important;height:18%!important}
 html body.chronicle #app .roadWorld .gate.right{right:0!important}

@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { cardDeliveryUrl } from '../assets/card-loading.js';
 import { metricDescription } from '../world/measurements.js';
 
 const MEAT = assetUrl('art/resources/meat.svg');
@@ -14,7 +15,7 @@ export function resourceImage(R, key, race = R.P?.race) {
 
 export function resourceIcon(R, key, race = R.P?.race, mini = false) {
   const {src,label} = resourceImage(R,key,race);
-  return `<img class="costIcon resourceSymbol${mini ? ' mini' : ''}" data-resource="${key}" src="${src}" alt="${label}" title="${label}">`;
+  return `<img class="costIcon resourceSymbol${mini ? ' mini' : ''}" data-resource="${key}" src="${cardDeliveryUrl(src)}" alt="${label}" title="${label}">`;
 }
 
 // Keep original names for accessibility and search, replacing their visual text only.
@@ -42,7 +43,7 @@ export function symbolizeResources(root, R, race = R.P?.race) {
       fragment.append(document.createTextNode(text.textContent.slice(end,match.index)));
       const key=keyFor(match[0]),{src,label}=resourceImage(R,key,faction),token=document.createElement('span');
       token.className='resourceToken';token.dataset.resource=key;token.setAttribute('role','img');token.setAttribute('aria-label',label);token.title=label;
-      const icon=document.createElement('img');icon.className='resourceSymbol';icon.src=src;icon.alt='';icon.setAttribute('aria-hidden','true');
+      const icon=document.createElement('img');icon.className='resourceSymbol';icon.src=cardDeliveryUrl(src);icon.alt='';icon.setAttribute('aria-hidden','true');
       const name=document.createElement('span');name.className='sr-only';name.textContent=match[0];name.setAttribute('aria-hidden','true');
       token.append(icon,name);fragment.append(token);end=match.index+match[0].length;
     }

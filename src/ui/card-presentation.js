@@ -1,5 +1,5 @@
 import { factionCardFrame, cardRarityPanels } from './faction-card-frame.js';
-import { cardImageSource } from '../assets/card-loading.js';
+import { cardImageSource, cardArtReady } from '../assets/card-loading.js';
 import upgradeArt from '../data/upgrade-art-manifest.json';
 import manifest from '../data/orc-card-manifest.json';
 import undeadManifest from '../data/undead-card-manifest.json';
@@ -45,12 +45,12 @@ export function cardFrameUrl(id, kind, race) {
 }
 export function frameImage(src, eager = false, race = null) {
   if (!src) return '';
-  const human=src.endsWith('/cards/human/frame.png'), loading=eager?'eager':'lazy';
+  const human=src.endsWith('/cards/human/frame.png'), loading=eager||cardArtReady()?'eager':'lazy';
   const accent=human?'<svg class="humanFrameAccent" viewBox="0 0 100 150" preserveAspectRatio="none" aria-hidden="true"><path d="M2.9 17V86M97.1 17V86M2.9 95V139M97.1 95V139"/></svg>':'';
-  const frame=`<img class="cardFrameImage" ${cardImageSource(src)} alt="" loading="${loading}" decoding="async" draggable="false">`;
+  const frame=`<img class="cardFrameImage" ${cardImageSource(src)} alt="" loading="${loading}" decoding="${cardArtReady()?'sync':'async'}" draggable="false">`;
   // Human cards have their own empty aperture and integrated writing panel.
   // Only older full-card illustrations need a second clipped image layer.
-  const illustration=human?'':`<img class="cardIllustration" ${cardImageSource(src)} alt="" loading="${loading}" decoding="async" draggable="false">`;
+  const illustration=human?'':`<img class="cardIllustration" ${cardImageSource(src)} alt="" loading="${loading}" decoding="${cardArtReady()?'sync':'async'}" draggable="false">`;
   if (race === 'orc' || race === 'undead') return frame + `<span class="factionArtwork">${illustration}</span>` + factionCardFrame(race,eager);
   return accent+frame+(human?cardRarityPanels:'')+illustration;
 }

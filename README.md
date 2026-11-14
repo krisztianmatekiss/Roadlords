@@ -1,5 +1,13 @@
-# Roadlords · V4.71.0
+# Roadlords · V4.77.1
 
+
+## V4.77.1 – Betöltés és olvasható építési mezők
+
+- Sötét nyitóképernyő: Roadlords felirat, tényleges betöltést követő csík, majd kattintásra megjelenő főmenü. A cím mögötti halvány díszítés megszűnt.
+- A három nép aktív kártyaképei már induláskor betöltődnek, közös képtárból. A lexikon megnyitása és a fülek váltása nem indít új kártyakép-letöltést.
+- Visszatértek a korábbi terepikonok. A város 10×10-es építési mezői kontrasztosabb szegélyt kapnak a mintázott talaj fölött.
+
+[Részletek](docs/loading-and-boundaries-4.77.1.md). Játékszabályok változatlanok, multiplayer szabályverzió: **25**.
 
 ## V4.71.0 – Mágus és multiplayer romeltakarítás
 

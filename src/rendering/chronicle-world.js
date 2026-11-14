@@ -10,7 +10,6 @@ const short=n=>n>=1000?(n/1000).toLocaleString('hu-HU',{maximumFractionDigits:1}
 export function installChronicleWorld(R){
   document.documentElement.style.setProperty('--chronicle-menu-scene',`url("${assetUrl(shellArt.menu.webFile)}")`);
   const cities=[],view=R.chronicle={version:2,active:()=>!!R.battleLayout?.active,assets:new Map(),tiles:new Map(),segments:[]};
-  view.terrainAtlas=assetUrl('art/terrain/terrain-atlas.webp');
   view.roadBounds=()=>({top:R.ROAD.cityTop,bottom:R.ROAD.cityTop+R.ROAD.city,height:R.ROAD.city});
   view.gateOpening=side=>{const item=cities.find(c=>c.side===side),bounds=item.frame.getBoundingClientRect(),race=R.cityForSide(side).race,[,y,,height]=art[race].fortress.portal;return{top:bounds.top+bounds.height*y/1000,height:bounds.height*height/1000};};
   view.lateralScale=()=>R.ROAD.city/(2*(R.ROAD.half+24));

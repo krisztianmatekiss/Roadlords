@@ -1,4 +1,5 @@
 import { installDeferredCardImages } from './assets/card-loading.js';
+import { installCardArtPreloader } from './assets/card-preload.js';
 import './styles/application.css';
 import './styles/road-cities.css';
 import './styles/upgrade-copy.css';
@@ -64,6 +65,7 @@ initializeCardTextFit();
 installChronicleWorld(game);
 installBattlePresentationBudget(game);
 installBattleLayout(game);
+installCardArtPreloader(game);
 installOpeningMenu(game);
 applyAppIdentity();
 window.__ROADLORDS_RUNTIME__ = game;

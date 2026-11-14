@@ -99,6 +99,7 @@ export function register(runtime) {
     const out = runtime.mpRevive(tower);
     out.side = runtime.mpMirrorSide(out.side);
     out.lane = runtime.PATH_LENGTH - out.lane;
+    if (Number.isFinite(out.lateral)) out.lateral = -out.lateral;
     return out;
   };
   runtime.mpReplaceCity = function mpReplaceCity(target, packed, isEnemy) {

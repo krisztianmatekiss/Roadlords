@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { nextGameSpeed } from '../data/game-speeds.js';
 export function initializeUiInitialControls(runtime) {
   runtime.PICK_INPUT_GUARD_MS = 600;
   runtime.pickInputGuard = {
@@ -84,7 +85,7 @@ export function initializeUiInitialControls(runtime) {
     runtime.$('#pauseBtn').textContent = runtime.state.running ? 'Ⅱ' : '▶';
   };
   runtime.$('#speedBtn').onclick = () => {
-    runtime.state.speed = runtime.state.speed === 1 ? 2 : runtime.state.speed === 2 ? 4 : 1;
+    runtime.state.speed = nextGameSpeed(runtime.state.speed);
     runtime.$('#speedBtn').textContent = runtime.state.speed + '×';
   };
   runtime.$('#rerollChoice').onclick = runtime.rerollCurrentChoice;

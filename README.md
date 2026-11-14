@@ -1,5 +1,13 @@
-# Roadlords · V4.78.0
+# Roadlords · V4.79.0
 
+
+## V4.79.0 – Két védőtorony és új emberi városképek
+
+- Városonként két különálló, támadható végső védőtorony áll a korábbi helyen. A kapu melletti tornyok kizárólag a várfal rajzának részei, saját HP és célpont nélkül.
+- A választható játéksebességek: 1×, 2× és 3×. Multiplayerben a gyorsításhoz továbbra is kell az ellenfél beleegyezése.
+- Mind a 23 aktív emberi épület új, egyszerűbb, rajzolt térképi grafikát kapott, a főépülettel együtt. A forgatás, helyfoglalás és építési előnézet megmaradt. Az atlaszablakok pontosan levágják a szomszédos rajzokat.
+
+[Részletek](docs/human-city-and-defense-4.79.md). Multiplayer szabályverzió: **27**.
 
 ## V4.78.0 – Városvédelem és nagyobb csataáttekintő
 

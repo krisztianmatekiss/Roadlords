@@ -62,17 +62,9 @@ html body.chronicle #app .roadWorld .gate :is(.gateModeIcon,.gateLabel){display:
 .chronicleDoor{display:none;width:100%;height:100%;overflow:visible}.chronicleDoorLeaf{transform-origin:80% 50%;transition:transform .2s}
 body.chronicle .chronicleDoor{display:block}
 body.chronicle .gate[data-mode="open"] .chronicleDoorLeaf{transform:translateX(14px) scaleX(.18)}
-.chronicleGateTower{display:none}.chronicleWalls{display:none}
+.chronicleWalls{display:none}
 body.chronicle .chronicleWalls{display:block}
-body.chronicle .chronicleGateTower{position:absolute;display:block;z-index:7;right:-5.5%;width:11%;height:15%;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(2px 3px 0 #25292350)}
-body.chronicle .enemyframe .chronicleGateTower{right:auto;left:-5.5%}
-body.chronicle .chronicleGateTower.upper{top:30%}body.chronicle .chronicleGateTower.lower{top:55%}
-.chronicleGateTower svg{display:block;width:100%;height:100%;overflow:visible}
-.chronicleTowerHealth{display:block;position:absolute;top:-3%;left:50%;transform:translateX(-50%);padding:1px 5px;color:#28332e;background:#f7e7bb;border:1px solid #333b30;border-radius:3px;font:800 clamp(9px,.65vw,13px) Georgia;white-space:nowrap}
-.chronicleGateTower.destroyed svg{filter:grayscale(1);opacity:.3}.chronicleGateTower.selected svg{filter:drop-shadow(0 0 2px #fff3b1)}
-body.chronicle .chronicleGateTower.sudden .chronicleTowerHealth{animation:chroniclePulse .65s ease-in-out infinite alternate}
 @keyframes chroniclePulse{to{background:#f0bc65;outline:2px solid #a94837}}
-@media(prefers-reduced-motion:reduce){.chronicleGateTower.sudden .chronicleTowerHealth{animation:none;outline:2px solid #a94837}}
 html body.chronicle #app .roadCapitalHealth{color:#27332c;text-shadow:0 1px #f4e3bd;font:800 clamp(12px,.9vw,18px)/1.2 Georgia,serif;bottom:calc(100% + 6px)}
 html body.chronicle #app .roadCapitalTrack{height:7px;border:1px solid #2d372b;box-shadow:none;background:#615c48}
 html body.chronicle #app :is(.roadEnemyPane,.roadOwnPane){background:transparent!important}
@@ -109,11 +101,6 @@ body.chronicle .spectatorNotice{color:#29332c;background:#f2dfad;border-color:#3
  html body.chronicle #app #uiTrialOverview{left:5px;right:5px}
 }
 /* Live faction fortifications use independent sprite silhouettes. */
-body.chronicle .chronicleGateTower{right:-10.5%;width:14%;height:19%;filter:drop-shadow(2px 3px 0 #25292345)}
-body.chronicle .enemyframe .chronicleGateTower{left:-10.5%}
-body.chronicle .chronicleGateTower.upper{top:25.5%}body.chronicle .chronicleGateTower.lower{top:54.5%}
-body.chronicle .chronicleGateTower svg{overflow:hidden}
-body.chronicle .chronicleTowerHealth{top:-1%;font-size:clamp(10px,.75vw,14px);padding:2px 6px}
 html body.chronicle #app .topLeftCluster .res small{display:flex;flex-wrap:nowrap;gap:6px;white-space:nowrap;line-height:1.2}
 html body.chronicle #app .topLeftCluster .res{flex-basis:190px}
 html body.chronicle #app .topLeftCluster .res b{font-variant-numeric:tabular-nums}
@@ -133,14 +120,6 @@ html body.chronicle #app .roadWorld .cityframe[data-chronicle-race="orc"]{--gate
 html body.chronicle #app .roadWorld .cityframe[data-chronicle-race="undead"]{--gate-paving:#716d77}
 html body.chronicle #app .roadWorld .enemyframe:after{left:auto;right:85%;mask-image:linear-gradient(to left,#000 55%,transparent)}
 body.chronicle .chronicleWalls{overflow:visible}
-body.chronicle .chronicleGateTower{right:0;width:17%;height:16%;filter:none}
-body.chronicle .enemyframe .chronicleGateTower{left:0}
-body.chronicle .chronicleGateTower.upper{top:31%}body.chronicle .chronicleGateTower.lower{top:53%}
-body.chronicle .fortressGateDamage{visibility:hidden}
-body.chronicle .chronicleGateTower.destroyed .fortressGateDamage{visibility:visible;filter:grayscale(1) brightness(.65);opacity:1;clip-path:polygon(0 65%,17% 50%,31% 69%,42% 48%,59% 66%,77% 51%,100% 67%,100% 100%,0 100%)}
-body.chronicle .gate-upper-lost .fortressGateCut.upper,body.chronicle .gate-lower-lost .fortressGateCut.lower{fill:black}
-body.chronicle .gateTeamMedallion{position:absolute;left:43%;top:68%;width:14%;height:16%;background:currentColor;clip-path:polygon(0 0,100% 0,100% 65%,50% 100%,0 65%);border:1px solid #26372e}
-body.chronicle .chronicleTowerHealth{top:2%}
 html body.chronicle #app .roadWorld .gate.right{right:3%!important}
 html body.chronicle #app .roadWorld .gate.left{left:3%!important}
 html body.chronicle #app .roadWorld .gate{width:6%!important;height:12%!important}

@@ -7,22 +7,24 @@
   },
   "sprites": {
     "lumber": {
+      "source": "chronicle-core",
+      "style": "chronicle",
       "rect": [
-        65,
-        81,
-        540,
-        577
-      ],
-      "source": "samples"
+        393,
+        61,
+        294,
+        303
+      ]
     },
     "warehouse": {
+      "source": "chronicle-core",
+      "style": "chronicle",
       "rect": [
-        712,
-        189,
-        729,
-        432
-      ],
-      "source": "samples"
+        5,
+        452,
+        371,
+        233
+      ]
     },
     "academy": {
       "rect": [
@@ -34,174 +36,193 @@
       "source": "samples"
     },
     "keep": {
-      "source": "core",
+      "source": "chronicle-core",
+      "style": "chronicle",
       "rect": [
-        29,
-        29,
-        354,
-        363
+        43,
+        19,
+        293,
+        360
       ]
     },
     "stonecutter": {
-      "source": "core",
+      "source": "chronicle-core",
+      "style": "chronicle",
       "rect": [
-        409,
-        61,
-        315,
-        329
+        747,
+        53,
+        312,
+        314
       ]
     },
     "farm": {
-      "source": "core",
+      "source": "chronicle-core",
+      "style": "chronicle",
       "rect": [
-        752,
-        91,
-        316,
-        296
+        1108,
+        72,
+        299,
+        295
       ]
     },
     "barracks": {
-      "source": "core",
+      "source": "chronicle-core",
+      "style": "chronicle",
       "rect": [
-        1086,
-        37,
-        346,
-        349
+        724,
+        442,
+        348,
+        244
       ]
     },
     "archery": {
-      "source": "core",
+      "source": "chronicle-core",
+      "style": "chronicle",
       "rect": [
-        29,
-        414,
-        331,
-        297
+        1117,
+        447,
+        317,
+        225
       ]
     },
     "spearhall": {
-      "source": "core",
+      "source": "chronicle-core",
+      "style": "chronicle",
       "rect": [
-        391,
-        394,
-        239,
-        318
+        33,
+        739,
+        198,
+        322
       ]
     },
     "stable": {
-      "source": "core",
+      "source": "chronicle-core",
+      "style": "chronicle",
       "rect": [
-        644,
-        483,
-        423,
-        232
+        278,
+        788,
+        405,
+        244
       ]
     },
     "temple": {
-      "source": "core",
+      "source": "chronicle-core",
+      "style": "chronicle",
       "rect": [
-        1081,
-        430,
-        350,
-        275
+        724,
+        733,
+        340,
+        324
       ]
     },
     "siegeworks": {
-      "source": "core",
+      "source": "chronicle-core",
+      "style": "chronicle",
       "rect": [
-        22,
-        723,
-        343,
-        321
+        1093,
+        739,
+        345,
+        318
       ]
     },
     "magetower": {
-      "source": "core",
+      "source": "chronicle-support",
+      "style": "chronicle",
       "rect": [
-        383,
-        733,
-        285,
-        311
+        103,
+        6,
+        159,
+        356
       ]
     },
     "guildhouse": {
-      "source": "core",
+      "source": "chronicle-support",
+      "style": "chronicle",
       "rect": [
-        693,
-        796,
-        378,
-        245
+        361,
+        86,
+        363,
+        270
       ]
     },
     "market": {
-      "source": "core",
+      "source": "chronicle-support",
+      "style": "chronicle",
       "rect": [
-        1098,
-        730,
-        333,
-        318
+        741,
+        58,
+        325,
+        297
       ]
     },
     "townhall": {
-      "source": "support",
+      "source": "chronicle-support",
+      "style": "chronicle",
       "rect": [
-        38,
-        15,
-        339,
-        355
+        1094,
+        13,
+        343,
+        349
       ]
     },
     "rally": {
-      "source": "support",
+      "source": "chronicle-support",
+      "style": "chronicle",
       "rect": [
-        423,
-        13,
-        329,
-        357
+        18,
+        381,
+        322,
+        335
       ]
     },
     "tavern": {
-      "source": "support",
+      "source": "chronicle-support",
+      "style": "chronicle",
       "rect": [
-        788,
-        52,
-        322,
-        315
+        374,
+        397,
+        341,
+        320
       ]
     },
     "guardhouse": {
-      "source": "support",
+      "source": "chronicle-support",
+      "style": "chronicle",
       "rect": [
-        1152,
-        32,
-        275,
-        338
+        765,
+        366,
+        256,
+        356
       ]
     },
     "house": {
-      "source": "support",
+      "source": "chronicle-core",
+      "style": "chronicle",
       "rect": [
-        49,
-        419,
-        283,
-        290
+        426,
+        414,
+        231,
+        279
       ]
     },
     "warcenter": {
-      "source": "support",
+      "source": "chronicle-support",
+      "style": "chronicle",
       "rect": [
-        400,
-        385,
-        328,
-        319
+        1072,
+        406,
+        376,
+        303
       ]
     },
     "armorsmith": {
-      "source": "support",
+      "source": "chronicle-support",
+      "style": "chronicle",
       "rect": [
-        754,
-        393,
-        315,
-        318
+        2,
+        781,
+        360,
+        285
       ]
     },
     "hospital": {
@@ -223,21 +244,23 @@
       ]
     },
     "library": {
-      "source": "support",
+      "source": "chronicle-support",
+      "style": "chronicle",
       "rect": [
-        421,
-        711,
-        311,
-        347
+        377,
+        752,
+        324,
+        320
       ]
     },
     "mastersguild": {
-      "source": "support",
+      "source": "chronicle-support",
+      "style": "chronicle",
       "rect": [
-        757,
-        712,
-        329,
-        349
+        719,
+        734,
+        365,
+        338
       ]
     },
     "alchemist": {
@@ -288,6 +311,28 @@
       "webSha256": "074dd20fb10a1723a4ea4393b1134358a2a1cce8b2ce840d1a0c1fb7d1629485",
       "originalBytes": 2535771,
       "webBytes": 1962208
+    },
+    "chronicle-core": {
+      "file": "art/human/map-chronicle-core.png",
+      "webFile": "art/human/map-chronicle-core.webp",
+      "width": 1448,
+      "height": 1086,
+      "sha256": "d85525ea9731bc75a1f6a6024a3bb8cac2903eb73fc6ba27ca19b55cf5f338ae",
+      "webSha256": "f801b84acd088f6bf0560077d6d76c9a47cf4eded2fc6d50817483694fbbea12",
+      "originalBytes": 2455735,
+      "webBytes": 1637420,
+      "viewOverrides": {}
+    },
+    "chronicle-support": {
+      "file": "art/human/map-chronicle-support.png",
+      "webFile": "art/human/map-chronicle-support.webp",
+      "width": 1448,
+      "height": 1086,
+      "sha256": "f70b936cf85e849021cb41582f650d4fbe2819bd46d3447a93f344afa4693afc",
+      "webSha256": "b1f519134da16109cff91b25a419f023745df33572bcfc9b5c577c0c7111af36",
+      "originalBytes": 2301440,
+      "webBytes": 1600046,
+      "viewOverrides": {}
     }
   }
 }

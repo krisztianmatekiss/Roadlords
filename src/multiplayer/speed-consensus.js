@@ -1,6 +1,7 @@
 import { assetUrl } from '../assets/urls.js';
+import { GAME_SPEEDS } from '../data/game-speeds.js';
 export function initializeMultiplayerSpeedConsensus(runtime) {
-  const V4971_SPEEDS = [1, 2, 4];
+  const V4971_SPEEDS = GAME_SPEEDS;
   const V4971_ALCHEMY_FOLLOWUPS = new Set(['alc_replace_movement', 'alc_replace_regen', 'alc_recipe_twist']);
   for (const key of ['mercAuto', 'alchemyRecipeSlots', 'alchemyPotionUnlocks', 'alchemySlotLegendStacks']) {
     if (!runtime.MP_STRATEGY_KEYS.includes(key)) runtime.MP_STRATEGY_KEYS.push(key);

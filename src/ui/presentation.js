@@ -437,7 +437,7 @@ export function register(runtime) {
     const hint = runtime.$('#placementHint');
     if (runtime.state.selectedBuild) {
       const rotatable = runtime.rotationOptions(runtime.state.selectedBuild).length > 1;
-      hint.innerHTML = `<span>${runtime.BUILDINGS[runtime.state.selectedBuild].name} · ${runtime.footprintText(runtime.state.selectedBuild, runtime.state.buildRotation)} · Kattints a lerakáshoz · az egér alatti mező körül forog</span>${rotatable ? '<button id="rotatePlacement" class="placementRotate" type="button">↻ FORGATÁS (jobb klikk)</button>' : ''}`;
+      hint.innerHTML = `<span>${runtime.BUILDINGS[runtime.state.selectedBuild].name} · ${runtime.footprintText(runtime.state.selectedBuild, runtime.state.buildRotation)} · Kattints a lerakáshoz${rotatable ? ' · az egér alatti mező körül forog' : ''}</span>${rotatable ? '<button id="rotatePlacement" class="placementRotate" type="button">↻ FORGATÁS (jobb klikk)</button>' : ''}`;
       hint.classList.add('show');
       runtime.$('#rotatePlacement')?.addEventListener('click', e => {
         e.stopPropagation();

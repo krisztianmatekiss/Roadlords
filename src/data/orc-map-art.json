@@ -1,0 +1,487 @@
+{
+  "version": 1,
+  "sources": {
+    "orc-core": {
+      "file": "art/orc/map-chronicle-core.png",
+      "webFile": "art/orc/map-chronicle-core.webp",
+      "width": 1448,
+      "height": 1086,
+      "sha256": "1a0fd4ecb132f349545e77144ffda3d0c4a8fb308885d4829d0118d2c42e14a7",
+      "webSha256": "bd290b860a442e9beef33d57616575baf9805e35f9229232b21748469703080d",
+      "originalBytes": 2439092,
+      "webBytes": 1721414
+    },
+    "orc-training": {
+      "file": "art/orc/map-chronicle-training.png",
+      "webFile": "art/orc/map-chronicle-training.webp",
+      "width": 1448,
+      "height": 1086,
+      "sha256": "0999c4ffcd94c4114363161beaee48ec81bc90bf8bb9c90ce6e2547307c08b7f",
+      "webSha256": "a23da38ee61b324cf39794e0ca8d7c821edf90bc36f2ef11882d6d618e6adaa8",
+      "originalBytes": 2501693,
+      "webBytes": 1776946
+    },
+    "city-directions": {
+      "file": "art/chronicle/city-directions.png",
+      "webFile": "art/chronicle/city-directions.webp",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "f3c4132801b1b9a84bcbe6b6e9dfc647e11ce9f0633ba2b40727fd59e9c94f31",
+      "webSha256": "17232763a71f9d3b2c2ce9a75ba25d66d5d2082dc50d73aa6b4ef43f28122e94",
+      "originalBytes": 2641839,
+      "webBytes": 1393014
+    }
+  },
+  "sprites": {
+    "keep": {
+      "source": "orc-core",
+      "rect": [
+        27,
+        4,
+        314,
+        341
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-core",
+          "rect": [
+            27,
+            4,
+            314,
+            341
+          ]
+        }
+      }
+    },
+    "orc_hunt": {
+      "source": "orc-core",
+      "rect": [
+        390,
+        22,
+        322,
+        321
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-core",
+          "rect": [
+            390,
+            22,
+            322,
+            321
+          ]
+        }
+      }
+    },
+    "orc_hut": {
+      "source": "orc-core",
+      "rect": [
+        739,
+        49,
+        327,
+        294
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-core",
+          "rect": [
+            739,
+            49,
+            327,
+            294
+          ]
+        }
+      }
+    },
+    "orc_gob": {
+      "source": "orc-core",
+      "rect": [
+        1117,
+        8,
+        307,
+        332
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-core",
+          "rect": [
+            1117,
+            8,
+            307,
+            332
+          ]
+        }
+      }
+    },
+    "orc_arena": {
+      "source": "orc-core",
+      "rect": [
+        20,
+        372,
+        324,
+        339
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-core",
+          "rect": [
+            20,
+            372,
+            324,
+            339
+          ]
+        }
+      }
+    },
+    "orc_troll": {
+      "source": "orc-core",
+      "rect": [
+        362,
+        372,
+        358,
+        339
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-core",
+          "rect": [
+            362,
+            372,
+            358,
+            339
+          ]
+        }
+      }
+    },
+    "orc_totem": {
+      "source": "orc-core",
+      "rect": [
+        794,
+        363,
+        220,
+        356
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-core",
+          "rect": [
+            794,
+            363,
+            220,
+            356
+          ]
+        }
+      }
+    },
+    "orc_slave": {
+      "source": "orc-core",
+      "rect": [
+        1102,
+        371,
+        333,
+        341
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-core",
+          "rect": [
+            1102,
+            371,
+            333,
+            341
+          ]
+        }
+      }
+    },
+    "orc_raider": {
+      "source": "orc-core",
+      "rect": [
+        13,
+        746,
+        339,
+        328
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-core",
+          "rect": [
+            13,
+            746,
+            339,
+            328
+          ]
+        }
+      }
+    },
+    "orc_tunnel": {
+      "source": "orc-core",
+      "rect": [
+        362,
+        787,
+        348,
+        272
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-core",
+          "rect": [
+            362,
+            787,
+            348,
+            272
+          ]
+        }
+      }
+    },
+    "warehouse": {
+      "source": "orc-core",
+      "rect": [
+        721,
+        808,
+        367,
+        218
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-core",
+          "rect": [
+            721,
+            808,
+            367,
+            218
+          ]
+        },
+        "1": {
+          "source": "orc-core",
+          "rect": [
+            1143,
+            729,
+            248,
+            351
+          ]
+        }
+      }
+    },
+    "orc_work": {
+      "source": "orc-training",
+      "rect": [
+        15,
+        48,
+        408,
+        289
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-training",
+          "rect": [
+            15,
+            48,
+            408,
+            289
+          ]
+        },
+        "1": {
+          "source": "orc-training",
+          "rect": [
+            453,
+            8,
+            207,
+            344
+          ]
+        }
+      }
+    },
+    "orc_war": {
+      "source": "orc-training",
+      "rect": [
+        721,
+        44,
+        420,
+        303
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-training",
+          "rect": [
+            721,
+            44,
+            420,
+            303
+          ]
+        },
+        "1": {
+          "source": "orc-training",
+          "rect": [
+            1182,
+            6,
+            234,
+            342
+          ]
+        }
+      }
+    },
+    "orc_bers": {
+      "source": "orc-training",
+      "rect": [
+        8,
+        409,
+        412,
+        289
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-training",
+          "rect": [
+            8,
+            409,
+            412,
+            289
+          ]
+        },
+        "1": {
+          "source": "orc-training",
+          "rect": [
+            451,
+            362,
+            223,
+            343
+          ]
+        }
+      }
+    },
+    "orc_overseer": {
+      "source": "orc-training",
+      "rect": [
+        724,
+        412,
+        414,
+        283
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-training",
+          "rect": [
+            724,
+            412,
+            414,
+            283
+          ]
+        },
+        "1": {
+          "source": "orc-training",
+          "rect": [
+            1180,
+            367,
+            234,
+            340
+          ]
+        }
+      }
+    },
+    "orc_warg": {
+      "source": "orc-training",
+      "rect": [
+        6,
+        794,
+        414,
+        247
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-training",
+          "rect": [
+            6,
+            794,
+            414,
+            247
+          ]
+        },
+        "1": {
+          "source": "orc-training",
+          "rect": [
+            456,
+            721,
+            221,
+            327
+          ]
+        }
+      }
+    },
+    "orc_shaman": {
+      "source": "orc-training",
+      "rect": [
+        709,
+        784,
+        440,
+        254
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "orc-training",
+          "rect": [
+            709,
+            784,
+            440,
+            254
+          ]
+        },
+        "1": {
+          "source": "orc-training",
+          "rect": [
+            1185,
+            718,
+            236,
+            326
+          ]
+        }
+      }
+    },
+    "orc_ram": {
+      "source": "city-directions",
+      "rect": [
+        514,
+        587,
+        496,
+        406
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "city-directions",
+          "rect": [
+            514,
+            587,
+            496,
+            406
+          ]
+        },
+        "1": {
+          "source": "city-directions",
+          "rect": [
+            1100,
+            518,
+            327,
+            493
+          ]
+        }
+      }
+    }
+  }
+}

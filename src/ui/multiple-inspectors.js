@@ -7,9 +7,6 @@ export function initializeUiMultipleInspectors(runtime) {
   runtime.state.buildingInspectorZ = runtime.state.buildingInspectorZ || {};
   runtime.state.buildingInspectorZCounter = Number(runtime.state.buildingInspectorZCounter) || 9200;
   const windows = new Map();
-  runtime.rotationOptions = function (type) {
-    return [0, 1, 2, 3];
-  };
   function ensureBuildingInspectorLayer() {
     let layer = document.getElementById('buildingInspectorLayer');
     if (!layer) {

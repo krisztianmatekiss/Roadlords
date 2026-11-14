@@ -1,5 +1,14 @@
-# Roadlords · V4.79.0
+# Roadlords · V4.80.0
 
+
+## V4.80.0 – Külön épületnézetek és ork városgrafikák
+
+- A szimmetrikus helyfoglalású épületek nem forgathatók. A téglalapoknak két, az L alakúaknak négy érdemi irányuk van; a felesleges 180/270 fokos változatok megszűntek.
+- Az emberi és ork épületek forgatáskor külön megrajzolt nézetet váltanak, a rajz végig függőlegesen áll. Az építési előnézet ugyanezt a nézetet használja.
+- Mind a 18 jelenlegi ork épület új, önálló városi grafikát kapott, főépülettel és raktárral együtt. Az embereknél 36, az orkoknál 26 használható nézet van.
+- Az emberi város erősen mintázott kőburkolatát visszafogott, világos földes alap váltja fel.
+
+[Részletek](docs/building-views-and-orc-city-4.80.md). Multiplayer szabályverzió: **28**.
 
 ## V4.79.0 – Két védőtorony és új emberi városképek
 

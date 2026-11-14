@@ -17,7 +17,10 @@ export function register(runtime) {
   };
   runtime.normalizedRotation = function normalizedRotation(type, rotation = 0) {
     const opts = runtime.rotationOptions(type);
-    return opts.includes(rotation) ? rotation : opts[0];
+    const turn=((Math.trunc(Number(rotation)||0)%4)+4)%4;
+    const shape=JSON.stringify(runtime.rotatedShape(type,turn));
+    // Preserve old 180/270-degree placements using the equivalent footprint.
+    return opts.find(value=>JSON.stringify(runtime.rotatedShape(type,value))===shape)??opts[0];
   };
   runtime.eligibleNormal = function eligibleNormal(c) {
     return runtime.NORMAL.filter(x => x.eligible(c) && !c.banned.has(x.id));

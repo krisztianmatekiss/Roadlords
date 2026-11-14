@@ -60,11 +60,11 @@
       ]
     },
     "courtyard": {
-      "file": "art/chronicle/human-courtyard.png",
-      "webFile": "art/chronicle/human-courtyard.webp",
+      "file": "art/chronicle/human-courtyard-soft.png",
+      "webFile": "art/chronicle/human-courtyard-soft.webp",
       "width": 1254,
       "height": 1254,
-      "sha256": "0b230a8682f5a17c2d2a44996e3595270871a05c699cc084b4c261c0867d6fd2"
+      "sha256": "90c3db5cb965a7e94dc695ea532bf50724e5101456322e88260746053b4a4ce0"
     }
   },
   "orc": {

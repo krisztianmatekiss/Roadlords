@@ -46,8 +46,9 @@ export function initializeUiInitialControls(runtime) {
   runtime.rotateBtn = runtime.$('#rotateBuild');
   if (runtime.rotateBtn) runtime.rotateBtn.onclick = runtime.rotateSelectedBuild;
   runtime.$('#playerGrid').addEventListener('contextmenu', e => {
-    if (!runtime.state.selectedBuild || runtime.rotationOptions(runtime.state.selectedBuild).length < 2) return;
+    if (!runtime.state.selectedBuild) return;
     e.preventDefault();
+    if (runtime.rotationOptions(runtime.state.selectedBuild).length < 2) return;
     const cell = e.target.closest('.plot,.buildingHitCell');
     if (cell) {
       const row = +cell.dataset.r,

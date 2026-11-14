@@ -24,7 +24,18 @@
         452,
         371,
         233
-      ]
+      ],
+      "views": {
+        "1": {
+          "source": "city-directions",
+          "rect": [
+            109,
+            10,
+            311,
+            493
+          ]
+        }
+      }
     },
     "academy": {
       "rect": [
@@ -103,7 +114,18 @@
         788,
         405,
         244
-      ]
+      ],
+      "views": {
+        "1": {
+          "source": "city-directions",
+          "rect": [
+            600,
+            10,
+            326,
+            488
+          ]
+        }
+      }
     },
     "temple": {
       "source": "chronicle-core",
@@ -113,17 +135,66 @@
         733,
         340,
         324
-      ]
+      ],
+      "views": {
+        "1": {
+          "source": "city-directions",
+          "rect": [
+            1101,
+            0,
+            319,
+            504
+          ]
+        }
+      }
     },
     "siegeworks": {
-      "source": "chronicle-core",
+      "source": "human-turns",
       "style": "chronicle",
       "rect": [
-        1093,
-        739,
-        345,
-        318
-      ]
+        10,
+        12,
+        326,
+        332
+      ],
+      "views": {
+        "0": {
+          "source": "human-turns",
+          "rect": [
+            10,
+            12,
+            326,
+            332
+          ]
+        },
+        "1": {
+          "source": "human-turns",
+          "rect": [
+            377,
+            12,
+            328,
+            332
+          ]
+        },
+        "2": {
+          "source": "human-turns",
+          "rect": [
+            742,
+            12,
+            329,
+            332
+          ]
+        },
+        "3": {
+          "source": "human-turns",
+          "rect": [
+            1111,
+            12,
+            325,
+            332
+          ]
+        }
+      }
     },
     "magetower": {
       "source": "chronicle-support",
@@ -143,7 +214,18 @@
         86,
         363,
         270
-      ]
+      ],
+      "views": {
+        "1": {
+          "source": "city-directions",
+          "rect": [
+            99,
+            523,
+            331,
+            488
+          ]
+        }
+      }
     },
     "market": {
       "source": "chronicle-support",
@@ -216,14 +298,52 @@
       ]
     },
     "armorsmith": {
-      "source": "chronicle-support",
+      "source": "human-turns",
       "style": "chronicle",
       "rect": [
-        2,
-        781,
-        360,
-        285
-      ]
+        7,
+        379,
+        327,
+        331
+      ],
+      "views": {
+        "0": {
+          "source": "human-turns",
+          "rect": [
+            7,
+            379,
+            327,
+            331
+          ]
+        },
+        "1": {
+          "source": "human-turns",
+          "rect": [
+            373,
+            373,
+            337,
+            337
+          ]
+        },
+        "2": {
+          "source": "human-turns",
+          "rect": [
+            736,
+            377,
+            337,
+            333
+          ]
+        },
+        "3": {
+          "source": "human-turns",
+          "rect": [
+            1112,
+            379,
+            328,
+            331
+          ]
+        }
+      }
     },
     "hospital": {
       "source": "support",
@@ -254,14 +374,52 @@
       ]
     },
     "mastersguild": {
-      "source": "chronicle-support",
+      "source": "human-turns",
       "style": "chronicle",
       "rect": [
-        719,
-        734,
-        365,
-        338
-      ]
+        6,
+        739,
+        332,
+        332
+      ],
+      "views": {
+        "0": {
+          "source": "human-turns",
+          "rect": [
+            6,
+            739,
+            332,
+            332
+          ]
+        },
+        "1": {
+          "source": "human-turns",
+          "rect": [
+            374,
+            735,
+            333,
+            336
+          ]
+        },
+        "2": {
+          "source": "human-turns",
+          "rect": [
+            738,
+            735,
+            336,
+            336
+          ]
+        },
+        "3": {
+          "source": "human-turns",
+          "rect": [
+            1109,
+            740,
+            331,
+            332
+          ]
+        }
+      }
     },
     "alchemist": {
       "source": "support",
@@ -333,6 +491,26 @@
       "originalBytes": 2301440,
       "webBytes": 1600046,
       "viewOverrides": {}
+    },
+    "human-turns": {
+      "file": "art/human/map-chronicle-turns.png",
+      "webFile": "art/human/map-chronicle-turns.webp",
+      "width": 1448,
+      "height": 1086,
+      "sha256": "ee18ce0177aace7fb4356a8629cbe6fea1c24b58c7209e5120091f205d38490a",
+      "webSha256": "225ffb0780632fa2e3212ac2a6b000ab5af69e40e9b05432e7235f7464db456e",
+      "originalBytes": 2205062,
+      "webBytes": 1540930
+    },
+    "city-directions": {
+      "file": "art/chronicle/city-directions.png",
+      "webFile": "art/chronicle/city-directions.webp",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "f3c4132801b1b9a84bcbe6b6e9dfc647e11ce9f0633ba2b40727fd59e9c94f31",
+      "webSha256": "17232763a71f9d3b2c2ce9a75ba25d66d5d2082dc50d73aa6b4ef43f28122e94",
+      "originalBytes": 2641839,
+      "webBytes": 1393014
     }
   }
 }

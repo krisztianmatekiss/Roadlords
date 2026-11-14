@@ -104,7 +104,7 @@ export const LEGENDARY_COPY = Object.freeze({
   "bloodlust": "Öléssel a Kardos azonnal újra támadhat, és maximális életereje 15%-ából gyógyul.",
   "artillery_sighting": "Ugyanazt az épületet lőve a Katapult találatonként +50% sebzést gyűjt, legfeljebb +200%-ig.",
   "supply_hub": "A Raktárral szomszédos katonai épületek 30%-kal olcsóbban képeznek.",
-  "castle_defenders": "Amíg mindhárom saját úttornyod áll, a helyőrségből elit egységek vonulnak ki. A 2 vártorony nem számít bele.",
+  "castle_defenders": "Amíg mindhárom saját úttornyod áll, a helyőrségből elit egységek vonulnak ki. A vár- és előtornyok nem számítanak bele.",
   "combined_assault": "Legalább 3 egységkategóriát tartalmazó hullám kivonulásakor az egész hullám +25% mozgási és támadási sebességet kap.",
   "tower_salvo": "Minden saját torony minden támadáskor +1 extra, teljes sebzésű lövedéket lő ki.",
   "tower_rebuild": "Azonnal újjáépít 2 ledőlt saját tornyot teljes életerővel.",

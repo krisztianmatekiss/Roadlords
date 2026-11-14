@@ -14,6 +14,8 @@ export function register(runtime) {
     }
   };
   runtime.roadDistance = function roadDistance(a, b) {
+    // The capital is a wall spanning the road, rather than a point at its gate.
+    if (a.capital || b.capital) return Math.abs(a.lane - b.lane);
     return Math.hypot(a.lane - b.lane, (a.offset ?? a.lateral ?? 0) - (b.offset ?? b.lateral ?? 0));
   };
   runtime.roadReindex = function roadReindex() {
@@ -58,6 +60,8 @@ export function register(runtime) {
   installRoadMovement(runtime);
   runtime.roadQueueAttack = function roadQueueAttack(u, t, structure, opts) {
     if (!u?.alive || !structure && !t?.alive || u.roadPending) return;
+    // Each capital attack keeps its own contact point for projectiles and impacts.
+    if (structure && t.capital) t = {...t, offset: u.offset || 0};
     opts={...opts};
     const orcSpear = u.key === 'orc_warg' && !!u.orcSpearReady;
     const ranged = u.tags.includes('ranged') || !!u.spearVolleyReady || orcSpear,

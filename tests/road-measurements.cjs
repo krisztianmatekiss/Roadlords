@@ -25,10 +25,10 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    R.state.units=[];return {rows,description};
   });
   check('Cavalry charge advances at each full 100 metres against units and towers, caps at 200 percent and consumes the charge',charge.rows.every((r,i)=>Math.abs(r.unitDamage-[1,1,1.25,1.25,1.5,3,3][i])<1e-6&&Math.abs(r.structureDamage-r.unitDamage)<1e-6&&r.reset)&&charge.description.includes('100 m'));
-  check('Castle Defenders requires all three own road towers and ignores both castle towers',await p.evaluate(()=>{
+  check('Castle Defenders requires all three own road towers and ignores wall and forecourt towers',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,alive=R.towers.map(t=>t.alive);R.roadResetCity(R.P,'human');R.P.legends.add('castle_defenders');
    const own=R.towers.filter(t=>t.side==='player'),road=own.filter(t=>!t.gateTower),gate=own.filter(t=>t.gateTower),wave=()=>{const e={key:'swordsman'};R.waveBuffs(R.P,[e]);return !!e.veteran;};
-   try{own.forEach(t=>t.alive=true);const all=wave();gate.forEach(t=>t.alive=false);const noGate=wave();road[0].alive=false;gate.forEach(t=>t.alive=true);return road.length===3&&gate.length===2&&all&&noGate&&!wave()&&R.LEGENDARY.find(x=>x.id==='castle_defenders').description.includes('2 vártorony');}
+   try{own.forEach(t=>t.alive=true);const all=wave();gate.forEach(t=>t.alive=false);const noGate=wave();road[0].alive=false;gate.forEach(t=>t.alive=true);return road.length===3&&gate.length===3&&all&&noGate&&!wave()&&R.LEGENDARY.find(x=>x.id==='castle_defenders').description.includes('előtornyok');}
    finally{R.towers.forEach((t,i)=>t.alive=alive[i]);}
   }));
   check('Actual unit inspectors include metres and m/s for both normal and Undead units',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;const normal=R.unitStatsHTML(R.P,'archer');R.roadResetCity(R.P,'undead');const undead=R.unitStatsHTML(R.P,'und_ghost');return normal.includes('30 m')&&normal.includes('5,25 m/s')&&undead.includes('3 m')&&undead.includes('5,75 m/s')}));

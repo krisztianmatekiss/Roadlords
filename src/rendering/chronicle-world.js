@@ -17,9 +17,9 @@ export function installChronicleWorld(R){
   installChronicleTerrain(R,view,syncCities);
   for(const side of ['player','enemy']){
     const grid=R.$(side==='player'?'#playerGrid':'#enemyGrid'),city=grid.closest('.cityzone'),frame=grid.closest('.cityframe'),gate=R.$(side==='player'?'#playerGate':'#enemyGate');city.dataset.chronicleSide=side;
-    const towers=R.towers.filter(t=>t.gateTower&&t.side===side).sort((a,b)=>a.lateral-b.lateral).map((t,i)=>{
+    const towers=R.towers.filter(t=>t.gateTower&&!t.forecourtTower&&t.side===side).sort((a,b)=>a.lateral-b.lateral).map((t,i)=>{
       const button=document.createElement('button');button.type='button';button.className='chronicleGateTower '+(i?'lower':'upper');button.dataset.towerId=t.id;
-      button.onclick=e=>{e.stopPropagation();R.state.selectedBuild=null;R.state.selectedBuilding=null;R.state.selectedTowerId=t.id;R.renderTowerInspectorV496(t);R.renderBattle(0);};frame.append(button);return{t,button};
+      button.onclick=e=>{e.stopPropagation();const live=R.towers.find(v=>v.id===button.dataset.towerId);if(!live)return;R.state.selectedBuild=null;R.state.selectedBuilding=null;R.state.selectedTowerId=live.id;R.renderTowerInspectorV496(live);R.renderBattle(0);};frame.append(button);return{t,button};
     });cities.push({side,city,frame,gate,towers});
   }
   function syncCities(){
@@ -36,7 +36,7 @@ export function installChronicleWorld(R){
       const paint=view.tile(race),paintWidth=paint?paint.width*R.ROAD.h/paint.height:0;
       css(city,'--chronicle-team',color);if(paint?.cssUrl)css(city,'--chronicle-terrain',`url("${paint.cssUrl}")`);else if(raceChanged||!city.style.getPropertyValue('--chronicle-terrain'))css(city,'--chronicle-terrain','none');css(city,'--chronicle-paint-width',paintWidth+'px');css(city,'--chronicle-paint-phase',side==='player'?R.ROAD.city+'px':-R.PATH_LENGTH+'px');css(R.roadWorld,'--chronicle-height',R.ROAD.h+'px');
       if(side==='player'){css(R.roadWorld,'--chronicle-terrain',city.style.getPropertyValue('--chronicle-terrain'));css(R.roadWorld,'--chronicle-ground',theme.ground);css(R.roadWorld,'--chronicle-paint-width',paintWidth+'px');}
-      for(const {t,button}of towers){if(button.style.color!==color)button.style.color=color;button.classList.toggle('destroyed',!t.alive);frame.classList.toggle(button.classList.contains('upper')?'gate-upper-lost':'gate-lower-lost',!t.alive);button.classList.toggle('sudden',!!t.sdActive&&t.alive);button.classList.toggle('selected',R.state.selectedTowerId===t.id);const title=`Vártorony · ${Math.ceil(Math.max(0,t.hp))} / ${Math.ceil(t.maxHp)} HP`;if(button.title!==title){button.title=title;button.setAttribute('aria-label',title);}const label=t.alive?short(t.hp):'×',health=button.querySelector('.chronicleTowerHealth');if(health.textContent!==label)health.textContent=label;}
+      for(const [index,entry]of towers.entries()){const t=R.towers.filter(v=>v.side===side&&v.gateTower&&!v.forecourtTower).sort((a,b)=>a.lateral-b.lateral)[index];if(!t)continue;entry.t=t;const {button}=entry;button.dataset.towerId=t.id;if(button.style.color!==color)button.style.color=color;button.classList.toggle('destroyed',!t.alive);frame.classList.toggle(button.classList.contains('upper')?'gate-upper-lost':'gate-lower-lost',!t.alive);button.classList.toggle('sudden',!!t.sdActive&&t.alive);button.classList.toggle('selected',R.state.selectedTowerId===t.id);const title=`Vártorony · ${Math.ceil(Math.max(0,t.hp))} / ${Math.ceil(t.maxHp)} HP`;if(button.title!==title){button.title=title;button.setAttribute('aria-label',title);}const label=t.alive?short(t.hp):'×',health=button.querySelector('.chronicleTowerHealth');if(health.textContent!==label)health.textContent=label;}
       if(frame.dataset.gateMode!==c.gateMode)frame.dataset.gateMode=c.gateMode;
       const open=String(R.gateActuallyOpen(c));if(gate.dataset.open!==open)gate.dataset.open=open;
     }
@@ -56,13 +56,13 @@ export function installChronicleWorld(R){
   const bounds=t=>{const p=R.pointAt(t.lane,t.lateral||0),s=R.towerVisualScale(t);return{x:p.x-50*s,y:p.y-99*s,width:100*s,height:108*s,scale:s};};
   R.towerVisualBounds=t=>{
     if(!view.active())return towerBounds(t);
-    if(t.gateTower){const node=cities.find(c=>c.side===t.side)?.towers.find(v=>v.t===t)?.button,b=node?.getBoundingClientRect(),canvas=R.canvas.getBoundingClientRect();if(b)return{x:(b.left-canvas.left)*R.canvas.width/canvas.width,y:(b.top-canvas.top)*R.canvas.height/canvas.height,width:b.width*R.canvas.width/canvas.width,height:b.height*R.canvas.height/canvas.height,scale:R.towerVisualScale(t)};}
+    if(t.gateTower&&!t.forecourtTower){const node=cities.find(c=>c.side===t.side)?.towers.find(v=>v.t.id===t.id)?.button,b=node?.getBoundingClientRect(),canvas=R.canvas.getBoundingClientRect();if(b)return{x:(b.left-canvas.left)*R.canvas.width/canvas.width,y:(b.top-canvas.top)*R.canvas.height/canvas.height,width:b.width*R.canvas.width/canvas.width,height:b.height*R.canvas.height/canvas.height,scale:R.towerVisualScale(t)};}
     return bounds(t);
   };
   R.structureVisualPoint=t=>{if(view.active()){const b=R.towerVisualBounds(t);return{x:b.x+b.width/2,y:b.y+b.height*.78};}return R.pointAt(t.lane,t.lateral||0);};
   const range=R.roadTowerRangeGeometry;R.roadTowerRangeGeometry=t=>{const band=range(t);if(view.active())Object.assign(band,{top:view.roadBounds().top,bottom:view.roadBounds().bottom});return band;};
   R.drawTower=t=>{
-    if(!view.active())return draw(t);if(!t.alive||t.gateTower)return;
+    if(!view.active())return draw(t);if(!t.alive||t.gateTower&&!t.forecourtTower)return;
     const g=R.ctx,b=bounds(t),p=R.pointAt(t.lane,t.lateral||0),s=b.scale,race=R.cityForSide(t.side).race,asset=view.assets.get(race),color=R.unitTeamFill(t);
     g.save();g.fillStyle='#20252336';g.beginPath();g.ellipse(p.x,p.y+6*s,36*s,8*s,0,0,Math.PI*2);g.fill();
     if(asset?.ready)g.drawImage(asset.structures,0,0,512,520,b.x,b.y,b.width,b.height);

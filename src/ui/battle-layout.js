@@ -1,6 +1,6 @@
 import { createBattleLine } from './battle-line.js';
 import { installBattleRosters } from './battle-rosters.js';
-const BUILD_ICON='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 26h20V13H6Zm-2-13L16 4l12 9M12 26v-9h8v9"/><path d="m3 6 5-3 5 6-4 4Z"/></svg>';
+import { BUILD_ICON } from './command-icons.js';
 
 // Default battle layout around the same solo, spectator and multiplayer game.
 export function installBattleLayout(R) {

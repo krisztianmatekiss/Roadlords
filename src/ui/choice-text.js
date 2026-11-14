@@ -85,7 +85,7 @@ export function initializeUiChoiceText(runtime) {
     "bloodlust": "Ha egy Kardos megöl egy ellenséget, azonnal újra támadhat, és visszagyógyul maximális HP-jának 15%-ával.",
     "artillery_sighting": "A Katapult ugyanazt az épületet egymás után lőve találatonként +50% sebzést halmoz, legfeljebb +200%-ig.",
     "supply_hub": "A Raktárral közvetlenül szomszédos katonai termelők egységköltsége −30%.",
-    "castle_defenders": "Amíg mindhárom saját úttornyod áll, a helyőrségből elit egységek vonulnak ki. A 2 vártorony nem számít bele.",
+    "castle_defenders": "Amíg mindhárom saját úttornyod áll, a helyőrségből elit egységek vonulnak ki. A vár- és előtornyok nem számítanak bele.",
     "combined_assault": "Ha egy kiengedett hullámban legalább 3 különböző egységkategória van, a teljes hullám +25% mozgási és támadási sebességet kap.",
     "tower_salvo": "Minden saját torony minden támadáskor +1 extra, teljes sebzésű lövedéket lő ki.",
     "tower_rebuild": "Azonnal újjáépít 2 ledőlt saját tornyot teljes HP-val.",

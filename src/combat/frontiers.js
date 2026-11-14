@@ -10,8 +10,8 @@ export function installTowerFrontiers(R) {
     let player = capitals.player, enemy = capitals.enemy;
     for (const tower of R.towers) {
       if (!tower.alive) continue;
-      if (tower.side === 'enemy' && tower.lane < player.lane) player = tower;
-      if (tower.side === 'player' && tower.lane > enemy.lane) enemy = tower;
+      if (tower.side === 'enemy' && (tower.lane < player.lane || player.capital && tower.lane === player.lane)) player = tower;
+      if (tower.side === 'player' && (tower.lane > enemy.lane || enemy.capital && tower.lane === enemy.lane)) enemy = tower;
     }
     R.ROAD.frontiers = {player,enemy};
     R.ROAD.frontiersAt = R.ROAD.clock;

@@ -294,7 +294,7 @@ export function register(runtime) {
     };
   };
   runtime.towerNameV496 = function towerNameV496(t) {
-    return t.gateTower ? 'Kaputorony' : `T${t.tier} torony`;
+    return t.forecourtTower ? 'Előtorony' : t.gateTower ? 'Kaputorony' : `T${t.tier} torony`;
   };
   runtime.drawTowerRangeV496 = function drawTowerRangeV496() {
     const t = runtime.selectedTowerV496();

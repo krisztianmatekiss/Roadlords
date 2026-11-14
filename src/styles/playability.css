@@ -1,11 +1,11 @@
 /* Small, shared controls; never widen the existing resource bar. */
 .chronicleDeckIcon{display:none}
 html body.chronicle #app #uiTrialFold,html body.chronicle #app #relicBtn{min-width:48px!important;width:48px!important;height:48px!important;padding:8px!important;position:relative}
-html body.chronicle #uiTrialFold>svg,html body.chronicle .chronicleDeckIcon svg{width:29px;height:29px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}
+html body.chronicle #uiTrialFold>svg,html body.chronicle .chronicleDeckIcon svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}
 html body.chronicle #app #relicBtn .deckCaption{display:none!important}
 html body.chronicle .chronicleDeckIcon{display:block;line-height:0}
 html body.chronicle #app #relicBtn b{position:absolute!important;right:-6px;bottom:-6px;min-width:19px;padding:2px 4px!important;border:1px solid #2e4536!important;border-radius:50%;background:#fff0c7!important;font:800 12px/1 system-ui!important}
-html body.chronicle #demolitionTool{left:18px!important;bottom:calc(clamp(88px,10vh,116px) + 25px)!important;width:52px!important;height:52px!important;padding:8px!important;z-index:41!important;box-shadow:0 3px 0 #34483266!important}
+html body.chronicle #demolitionTool{left:18px!important;bottom:calc(var(--chronicle-overview-height) + 25px)!important;width:52px!important;height:52px!important;padding:8px!important;z-index:41!important;box-shadow:0 3px 0 #34483266!important}
 html body.chronicle #demolitionTool svg{filter:drop-shadow(0 1px 1px #654a23)}
 html body.chronicle #app .topLeftCluster .res{display:grid!important;grid-template-columns:24px minmax(0,1fr)!important;grid-template-rows:24px auto!important;row-gap:0!important;align-items:center!important;min-height:48px!important;max-width:190px;box-sizing:border-box}
 html body.chronicle #app .topLeftCluster .res>div{display:contents!important}
@@ -31,7 +31,7 @@ html body.chronicle #app .roadWorld .cityframe:after{display:none!important}
 /* Keep the ten-by-ten building grid readable over all courtyard textures. */
 html body.chronicle #app .roadWorld .plot{border-color:#58432c9e!important;box-shadow:inset 0 0 0 1px #fff3ca4d!important}
 html body.chronicle #app .roadWorld .buildingOutline path{stroke-width:2.5;filter:drop-shadow(0 0 1px #15231eee)}
-html body.chronicle #app .roadWorld .plot.terrain .ticonimg{width:100%!important;height:100%!important;object-fit:contain}
+html body #app .roadWorld .plot.terrain .ticonimg{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;transform:none!important;filter:none!important;display:block}
 /* A broad framed timber gate and irregular threshold replace the thin strip/grid. */
 html body.chronicle #app .roadWorld .gate{width:20%!important;height:18%!important}
 html body.chronicle #app .roadWorld .gate.right{right:0!important}

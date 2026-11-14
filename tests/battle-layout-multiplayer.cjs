@@ -14,6 +14,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
    const R=__ROADLORDS_RUNTIME__,sent=[];
    R.state.running=false;R.state.pregame=false;R.state.modal=false;R.state.startChoices=0;
    R.roadResetCity(R.P,'human');R.roadResetCity(R.E,'orc');R.P.hp=12345;
+   R.towers.find(t=>t.side==='player'&&t.gateTower&&!t.forecourtTower).hp=4567;
    R.state.units=[];for(let i=0;i<5;i++){const u=R.releaseUnit(R.P,{key:'swordsman'});u.lane=3000+i*10;}
    Object.assign(R.MP,{enabled:true,role:'host',started:true,peer:true});
    R.mpSend=p=>sent.push(p);R.mpSendSnapshot(true);return sent.findLast(p=>p.type==='snapshot');
@@ -31,6 +32,8 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
   console.log('PASS Default multiplayer layout reads real host snapshots with mirrored units and HP');
   assert(await guest.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return R.chronicle.active()&&R.P.race==='orc'&&R.E.race==='human'&&R.chronicle.segments.length===2&&R.chronicle.segments[0].race==='orc'&&R.chronicle.segments[1].race==='human';}),'The guest paints mirrored faction territory through the shared renderer');
   console.log('PASS Multiplayer terrain follows the local player and mirrored opponent races');
+  assert(await guest.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return R.towers.filter(t=>t.forecourtTower).length===2&&R.towers.filter(t=>t.forecourtTower).every(t=>R.battleLayout.line.structures.includes(t))&&[...R.$$('.enemyframe .chronicleGateTower')].some(button=>{const t=R.towers.find(t=>t.id===button.dataset.towerId);return t.side==='enemy'&&t.hp===4567&&button.getAttribute('aria-label').includes('4567');});}),'Mirrored forecourt towers and wall-tower buttons use current snapshot objects');
+  console.log('PASS Guest renders both detached towers and live mirrored wall-tower HP');
   await guest.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;window.gatePackets=[];R.mpSend=p=>gatePackets.push(p);});
   await guest.locator('#gateControls [data-gate="closed"]').click();
   assert(await guest.evaluate(()=>__ROADLORDS_RUNTIME__.P.gateMode==='closed'&&gatePackets.some(p=>p.type==='strategy')),'Guest gate buttons still send actual strategy updates');

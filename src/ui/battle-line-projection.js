@@ -6,7 +6,7 @@ export function projectBattleGroups(groups,{width,pad,pathLength}){
     let current;
     for(const source of groups.filter(g=>g.side===side)){
       const px=x(source.lane);
-      if(!current||px-current.firstX>64||px-current.lastX>48){current={side,firstX:px,lastX:px,lane:0,count:0,hp:0,maxHp:0,start:source.start,end:source.end,types:new Map(),sourceIds:[]};result.push(current);}
+      if(!current||px-current.firstX>86||px-current.lastX>64){current={side,firstX:px,lastX:px,lane:0,count:0,hp:0,maxHp:0,start:source.start,end:source.end,types:new Map(),sourceIds:[]};result.push(current);}
       current.lastX=px;current.lane+=source.lane*source.count;current.count+=source.count;current.hp+=source.hp;current.maxHp+=source.maxHp;current.end=source.end;current.sourceIds.push(source.id);
       current.types.set(source.key,(current.types.get(source.key)||0)+source.count);
     }

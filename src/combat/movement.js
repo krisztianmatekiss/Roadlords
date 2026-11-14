@@ -41,7 +41,7 @@ export function installRoadMovement(R) {
     } else {
       const structure = R.targetStructure(u.side);
       aimX = structure.lane;
-      aimY = Math.abs(structure.lane - u.lane) < 420 ? structure.lateral || 0 : u.roadHomeOffset ?? u.offset ?? 0;
+      aimY = structure.capital ? u.offset || 0 : Math.abs(structure.lane - u.lane) < 420 ? structure.lateral || 0 : u.roadHomeOffset ?? u.offset ?? 0;
     }
     let dx = aimX - u.lane, dy = aimY - (u.offset || 0);
     const distance = Math.hypot(dx, dy);

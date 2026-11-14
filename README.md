@@ -1,5 +1,14 @@
-# Roadlords · V4.77.1
+# Roadlords · V4.78.0
 
+
+## V4.78.0 – Városvédelem és nagyobb csataáttekintő
+
+- Új, színes ház–kalapács és kártyapakli ikonok. Hat új, rajzolt tereptárgy egységes, átlátszó hátterű képpel és belső margóval illeszkedik az építési mezőkre.
+- Mindkét város előtt egy külön előtorony áll a korábbi kaputornyok helyén. A két, falba épített vártorony és a várfal grafikája megmaradt.
+- A főváros teljes, útra néző oldala támadható. A támadók a saját vonalukban maradnak; lövéseik és ütéseik oda érkeznek.
+- Nagyobb portrék, darabszámok, torony- és fővárosjelölők, HP-csíkok és sereg-/helyőrségértékek az alsó, továbbra is doboz nélküli csataáttekintőn.
+
+[Részletek](docs/city-frontage-4.78.md). Multiplayer szabályverzió: **26**.
 
 ## V4.77.1 – Betöltés és olvasható építési mezők
 

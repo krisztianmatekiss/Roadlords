@@ -34,35 +34,35 @@ export function initializeCoreInitialState(runtime) {
     forest: {
       name: 'Erdő',
       icon: '🌲',
-      image: assetUrl("art/image-b71ccef7ff5faaa4.png"),
+      image: assetUrl("art/terrain/chronicle/forest.webp"),
       blocked: true,
       tip: 'A mellette álló Favágó termelése ×2.'
     },
     quarry: {
       name: 'Kőlelőhely',
       icon: '🪨',
-      image: assetUrl("art/image-5b10423e3db1e02b.png"),
+      image: assetUrl("art/terrain/chronicle/quarry.webp"),
       blocked: true,
       tip: 'A mellette álló Kővágó termelése ×2.'
     },
     fertile: {
       name: 'Termékeny föld',
       icon: '🌾',
-      image: assetUrl("art/image-0076e8e02d788b14.png"),
+      image: assetUrl("art/terrain/chronicle/fertile.webp"),
       blocked: false,
       tip: 'Az erre épített Farm termelése ×2.'
     },
     foundation: {
       name: 'Régi alapozás',
       icon: '🧱',
-      image: assetUrl("art/image-49fc94f89991296a.png"),
+      image: assetUrl("art/terrain/chronicle/foundation.webp"),
       blocked: false,
       tip: 'Az erre épített épület Fa- és Kőköltsége 50%-kal alacsonyabb. Egyszer használatos.'
     },
     ruin: {
       name: 'Rom',
       icon: '🪵',
-      image: assetUrl("art/image-376d74c4008e862a.png"),
+      image: assetUrl("art/terrain/chronicle/ruin.webp"),
       blocked: true,
       clear: runtime.C(25, 25),
       tip: 'Eltakarítás: 25 Fa + 25 Kő.'
@@ -70,7 +70,7 @@ export function initializeCoreInitialState(runtime) {
     ancient: {
       name: 'Ősi rom',
       icon: '🏺',
-      image: assetUrl("art/image-ae663196885306da.png"),
+      image: assetUrl("art/terrain/chronicle/ancient.webp"),
       blocked: true,
       clear: runtime.C(100, 100),
       tip: 'Eltakarítás: 100 Fa + 100 Kő. Jutalom: +1 Normal pick.'

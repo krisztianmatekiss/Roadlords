@@ -1,0 +1,84 @@
+{
+  "source": "art/terrain/chronicle/source.png",
+  "sha256": "070d2cafa124277abbf2e3a257632293c53f27cc100ab2fcc99531dad482f804",
+  "icons": {
+    "forest": {
+      "file": "art/terrain/chronicle/forest.webp",
+      "crop": {
+        "left": 68,
+        "top": 51,
+        "width": 425,
+        "height": 416
+      },
+      "width": 256,
+      "height": 256,
+      "padding": 16,
+      "sha256": "52005e8017d23a43327d04741209a50297d333e9e2528fb6f52722ba63a2588a"
+    },
+    "quarry": {
+      "file": "art/terrain/chronicle/quarry.webp",
+      "crop": {
+        "left": 570,
+        "top": 89,
+        "width": 392,
+        "height": 372
+      },
+      "width": 256,
+      "height": 256,
+      "padding": 16,
+      "sha256": "1fb5c7a078d6c0e91652afbe0c9389790b26957320a8d7cd3fea696ffe170627"
+    },
+    "fertile": {
+      "file": "art/terrain/chronicle/fertile.webp",
+      "crop": {
+        "left": 1060,
+        "top": 100,
+        "width": 397,
+        "height": 358
+      },
+      "width": 256,
+      "height": 256,
+      "padding": 16,
+      "sha256": "2df33454f50600e4f11924c1299d85f433c8cb0567b42dcacc671dd32a4fb424"
+    },
+    "foundation": {
+      "file": "art/terrain/chronicle/foundation.webp",
+      "crop": {
+        "left": 70,
+        "top": 579,
+        "width": 422,
+        "height": 375
+      },
+      "width": 256,
+      "height": 256,
+      "padding": 16,
+      "sha256": "702d14dd2b4aed93b63df4e65e7d11d55534794a4ff1fe730810e63739f4ba5a"
+    },
+    "ruin": {
+      "file": "art/terrain/chronicle/ruin.webp",
+      "crop": {
+        "left": 550,
+        "top": 575,
+        "width": 417,
+        "height": 373
+      },
+      "width": 256,
+      "height": 256,
+      "padding": 16,
+      "sha256": "c4c25b6fa732ef69eb3ab8b6b053fadb3316c66802bce8d07a9071cb999f3fce"
+    },
+    "ancient": {
+      "file": "art/terrain/chronicle/ancient.webp",
+      "crop": {
+        "left": 1027,
+        "top": 544,
+        "width": 457,
+        "height": 422
+      },
+      "width": 256,
+      "height": 256,
+      "padding": 16,
+      "sha256": "f410dc0062c4dc4c5d5274ee09b378e2f8b3c14ab2a914628c1b40925da76f4e"
+    }
+  }
+}

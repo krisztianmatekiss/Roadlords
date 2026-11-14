@@ -30,7 +30,11 @@ export function initializeWorldBattlefield(runtime) {
   runtime.cumulative = [0];
   for (let i = 1; i < runtime.pathPoints.length; i++) runtime.cumulative.push(runtime.cumulative[i - 1] + Math.hypot(runtime.pathPoints[i].x - runtime.pathPoints[i - 1].x, runtime.pathPoints[i].y - runtime.pathPoints[i - 1].y));
   runtime.PATH_LENGTH = ROAD_LENGTH;
-  runtime.towers = [runtime.tower('p3', 'player', 3, .108, 4800), runtime.tower('p2', 'player', 2, .233, 3600), runtime.tower('p1', 'player', 1, .368, 2800), runtime.gateTower('pg-top', 'player', .018, -57), runtime.gateTower('pg-bottom', 'player', .018, 40), runtime.gateTower('eg-top', 'enemy', .982, -57), runtime.gateTower('eg-bottom', 'enemy', .982, 40), runtime.tower('e1', 'enemy', 1, .632, 2800), runtime.tower('e2', 'enemy', 2, .767, 3600), runtime.tower('e3', 'enemy', 3, .892, 4800)];
+  runtime.towers = [runtime.tower('p3', 'player', 3, .108, 4800), runtime.tower('p2', 'player', 2, .233, 3600), runtime.tower('p1', 'player', 1, .368, 2800), runtime.gateTower('pg-top', 'player', 0, -57), runtime.gateTower('pg-bottom', 'player', 0, 40), runtime.gateTower('eg-top', 'enemy', 1, -57), runtime.gateTower('eg-bottom', 'enemy', 1, 40), runtime.tower('e1', 'enemy', 1, .632, 2800), runtime.tower('e2', 'enemy', 2, .767, 3600), runtime.tower('e3', 'enemy', 3, .892, 4800)];
+  // One detached last-defense tower per city; the two wall towers stay intact.
+  for (const [id,side,f] of [['p-forecourt','player',.018],['e-forecourt','enemy',.982]]) {
+    runtime.towers.push({...runtime.gateTower(id,side,f,0),forecourtTower:true});
+  }
   runtime.capitalTowers = [{
     id: 'player-gate',
     side: 'player',

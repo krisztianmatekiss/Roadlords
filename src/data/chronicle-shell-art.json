@@ -1,9 +1,9 @@
 {
   "menu": {
-    "file": "art/chronicle/command-atlas.png",
-    "webFile": "art/chronicle/command-atlas.webp",
-    "width": 1536,
-    "height": 1024,
-    "sha256": "672d11bee2767a478794049dfadb0f22d006ac9d44c73d63ad935ca4e7f6ab1a"
+    "file": "art/chronicle/menu-valley.png",
+    "webFile": "art/chronicle/menu-valley.webp",
+    "width": 1672,
+    "height": 941,
+    "sha256": "9e4717bddb5c64525b46665ea80704feab68e08a6157de7e445da15c368db36e"
   }
 }

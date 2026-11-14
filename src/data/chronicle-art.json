@@ -164,9 +164,11 @@
       ]
     },
     "roadTexture": {
-      "file": "art/chronicle/undead-paving.png",
-      "webFile": "art/chronicle/undead-paving.webp",
-      "sha256": "c6ab0d6966478a8720e1d031e5fe99a9aaefe1e5e3c5335ff4ad97e4916da609"
+      "file": "art/chronicle/undead-paving-light.png",
+      "webFile": "art/chronicle/undead-paving-light.webp",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "307413a4ee840aba4663fd19ce5249d54323469d3a4a2ef1a25056e73615d94d"
     }
   }
 }

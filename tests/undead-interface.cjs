@@ -46,8 +46,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     await p.locator('#rlCodexPanel .rlCodexSearch').fill('');
     for (const [tab, count] of [
       ['units', 7],
-      ['common', 25],
-      ['legendary', 34],
+      ['common', 28],
+      ['legendary', 33],
     ]) {
       await p.locator('#rlCodexPanel [data-tab="' + tab + '"]').click();
       check(

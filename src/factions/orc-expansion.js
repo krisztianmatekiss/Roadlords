@@ -6,9 +6,9 @@ export function initializeOrcExpansion(R) {
   const producer = (c, type) => c.buildings.some(b => b.type === type);
   for (const [id, name, description] of ORC_COMMON_ADDITIONS) R.NORMAL.push({
     id, name, description, race: 'orc', icon: '✦',
-    eligible: c => orc(c) && army(c)
+    eligible: c => orc(c)
       && (id !== 'orc_cursed_damage' || producer(c, 'orc_shaman'))
-      && (id !== 'orc_food_discount' || R.countNormal(c, id) < 7),
+      && (id !== 'orc_food_discount' || R.countNormal(c, id) < B.maximumFoodDiscount/B.foodDiscount),
   });
   for (const [id, name, description] of ORC_LEGEND_ADDITIONS) R.LEGENDARY.push({
     id, name, description, race: 'orc', icon: '✦',

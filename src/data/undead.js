@@ -245,11 +245,14 @@ export const UNDEAD_UPGRADES = UNDEAD_PLAN_UPGRADES.filter(row => !['gen_build_d
   name: /^(HP|Sebzés) \+10%$/.test(row.D) ? row.C + ' · ' + row.D.replace('HP', 'Életerő') : row.D,
   description: UNDEAD_UPGRADE_COPY[row.A] || `${row.C}: +10% ${row.A.endsWith('_hp') ? 'maximális életerő' : 'sebzés'}.`,
   scope: row.C,
-  kind: ['gen_soul_frugal','gen_military_speed'].includes(row.A) ? 'legendary' : row.B === 'Common' ? 'normal' : 'legendary',
+  kind: row.A==='lich_leg_greedy' ? 'normal' : ['gen_soul_frugal','gen_military_speed'].includes(row.A) ? 'legendary' : row.B === 'Common' ? 'normal' : 'legendary',
   icon: '☠',
   race: 'undead',
 }));
-UNDEAD_UPGRADES.push(...UNDEAD_EXPANSION);
+UNDEAD_UPGRADES.push(...UNDEAD_EXPANSION,
+ {id:'lich_common_growth',name:'Erősödő sorvasztás',scope:'Lich',kind:'normal',race:'undead',icon:'☠',description:'A Lich sugarainak sebzésnövekedése +50%.'},
+ {id:'zombie_common_burst_radius',name:'Terjedő rothadás',scope:'Zombi',kind:'normal',race:'undead',icon:'☠',description:'A Zombi méregkitörésének sugara +1 méter.'},
+);
 export const UNDEAD_RULES = Object.freeze({
   startingSouls: UNDEAD_ECONOMY.startingSouls,
   technicalSummonLimit: 1500,

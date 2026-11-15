@@ -451,6 +451,7 @@ export function installApplicationShell(game) {
         }, 4500);
         return;
       }
+      try{sessionStorage.setItem('roadlords:return-to-menu','1');}catch{}
       location.reload();
     };
     document.addEventListener('keydown', e => {

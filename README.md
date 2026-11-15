@@ -1,5 +1,14 @@
-# Roadlords · V4.81.1
+# Roadlords · V4.82.0
 
+
+## V4.82.0 – Erősebb ritkaságok és összesített pakli
+
+- A szokásos normál fejlesztések 1× / 2× / 4× erősséggel érkeznek. Több gyakori változat és bővebb kezdő választék; a célzott lapok szintkövetelményei és a meglévő maximumok megmaradnak.
+- Fixen halmozódó Vérivás és Vérző sebek. Csak epikus életlopásos lapok; két halmozható Lich-epikus és nagyobb Zombi-méregkitörést adó epikus, saját grafikákkal.
+- A pakliban egy fejlesztés egy lap: összesített hatás, felvételszám és ritkaságonkénti bontás, mindkét játékosnál.
+- Meccsből kilépve közvetlenül a főmenü jelenik meg az indítóképernyő helyett.
+
+[Részletes értékek](docs/upgrade-patch-4.82.md). Multiplayer szabályverzió: **29**.
 
 ## V4.81.1 – Kiszámítható grafikai tesztváros
 

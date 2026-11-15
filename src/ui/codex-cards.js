@@ -71,14 +71,14 @@ export function createCodexCards(R) {
       ${bs.length && !city ? `<details class="lexBranches"><summary>L4 ágak</summary>${bs.map(b => `<div class="rlBranch"><b>${esc(b.name)}</b><p>${effectText(b.description)}</p>${ruleDetails(cardRules[type+'/'+b.id])}</div>`).join('')}</details>` : ''}
       ${selected?`<p class="deckBuildingBranch"><b>${esc(selected.name)}</b> · ${effectText(selected.description)}</p>`:''}${extraRules(type,race,level)}</article>`;
   }
-  function upgrade(item, kind, race, city = null) {
+  function upgrade(item, kind, race, city = null, summary = null) {
     if(kind==='normal') item=R.upgradeCatalog.option(item.id,item.rarity || rarities.get(item.id));
     const key = R.PICK_UNIT_IMAGES[item.id], src = R.PICK_IMAGES[item.id];
     const art = key && R.UNITS[key] ? R.unitImageTag(key, 'lexUnitImg') : src ? `<img src="${src}" alt="" loading="lazy">` : esc(item.icon || '✦');
     const reference=city || cityFor(race,'keep',1)[0];
-    const preview=R.upgradeCopyPreview(reference,{...item,kind});
+    const preview=summary || R.upgradeCopyPreview(reference,{...item,kind});
     const changes=preview?.rows.length ? `<div class="upgradeComparison" aria-label="${city ? 'Jelenlegi hatás' : 'Első felvétel változása'}">${preview.rows.map(row=>`<span class="upgradeRow"><span class="upgradeMetric">${esc(upgradeMetricLabel(row.label))}</span><b class="upgradeValues">${city ? `<span class="upgradeCurrent">${esc(row.before)}</span>` : `<span class="upgradeBefore">${esc(row.before)}</span> → <span class="upgradeAfter effect-positive">${esc(row.after)}</span>`}</b></span>`).join('')}</div>` : '';
-    return `<article class="rlCodexCard ${kind === 'legendary' ? 'rlLegendCard' : ''}" data-codex-upgrade="${item.id}">${face({id:item.id,kind,race,name:item.name,category:kind === 'legendary' ? 'legendary' : 'common',rarity:item.rarity,art,body:`<p>${effectText(item.description)}</p>${changes}`})}${!city && R.upgradeCatalog.requirements.text({...item,kind}) ? `<p class="upgradeRequirement">${esc(R.upgradeCatalog.requirements.text({...item,kind}))}</p>`:''}${kind==='normal'&&!city ? `<nav class="lexRarities" aria-label="Ritkaság">${Object.keys(R.upgradeCatalog.editions(item.id)).map(r=>`<button type="button" data-codex-rarity="${r}" aria-pressed="${r===item.rarity}" style="--rarity-color:${R.upgradeCatalog.rarities[r].color}">${R.upgradeCatalog.rarities[r].label}</button>`).join('')}</nav>`:''}${ruleDetails(cardRules[item.id])}</article>`;
+    return `<article class="rlCodexCard ${kind === 'legendary' ? 'rlLegendCard' : ''}" data-codex-upgrade="${item.id}">${face({id:item.id,kind,race,name:item.name,category:kind === 'legendary' ? 'legendary' : 'common',rarity:item.rarity,art,body:`<p>${effectText(summary?.description || item.description)}</p>${changes}`})}${!city && R.upgradeCatalog.requirements.text({...item,kind}) ? `<p class="upgradeRequirement">${esc(R.upgradeCatalog.requirements.text({...item,kind}))}</p>`:''}${kind==='normal'&&!city ? `<nav class="lexRarities" aria-label="Ritkaság">${Object.keys(R.upgradeCatalog.editions(item.id)).map(r=>`<button type="button" data-codex-rarity="${r}" aria-pressed="${r===item.rarity}" style="--rarity-color:${R.upgradeCatalog.rarities[r].color}">${R.upgradeCatalog.rarities[r].label}</button>`).join('')}</nav>`:''}${ruleDetails(cardRules[item.id])}</article>`;
   }
   function unit(key, u, race) {
     const copy=UNIT_COPY[key] || {role:'Harci egység',ability:u.description || ''};

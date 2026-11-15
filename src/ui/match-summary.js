@@ -61,12 +61,12 @@ export function initializeUiMatchSummary(runtime) {
   }
   function ownedUpgrades(c) {
     const out = [];
-    for (const {option: d, count} of runtime.upgradeCatalog.owned(c)) {
+    for (const {option: d, count} of runtime.upgradeCatalog.grouped(c)) {
       const id=d.id;
       out.push({
         kind: 'common',
         name: d?.name || id,
-        desc: strip(d?.description || 'Gyakori fejlesztés.'),
+        desc: strip([runtime.upgradeCatalog.summary(c,d).description,...runtime.upgradeCatalog.summary(c,d).rows.map(r=>r.label+': '+r.before)].join(' · ')),
         count
       });
     }

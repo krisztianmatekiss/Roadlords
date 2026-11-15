@@ -9,6 +9,7 @@ export function installOpeningMenu(R) {
   lobby.append(boot);
   const opening=R.menuOpening={ready:false,entered:false,progress:0,errors:[]};
   const track=boot.querySelector('.menuBootTrack'),status=boot.querySelector('.menuBootStatus'),retry=boot.querySelector('button');
+  let returning=false;try{returning=sessionStorage.getItem('roadlords:return-to-menu')==='1';sessionStorage.removeItem('roadlords:return-to-menu');}catch{}
   let pending,started=false;
   const loadImage=()=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>image.decode().then(resolve,reject);image.onerror=()=>reject(Error('Háttérkép'));image.src=assetUrl(art.menu.webFile);});
   opening.enter=()=>{
@@ -17,8 +18,8 @@ export function installOpeningMenu(R) {
   };
   opening.start=()=>{
     if(pending)return pending;started=true;
-    opening.ready=opening.entered=false;opening.progress=0;opening.errors=[];retry.hidden=true;grid.inert=true;
-    lobby.classList.add('menu-loading');lobby.classList.remove('menu-ready','menu-loaded','menu-load-error');lobby.setAttribute('aria-busy','true');
+    opening.ready=false;opening.entered=returning;opening.progress=0;opening.errors=[];retry.hidden=true;grid.inert=!returning;
+    lobby.classList.remove('menu-loading','menu-ready','menu-loaded','menu-load-error');lobby.classList.add(returning?'menu-ready':'menu-loading');boot.hidden=returning;lobby.setAttribute('aria-busy','true');
     track.setAttribute('aria-valuenow','0');track.style.setProperty('--load-progress','0%');status.textContent='Kártyakészlet előkészítése…';hint.textContent='';
     pending=(async()=>{
       try{
@@ -29,8 +30,9 @@ export function installOpeningMenu(R) {
         await Promise.all([...jobs.map(async job=>{try{await job();core++;progress();}catch(error){opening.errors.push(error.message);}}),R.cardArt.preload(progress).catch(error=>opening.errors.push(error.message))]);
       }catch(error){opening.errors.push(error.message);}
       lobby.setAttribute('aria-busy','false');
+      if(opening.errors.length&&returning){opening.ready=true;R.toast('Néhány kártyakép nem töltődött be.');return false;}
       if(opening.errors.length){lobby.classList.add('menu-load-error');status.textContent='A betöltés nem sikerült. Próbáld újra.';retry.hidden=false;return false;}
-      opening.ready=true;opening.progress=1;lobby.classList.remove('menu-loading');lobby.classList.add('menu-loaded');
+      opening.ready=true;opening.progress=1;lobby.classList.remove('menu-loading');lobby.classList.add(returning?'menu-ready':'menu-loaded');
       status.textContent='Betöltés kész';hint.textContent='Kattints a folytatáshoz';return true;
     })().finally(()=>{pending=null;});return pending;
   };

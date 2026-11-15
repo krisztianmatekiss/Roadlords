@@ -399,5 +399,15 @@
     "originalBytes": 2009424,
     "webBytes": 273410,
     "encoding": "webp-quality-94"
+  },
+  "art/undead/epic-upgrades-atlas.png": {
+    "file": "web-images/4cacfba105193edb4269-q96.webp",
+    "sourceSha256": "4cacfba105193edb42696c6fbe6b99f7de7872659cf499492dca638841bd753b",
+    "sha256": "fac537f83d9f52d3913c0f32174fbdaf442eca3dc87e8b0970d4c93f2fe86242",
+    "width": 1774,
+    "height": 887,
+    "originalBytes": 3209750,
+    "webBytes": 764248,
+    "encoding": "webp-quality-96"
   }
 }

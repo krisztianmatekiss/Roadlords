@@ -14,18 +14,26 @@ export function installActiveRelicCards(R) {
     const list = R.$('#relicList');
     list.replaceChildren();
     const owned = [
-      ...R.upgradeCatalog.owned(c).map(({option,count})=>[option,'normal',count]),
+      ...R.upgradeCatalog.grouped(c).map(({option,count,rarities})=>[option,'normal',count,rarities]),
       ...[...c.legends].map(id=>[R.LEGENDARY.find(o=>o.id===id),'legendary',Math.max(1,Number(c.legendaryStacks?.[id])||0)]),
     ];
-    for (const [def,kind,count] of owned) {
+    for (const [def,kind,count,rarities] of owned) {
       if (!def) continue;
       const template = document.createElement('template');
-      template.innerHTML = cards.upgrade(def,kind,c.race || 'human',c);
+      template.innerHTML = cards.upgrade(def,kind,c.race || 'human',c,kind==='normal'?R.upgradeCatalog.summary(c,def):null);
       const card = template.content.firstElementChild;
       card.dataset.relic = def.id;
       const badge = document.createElement('span');
       badge.className = 'relicOwnedCount';badge.textContent = `×${count}`;
       badge.setAttribute('aria-label',`${count} felvétel`);card.prepend(badge);
+      if(rarities){
+        const breakdown=document.createElement('div');breakdown.className='relicRarityCounts';breakdown.setAttribute('aria-label','Felvételek ritkaságonként');
+        for(const [key,rarity]of Object.entries(R.upgradeCatalog.rarities)){
+          const n=rarities[key]||0;if(!n)continue;
+          const chip=document.createElement('span');chip.dataset.rarity=key;chip.style.setProperty('--rarity-color',rarity.color);chip.textContent=rarity.label+' ×'+n;breakdown.append(chip);
+        }
+        card.append(breakdown);
+      }
       if (def.id === 'overproduction') {
         const progress = document.createElement('p');
         progress.className='relicLiveProgress';

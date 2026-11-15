@@ -125,6 +125,6 @@ export const UNDEAD_UPGRADE_COPY = {
   vampire_leg_shield: 'A Vámpír életlopásából megmaradó túlgyógyítás korlátlan pajzzsá alakul.',
   vampire_leg_dual: 'A Vámpír egyszerre 2 célpontot támad teljes sebzéssel. Mindkettőből életet lop.',
   vampire_leg_frenzy: 'A Vámpír ölésenként +10% támadási sebességet kap haláláig, korlátlanul.',
-  lich_leg_greedy: 'A Lich egyszerre 2 új célpontra kapcsol sugarat.',
+  lich_leg_greedy: 'A Lich támadásonként +1 új célpontra kapcsol sugarat.',
   lich_leg_shield: 'A Lichet érő sebzés felét a sugaraival összekötött ellenségek kapják.',
 };

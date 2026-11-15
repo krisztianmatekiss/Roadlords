@@ -201,8 +201,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     });
     report.data = data;
     check(
-      'The active faction registers 18 buildings, 7 unit variants, 25 common and 34 legendary upgrades',
-      data.total === 18 && data.units === 7 && data.normal === 25 && data.legend === 34,
+      'The active faction registers 18 buildings, 7 unit variants, 28 normal and 33 legendary upgrades',
+      data.total === 18 && data.units === 7 && data.normal === 28 && data.legend === 33,
     );
     check(
       'Faction-specific draft pools do not leak Human or Orc cards; every common has a numeric preview',

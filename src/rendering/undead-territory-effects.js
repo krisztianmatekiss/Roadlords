@@ -65,7 +65,7 @@ export function installUndeadTerritoryEffects(R) {
     for (const burst of R.undVisiblePoisonBursts()) {
       const age=(R.state.time-burst.born)/B.poisonBurstDuration;
       if (age<0 || age>=1) continue;
-      const p=R.pointAt(burst.lane,burst.offset),rx=30*R.ROAD.zoom*(.25+.75*age),ry=rx*R.ROAD.h/600;
+      const p=R.pointAt(burst.lane,burst.offset),rx=(burst.radius||30)*R.ROAD.zoom*(.25+.75*age),ry=rx*R.ROAD.h/600;
       if (p.x+rx<0 || p.x-rx>R.ROAD.w) continue;
       g.globalAlpha=(1-age)*.75;g.fillStyle='#75c756';g.strokeStyle='#b4f27c';g.lineWidth=2;
       g.beginPath();g.ellipse(p.x,p.y-4,rx,ry,0,0,Math.PI*2);g.fill();g.stroke();

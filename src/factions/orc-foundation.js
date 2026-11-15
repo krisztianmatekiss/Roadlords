@@ -123,8 +123,8 @@ export function initializeFactionsOrcFoundation(runtime) {
     runtime.PICK_UNIT_IMAGES[key + '_hp'] = key;
     runtime.PICK_UNIT_IMAGES[key + '_dmg'] = key;
   }
-  common('orc_bleed', 'Vérző sebek', 'Harcos találata: először 2 vérzés, további felvételek +1. A vérzés másodpercenként a stackek számával sebez, majd 1-gyel csökken.', c => available(c, 'orc_warrior'));
-  common('orc_leech', 'Vérivás', 'Dühöngő: először 5%, majd felvételenként +2 százalékpont életlopás a ténylegesen okozott HP-sebzésből.', c => available(c, 'orc_berserker'));
+  common('orc_bleed', 'Vérző sebek', 'A Harcosok találatai +1 Vérzést okoznak.', c => available(c, 'orc_warrior'));
+  common('orc_leech', 'Vérivás', 'Dühöngő: +5 százalékpont életlopás.', c => available(c, 'orc_berserker'));
   common('orc_double', 'Kettős parittya', 'Goblin: +5 százalékpont esély egy második, teljes erejű találatra. Legfeljebb 100%.', c => available(c, 'orc_goblin') && runtime.countNormal(c, 'orc_double') < 20);
   for (const r of runtime.RES) common('orc_' + r, runtime.RESOURCE_NAMES[r] + ' · Termelés', '+20% ' + runtime.RESOURCE_NAMES[r] + '-termelés. A felvételek bónuszai összeadódnak.');
   common('orc_as', 'Ork harci tempó', 'Minden ork egység +5% támadási sebesség.');
@@ -273,15 +273,15 @@ export function initializeFactionsOrcFoundation(runtime) {
     for (let i = 0; i < hits && t.alive; i++) {
       if (u.key === 'orc_goblin') runtime.addProjectile(u, t, runtime.hasLeg(c, 'orc_gob_bow') ? 'arrow' : 'rock');else runtime.addMeleeFx(u, t, 'slash');
       const actual = runtime.damageUnit(t, runtime.attackBaseDamage(u, t, mult), u.damageType);
-      if (u.key === 'orc_warrior' && runtime.countNormal(c, 'orc_bleed') && t.alive && !t.orcLastEvaded) t.orcBleed = (t.orcBleed || 0) + 1 + runtime.countNormal(c, 'orc_bleed');
-      if (u.key === 'orc_berserker' && !u.orcDeathDefiance && runtime.countNormal(c, 'orc_leech')) window.__ROADLORDS_ORCS__.lifeSteal ? window.__ROADLORDS_ORCS__.lifeSteal(u, actual * (.03 + .02 * runtime.countNormal(c, 'orc_leech'))) : u.hp = Math.min(u.maxHp, u.hp + actual * (.03 + .02 * runtime.countNormal(c, 'orc_leech')));
+      if (u.key === 'orc_warrior' && runtime.countNormal(c, 'orc_bleed') && t.alive && !t.orcLastEvaded) t.orcBleed = (t.orcBleed || 0) + runtime.countNormal(c, 'orc_bleed');
+      if (u.key === 'orc_berserker' && !u.orcDeathDefiance && runtime.countNormal(c, 'orc_leech')) window.__ROADLORDS_ORCS__.lifeSteal ? window.__ROADLORDS_ORCS__.lifeSteal(u, actual * (.05 * runtime.countNormal(c, 'orc_leech'))) : u.hp = Math.min(u.maxHp, u.hp + actual * (.05 * runtime.countNormal(c, 'orc_leech')));
     }
     if (bloodbath) {
       const v = runtime.state.units.filter(v => v.alive && v.side !== u.side && v !== t && runtime.roadDistance(v, u) <= u.range).sort((a, b) => runtime.roadDistance(a, u) - runtime.roadDistance(b, u))[0];
       if (v) {
         runtime.addMeleeFx(u, v, 'slash');
         const actual = runtime.damageUnit(v, runtime.attackBaseDamage(u, v, mult * .5), u.damageType);
-        if (!u.orcDeathDefiance && runtime.countNormal(c, 'orc_leech')) window.__ROADLORDS_ORCS__.lifeSteal ? window.__ROADLORDS_ORCS__.lifeSteal(u, actual * (.03 + .02 * runtime.countNormal(c, 'orc_leech'))) : u.hp = Math.min(u.maxHp, u.hp + actual * (.03 + .02 * runtime.countNormal(c, 'orc_leech')));
+        if (!u.orcDeathDefiance && runtime.countNormal(c, 'orc_leech')) window.__ROADLORDS_ORCS__.lifeSteal ? window.__ROADLORDS_ORCS__.lifeSteal(u, actual * (.05 * runtime.countNormal(c, 'orc_leech'))) : u.hp = Math.min(u.maxHp, u.hp + actual * (.05 * runtime.countNormal(c, 'orc_leech')));
       }
     }
     runtime.afterFirstAttack(u);
@@ -296,7 +296,7 @@ export function initializeFactionsOrcFoundation(runtime) {
     if (runtime.hasLeg(c, 'orc_bers_rage')) u.damage *= 1 + (1 - u.hp / u.maxHp);
     try {
       const out = oldStructure(u, s);
-      if (u.alive && !u.orcDeathDefiance && runtime.countNormal(c, 'orc_leech')) window.__ROADLORDS_ORCS__.lifeSteal(u, Math.max(0, before - Math.max(0, target.hp)) * (.03 + .02 * runtime.countNormal(c, 'orc_leech')));
+      if (u.alive && !u.orcDeathDefiance && runtime.countNormal(c, 'orc_leech')) window.__ROADLORDS_ORCS__.lifeSteal(u, Math.max(0, before - Math.max(0, target.hp)) * (.05 * runtime.countNormal(c, 'orc_leech')));
       return out;
     } finally {
       u.damage = dmg;

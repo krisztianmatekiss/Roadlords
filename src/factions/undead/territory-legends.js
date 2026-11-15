@@ -1,3 +1,4 @@
+import { WORLD_UNITS_PER_METRE } from '../../world/measurements.js';
 import { territoryPower } from '../../data/faction-redesign.js';
 import { UNDEAD_TERRITORY as B } from '../../data/undead-territory-legends.js';
 import { installUndeadTerritoryEffects } from '../../rendering/undead-territory-effects.js';
@@ -93,10 +94,10 @@ export function initializeUndeadTerritoryLegends(R) {
     if (c.race !== 'undead' || !c.undeadState) return;
     const state=c.undeadState;
     state.poisonBursts=(state.poisonBursts||[]).filter(b=>b.expires>now()).slice(-47);
-    state.poisonBursts.push({...local(u),born:now(),expires:now()+B.poisonBurstDuration});
+    state.poisonBursts.push({...local(u),born:now(),radius:30+WORLD_UNITS_PER_METRE*R.countNormal(c,'zombie_common_burst_radius'),expires:now()+B.poisonBurstDuration});
   };
   R.undVisiblePoisonBursts = () => cities().flatMap(c=>(c.undeadState?.poisonBursts||[])
-    .filter(b=>b.expires>now()).map(b=>({...position(c,b),born:b.born,expires:b.expires})));
+    .filter(b=>b.expires>now()).map(b=>({...position(c,b),born:b.born,radius:b.radius||30,expires:b.expires})));
   R.undTowerDecaySource = t => {
     if (!t?.alive || t.gateTower) return null;
     return cities().find(c=>R.sideForCity(c)!==t.side && R.hasLeg(c,'und_withered_foundations') &&

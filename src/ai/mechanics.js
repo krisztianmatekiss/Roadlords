@@ -70,6 +70,8 @@ const GROUPS = [
   [['necro_common_summon_stats'], .08, ['summon']],
   [['vampire_common_lifesteal'], .055, ['lifesteal']],
   [['lich_common_respawn'], .06, ['revive']],
+  [['lich_common_growth'], .20, ['beam']],
+  [['zombie_common_burst_radius'], .10, ['poison','death']],
   [['und_death_mend', 'und_spawn_ward'], .045, ['survival', 'death']],
   [['und_home_march'], .035, ['territory']], [['und_siege_force'], .045, ['siege']],
   [['und_territory'], .025, ['territory']], [['garden_chance'], .06, ['revive']],

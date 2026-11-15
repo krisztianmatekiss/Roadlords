@@ -1,3 +1,4 @@
+import { WORLD_UNITS_PER_METRE } from '../../world/measurements.js';
 import { installDarkTowers } from './dark-towers.js';
 import { territoryPower } from '../../data/faction-redesign.js';
 import { UNDEAD_UNITS as U, UNDEAD_RULES } from '../../data/undead.js';
@@ -111,7 +112,7 @@ export function initializeUndeadCombat(R) {
   };
   R.undZombiePoisonBurst = (u) => {
     const c = own(u), poison = 4 + count(u, 'zombie_common_poison');
-    for (const v of near(u, opposite(u.side), 30)) R.undPoison(v, poison, c);
+    for (const v of near(u, opposite(u.side), 30 + WORLD_UNITS_PER_METRE*count(u,'zombie_common_burst_radius'))) R.undPoison(v, poison, c);
     R.undRecordPoisonBurst?.(u);
   };
   const halfPoison = (u, beforeHp) => {
@@ -283,11 +284,10 @@ export function initializeUndeadCombat(R) {
           if (!u.alive || u.stunTime > 0) return;
           u.undBeams ||= [];
           connect(u, t);
-          if (leg(u, 'lich_leg_greedy')) {
-            const next = near(u, opposite(u.side), u.range).find(
-              (v) => !u.undBeams.some((b) => b.id === v.id),
-            );
-            if (next) connect(u, next);
+          const extra=count(u,'lich_leg_greedy')+Number(leg(u,'lich_leg_greedy'));
+          for(let i=0;i<extra;i++){
+            const next=near(u,opposite(u.side),u.range).find(v=>!u.undBeams.some(b=>b.id===v.id));
+            if(!next)break;connect(u,next);
           }
           u.attackCount = (u.attackCount || 0) + 1;
           return;
@@ -529,7 +529,7 @@ export function initializeUndeadCombat(R) {
           const age = beam.age || 0;
           beam.age = age + dt;
           if (u.stunTime <= 0) {
-            const amount = ((5 * dt + 2 * (age * dt + (dt * dt) / 2)) * u.damage) / 5;
+            const amount = ((5 * dt + 2 * (1+.5*count(u,'lich_common_growth')) * (age * dt + (dt * dt) / 2)) * u.damage) / 5;
             withSource({ source: u, attack: false, kind: 'beam' }, () => R.damageUnit(v, amount, 'magic'));
           }
           if (!v.alive) v = retarget(beam);

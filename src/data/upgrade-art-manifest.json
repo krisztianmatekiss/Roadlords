@@ -167,6 +167,14 @@
       "columns": 2,
       "rows": 2,
       "sha256": "9250b8dcecef1f9c01b9d0e18fcc0ea8bdfff4403f48d8f2cc4002f77b793395"
+    },
+    "undead-epic-482": {
+      "file": "art/undead/epic-upgrades-atlas.png",
+      "width": 1774,
+      "height": 887,
+      "columns": 2,
+      "rows": 1,
+      "sha256": "4cacfba105193edb42696c6fbe6b99f7de7872659cf499492dca638841bd753b"
     }
   },
   "scenes": {
@@ -1583,6 +1591,14 @@
         760,
         504
       ]
+    },
+    "lich_common_growth": {
+      "source": "undead-epic-482",
+      "index": 0
+    },
+    "zombie_common_burst_radius": {
+      "source": "undead-epic-482",
+      "index": 1
     }
   }
 }

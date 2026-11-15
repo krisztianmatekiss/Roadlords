@@ -74,8 +74,8 @@ export function initializeFactionsOrcDescriptions(runtime) {
   };
   for (const [key, text] of Object.entries(unitCopy)) runtime.UNITS[key].description = text;
   const picks = {
-    orc_bleed: 'A Harcos találatai 2 Vérzést okoznak. Minden további felvétel +1 Vérzést ad. A Vérzés másodpercenként a saját értékével sebez, majd 1-gyel csökken.',
-    orc_leech: 'A Dühöngő az okozott sebzés 5%-át visszagyógyítja. Minden további felvétel +2 százalékpont életlopást ad.',
+    orc_bleed: 'A Harcosok találatai +1 Vérzést okoznak.',
+    orc_leech: 'Dühöngő: +5 százalékpont életlopás.',
     orc_double: 'A Goblin +5% eséllyel kétszer támad. Az esély felvételekkel növelhető, legfeljebb 100%-ig.',
     orc_spear_crit: 'A Warglovas lándzsája +10% eséllyel dupla sebzést okoz egységeknek. 100% fölött újabb duplázásra nyílik esély: 150%-nál mindig dupla, 50% eséllyel négyszeres sebzés.',
     orc_curse_duration: 'A Sámán átkai 1 másodperccel tovább tartanak.',

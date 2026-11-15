@@ -1,8 +1,9 @@
 import { createUpgradeRequirements } from './upgrade-requirements.js';
-import { UPGRADE_RARITIES, upgradeEditions, upgradeRarity, upgradeDescription, normalOptionPower } from './upgrade-rarities.js';
+import { UPGRADE_RARITIES, upgradeEditions, upgradeRarity, upgradeDescription, upgradeDescriptionAtPower, normalOptionPower } from './upgrade-rarities.js';
 
 export function installUpgradeCatalog(R) {
   const requirements=createUpgradeRequirements(R);
+  for(const id of ['spawn_speed','all_damage','frugal_training']){const d=R.NORMAL.find(o=>o.id===id);if(d)d.eligible=()=>true;}
   const definition = (id, kind='normal') => (kind==='legendary'?R.LEGENDARY:R.NORMAL).find(d => d.id === id);
   const option = (id, rarity) => {
     const def = definition(id); if (!def) return null;
@@ -25,6 +26,22 @@ export function installUpgradeCatalog(R) {
     return total;
   };
   R.upgradeCatalog = { definition, option, owned, count, editions: upgradeEditions, rarities: UPGRADE_RARITIES, requirements };
+  const grouped = c => {
+    const result=new Map(),order=Object.keys(UPGRADE_RARITIES);
+    for(const {option:o,count:n} of owned(c)){
+      let group=result.get(o.id);
+      if(!group){group={option:o,count:0,rarities:{},strength:c.normal[o.id]||0};result.set(o.id,group);}
+      group.count+=n;group.rarities[o.rarity]=(group.rarities[o.rarity]||0)+n;
+      if(order.indexOf(o.rarity)>order.indexOf(group.option.rarity))group.option=o;
+    }
+    return [...result.values()];
+  };
+  const summary=(c,o)=>{
+    const d=definition(o.id),n=c.normal[o.id]||0,preview=R.upgradeCopyPreview(c,o);
+    const capped=new Set(['building_discount','orc_food_discount','orc_double','orc_refund','orc_loot','skeleton_common_ranged_res','ghost_common_dodge','garden_chance','lich_common_respawn']);
+    return {description:capped.has(o.id)&&preview?.rows.length?'Összesített hatás:':upgradeDescriptionAtPower(d,n),rows:preview?.rows||[]};
+  };
+  Object.assign(R.upgradeCatalog,{grouped,summary});
   R.normalOptionPower = normalOptionPower;
   R.recordNormalPick = (c, o, copies) => {
     c.normalRarities ||= {};

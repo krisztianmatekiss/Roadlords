@@ -1,5 +1,9 @@
-# Roadlords · V4.81.0
+# Roadlords · V4.81.1
 
+
+## V4.81.1 – Kiszámítható grafikai tesztváros
+
+- A teljes várost bemutató grafikai teszt minden épületet rögzített sorrendben, szabályos helyre rak le, az AI részben véletlenszerű helykeresője helyett. A lerakott és ténylegesen megrajzolt épülettípusokat is összeveti, hiba esetén pontos diagnózist ad.
 
 ## V4.81.0 – Élőhalott városgrafikák
 

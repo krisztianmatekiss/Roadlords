@@ -36,9 +36,36 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   check('Square buildings show no rotation control and ignore rotation requests',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.rotateSelectedBuild();return !R.$('#rotatePlacement')&&R.state.buildRotation===0&&!R.$('#placementHint').textContent.includes('forog');}));
   await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.state.selectedBuild='warehouse';R.state.buildRotation=0;R.renderBuildList();R.previewPlacement(7,7);});await p.locator('#rotatePlacement').click();await p.waitForTimeout(100);
   check('The real rotation control swaps a rectangular building to its end view and changes the placement footprint',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,g=R.$('#playerGrid .placementBuildingGhost .humanMapSprite'),m=new DOMMatrix(getComputedStyle(g.querySelector('.humanMapPlane')).transform);return R.state.buildRotation===1&&g.dataset.artRotation==='1'&&R.shapeBounds('warehouse',1).w===1&&R.shapeBounds('warehouse',1).h===2&&m.a===1&&m.d===1;}));
+  report.cities=[];
   for(const race of ['human','orc','undead']){
-   const count=await p.evaluate(async race=>{const R=__ROADLORDS_RUNTIME__;R.roadResetCity(R.P,race);R.P.terrain.fill(null);R.P.unlocked=new Set(Object.keys(R.BUILDINGS).filter(type=>R.factionMatches(race,R.BUILDINGS[type],type)));R.state.selectedBuild=null;R.clearPlacementPreview();const keep=R.P.buildings[0];keep.row=keep.col=0;const types=Object.entries(R.BUILDINGS).filter(([k,d])=>k!=='keep'&&R.factionMatches(race,d,k)).sort((a,b)=>b[1].shape.length-a[1].shape.length);for(const [type]of types){R.P.resources=R.C(1e6,1e6,1e6);const at=R.findCell(R.P,type);if(at)R.placeBuilding(R.P,type,...at);}R.renderStatic();R.updateHud();R.roadResize();R.roadWar.scrollLeft=0;await R.chronicle.tile(race).cssReady;R.renderBattle(0);return R.P.buildings.length;},race);
-   check(`The complete ${race} city uses its new map art in the actual game`,count===(race==='human'?23:18),count);await p.screenshot({path:`artifacts/city-views-481-${race}.png`});
+   const city=await p.evaluate(async race=>{
+    const R=__ROADLORDS_RUNTIME__;R.roadResetCity(R.P,race);R.P.terrain.fill(null);
+    const types=Object.entries(R.BUILDINGS).filter(([type,d])=>R.factionMatches(race,d,type)).map(([type])=>type);
+    R.P.unlocked=new Set(types);R.state.selectedBuild=null;R.clearPlacementPreview();
+    const keep=R.P.buildings.find(b=>b.type==='keep');keep.row=keep.col=0;R.P.buildings=[keep];
+    const ordered=types.filter(type=>type!=='keep').sort((a,b)=>R.BUILDINGS[b].shape.length-R.BUILDINGS[a].shape.length),placements=[];
+    // A graphics fixture needs legal, repeatable placement, not the AI's strategic preferences.
+    for(const type of ordered){
+     R.recomputeCity(R.P,false);R.P.resources=R.C(1e6,1e6,1e6);let placed=null;
+     for(const rotation of R.rotationOptions(type)){
+      for(let row=0;row<R.GRID&&!placed;row++)for(let col=0;col<R.GRID&&!placed;col++){
+       if(!R.canPlace(R.P,type,row,col,rotation))continue;
+       const result=R.placeBuilding(R.P,type,row,col,rotation);
+       if(!result.ok)throw Error(`City art fixture ${race}/${type}: ${result.reason} at ${row},${col}, rotation ${rotation}`);
+       placed={type,row,col,rotation};
+      }
+      if(placed)break;
+     }
+     if(!placed)throw Error(`City art fixture ${race}/${type}: no legal plot after ${placements.map(b=>b.type).join(', ')}`);
+     placements.push(placed);
+    }
+    R.renderStatic();R.updateHud();R.roadResize();R.roadWar.scrollLeft=0;await R.chronicle.tile(race).cssReady;R.renderBattle(0);
+    const selector={human:'.humanMapSprite',orc:'.orcMapSprite',undead:'.undMapSprite'}[race];
+    return {race,expected:types,placed:R.P.buildings.map(b=>b.type),rendered:[...R.$$('#playerGrid '+selector)].map(el=>el.dataset.humanMap||el.dataset.orcMap||el.dataset.undeadMap),placements};
+   },race);
+   report.cities.push(city);
+   check(`The complete ${race} city uses its new map art in the actual game`,city.expected.length===(race==='human'?23:18)&&city.placed.length===city.expected.length&&city.rendered.length===city.expected.length&&city.expected.every(type=>city.placed.includes(type)&&city.rendered.includes(type)),city);
+   await p.screenshot({path:`artifacts/city-views-481-${race}.png`});
   }
   check('The Human courtyard uses its quiet ground texture',await p.evaluate(()=>__ROADLORDS_RUNTIME__.chronicle.assets.get('human').courtyard.src.includes('human-courtyard-soft')));
   check('City views and rotation controls have no browser errors',report.errors.length===0,report.errors);

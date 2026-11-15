@@ -52,7 +52,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    if(race==='orc')await p.locator('[data-codex-unit="orc_goblin"]').screenshot({path:'artifacts/goblin-common-frame.png'});
   }
   await p.locator('[data-tab="common"]').click();
-  check('All 25 Undead common upgrades have neutral frames and individual upgrade scenes or matching unit portraits',await p.evaluate(()=>{const cards=[...document.querySelectorAll('[data-codex-upgrade]')];return cards.length===25&&cards.every(c=>c.querySelector('.cardFrameImage').getAttribute('src').endsWith('common-frame.png')&&c.querySelector('.cardScene'))}));
+  check('All active Undead normal upgrades have neutral frames and individual upgrade scenes or matching unit portraits',await p.evaluate(()=>{const cards=[...document.querySelectorAll('[data-codex-upgrade]')];return cards.length===__ROADLORDS_RUNTIME__.NORMAL.filter(o=>o.race==='undead').length&&cards.every(c=>c.querySelector('.cardFrameImage').getAttribute('src').endsWith('common-frame.png')&&c.querySelector('.cardScene'))}));
   await p.locator('[data-codex-upgrade="ghost_common_dodge"]').screenshot({path:'artifacts/ghost-dodge-upgrade.png'});
   await p.locator('#codexRace').selectOption('orc');
   check('Every Orc common and legendary card has artwork, including all additions and previously missing Shaman/cargo/relic cards',await p.evaluate(()=>[...document.querySelectorAll('[data-codex-upgrade]')].every(c=>c.querySelector('.cardFrameImage'))));

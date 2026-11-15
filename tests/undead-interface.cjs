@@ -24,7 +24,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     await p.locator('#rlOpenCodex').click();
     await p.locator('#codexRace').selectOption('undead');
     check(
-      'Undead encyclopedia lists all 21 active buildings with faction art and Soul prices',
+      'Undead encyclopedia lists all active buildings with faction art and Soul prices',
       (await p.locator('#rlCodexPanel .rlCodexCard').count()) === 18 &&
         (await p.locator('#rlCodexPanel .undeadBuildingArt').count()) === 0 &&
         (await p.locator('#rlCodexPanel .cardFrameImage').count()) === 18 &&
@@ -113,7 +113,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       };
     });
     check(
-      'City sprites use a roof-plan view that follows the same rotations as other factions',
+      'City sprites use independently drawn upright views like the other factions',
       await p.evaluate(() => {
         const el = document.querySelector('#playerGrid .undMapSprite .undeadBuildingArt'),
           b = el.getBoundingClientRect();
@@ -124,7 +124,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       'Generated atlas loads locally and contains real transparent artwork',
       await p.evaluate(async () => {
         const im = new Image();
-        im.src = new URL('art/undead/city-roofs.png', location.href).href;
+        im.src = new URL('art/undead/map-chronicle-core.webp', location.href).href;
         await im.decode();
         const c = document.createElement('canvas');
         c.width = im.width;
@@ -138,7 +138,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
           if (data[i] > 220) opaque++;
           if (data[i] === 0) clear++;
         }
-        return im.width === 1536 && opaque > 10000 && clear > 10000;
+        return im.width >= 1000 && opaque > 10000 && clear > 10000;
       }),
     );
     await p.evaluate(() => {

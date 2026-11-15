@@ -1,0 +1,478 @@
+{
+  "version": 1,
+  "sources": {
+    "undead-core": {
+      "file": "art/undead/map-chronicle-core.png",
+      "webFile": "art/undead/map-chronicle-core.webp",
+      "width": 1448,
+      "height": 1086,
+      "sha256": "dc22e7128d6fc413a7971ec885e6249275e30847cbbcef8ad10b25084d6c51d0",
+      "webSha256": "6198644bd52fabdc049025f8574958dda0a3a279a71716a0dc89552a885fabd7",
+      "originalBytes": 2036394,
+      "webBytes": 1360252
+    },
+    "undead-directions": {
+      "file": "art/undead/map-chronicle-directions.png",
+      "webFile": "art/undead/map-chronicle-directions.webp",
+      "width": 1448,
+      "height": 1086,
+      "sha256": "253ef3bf2eb6d1e6e2736b7ff02ad4b9731cb303588a942ad9e64fb3f65e7066",
+      "webSha256": "d118ade77d33067d3b23e9fb4279fa36e1425b451052500b1337bd11a5627752",
+      "originalBytes": 1932634,
+      "webBytes": 1304008
+    },
+    "undead-border": {
+      "file": "art/undead/map-chronicle-border.png",
+      "webFile": "art/undead/map-chronicle-border.webp",
+      "width": 1261,
+      "height": 1247,
+      "sha256": "7a2e024958d9a18a3e4a1d5b2d6c7e0713cce1288cf1e9e1a64543aa514dbb34",
+      "webSha256": "8b88be78e038b050aa6a4703575859d23c143fc05e22e3348e94a66f952d92ad",
+      "originalBytes": 1388920,
+      "webBytes": 914382
+    }
+  },
+  "sprites": {
+    "keep": {
+      "source": "undead-core",
+      "rect": [
+        48,
+        26,
+        289,
+        314
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-core",
+          "rect": [
+            48,
+            26,
+            289,
+            314
+          ]
+        }
+      }
+    },
+    "und_well": {
+      "source": "undead-core",
+      "rect": [
+        409,
+        37,
+        271,
+        292
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-core",
+          "rect": [
+            409,
+            37,
+            271,
+            292
+          ]
+        }
+      }
+    },
+    "und_graveyard": {
+      "source": "undead-core",
+      "rect": [
+        739,
+        27,
+        319,
+        314
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-core",
+          "rect": [
+            739,
+            27,
+            319,
+            314
+          ]
+        }
+      }
+    },
+    "und_ghost_spawner": {
+      "source": "undead-core",
+      "rect": [
+        1134,
+        20,
+        254,
+        315
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-core",
+          "rect": [
+            1134,
+            20,
+            254,
+            315
+          ]
+        }
+      }
+    },
+    "und_necro_spawner": {
+      "source": "undead-core",
+      "rect": [
+        90,
+        365,
+        204,
+        334
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-core",
+          "rect": [
+            90,
+            365,
+            204,
+            334
+          ]
+        }
+      }
+    },
+    "und_vampire_castle": {
+      "source": "undead-core",
+      "rect": [
+        402,
+        375,
+        289,
+        322
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-core",
+          "rect": [
+            402,
+            375,
+            289,
+            322
+          ]
+        }
+      }
+    },
+    "und_lich_spawner": {
+      "source": "undead-core",
+      "rect": [
+        783,
+        372,
+        232,
+        331
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-core",
+          "rect": [
+            783,
+            372,
+            232,
+            331
+          ]
+        }
+      }
+    },
+    "und_dark_tower": {
+      "source": "undead-core",
+      "rect": [
+        1135,
+        397,
+        247,
+        302
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-core",
+          "rect": [
+            1135,
+            397,
+            247,
+            302
+          ]
+        }
+      }
+    },
+    "und_soul_bank": {
+      "source": "undead-core",
+      "rect": [
+        46,
+        735,
+        296,
+        317
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-core",
+          "rect": [
+            46,
+            735,
+            296,
+            317
+          ]
+        }
+      }
+    },
+    "und_soul_anchor": {
+      "source": "undead-core",
+      "rect": [
+        402,
+        731,
+        282,
+        326
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-core",
+          "rect": [
+            402,
+            731,
+            282,
+            326
+          ]
+        }
+      }
+    },
+    "und_rebirth_tomb": {
+      "source": "undead-core",
+      "rect": [
+        725,
+        764,
+        327,
+        277
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-core",
+          "rect": [
+            725,
+            764,
+            327,
+            277
+          ]
+        }
+      }
+    },
+    "und_otherworld_portal": {
+      "source": "undead-core",
+      "rect": [
+        1101,
+        729,
+        318,
+        327
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-core",
+          "rect": [
+            1101,
+            729,
+            318,
+            327
+          ]
+        }
+      }
+    },
+    "und_crypt": {
+      "source": "undead-directions",
+      "rect": [
+        20,
+        122,
+        340,
+        204
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-directions",
+          "rect": [
+            20,
+            122,
+            340,
+            204
+          ]
+        },
+        "1": {
+          "source": "undead-directions",
+          "rect": [
+            449,
+            36,
+            207,
+            291
+          ]
+        }
+      }
+    },
+    "und_morgue": {
+      "source": "undead-directions",
+      "rect": [
+        738,
+        113,
+        348,
+        214
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-directions",
+          "rect": [
+            738,
+            113,
+            348,
+            214
+          ]
+        },
+        "1": {
+          "source": "undead-directions",
+          "rect": [
+            1179,
+            22,
+            196,
+            308
+          ]
+        }
+      }
+    },
+    "und_bone_forge": {
+      "source": "undead-directions",
+      "rect": [
+        19,
+        426,
+        342,
+        239
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-directions",
+          "rect": [
+            19,
+            426,
+            342,
+            239
+          ]
+        },
+        "1": {
+          "source": "undead-directions",
+          "rect": [
+            450,
+            397,
+            202,
+            273
+          ]
+        }
+      }
+    },
+    "und_plague_chamber": {
+      "source": "undead-directions",
+      "rect": [
+        720,
+        447,
+        371,
+        218
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-directions",
+          "rect": [
+            720,
+            447,
+            371,
+            218
+          ]
+        },
+        "1": {
+          "source": "undead-directions",
+          "rect": [
+            1165,
+            404,
+            224,
+            263
+          ]
+        }
+      }
+    },
+    "und_garden_of_dead": {
+      "source": "undead-directions",
+      "rect": [
+        32,
+        722,
+        300,
+        331
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-directions",
+          "rect": [
+            32,
+            722,
+            300,
+            331
+          ]
+        },
+        "1": {
+          "source": "undead-directions",
+          "rect": [
+            383,
+            724,
+            303,
+            329
+          ]
+        },
+        "2": {
+          "source": "undead-directions",
+          "rect": [
+            757,
+            724,
+            302,
+            327
+          ]
+        },
+        "3": {
+          "source": "undead-directions",
+          "rect": [
+            1117,
+            723,
+            305,
+            330
+          ]
+        }
+      }
+    },
+    "und_border_obelisk": {
+      "source": "undead-border",
+      "rect": [
+        188,
+        100,
+        881,
+        1032
+      ],
+      "style": "chronicle",
+      "views": {
+        "0": {
+          "source": "undead-border",
+          "rect": [
+            188,
+            100,
+            881,
+            1032
+          ]
+        }
+      }
+    }
+  }
+}

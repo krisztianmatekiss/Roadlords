@@ -144,6 +144,7 @@ export function register(runtime) {
   };
   runtime.mpUiCitySignature = function mpUiCitySignature(c) {
     return JSON.stringify({
+      race: c.race || 'human',
       terrain: (c.terrain || []).map(t => t?.type || null),
       buildings: c.buildings.map(b => ({
         id: b.id,

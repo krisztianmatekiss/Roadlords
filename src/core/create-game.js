@@ -5,6 +5,7 @@ import { initializeUndeadTerritoryLegends } from '../factions/undead/territory-l
 import { initializeUndeadConvergence } from '../factions/undead/convergence.js';
 import { installUnitCardIllustrations } from '../rendering/unit-card-illustrations.js';
 import { initializeHumanMapArtwork } from '../rendering/human-map-artwork.js';
+import { initializeUndeadCityArtwork } from '../rendering/undead-city-artwork.js';
 import { initializeOrcCityArtwork } from '../rendering/orc-city-artwork.js';
 import { initializeUndeadExpansion } from '../factions/undead/expansion.js';
 import { installFlyingShotSnapshots } from '../multiplayer/flying-shots.js';
@@ -290,6 +291,7 @@ export function createGame() {
   initializeUndeadArt(runtime);
   initializeHumanMapArtwork(runtime);
   initializeOrcCityArtwork(runtime);
+  initializeUndeadCityArtwork(runtime);
   initializeCombatRoadIntegration(runtime);
   installTowerProjectiles(runtime);
   initializeUndeadCombat(runtime);

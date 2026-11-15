@@ -1,5 +1,14 @@
-# Roadlords · V4.80.0
+# Roadlords · V4.81.0
 
+
+## V4.81.0 – Élőhalott városgrafikák
+
+- Mind a 18 aktív élőhalott épület új, rajzolt városi képet kapott, a Nekropolisszal együtt. Eltérő sziluettek, csontszínű kő, visszafogott lila és zöld részletek.
+- A hosszúkás épületeknek két, a Holtak kertjének négy külön megrajzolt nézete van: összesen 25 élőhalott nézet. Ugyanaz a kép jelenik meg az építési előnézetben és a lerakott épületen.
+- Az élőhalottak is a közös, függőleges épületnézeteket használják egyjátékosban, AI–AI tesztben és multiplayerben. A készlet a fajválasztáskor előtöltődik.
+- A közzétételt megakasztó régi teszt most a tényleges, két- és négyirányú elhelyezést ellenőrzi. Frakcióváltáskor a város képe is biztosan frissül, azonos épületelrendezés esetén is.
+
+[Részletek](docs/undead-city-4.81.md). Multiplayer szabályverzió: **28**.
 
 ## V4.80.0 – Külön épületnézetek és ork városgrafikák
 

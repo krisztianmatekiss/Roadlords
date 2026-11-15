@@ -50,6 +50,13 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
   await guest.evaluate(async packet=>{const R=__ROADLORDS_RUNTIME__;R.mpApplySnapshot(packet);await R.loadChronicleArt();R.roadFocusLane(R.territoryBoundary());R.renderBattle(0);},changed.packet);
   assert(await guest.evaluate(boundary=>{const R=__ROADLORDS_RUNTIME__;return R.territoryBoundary()===R.PATH_LENGTH-boundary&&R.chronicle.boundary===R.territoryBoundary()&&R.chronicle.segments.some(s=>s.race==='undead');},changed.boundary),'Real snapshots mirror the advancing Undead terrain boundary');
   console.log('PASS The advancing Undead terrain cut mirrors correctly through real host snapshots');
+  const cityArt=await guest.evaluate(async()=>{
+   const R=__ROADLORDS_RUNTIME__;const loaded=await R.loadUndeadCityArt();
+   const enemy=R.$('#enemyGrid .undMapSprite[data-undead-map="keep"]'),own=R.$('#playerGrid .orcMapSprite[data-orc-map="keep"]');
+   return {loaded,own:!!own,rotation:enemy?.dataset.artRotation,source:enemy?.querySelector('image').getAttribute('href')};
+  });
+  assert(cityArt.loaded&&cityArt.own&&cityArt.rotation==='0'&&cityArt.source?.endsWith('art/undead/map-chronicle-core.webp'),'Mirrored capitals retain their separate Orc and new Undead city artwork: '+JSON.stringify(cityArt));
+  console.log('PASS Real multiplayer snapshots use the new Undead city art without leaking it into the Orc city');
   assert.equal(errors.length,0,errors.join('\n'));console.log('PASS Default multiplayer gate controls send strategy updates without browser errors');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

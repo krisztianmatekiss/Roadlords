@@ -767,7 +767,7 @@ export function register(runtime) {
       buildings = c.buildings.map(b => `${b.id}:${b.type}:${b.level}:${b.row}:${b.col}:${b.rotation || 0}:${b.inactive ? 1 : 0}`).join('|');
     const capacity = runtime.armyCapacityState?.(c);
     const surplus = capacity ? [...capacity.buildings].filter(([,value])=>value.redundant).map(([id])=>id).join(',') : '';
-    return `${terrain}§${buildings}§surplus:${surplus}`;
+    return `${c.race || 'human'}§${terrain}§${buildings}§surplus:${surplus}`;
   };
   runtime.v491GuardhousePlacementValid = function v491GuardhousePlacementValid(c, row, col, rotation = 0) {
     const fake = {

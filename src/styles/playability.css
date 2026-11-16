@@ -42,3 +42,9 @@ body.chronicle .gate[data-open="true"] .chronicleGateLeaf.upper{transform:transl
 body.chronicle .gate[data-open="true"] .chronicleGateLeaf.lower{transform:translateY(60px)}
 body.chronicle .gate[data-open="false"] .chronicleGateLeaf{transform:none}
 @media(max-width:900px){html body.chronicle #app .topLeftCluster .res{grid-template-columns:20px minmax(0,1fr)!important;gap:3px!important}html body.chronicle #app .res .ri,html body.chronicle #app .res .resourceIcon{width:20px!important;height:20px!important}html body.chronicle #app #chronicleTools{gap:10px}html body.chronicle #app #uiTrialFold,html body.chronicle #app #relicBtn{width:42px!important;height:42px!important;min-width:42px!important;padding:5px!important}}
+
+/* Door and wall share the same full-enclosure viewport at every resolution. */
+body.chronicle .cityframe > .chronicleDoor{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none;overflow:hidden}
+body.chronicle .cityframe[data-gate-open="true"] > .chronicleDoor .upper{transform:translateY(-60px)}
+body.chronicle .cityframe[data-gate-open="true"] > .chronicleDoor .lower{transform:translateY(60px)}
+body.chronicle .cityframe[data-gate-open="false"] > .chronicleDoor .chronicleGateLeaf{transform:none}

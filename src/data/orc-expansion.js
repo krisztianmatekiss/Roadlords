@@ -11,6 +11,7 @@ export const ORC_COMMON_ADDITIONS = [
   ['orc_food_discount', 'Hadi fejadag', 'Minden ork egység élelemköltsége −8%, legfeljebb −50%.', 'food'],
 ];
 export const ORC_LEGEND_ADDITIONS = [
+  ['orc_warg_all_spears','Lándzsamesterek','A Warglovasok minden támadása lándzsadobás.','spear'],
   ['orc_skip_power', 'Megvetett zsákmány', 'Minden kihagyott választás után az ork egységek +4% életerőt és sebzést kapnak.', 'skip'],
   ['orc_enemy_ancestors', 'Ellenségvér az ősöknek', 'Minden harcban elesett ellenség +1 halálpontot ad az Ősök Totemének.', 'totem'],
 ];

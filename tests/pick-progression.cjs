@@ -22,7 +22,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   const distribution=await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=R.P,random=Math.random;let rng=417;Math.random=()=>((rng=(Math.imul(rng,1664525)+1013904223)>>>0)/4294967296);
    const run=(time,wide)=>{R.state.time=time;c.legends=new Set(wide?['wide_choice']:[]);const counts={rare:0,common:0,legendary:0};for(let n=0;n<12000;n++){c.legendaryDrought=0;counts[R.rollPickTier(c,'timer').tier]++;}return Object.fromEntries(Object.entries(counts).map(([k,v])=>[k,v/12000]));};
-   try{return {early:run(479.999,false),late:run(480,false),wide:run(10,true)};}finally{Math.random=random;}
+   try{return {early:run(719.999,false),late:run(720,false),wide:run(10,true)};}finally{Math.random=random;}
   });report.distribution=distribution;
   for(const [phase,wanted]of Object.entries({early:{rare:.5,common:.45,legendary:.05},late:{rare:.25,common:.7,legendary:.05},wide:{rare:.5,common:.4,legendary:.1}}))check(phase+': measured rarity distribution matches the configured probabilities',Object.keys(wanted).every(k=>Math.abs(distribution[phase][k]-wanted[k])<.015));
   check('No pick-progression browser errors',report.errors.length===0);

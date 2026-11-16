@@ -11,5 +11,5 @@ export function chronicleDoor(race,side,ready=true){
   const [x,y,w,h]=art[race].fortress.portal,id='gate-opening-'+side,src=assetUrl(art[race].fortress.webFile);
   // Reuse the painted doors from the enclosure itself: no differently styled overlay.
   const leaf=(top,name)=>`<g class="chronicleGateLeaf ${name}"><svg x="${x}" y="${top}" width="${w}" height="${h/2}" viewBox="${x} ${top} ${w} ${h/2}" overflow="hidden"><image href="${src}" width="1000" height="1000"/></svg></g>`;
-  return `<svg class="chronicleDoor" data-race="${race}" viewBox="800 410 200 180" aria-hidden="true"><defs><clipPath id="${id}"><rect x="${x}" y="${y}" width="${w}" height="${h}"/></clipPath></defs>${ready?`<g clip-path="url(#${id})">${leaf(y,'upper')}${leaf(y+h/2,'lower')}</g>`:''}</svg>`;
+  return `<svg class="chronicleDoor" data-side="${side}" data-race="${race}" viewBox="0 0 1000 1000" aria-hidden="true"><defs><clipPath id="${id}"><rect x="${x}" y="${y}" width="${w}" height="${h}"/></clipPath></defs>${ready?`<g clip-path="url(#${id})">${leaf(y,'upper')}${leaf(y+h/2,'lower')}</g>`:''}</svg>`;
 }

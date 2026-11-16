@@ -57,7 +57,7 @@ export function initializeDataUnitDefinitions(runtime) {
       cat: 'cavalry',
       tags: ['melee', 'armored'],
       hp: 240,
-      damage: 30,
+      damage: 24,
       cooldown: 1.25,
       range: 32,
       speed: MOVEMENT_BALANCE.knight,

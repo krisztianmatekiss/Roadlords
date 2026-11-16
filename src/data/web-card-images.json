@@ -409,5 +409,15 @@
     "originalBytes": 3209750,
     "webBytes": 764248,
     "encoding": "webp-quality-96"
+  },
+  "art/unit-legends-483.png": {
+    "file": "web-images/c558e0467c39e77751c1-q96.webp",
+    "sourceSha256": "c558e0467c39e77751c10bdd80669961eea6b129dee0abb68956f2089918cae3",
+    "sha256": "29e0f3c617280a1eb88f50dabd396f91306208b0d6b67785a35f6a43cf60f37d",
+    "width": 1774,
+    "height": 887,
+    "originalBytes": 2749334,
+    "webBytes": 589464,
+    "encoding": "webp-quality-96"
   }
 }

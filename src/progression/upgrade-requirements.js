@@ -7,6 +7,7 @@ const unitFamilies = {
   necromancer:'und_necromancer', necro:'und_necromancer', vampire:'und_vampire', lich:'und_lich',
 };
 const targetUnits = {
+  orc_warg_all_spears:['orc_warg'],necro_leg_quickening:['und_necromancer'],
   sacred_vow:['priest'], holy_wave:['priest'], holy_retribution:['priest'],
   cavalry_charge:['knight'], momentum:['knight'], phalanx:['spearman'], bloodlust:['swordsman'],
   artillery_sighting:['catapult'],

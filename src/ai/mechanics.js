@@ -70,6 +70,8 @@ const GROUPS = [
   [['necro_common_summon_stats'], .08, ['summon']],
   [['vampire_common_lifesteal'], .055, ['lifesteal']],
   [['lich_common_respawn'], .06, ['revive']],
+  [['orc_warg_all_spears'], .30, ['attack']],
+  [['necro_leg_quickening'], .30, ['summon']],
   [['lich_common_growth'], .20, ['beam']],
   [['zombie_common_burst_radius'], .10, ['poison','death']],
   [['und_death_mend', 'und_spawn_ward'], .045, ['survival', 'death']],
@@ -81,7 +83,7 @@ const REQUIREMENTS = {
   orc_warg_instinct:['spear_crit'],orc_transfusion:['lifesteal'],
   und_fast_poison:['poison'],und_wandering_plague:['poison'],zombie_leg_poisoned_hunt:['poison'],
 };
-const MEASURED=new Set(['orc_gob_bow','orc_warg_hunt']);
+const MEASURED=new Set(['orc_gob_bow','orc_warg_hunt','orc_warg_all_spears','necro_leg_quickening']);
 const BLEED_CARDS=new Set(['orc_bleed','orc_gob_blood','orc_bers_blood']);
 export const CONDITIONAL_EFFECTS = Object.fromEntries(GROUPS.flatMap(([ids, weight, features]) =>
   ids.map(id => [id, { weight, features:BLEED_CARDS.has(id)?[...features,'bleed']:features,requires:REQUIREMENTS[id]||[],measured:MEASURED.has(id) }])));

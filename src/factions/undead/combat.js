@@ -1,9 +1,9 @@
+import { necromancerSummonInterval } from '../../combat/unit-update.js';
 import { WORLD_UNITS_PER_METRE } from '../../world/measurements.js';
 import { installDarkTowers } from './dark-towers.js';
 import { territoryPower } from '../../data/faction-redesign.js';
 import { UNDEAD_UNITS as U, UNDEAD_RULES } from '../../data/undead.js';
 import { isUndead } from './foundation.js';
-import { ARMY_TEMPO } from '../../data/unit-balance.js';
 export function initializeUndeadCombat(R) {
   const { at } = window.__ROADLORDS_UNDEAD__;
   let context = null,
@@ -477,8 +477,9 @@ export function initializeUndeadCombat(R) {
       const c = own(u);
       if (u.key === 'und_necromancer' && u.stunTime <= 0) {
         u.undSummonClock = (u.undSummonClock || 0) + dt;
-        if (u.undSummonClock >= ARMY_TEMPO.necroSummonInterval) {
-          u.undSummonClock %= ARMY_TEMPO.necroSummonInterval;
+        const interval=necromancerSummonInterval(R,c);
+        if (u.undSummonClock >= interval) {
+          u.undSummonClock %= interval;
           const spirits = leg(u, 'necro_leg_spirits'),
             siege = leg(u, 'necro_leg_siege'),
             swarm = R.hasBranch(c, 'und_necro_spawner', 'skeleton_swarm');

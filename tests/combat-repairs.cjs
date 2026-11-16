@@ -21,12 +21,12 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    try{
     Math.random=()=>.99;
     let c=reset('orc'),legend=R.LEGENDARY.find(x=>x.id==='orc_warg_hunt');
-    check('No new legendary: the existing Warg card is separate from the Hunting Lodge',R.LEGENDARY.filter(x=>x.race==='orc').length===24&&R.LEGENDARY.filter(x=>x.race==='undead').length===33&&R.LEGENDARY.filter(x=>!x.race||x.race==='human').length===55&&legend?.name==='Vérszomjas vadászat'&&!R.LEGENDARY.some(x=>x.id==='orc_hunt')&&R.BUILDINGS.orc_hunt.name==='Vadászház');
+    check('The agreed new relics do not change the existing Warg hunt identity',R.LEGENDARY.filter(x=>x.race==='orc').length===25&&R.LEGENDARY.filter(x=>x.race==='undead').length===34&&R.LEGENDARY.filter(x=>!x.race||x.race==='human').length===55&&legend?.name==='Vérszomjas vadászat'&&!R.LEGENDARY.some(x=>x.id==='orc_hunt')&&R.BUILDINGS.orc_hunt.name==='Vadászház');
     const copy=R.upgradeCopyPreview(c,{...legend,kind:'legendary'}).description;
     check('Both the real legendary and its preview describe a Warg throw instead of food production',copy.includes('Warglovas')&&legend.description.includes('lándzs')&&!/élelem|termelés/.test(copy)&&R.PICK_UNIT_IMAGES.orc_warg_hunt==='orc_warg');
     for(const [hunt,rain,spear,expected]of [[true,false,false,60],[false,true,false,0],[true,true,false,120],[true,true,true,120]]){
      c=reset('orc');if(hunt)c.legends.add('orc_warg_hunt');if(rain){c.levels.orc_warg=4;c.l4Branches.orc_warg='spear_rain';}
-     const u=unit(c,'orc_warg'),first=unit(R.E,'swordsman',4010),next=unit(R.E,'swordsman',4020);u.orcSpearReady=spear;first.hp=1;next.hp=next.maxHp=10000;
+     const u=unit(c,'orc_warg'),first=unit(R.E,'swordsman',4010),next=unit(R.E,'swordsman',4020);u.orcWargAttackCount=1;u.orcSpearReady=spear;first.hp=1;next.hp=next.maxHp=10000;
      R.attackUnit(u,first);impact();
      check(`Warg kill reaction: hunt=${hunt}, L4=${rain}, spear=${spear} gives one correct follow-up`,close(10000-next.hp,expected),{damage:10000-next.hp});
     }

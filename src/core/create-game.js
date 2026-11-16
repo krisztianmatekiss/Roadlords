@@ -1,3 +1,4 @@
+import { installUnitCombatUpdate } from '../combat/unit-update.js';
 import { installUpgradeCatalog } from '../progression/upgrade-catalog.js';
 import { installTowerProjectiles } from '../combat/tower-projectiles.js';
 import { initializeFactionRedesign } from '../factions/redesign.js';
@@ -306,6 +307,7 @@ export function createGame() {
   initializeUndeadConvergence(runtime);
   installUnitCardIllustrations(runtime);
   installArmyCapacity(runtime);
+  installUnitCombatUpdate(runtime);
   installUpgradeCatalog(runtime);
   installSharedAiPlanner(runtime);
   return runtime;

@@ -201,8 +201,8 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
     });
     report.data = data;
     check(
-      'The active faction registers 18 buildings, 7 unit variants, 28 normal and 33 legendary upgrades',
-      data.total === 18 && data.units === 7 && data.normal === 28 && data.legend === 33,
+      'The active faction registers 18 buildings, 7 unit variants, 28 normal and 34 legendary upgrades',
+      data.total === 18 && data.units === 7 && data.normal === 28 && data.legend === 34,
     );
     check(
       'Faction-specific draft pools do not leak Human or Orc cards; every common has a numeric preview',
@@ -442,7 +442,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
         reflected = R.UNITS.swordsman.hp - foe.hp;
       undReset();
       const n = undUnit('und_necromancer', 'player', 2200);
-      n.undSummonClock = 28.025;
+      n.undSummonClock = 19.9;
       R.updateBattle(0.1);
       const summons = R.state.units.filter((u) => u.undSummoned),
         summonInfo = {
@@ -457,7 +457,7 @@ const URL = process.env.ROADLORDS_TEST_URL || 'http://127.0.0.1:4173/Roadlords/'
       R.setBuildingLevel(R.P, 'und_necro_spawner', 4, 'eternal_army');
       R.P.legends.add('necro_leg_spirits');
       const eternal = undUnit('und_necromancer', 'player', 2200);
-      eternal.undSummonClock = 28.025;
+      eternal.undSummonClock = 19.9;
       R.updateBattle(0.1);
       const permanent =
         R.state.units.filter((u) => u.undSummoned).every((u) => u.key === 'und_ghost' && !u.temporary) &&

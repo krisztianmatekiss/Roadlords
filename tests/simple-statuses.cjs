@@ -20,7 +20,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    check('All four agreed general commons are eligible before any military producer exists',!c.buildings.some(b=>R.BUILDINGS[b.type]?.unit)&&early.every(id=>pool.includes(id)),pool);
    check('Unit-specific commons and new legendary effects remain gated',!pool.includes('zombie_common_poison')&&!R.eligibleLegendary(c).some(o=>o.id==='und_twin_training'));
    check('The four early commons retain their own faction and stacking behaviour',early.every(id=>{const o=R.NORMAL.find(x=>x.id===id);c.normal[id]=1;return o.eligible(c)&&!o.eligible(R.E.race==='human'?R.E:{...R.E,race:'human'})}));
-   check('No new legendary cards were introduced',R.LEGENDARY.filter(x=>x.race==='orc').length===24&&R.LEGENDARY.filter(x=>x.race==='undead').length===33);
+   check('The faction catalogs include the two agreed unit relics',R.LEGENDARY.filter(x=>x.race==='orc').length===25&&R.LEGENDARY.filter(x=>x.race==='undead').length===34);
    reset();let u=unit();u.orcPoison=5;u.shield=50;window.__ROADLORDS_ORCS__.applyCurse(u,'curse',10);const predicted=R.unitPoisonDamage(u);ticks(u,5);
    check('Poison forecasts the declining stack sum and matches actual ticks, bypassing shield and Curse',predicted===15&&near(u.hp,85)&&u.shield===50,{predicted,hp:u.hp});
    reset();u=unit();u.orcPoison=3.5;const fractional=R.unitPoisonDamage(u);ticks(u,4);check('Fractional poison includes its final partial stack',fractional===8&&u.hp===92);

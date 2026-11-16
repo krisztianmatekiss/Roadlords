@@ -24,7 +24,7 @@ export function installChronicleWorld(R){
       const c=R.cityForSide(side),race=CHRONICLE_THEMES[c.race]?c.race:'human',theme=CHRONICLE_THEMES[race],color=R.unitTeamFill({side}),raceChanged=city.dataset.race!==race;if(raceChanged)city.dataset.race=race;
       const ready=!!view.assets.get(race)?.ready;
       if(frame.dataset.chronicleRace!==race||frame.dataset.chronicleArtReady!==String(ready)){
-        frame.querySelector('.chronicleWalls')?.remove();frame.insertAdjacentHTML('afterbegin',chronicleWalls(race,side,ready));gate.querySelector('.chronicleDoor')?.remove();gate.insertAdjacentHTML('beforeend',chronicleDoor(race,side,ready));
+        frame.querySelector('.chronicleWalls')?.remove();frame.insertAdjacentHTML('afterbegin',chronicleWalls(race,side,ready));frame.querySelector('.chronicleDoor')?.remove();frame.insertAdjacentHTML('beforeend',chronicleDoor(race,side,ready));
         frame.dataset.chronicleRace=race;frame.dataset.chronicleArtReady=String(ready);
       }
       for(const [name,value]of Object.entries(theme))css(city,'--chronicle-'+name,value);
@@ -33,7 +33,7 @@ export function installChronicleWorld(R){
       css(city,'--chronicle-team',color);if(paint?.cssUrl)css(city,'--chronicle-terrain',`url("${paint.cssUrl}")`);else if(raceChanged||!city.style.getPropertyValue('--chronicle-terrain'))css(city,'--chronicle-terrain','none');css(city,'--chronicle-paint-width',paintWidth+'px');css(city,'--chronicle-paint-phase',side==='player'?R.ROAD.city+'px':-R.PATH_LENGTH+'px');css(R.roadWorld,'--chronicle-height',R.ROAD.h+'px');
       if(side==='player'){css(R.roadWorld,'--chronicle-terrain',city.style.getPropertyValue('--chronicle-terrain'));css(R.roadWorld,'--chronicle-ground',theme.ground);css(R.roadWorld,'--chronicle-paint-width',paintWidth+'px');}
       if(frame.dataset.gateMode!==c.gateMode)frame.dataset.gateMode=c.gateMode;
-      const open=String(R.gateActuallyOpen(c));if(gate.dataset.open!==open)gate.dataset.open=open;
+      const open=String(R.gateActuallyOpen(c));if(gate.dataset.open!==open)gate.dataset.open=open;if(frame.dataset.gateOpen!==open)frame.dataset.gateOpen=open;
     }
   }
   const hud=R.updateHud;R.updateHud=(...args)=>{const out=hud(...args);if(view.active())syncCities();return out;};

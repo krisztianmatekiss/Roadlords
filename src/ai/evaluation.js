@@ -1,7 +1,7 @@
+import { necromancerSummonInterval } from '../combat/unit-update.js';
 import { installAiConditionalContext } from './conditional-context.js';
 import { BUILDING_MECHANICS, CONDITIONAL_EFFECTS, UNIT_FEATURES, cardTargets } from './mechanics.js';
 import { ORC_REDESIGN, TAVERN, levelValue, undeadEliteChance, REMOVED_BUILDINGS } from '../data/faction-redesign.js';
-import { ARMY_TEMPO } from '../data/unit-balance.js';
 
 const positive = n => Math.max(0, Number(n) || 0);
 const bounded = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
@@ -70,7 +70,7 @@ export function installAiEvaluation(R) {
     if (key === 'und_lich') damage *= 10; // Sustained ramping beams, not its nominal 5-second attack.
     if (key === 'und_necromancer') {
       const sk = R.statsFor(c, { key: 'und_skeleton', undSummoned: true, undSummonerId: 'ai-preview' });
-      damage += sk.dmg / sk.cooldown * 3 * 10 / ARMY_TEMPO.necroSummonInterval;
+      damage += sk.dmg / sk.cooldown * 3 * 10 / necromancerSummonInterval(R,c);
     }
     if (key === 'und_ghost') {
       const intangible=R.hasLeg(c,'ghost_leg_intangible');
@@ -78,10 +78,11 @@ export function installAiEvaluation(R) {
     }
     if (key === 'orc_warg') {
       const rain=R.hasBranch(c,'orc_warg','spear_rain'),hunt=R.hasLeg(c,'orc_warg_hunt');
-      // One opening throw per expected 12-second engagement. Hunt covers
-      // melee kills as well; Spear Rain alone chains only spear kills.
-      const throwDamage=stats.dmg*2*(rain?2:1),extraThrows=hunt?1:rain?.4:0;
-      damage+=throwDamage/12*(1+extraThrows);
+      const all=R.hasLeg(c,'orc_warg_all_spears'),share=all?1:.25,throwFactor=rain?4:2;
+      damage*=1+share*(throwFactor-1);
+      // Preserve the opening throw and kill-chain contribution separately.
+      if(!all)damage+=stats.dmg/12;
+      damage+=stats.dmg*throwFactor/12*(hunt?1:rain?.4:0);
     }
     if (key === 'und_vampire') hp *= 1.3;
     if (key === 'orc_goblin') hp *= 1.2;

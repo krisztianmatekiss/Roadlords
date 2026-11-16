@@ -1,5 +1,15 @@
-# Roadlords · V4.82.0
+# Roadlords · V4.83.0
 
+
+## V4.83.0 – Egységfinomítás és hosszabb építkezési szakasz
+
+- Lovag: 24 sebzés. Csontváz Íjász: 4 sebzés, változatlan 26 méteres hatótáv.
+- A Warglovas az első és minden negyedik támadásával lándzsát dob; a Lándzsamesterek legendással minden támadása dobás.
+- A Nekromanta 20 másodpercenként idéz; a Gyorsított rítus legendással 10 másodpercenként. Mindkét új lap saját képet kapott, és a megfelelő L4 termelőhöz kötött.
+- A kapu mozgó ajtói a várfallal azonos méretezést használnak.
+- Az épületválasztások 50%-os alap esélye a 12. percig tart; utána 25%. A többi esély és a 20. ajánlat legendás garanciája változatlan.
+
+[Részletek](docs/unit-update-4.83.md). Multiplayer szabályverzió: **30**.
 
 ## V4.82.0 – Erősebb ritkaságok és összesített pakli
 
@@ -190,7 +200,7 @@ Részletek és mérések: [AI-felülvizsgálat](docs/ai-review-4.62.md).
 - Egy közös építési és fejlesztésválasztási tervező mindhárom frakciónak. A régi ork és élőhalott építési sorrendek és külön pontozók kikerültek.
 - A tervező a tényleges árakkal, fenntartással, képzéssel, hatásokkal és helyfoglalással számol. A városmásolaton végzett becslés a meglévő sereget és a lehetséges kombinációkat is figyelembe veszi.
 - Gazdasági kezdés, fenntartható beruházások, támogatók működő elhelyezése, többmezős romeltakarítás végigvitele és célzott újrapörgetés.
-- Az első 8 percben 50% épület/épületfejlesztés, 45% common, 5% legendás alap esély; utána 25% / 70% / 5%. A Bő választék legendás esélye továbbra is 10%.
+- Az első 12 percben 50% épület/épületfejlesztés, 45% common, 5% legendás alap esély; utána 25% / 70% / 5%. A Bő választék legendás esélye továbbra is 10%.
 - 19 legendás nélküli ajánlat után a 20. garantált legendás. A négy kezdő épületválasztás, az ősi rom közvetlen common jutalma és az újrapörgetés nem növeli a számlálót.
 - A Tesztek alatt teljes AI–AI nézői mód indítható, külön választható bal és jobb oldali néppel. A két AI önállóan gazdálkodik és választ; szünet, gyorsítás, új meccs és főmenü elérhető.
 - A Lélekpenge kikerült az épületek, kártyák és harci hatások közül.

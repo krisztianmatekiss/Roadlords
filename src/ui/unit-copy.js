@@ -12,7 +12,7 @@ export const UNIT_COPY = {
   orc_warrior: {role:'Nehéz közelharcos', ability:'Nagy életerejével tartja a frontot.'},
   orc_berserker: {role:'Rohamgyalogos', ability:'Sebesülten gyorsabban támad.', details:['Minden 2% hiányzó életerőért +1% támadási sebesség.']},
   orc_goblin: {role:'Távolsági gyalogos', ability:'Gyorsan támad, de kevés az életereje.'},
-  orc_warg: {role:'Lovasság', ability:'Lándzsadobással nyit, majd közelharcban küzd.', details:['Nyitó lándzsa: 60 sebzés, 230 hatótáv.','Épületek ellen a dobás gyengébb, és nem lehet kritikus.']},
+  orc_warg: {role:'Lovasság', ability:'Az első és minden 4. támadása lándzsadobás.', details:['Lándzsadobás: 60 sebzés, 230 hatótáv.','Épületek ellen a dobás gyengébb, és nem lehet kritikus.']},
   orc_shaman: {role:'Átokmágus', ability:'Sikeres találatkor 4 mp-re megátkozza az ellenséget.', details:['Átok: +25% kapott és −25% kiosztott sebzés.','Az új Átok frissíti az időtartamot; a büntetés nem halmozódik.']},
   orc_ram: {role:'Ostromgép', ability:'Épületek ellen erős. −50% kapott fizikai sebzés.'},
   orc_troll: {role:'Területsebző ostromegység', ability:'Csapásai a célpont körül is sebeznek.', details:['Másodlagos sebzés: 35; területi sugár: 55.','Alapférőhely: 4 a seregben és a helyőrségben.']},

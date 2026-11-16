@@ -1,6 +1,6 @@
 // Base prices are raised once, before city discounts and faction modifiers.
 export const TRAINING_COST_MULTIPLIER = 1.25;
-export const ARMY_TEMPO = Object.freeze({movement:1.25,trainingTime:1.25,trainingCost:1.25,necroSummonInterval:28.125});
+export const ARMY_TEMPO = Object.freeze({movement:1.25,trainingTime:1.25,trainingCost:1.25,necroSummonInterval:20});
 // Relative to 4.76: slow heavy producers retain their value, ranged swarms slow most.
 // Apply at the shared base, before building levels, speed upgrades and discounts.
 export const TRAINING_TIME_MULTIPLIERS = Object.freeze({

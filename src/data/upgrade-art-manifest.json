@@ -175,6 +175,14 @@
       "columns": 2,
       "rows": 1,
       "sha256": "4cacfba105193edb42696c6fbe6b99f7de7872659cf499492dca638841bd753b"
+    },
+    "unit-legends-483": {
+      "file": "art/unit-legends-483.png",
+      "width": 1774,
+      "height": 887,
+      "columns": 2,
+      "rows": 1,
+      "sha256": "c558e0467c39e77751c10bdd80669961eea6b129dee0abb68956f2089918cae3"
     }
   },
   "scenes": {
@@ -1598,6 +1606,14 @@
     },
     "zombie_common_burst_radius": {
       "source": "undead-epic-482",
+      "index": 1
+    },
+    "orc_warg_all_spears": {
+      "source": "unit-legends-483",
+      "index": 0
+    },
+    "necro_leg_quickening": {
+      "source": "unit-legends-483",
       "index": 1
     }
   }

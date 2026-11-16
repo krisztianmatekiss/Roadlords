@@ -37,7 +37,7 @@ export const UNDEAD_UNITS = {
     name: 'Csontváz Íjász',
     producerHint: 'Temető',
     hp: 85,
-    damage: 8,
+    damage: 4,
     cooldown: 1.25,
     speed: 40,
     range: rangedRange(130),
@@ -250,6 +250,7 @@ export const UNDEAD_UPGRADES = UNDEAD_PLAN_UPGRADES.filter(row => !['gen_build_d
   race: 'undead',
 }));
 UNDEAD_UPGRADES.push(...UNDEAD_EXPANSION,
+ {id:'necro_leg_quickening',name:'Gyorsított rítus',scope:'Nekromanta',kind:'legendary',race:'undead',icon:'☠',description:'A Nekromanták idézési ideje megfeleződik: 20 mp → 10 mp.'},
  {id:'lich_common_growth',name:'Erősödő sorvasztás',scope:'Lich',kind:'normal',race:'undead',icon:'☠',description:'A Lich sugarainak sebzésnövekedése +50%.'},
  {id:'zombie_common_burst_radius',name:'Terjedő rothadás',scope:'Zombi',kind:'normal',race:'undead',icon:'☠',description:'A Zombi méregkitörésének sugara +1 méter.'},
 );

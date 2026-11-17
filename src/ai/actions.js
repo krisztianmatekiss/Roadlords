@@ -88,7 +88,7 @@ export function installAiActions(R) {
     // Full field armies cannot receive a wave. Preserve gate/portal safety and
     // market upkeep, but avoid recalculating every recruit's stats each tick.
     const room=R.fieldQueueRoom(c);
-    if(room<=0||!c.garrison.length&&!c.rallyReserve.length){
+    if(room<=0||(R.battlePopulationRoom?.(c)??Infinity)<=0||!c.garrison.length&&!c.rallyReserve.length){
       if(R.hasBuilding(c,'rally'))c.rallyMode='closed';
       if(c===R.E)R.updateEnemyMarket();
       return;

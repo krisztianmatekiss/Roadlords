@@ -4,7 +4,7 @@
 
 A javítások a közös motorban vannak: normál játékban, AI–AI nézetben és a multiplayer hostján is érvényesek. A vendég a host szimulált állapotát követi.
 
-- A megtelt AI-sereg nem számoltatja újra minden várakozó újonc statisztikáit minden lépésben. A kapu- és portálvédelem, a várakozó egységek és a piac működése megmarad.
+- A súlyozott sereglimitnél vagy a külön darabszámkorlátnál megtelt AI-sereg nem számoltatja újra minden várakozó újonc statisztikáit minden lépésben. A kapu- és portálvédelem, a várakozó egységek és a piac működése megmarad.
 - A másodpercenkénti taktikai kapcsolóellenőrzés nem indít teljes építkezési és fejlesztési előretervezést. A rendes építkezési döntés továbbra is teljes értékelést használ.
 - Üresjáratban a portál, illetve a nem létező állítható épületek nem készítenek fölösleges városmásolatokat.
 - Ha nincs játékban provokáló ork Harcos, a célzás kihagyja az erre szolgáló extra ellenségkeresést. Aktív provokálásnál megmarad annak elsőbbsége.

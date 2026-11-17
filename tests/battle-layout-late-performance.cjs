@@ -14,9 +14,9 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    const R=__ROADLORDS_RUNTIME__;R.MP.enabled=false;R.ROAD.test=false;R.spectator.active=true;Object.assign(R.state,{running:false,ended:false,pregame:false,modal:false,time:600,units:[]});
    const reset=()=>{R.state.units=[];R.ROAD.pending=[];R.ROAD.clock=600;R.roadResetCity(R.P,'human');R.roadResetCity(R.E,'orc');for(const t of R.towers)t.alive=false;R.roadRefreshFrontiers();R.roadReindex();};reset();
    const c=R.E;c.garrison=Array.from({length:200},()=>({key:'orc_warrior'}));
-   const stats=R.statsFor,room=R.fieldQueueRoom,market=R.updateEnemyMarket;let queries=0,markets=0;
-   R.statsFor=(...a)=>{queries++;return stats(...a);};R.fieldQueueRoom=()=>0;R.updateEnemyMarket=()=>{markets++;};
-   try{for(let i=0;i<30;i++)R.aiGate(c);}finally{R.statsFor=stats;R.fieldQueueRoom=room;R.updateEnemyMarket=market;}
+   const stats=R.statsFor,room=R.fieldQueueRoom,population=R.battlePopulationRoom,market=R.updateEnemyMarket;let queries=0,markets=0,fieldRoom=0,actorRoom=750;
+   R.statsFor=(...a)=>{queries++;return stats(...a);};R.fieldQueueRoom=()=>fieldRoom;R.battlePopulationRoom=()=>actorRoom;R.updateEnemyMarket=()=>{markets++;};
+   try{for(let i=0;i<30;i++){if(i===15){fieldRoom=100;actorRoom=0;}R.aiGate(c);}}finally{R.statsFor=stats;R.fieldQueueRoom=room;R.battlePopulationRoom=population;R.updateEnemyMarket=market;}
    const saturated={queries,markets,waiting:c.garrison.length,releasing:c.releaseQueue.length};
    reset();R.P.armyCap=200;const marcher=R.releaseUnit(R.P,{key:'swordsman'});marcher.lane=2000;R.roadReindex();
    const visit=R.roadVisit;let searches=0;R.roadVisit=(u,range,...a)=>{if(range>=340)searches++;return visit(u,range,...a);};

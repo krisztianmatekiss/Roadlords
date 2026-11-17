@@ -9,7 +9,7 @@ export function installRoadMovement(R) {
     const speed = R.effectiveMoveSpeed(u, R.cityForSide(u.side));
     let target = u.roadSeek;
     const linked = u.key === 'und_lich' ? new Set((u.undBeams||[]).map(b=>b.id)) : null;
-    if (!target?.alive || linked?.has(target.id) || !R.roadCanPursue(u, target) || R.ROAD.clock >= (u.roadSeekAt || 0)) {
+    if (target && (!target.alive || linked?.has(target.id) || !R.roadCanPursue(u, target)) || R.ROAD.clock >= (u.roadSeekAt || 0)) {
       if (target?.alive) target.roadEngaged = Math.max(0, (target.roadEngaged || 0) - 1);
       target = null;
       let best = Infinity;

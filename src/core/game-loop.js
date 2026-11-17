@@ -1,4 +1,5 @@
 import { assetUrl } from '../assets/urls.js';
+import { advanceSimulation } from './simulation-budget.js';
 export function initializeCoreGameLoop(runtime) {
   let v4965ErrorCount = 0;
   let v4965LastErrorToast = -1e9;
@@ -41,9 +42,7 @@ export function initializeCoreGameLoop(runtime) {
       const dt = raw * runtime.state.speed;
       runtime.acc += dt;
       runtime.uiAcc += raw;
-      const fixed = 1 / 30;
-      let guard = 0;
-      while (runtime.acc >= fixed && guard++ < 240) {
+      runtime.simulationBudget = advanceSimulation(runtime, fixed => {
         try {
           runtime.tick(fixed);
         } catch (error) {
@@ -60,11 +59,9 @@ export function initializeCoreGameLoop(runtime) {
             v4965LastErrorToast = performance.now();
             runtime.toast('⚠ Egy futási hibát kivédtem · a játékciklus tovább fut.');
           }
-          break;
+          return false;
         }
-        runtime.acc -= fixed;
-      }
-      if (guard >= 240) runtime.acc = 0;
+      });
       try {
         runtime.renderBattle(raw);
       } catch (error) {

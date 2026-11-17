@@ -128,6 +128,9 @@ export function initializeFactionsOrcCapital(runtime) {
     return s;
   };
   function tauntTarget(u, list, range) {
+    // Most battles have no taunting warriors. Do not rescan the enemy army
+    // for every attack unless that side actually owns the enabling branch.
+    if (!runtime.hasBranch(runtime.cityForSide(u.side === 'player' ? 'enemy' : 'player'), 'orc_war', 'meat_shield')) return null;
     let best = null,
       dist = Infinity;
     for (const t of runtime.battleCandidates(list, u.lane, range)) {

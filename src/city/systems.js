@@ -251,12 +251,19 @@ export function register(runtime) {
   runtime.getBuilding = function getBuilding(c, id) {
     return c.buildings.find(b => b.id === id);
   };
+  const shapeCache = new WeakMap(), singleCell = [[0, 0]];
   runtime.rotatedShape = function rotatedShape(type, rotation = 0) {
-    let cells = (runtime.BUILDINGS[type].shape || [[0, 0]]).map(x => [x[0], x[1]]);
-    for (let i = 0; i < (rotation % 4 + 4) % 4; i++) cells = cells.map(([r, col]) => [col, -r]);
+    const shape = runtime.BUILDINGS[type].shape || singleCell, turn = (rotation % 4 + 4) % 4;
+    let cached = shapeCache.get(shape);
+    if (!cached) {cached = new Map();shapeCache.set(shape, cached);}
+    if (cached.has(turn)) return cached.get(turn);
+    let cells = shape.map(x => [x[0], x[1]]);
+    for (let i = 0; i < turn; i++) cells = cells.map(([r, col]) => [col, -r]);
     const minR = Math.min(...cells.map(x => x[0])),
       minC = Math.min(...cells.map(x => x[1]));
-    return cells.map(([r, col]) => [r - minR, col - minC]).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    const result = cells.map(([r, col]) => Object.freeze([r - minR, col - minC])).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    cached.set(turn, Object.freeze(result));
+    return result;
   };
   runtime.rotationOptions = function rotationOptions(type) {
     const out = [],

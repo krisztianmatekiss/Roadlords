@@ -1,4 +1,13 @@
-# Roadlords · V4.84.0
+# Roadlords · V4.85.0
+
+## V4.85.0 – Nagy csaták és finomabb ritkasági skálázás
+
+- Gyakori / ritka / epikus: **1× / 1,5× / 2×**. Egy +10%-os lap változatai +10 / +15 / +20%-ot adnak; a pakli, lexikon és multiplayer is ezt használja.
+- Kevesebb fölösleges célpontkeresés, helyőrségi statisztikaszámítás és portál-előnézet. A taktikai kapcsolóellenőrzés nem tervez újra teljes buildeket.
+- A játékciklus terhelés alatt átadja a vezérlést a felületnek a rögzített harci lépések között. Ha a gép nem bírja a kért gyorsítást, lassabban halad a játékóra.
+- Fejlesztői mérés és célzott regressziós tesztek nagy seregre, portálokra, célzásra és ritkasági értékekre.
+
+[Részletek és mérési példa](docs/late-battle-and-rarities-4.85.md). Multiplayer szabályverzió: **32**.
 
 
 ## V4.84.0 – Gyorsabb csatakép és gazdasági visszakapaszkodás

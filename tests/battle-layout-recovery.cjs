@@ -32,9 +32,9 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   const critical=await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,c=recoveryReset();recoveryPut(c,'barracks');recoveryEnemy(c,1);const battle=R.aiBattleState(c);return{urgent:battle.urgent,window:battle.survivalTime,allowed:R.aiCanFundRecovery(c,battle)};});
   check('Imminent capital loss overrides construction savings',critical.urgent&&critical.window<18&&!critical.allowed,critical);
   const controls=await p.evaluate(()=>{
-   const R=__ROADLORDS_RUNTIME__,c=recoveryReset();R.spectator.active=false;recoveryPut(c,'warcenter');const fn=R.aiPreview;let previews=0;R.aiPreview=(...a)=>{previews++;return fn(...a);};
-   try{R.updateEnemyWarModeV45();previews=0;for(let i=0;i<29;i++){R.state.time+=1/30;R.updateEnemyWarModeV45();}const within=previews;R.state.time+=.1;R.updateEnemyWarModeV45();return{within,after:previews};}finally{R.aiPreview=fn;}
-  });check('Per-tick tactical updates reuse their one-second budget instead of rebuilding the AI decision context',controls.within===0&&controls.after>0,controls);
+   const R=__ROADLORDS_RUNTIME__,c=recoveryReset();R.spectator.active=false;recoveryPut(c,'warcenter');const fn=R.aiPreview,control=R.aiUpdateBuildingControls;let previews=0,updates=0;R.aiPreview=(...a)=>{previews++;return fn(...a);};R.aiUpdateBuildingControls=(...a)=>{updates++;return control(...a);};
+   try{R.updateEnemyWarModeV45();previews=updates=0;for(let i=0;i<29;i++){R.state.time+=1/30;R.updateEnemyWarModeV45();}const within=updates;R.state.time+=.1;R.updateEnemyWarModeV45();return{within,after:updates,previews};}finally{R.aiPreview=fn;R.aiUpdateBuildingControls=control;}
+  });check('Tactical checks run once per second without rebuilding construction forecasts between control evaluations',controls.within===0&&controls.after===1&&controls.previews===0,controls);
   const spread=await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=recoveryReset('human','player');R.spectator.active=false;
    for(let i=0;i<40;i++){const u=R.releaseUnit(c,{key:'swordsman'});u.lane=2000;u.offset=0;u.roadHomeOffset=((i%20)-9.5)*22;}

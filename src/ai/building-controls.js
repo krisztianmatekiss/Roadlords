@@ -7,8 +7,9 @@ export function installAiBuildingControls(R){
   const release=R.releaseUnit;
   R.releaseUnit=(c,e)=>{const u=release(c,e);if(u&&!e.undFieldSpawn&&R.undPortalOperational(c))stateFor(c).lastUse=R.state.time;return u;};
   R.aiPortalUtility=(c,metrics)=>{
-    const s=stateFor(c),t=R.aiPortalTactics(c),traffic=c.releaseQueue.length+R.reserveCount(c);
+    const s=stateFor(c),traffic=c.releaseQueue.length+R.reserveCount(c);
     if(!traffic||(R.battlePopulationRoom?.(c)??Infinity)<=0)return 0;
+    const t=R.aiPortalTactics(c);
     return t.safe&&t.worthwhile?Math.min(8,metrics.power*.25)*(t.flank||t.split?1:Math.min(1,t.saved/30))+(R.state.time-(s.lastUse??-Infinity)<30?2:0):0;
   };
   R.aiPortalTactics=(c,battle=R.aiBattleState(c))=>{
@@ -28,12 +29,14 @@ export function installAiBuildingControls(R){
     const now=R.state.time,tactics=R.aiPortalTactics(c,ctx.battle),reserve=R.reserveCount(c);
     const room=R.fieldUnitCount(c)<c.armyCap&&(R.battlePopulationRoom?.(c)??Infinity)>0;
     const deploying=room&&(c.releaseQueue.length>0||c.gateMode==='open'&&reserve>0||reserve>=Math.min(c._aiWaveTarget||10,c.garrisonCap));
-    const on=c.undPortalEnabled?{flow:R.resourceFlowRates(c),upkeep:R.undEconomy(c).totalUpkeep}:
-      R.aiPreview(c,shadow=>{shadow.undPortalEnabled=true;},shadow=>({flow:R.resourceFlowRates(shadow),upkeep:R.undEconomy(shadow).totalUpkeep}));
-    const savings=c._aiSaveReason==='economy'?(c._aiSavePrice?.wood||0):0;
-    const needed=Math.max(0,on.flow.use.wood-on.flow.gain.wood)*45+on.upkeep*12+savings;
-    let enabled=deploying&&tactics.safe&&tactics.worthwhile&&c.resources.wood>Math.max(30,needed)&&now>=(c._aiPortalOffUntil||0);
-    if(c.undPortalEnabled&&now>=s.pulseEnd)enabled=false;
+    let enabled=false;
+    if(deploying&&tactics.safe&&tactics.worthwhile&&now>=(c._aiPortalOffUntil||0)&&!(c.undPortalEnabled&&now>=s.pulseEnd)){
+      const on=c.undPortalEnabled?{flow:R.resourceFlowRates(c),upkeep:R.undEconomy(c).totalUpkeep}:
+        R.aiPreview(c,shadow=>{shadow.undPortalEnabled=true;},shadow=>({flow:R.resourceFlowRates(shadow),upkeep:R.undEconomy(shadow).totalUpkeep}));
+      const savings=c._aiSaveReason==='economy'?(c._aiSavePrice?.wood||0):0;
+      const needed=Math.max(0,on.flow.use.wood-on.flow.gain.wood)*45+on.upkeep*12+savings;
+      enabled=c.resources.wood>Math.max(30,needed);
+    }
     if(enabled!==!!c.undPortalEnabled){
       c.undPortalEnabled=enabled;
       if(enabled)s.pulseEnd=now+(tactics.flank||tactics.split?8:12);
@@ -45,13 +48,15 @@ export function installAiBuildingControls(R){
     if(!R.aiControlsCity(c))return;
     const s=stateFor(c);portal(c,ctx,s);
     if(R.state.time<s.next)return;s.next=R.state.time+20;
-    const before=R.aiPreview(c,()=>{}),candidates=[];
+    const candidates=[];
     if(R.hasBuilding(c,'warcenter')&&R.state.time-(c.warModeChangedAt??-30)>=30)
       for(const mode of ['mass','economy','elite'])if(mode!==c.warMode)candidates.push({kind:'war',mode,change:shadow=>{shadow.warMode=mode;}});
     if(c.race==='orc'&&R.hasLeg(c,'orc_united_huts'))for(const mode of ['army','reserve'])if(mode!==(c.orcHutMode||'army'))
       candidates.push({kind:'hut',mode,change:shadow=>{shadow.orcHutMode=mode;}});
     for(const b of c.buildings.filter(b=>b.type==='orc_overseer'&&b.level===4&&!b.inactive).slice(0,2))
       for(const setting of [0,.5,1])if(setting!==(c.orcHasteSettings?.[b.id]||0))candidates.push({kind:'haste',id:b.id,setting,change:shadow=>{(shadow.orcHasteSettings||={})[b.id]=setting;}});
+    if(!candidates.length)return;
+    const before=R.aiPreview(c,()=>{});
     const value=city=>{
       if(city.race==='orc')for(const b of R.activeSpawners(city)){b.progress=0;delete b.orcTrainingProfile;}
       const m=R.aiCityMetrics(city);let qualityPower=m.power;

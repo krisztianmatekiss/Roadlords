@@ -52,7 +52,7 @@ export function register(runtime) {
       bestRatio = Infinity,
       bestOrder = Infinity;
     for (const v of runtime.battleCandidates(allies, u.lane, range)) {
-      if (v.id === u.id || !v.alive || runtime.roadDistance(v, u) > range || v.hp >= v.maxHp) continue;
+      if (v.id === u.id || !v.alive || v.hp >= v.maxHp || runtime.roadDistance(v, u) > range) continue;
       const ratio = v.hp / v.maxHp,
         order = runtime.battleOrder(v);
       if (ratio < bestRatio || ratio === bestRatio && order < bestOrder) {

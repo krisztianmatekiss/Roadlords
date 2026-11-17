@@ -13,8 +13,8 @@ try{
   out.life=['orc_leech','orc_lifesteal','vampire_common_lifesteal'].every(id=>Object.keys(C.editions(id)).join()==='rare');
   const base=R.statsFor(R.P,{key:'orc_warrior'}).hp;for(const rarity of ['common','uncommon','rare'])pick('orc_warrior_hp',rarity);
   R.renderRelics();out.deck={ratio:R.statsFor(R.P,{key:'orc_warrior'}).hp/base,count:C.count(R.P),groups:C.grouped(R.P).length,articles:R.$$('#relicList [data-relic="orc_warrior_hp"]').length,badge:R.$('#relicList .relicOwnedCount').textContent,body:R.$('#relicList .rlCodexContent').textContent,rarities:[...R.$$('#relicList .relicRarityCounts span')].map(n=>[n.dataset.rarity,n.textContent])};
-  const snap=R.mpRevive(R.mpCitySnapshot(R.P));out.snapshot=C.grouped(snap)[0].count===3&&snap.normal.orc_warrior_hp===7&&JSON.stringify(snap.normalRarities)===JSON.stringify(R.P.normalRarities);
-  R.E.normal={orc_move:7};R.E.normalRarities={orc_move:{common:1,uncommon:1,rare:1}};R.E.race='orc';R.renderRelics(R.E);out.enemy=R.$$('#relicList [data-relic="orc_move"]').length===1&&R.$('#relicList .relicOwnedCount').textContent==='×3'&&R.$('#relicList .rlCodexContent').textContent.includes('35%');
+  const snap=R.mpRevive(R.mpCitySnapshot(R.P));out.snapshot=C.grouped(snap)[0].count===3&&snap.normal.orc_warrior_hp===4.5&&JSON.stringify(snap.normalRarities)===JSON.stringify(R.P.normalRarities);
+  R.E.normal={orc_move:4.5};R.E.normalRarities={orc_move:{common:1,uncommon:1,rare:1}};R.E.race='orc';R.renderRelics(R.E);out.enemy=R.$$('#relicList [data-relic="orc_move"]').length===1&&R.$('#relicList .relicOwnedCount').textContent==='×3'&&R.$('#relicList .rlCodexContent').textContent.includes('22,5%');
   reset('orc');pick('orc_leech');pick('orc_leech');const a=R.releaseUnit(R.P,{key:'orc_berserker'}),b=R.releaseUnit(R.E,{key:'swordsman'});a.lane=1000;b.lane=1010;a.offset=b.offset=0;a.hp=a.maxHp/2;b.hp=b.maxHp=10000;const hp=a.hp;R.roadReindex();R.roadRealAttack(a,b);out.leech={damage:10000-b.hp,heal:a.hp-hp};
   reset('orc');R.P.normal.orc_bleed=2;const w=R.releaseUnit(R.P,{key:'orc_warrior'}),v=R.releaseUnit(R.E,{key:'swordsman'});w.lane=1000;v.lane=1010;w.offset=v.offset=0;v.hp=v.maxHp=10000;R.roadReindex();R.roadRealAttack(w,v);out.bleed=v.orcBleed;
   reset('undead');out.legends=!R.LEGENDARY.some(o=>o.id==='lich_leg_greedy');
@@ -38,7 +38,7 @@ try{
  });report.logic=result;
  check('General Human and Orc cards are available before a producer; curse damage still requires a Shaman',result.human&&result.orc);
  check('All three lifesteal upgrades are Epic-only',result.life);
- check('Mixed rarities display one owned card, three picks, a real +70% effect and each rarity count',Math.abs(result.deck.ratio-1.7)<1e-8&&result.deck.count===3&&result.deck.groups===1&&result.deck.articles===1&&result.deck.badge==='×3'&&result.deck.body.includes('+70%')&&result.deck.rarities.length===3,result.deck);
+ check('Mixed rarities display one owned card, three picks, a real +45% effect and each rarity count',Math.abs(result.deck.ratio-1.45)<1e-8&&result.deck.count===3&&result.deck.groups===1&&result.deck.articles===1&&result.deck.badge==='×3'&&result.deck.body.includes('+45%')&&result.deck.rarities.length===3,result.deck);
  check('Opponent decks and multiplayer snapshots retain grouped counts and actual summed strength',result.enemy&&result.snapshot);
  check('Two Berserker picks heal exactly 10% of actual HP damage; Warrior bleeding stacks linearly',result.leech.damage>0&&Math.abs(result.leech.heal-result.leech.damage*.1)<1e-7&&result.bleed===2,result.leech);
  check('The old Lich relic is replaced by an Epic unlocked at producer L3',result.legends&&result.levelBefore&&result.levelAfter);

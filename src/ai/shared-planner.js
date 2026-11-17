@@ -451,7 +451,15 @@ export function installSharedAiPlanner(R) {
       if(old?.capital===capital&&now>=old.at&&now<old.next)continue;
       controlClocks.set(c,{capital,at:now,next:now+1});
       if(!c.buildings.some(b=>!b.inactive&&(b.type==='warcenter'||b.type==='und_otherworld_portal'||b.type==='orc_overseer'&&b.level===4))&&!R.hasLeg(c,'orc_united_huts'))continue;
-      duringDecision(ctx=>R.aiUpdateBuildingControls(c,ctx),c);
+      // A portal safety/toggle check is not a new construction decision. Reuse
+      // the latest growth policy without projecting an entire build again.
+      const cache=R.aiDecisionCache;
+      R.aiDecisionCache=new Map();
+      try{
+        const growth=c._aiGrowthPlan;
+        R.aiUpdateBuildingControls(c,{battle:R.aiBattleState(c),resources:R.aiResourceKeys(c),
+          growth:{growing:growth&&now-growth.time<5?growth.growing:c._aiSaveReason==='economy'}});
+      }finally{R.aiDecisionCache=cache;}
     }
   };
   Object.assign(window.__ROADLORDS__,{enemyBuildAI:R.enemyBuildAI,enemyGateAI:R.enemyGateAI,aiBuild:R.aiBuild,aiMilitaryPool:R.aiMilitaryPool,

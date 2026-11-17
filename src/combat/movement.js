@@ -9,7 +9,9 @@ export function installRoadMovement(R) {
     const speed = R.effectiveMoveSpeed(u, R.cityForSide(u.side));
     let target = u.roadSeek;
     const linked = u.key === 'und_lich' ? new Set((u.undBeams||[]).map(b=>b.id)) : null;
-    if (target && (!target.alive || linked?.has(target.id) || !R.roadCanPursue(u, target)) || R.ROAD.clock >= (u.roadSeekAt || 0)) {
+    const enemies=R.ROAD.counts[u.side==='player'?1:0];
+    const firstArrival=!target&&u.roadSeekEnemies===0&&enemies>0;
+    if (firstArrival || target && (!target.alive || linked?.has(target.id) || !R.roadCanPursue(u, target)) || R.ROAD.clock >= (u.roadSeekAt || 0)) {
       if (target?.alive) target.roadEngaged = Math.max(0, (target.roadEngaged || 0) - 1);
       target = null;
       let best = Infinity;
@@ -25,6 +27,7 @@ export function installRoadMovement(R) {
         target.roadEngaged = (target.roadEngaged || 0) + 1;
       }
       u.roadSeek = target;
+      u.roadSeekEnemies = enemies;
       u.roadSeekAt = R.ROAD.clock + .24 + u.id % 7 * .019;
     }
     let aimX, aimY;

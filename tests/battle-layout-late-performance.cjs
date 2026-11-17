@@ -22,7 +22,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    const visit=R.roadVisit;let searches=0;R.roadVisit=(u,range,...a)=>{if(range>=340)searches++;return visit(u,range,...a);};
    let emptySearches,target;
    try{R.roadAdvance(marcher,[],1/30);for(let i=0;i<5;i++){R.ROAD.clock+=.03;R.roadAdvance(marcher,[],1/30);}emptySearches=searches;
-    const enemy=R.releaseUnit(R.E,{key:'orc_warrior'});enemy.lane=marcher.lane+100;enemy.offset=marcher.offset;R.roadReindex();R.ROAD.clock+=.5;R.roadAdvance(marcher,[enemy],1/30);target=marcher.roadSeek===enemy;
+    const enemy=R.releaseUnit(R.E,{key:'orc_warrior'});enemy.lane=marcher.lane+100;enemy.offset=marcher.offset;R.roadReindex();R.roadAdvance(marcher,[enemy],1/30);target=marcher.roadSeek===enemy;
    }finally{R.roadVisit=visit;}
    reset();const priest=R.releaseUnit(R.P,{key:'priest'}),allies=[priest];for(let i=0;i<100;i++)allies.push({id:1000+i,alive:true,hp:100,maxHp:100,lane:priest.lane,offset:0});
    const distance=R.roadDistance;let distances=0;R.roadDistance=(...a)=>{distances++;return distance(...a);};let healed;
@@ -39,7 +39,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    return{saturated,emptySearches,searches,target,distances,healed,candidateQueries,taunt,idlePreviews:previews};
   });
   assert.deepEqual(result.saturated,{queries:0,markets:30,waiting:200,releasing:0});console.log('PASS A full AI army keeps all 200 recruits and market updates without repeated recruit-stat calculations');
-  assert.equal(result.emptySearches,1);assert.equal(result.searches,2);assert(result.target);console.log('PASS Marchers reuse empty searches briefly and acquire newly arriving opponents on the next search');
+  assert.equal(result.emptySearches,1);assert.equal(result.searches,2);assert(result.target);console.log('PASS Marchers reuse empty searches briefly; the first arriving opponent immediately invalidates an empty result');
   assert.equal(result.distances,1);assert(result.healed);console.log('PASS Full-health allies cost no healing-distance queries; the injured target is still selected');
   assert.equal(result.candidateQueries,1);assert(result.taunt);console.log('PASS Absent taunt branches add no enemy scan; an active taunt retains its real targeting priority');
   assert.equal(result.idlePreviews,0);console.log('PASS An idle portal without other adjustable buildings performs no cloned-city control previews');

@@ -8,7 +8,7 @@ A javítások a közös motorban vannak: normál játékban, AI–AI nézetben �
 - A másodpercenkénti taktikai kapcsolóellenőrzés nem indít teljes építkezési és fejlesztési előretervezést. A rendes építkezési döntés továbbra is teljes értékelést használ.
 - Üresjáratban a portál, illetve a nem létező állítható épületek nem készítenek fölösleges városmásolatokat.
 - Ha nincs játékban provokáló ork Harcos, a célzás kihagyja az erre szolgáló extra ellenségkeresést. Aktív provokálásnál megmarad annak elsőbbsége.
-- A célpont nélküli menetelők az egyébként is használt, körülbelül 0,24–0,35 másodperces újrakeresési időt betartják. Az érvénytelen, halott vagy elérhetetlen meglévő célpont azonnal újrakereshető. A támadási célzás ettől függetlenül működik.
+- A célpont nélküli menetelők az egyébként is használt, körülbelül 0,24–0,35 másodperces újrakeresési időt betartják. Az érvénytelen, halott vagy elérhetetlen meglévő célpont azonnal újrakereshető. Az első ellenfél megjelenése azonnal érvényteleníti a korábbi üres keresést. A támadási célzás ettől függetlenül működik.
 - A pap teljesen egészséges szövetségesekre nem végez távolságszámítást. A gyógyítás célpontja és prioritása változatlan.
 - Az épületforgatások alapgeometriája gyorsítótárból olvasható; az alakváltoztató frakcióhatások továbbra is külön, városfüggően működnek.
 - A képkocka legfeljebb 12 ms-ig kezd újabb szimulációs lépéseket. Egy már elkezdett lépést befejez; nincs egységkihagyás vagy megnyújtott harci lépés. Túlterheléskor a játékóra lassabban halad, és a felület gyakrabban kap lehetőséget reagálni. A felhalmozott idő legfeljebb nyolc lépés, így nem alakul ki hosszú felzárkózó ciklus.

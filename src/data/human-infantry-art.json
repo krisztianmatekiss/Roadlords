@@ -130,5 +130,19 @@
       0.82
     ]
   },
-  "spearmanShield": false
+  "spearmanShield": false,
+  "anchors": {
+    "torso": {
+      "shoulders": [
+        [
+          0.12,
+          0.3
+        ],
+        [
+          0.9,
+          0.32
+        ]
+      ]
+    }
+  }
 }

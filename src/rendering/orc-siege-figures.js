@@ -45,10 +45,10 @@ function limb(g,R,tinted,name,a,b) {
 function fist(g,R,grip,angle,height) {
   const r=manifest.parts.fist,a=manifest.anchors.fist.grip,w=height*r[2]/r[3];g.save();g.translate(...grip);g.rotate(angle);g.drawImage(R.orcSiegeTexture,...r,-a[0]*w,-a[1]*height,w,height);g.restore();
 }
-function weaponArm(g,R,tinted,shoulder,grip) {
+function weaponArm(g,R,tinted,shoulder,grip,draw=true) {
   const r=manifest.parts.fist,a=manifest.anchors.fist,h=4.5,dx=(a.grip[0]-a.wrist[0])*r[2]*h/r[3],dy=(a.grip[1]-a.wrist[1])*h,length=Math.hypot(dx,dy),elbow=joint(shoulder,grip,6.5,6+length,1),direction=Math.atan2(grip[1]-elbow[1],grip[0]-elbow[0]);
   const wrist=[elbow[0]+Math.cos(direction)*6,elbow[1]+Math.sin(direction)*6],handAngle=direction-Math.atan2(dy,dx);
-  limb(g,R,tinted,'upper',shoulder,elbow);limb(g,R,tinted,'fore',elbow,wrist);
+  if(draw){limb(g,R,tinted,'upper',shoulder,elbow);limb(g,R,tinted,'fore',elbow,wrist);}
   return {shoulder,elbow,wrist,handAngle,grip};
 }
 function spearCenter(hand,angle) {
@@ -69,7 +69,10 @@ export function drawWargRider(g,R,color,p,elite,pose,variant) {
     g.save();if(!near)g.globalAlpha=.82;limb(g,R,tinted,front?'frontUpper':'hindUpper',hip,knee);limb(g,R,tinted,front?'frontLower':'hindLower',knee,foot);
     const r=manifest.parts.paw,a=manifest.anchors.paw.ankle,h=4.8,w=h*r[2]/r[3];part(g,R,tinted,'paw',foot[0]-a[0]*w,foot[1]-a[1]*h,w);g.restore();hoofs.push(foot);knees.push(knee);
   };
+  const hips=[[-5,-30],[-3,-30]],riderKnees=[[1,-25],[5,-25]],ankles=[[-2,-15],[1,-14]];
   leg(false,false);leg(true,false);
+  g.save();g.translate(0,bob);g.globalAlpha=.82;limb(g,R,tinted,'riderThigh',hips[0],riderKnees[0]);limb(g,R,tinted,'riderShin',riderKnees[0],ankles[0]);g.restore();
+
   g.save();g.translate(0,bob);
   const tr=manifest.parts.tail,ta=manifest.anchors.tail.root,th=16,tw=th*tr[2]/tr[3];g.save();g.translate(-23,-27);g.rotate(-.1+(walk?Math.sin(cycle)*.12:0));part(g,R,tinted,'tail',-ta[0]*tw,-ta[1]*th,tw);g.restore();
   part(g,R,tinted,'wolfBody',-27,-36,50);
@@ -82,14 +85,7 @@ export function drawWargRider(g,R,color,p,elite,pose,variant) {
   g.restore();leg(false,true);leg(true,true);
 
   g.save();g.translate(0,bob);
-  const hips=[[-5,-30],[-3,-30]],riderKnees=[[1,-25],[5,-25]],ankles=[[-2,-15],[1,-14]];
-  g.save();g.globalAlpha=.82;limb(g,R,tinted,'riderThigh',hips[0],riderKnees[0]);limb(g,R,tinted,'riderShin',riderKnees[0],ankles[0]);g.restore();
   part(g,R,tinted,'quiver',-13,-50,8);
-  const torso=manifest.parts.riderTorso,a=manifest.anchors.riderTorso,h=18,w=h*torso[2]/torso[3],waist=[-3,-32],at=[waist[0]-a.waist[0]*w,waist[1]-a.waist[1]*h];part(g,R,tinted,'riderTorso',...at,w);
-  const collar=[at[0]+a.neck[0]*w,at[1]+a.neck[1]*h],head=manifest.parts.riderHead,anchor=manifest.anchors.riderHead.neck,headH=12.5,headW=headH*head[2]/head[3];part(g,R,tinted,'riderHead',collar[0]-anchor[0]*headW,collar[1]-anchor[1]*headH,headW);
-  limb(g,R,tinted,'riderThigh',hips[1],riderKnees[1]);limb(g,R,tinted,'riderShin',riderKnees[1],ankles[1]);
-  const reinsHand=[-1,-33],reinsShoulder=[-12,-42],reinsArm=weaponArm(g,R,tinted,reinsShoulder,reinsHand);
-  g.strokeStyle='#513425';g.lineWidth=.7;g.beginPath();g.moveTo(...reinsHand);g.quadraticCurveTo(17,-29,28,-28);g.stroke();fist(g,R,reinsHand,reinsArm.handAngle,4.5);
   const throwing=variant==='throw',released=throwing&&pose.frame>=7;
   let hand=[...READY_HAND],angle=READY_ANGLE;
   if(pose.state==='attack'){
@@ -99,7 +95,15 @@ export function drawWargRider(g,R,color,p,elite,pose,variant) {
     else if(pose.frame<7){hand=WIND_HAND.map((n,i)=>mix(n,contact[i],p.strike));angle=mix(WIND_ANGLE,contactAngle,p.strike);}
     else{hand=contact.map((n,i)=>mix(n,READY_HAND[i],rest));angle=mix(contactAngle,READY_ANGLE,rest);}
   }
-  const arm=weaponArm(g,R,tinted,[3,-43],hand),loaded=!death&&!released;
+  const arm=weaponArm(g,R,tinted,[3,-43],hand,false),loaded=!death&&!released;
+  const reinsHand=[-1,-33],reinsShoulder=[-12,-42],reinsArm=weaponArm(g,R,tinted,reinsShoulder,reinsHand,false);
+  limb(g,R,tinted,'upper',reinsArm.shoulder,reinsArm.elbow);limb(g,R,tinted,'upper',arm.shoulder,arm.elbow);
+  const torso=manifest.parts.riderTorso,a=manifest.anchors.riderTorso,h=18,w=h*torso[2]/torso[3],waist=[-3,-32],at=[waist[0]-a.waist[0]*w,waist[1]-a.waist[1]*h];part(g,R,tinted,'riderTorso',...at,w);
+  const collar=[at[0]+a.neck[0]*w,at[1]+a.neck[1]*h],head=manifest.parts.riderHead,anchor=manifest.anchors.riderHead.neck,headH=12.5,headW=headH*head[2]/head[3];part(g,R,tinted,'riderHead',collar[0]-anchor[0]*headW,collar[1]-anchor[1]*headH,headW);
+  limb(g,R,tinted,'riderThigh',hips[1],riderKnees[1]);limb(g,R,tinted,'riderShin',riderKnees[1],ankles[1]);
+  limb(g,R,tinted,'fore',reinsArm.elbow,reinsArm.wrist);
+  g.strokeStyle='#513425';g.lineWidth=.7;g.beginPath();g.moveTo(...reinsHand);g.quadraticCurveTo(17,-29,28,-28);g.stroke();fist(g,R,reinsHand,reinsArm.handAngle,4.5);
+  limb(g,R,tinted,'fore',arm.elbow,arm.wrist);
   if(loaded||death)spear(g,R,hand,angle);fist(g,R,hand,arm.handAngle,4.5);
   if(elite){g.strokeStyle='#f2cf74';g.lineWidth=1;g.beginPath();g.moveTo(-9,-43);g.lineTo(-5,-46);g.lineTo(-1,-44);g.stroke();g.fillStyle='#ecc667';g.fillRect(-1,-35,2.4,1.6);}
   g.restore();g.restore();

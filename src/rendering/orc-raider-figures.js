@@ -1,3 +1,4 @@
+import { torsoSockets } from './torso-sockets.js';
 import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/orc-raiders-art.json';
@@ -88,18 +89,19 @@ export function drawOrcRaider(g,R,color,p,elite,pose,key,variant) {
   let farHand,nearHand,axes=[];
   if(gob){
     nearHand=bow?(pose.state==='attack'?[15,-30]:[13,-25.5]):sling.hand;
-    farHand=bow?(pose.state==='attack'?[mix(9,-5,p.wind),-30]:[4,-25.5]):[-9-walk*.5+2*Math.sin(sling.wind*Math.PI),-22-Math.sin(sling.wind*Math.PI)*1.5];
+    farHand=bow?(pose.state==='attack'?[mix(9,-5,p.wind),-30]:[4,-25.5]):[-10-walk*.5+2*Math.sin(sling.wind*Math.PI),-19.5-Math.sin(sling.wind*Math.PI)*1.5];
   }else{
     const farLead=variant==='far';
-    farHand=farLead?[mix(-13,8,strike),mix(-22-12*wind,-25,strike)]:[-13+2*wind,-22-2*strike];
+    farHand=farLead?[mix(-13,4,strike),mix(-22-12*wind,-25,strike)+(p.recovery?5:-5)*Math.sin(strike*Math.PI)]:[-13+2*wind,-22-2*strike];
     nearHand=farLead?[12+wind,-23-strike]:[mix(13-3*wind,15,strike),mix(-23-13.5*wind,-25.5,strike)];
     axes=[{hand:farHand,angle:farLead?mix(-.22-.68*wind,1.48,strike):-.22-.08*wind,mirror:-1},{hand:nearHand,angle:farLead?.35-.15*wind:mix(.35-1.55*wind,1.45,strike),mirror:1}];
   }
-  const far={shoulder:[gob?-8.6:-7.6,-29.8],wrist:[farHand[0]-(gob?0:1.2),farHand[1]]},near={shoulder:[6,-29.8],wrist:[nearHand[0]-(gob?0:1.2),nearHand[1]]};
+  const sockets=torsoSockets(manifest,prefix+'Torso',[pelvis[0],pelvis[1]-bob],gob?20.5:22);
+  const far={shoulder:sockets[0],wrist:[farHand[0]-(gob?0:1.2),farHand[1]]},near={shoulder:sockets[1],wrist:[nearHand[0]-(gob?0:1.2),nearHand[1]]};
   if(gob&&!bow){near.shoulder[0]-=Math.sin(sling.wind*Math.PI)*.8;near.shoulder[1]-=Math.sin(sling.wind*Math.PI)*.45;}
   // Let the far elbow bend outside the silhouette. Keep only the shoulder
   // behind the torso; the forearm and hand remain visible in front of it.
-  far.elbow=joint(far.shoulder,far.wrist,8.1,7.8,1);near.elbow=joint(near.shoulder,near.wrist,7.2,7.2,1);
+  far.elbow=joint(far.shoulder,far.wrist,gob?(bow?7.8:4.6):6.9,gob?(bow?7.8:4.8):6.8,1);near.elbow=joint(near.shoulder,near.wrist,gob?6.9:6.2,gob?6.9:6.4,1);
   limb(g,R,prefix+'Upper',far.shoulder,far.elbow);
   const name=prefix+'Torso',r=manifest.parts[name],a=manifest.anchors[name],h=gob?20.5:22,w=h*r[2]/r[3],waist=[pelvis[0],pelvis[1]-bob],at=[waist[0]-a.waist[0]*w,waist[1]-a.waist[1]*h];
   part(name,...at,h);

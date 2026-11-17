@@ -1,3 +1,4 @@
+import { imageSockets } from './torso-sockets.js';
 import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/orc-warrior-art.json';
@@ -64,19 +65,21 @@ export function drawOrcWarrior(g,R,color,p,elite,walking=false) {
     part('boot',ankles[i][0]-1.6,ankles[i][1]-.7,4.8);g.restore();return knee;
   });
   g.save();g.translate(0,bodyShift);
-  const backShoulder=[-5.5,-29.8],backHand=[-9.4+walk*.45,-20.2];
+  const sockets=imageSockets(manifest,'torso',[-11.1,-34.6],24),backShoulder=sockets[0],backHand=[-9.4+walk*.45,-20.2];
   const backElbow=joint(backShoulder,backHand,7.5,7,-1);
   limb(g,R,'upperArm',backShoulder,backElbow);limb(g,R,'forearm',backElbow,backHand);
+  const hand=[14+2*wind+2.5*strike-walk*.45,-22.0-12.4*wind-.8*strike];
+  hand[0]+=(4-hand[0])*death;hand[1]+=(-20-hand[1])*death;
+  const axeAngle=(.18-1.45*wind+1.27*strike)*(1-death)+.12*death;
+  const shoulder=sockets[1],wrist=[hand[0]-1.1,hand[1]-.25];
+  const elbow=joint(shoulder,wrist,8.2,8.0,1);
+
+  limb(g,R,'upperArm',shoulder,elbow);
   part('torso',-11.1,-34.6,24.0);
   g.save();g.translate(.9,-30.2);g.rotate(-.06*wind+.05*strike);part('head',-6.2,-13.8,14.4);g.restore();
   g.drawImage(cloth(R,color),-4.7,-13.1,10.2,11.5);
 
-  const hand=[14-10*wind+2.5*strike-walk*.45,-22.0-12.4*wind-.8*strike];
-  hand[0]+=(4-hand[0])*death;hand[1]+=(-20-hand[1])*death;
-  const axeAngle=(.18-1.45*wind+1.27*strike)*(1-death)+.12*death;
-  const shoulder=[6.3,-29.7],wrist=[hand[0]-1.1,hand[1]-.25];
-  const elbow=joint(shoulder,wrist,8.2,8.0,1);
-  limb(g,R,'upperArm',shoulder,elbow);limb(g,R,'forearm',elbow,wrist);
+  limb(g,R,'forearm',elbow,wrist);
   g.save();g.translate(...hand);g.rotate(axeAngle);
   // Palm sits behind the haft, curled fingers in front of it.
   g.fillStyle='#69733b';g.strokeStyle='#343c25';g.lineWidth=.5;
@@ -96,5 +99,5 @@ export function drawOrcWarrior(g,R,color,p,elite,walking=false) {
   g.restore();
   if(elite){g.fillStyle='#f2d37a';g.beginPath();g.moveTo(-8,-30);g.lineTo(-6.5,-33);g.lineTo(-5,-30);g.lineTo(-6.5,-28);g.fill();}
   g.restore();g.restore();
-  return {painted:true,style:'painted-orc',body:[thrust,bodyShift],weapon:[...hand,axeAngle],hand,hips,ankles,knees,death};
+  return {painted:true,style:'painted-orc',body:[thrust,bodyShift],weapon:[...hand,axeAngle],hand,arms:{far:{shoulder:backShoulder,elbow:backElbow,wrist:backHand},near:{shoulder,elbow,wrist}},hips,ankles,knees,death};
 }

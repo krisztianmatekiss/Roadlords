@@ -11,7 +11,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    window.sharedReset=race=>{
     R.MP.enabled=false;R.ROAD.test=false;R.ROAD.paused=true;R.state.running=false;R.state.modal=false;R.state.pregame=false;R.state.ended=false;R.state.startChoices=0;R.state.time=180;R.state.units=[];R.aiDecisionCache=null;
     R.roadResetCity(R.P,'human');R.roadResetCity(R.E,race);const c=R.E;c.buildings=c.buildings.filter(b=>b.type==='keep');c.terrain.fill(null);
-    c.unlocked=new Set(R.aiFactionBuildings(c));R.recomputeCity(c,false);return c;
+    c.unlocked=new Set(R.aiFactionBuildings(c));c.aiDecisionSeed=42;R.recomputeCity(c,false);return c;
    };
    window.sharedPut=type=>{const c=R.E;c.resources=R.C(100000,100000,100000);const cell=R.findCell(c,type);if(!cell)throw Error('No plot: '+type);const out=R.placeBuilding(c,type,...cell);if(!out.ok)throw Error(out.reason);return c.buildings.at(-1);};
    window.sharedTick=()=>{R.E.aiThink=0;R.enemyBuildAI(1);};
@@ -26,9 +26,24 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
     }}finally{Math.random=random;}
     return R.E===c&&snapshot()===before;
    },race));
-   check(race+': the opening invests in income before adding military producers',await p.evaluate(race=>{
-    const R=__ROADLORDS_RUNTIME__,c=sharedReset(race);R.state.time=0;c.resources=race==='undead'?R.C(280,0,0):R.C(110,30,20);sharedTick();
-    const built=c.buildings.filter(b=>b.type!=='keep');return built.length===1?!!R.aiBuildingMechanics(built[0].type).produces:built.length===0&&!!R.aiBuildingMechanics(c._aiSaveType).produces;
+   check(race+': the opening protects the earliest affordable income investment instead of spending its budget on an army',await p.evaluate(race=>{
+    const R=__ROADLORDS_RUNTIME__;
+    for(let seed=0;seed<(race==='undead'?32:1);seed++){
+     const c=sharedReset(race);c.aiDecisionSeed=seed;R.state.time=0;c.resources=race==='undead'?R.C(280,0,0):R.C(110,30,20);const initialStock={...c.resources},initialFlow=R.resourceFlowRates(c);sharedTick();
+     if(!c.buildings.some(b=>R.aiBuildingMechanics(b.type).produces)){
+      R.state.time++;R.produceResources(c,1);sharedTick();
+     }
+     if(!c.buildings.some(b=>R.aiBuildingMechanics(b.type).produces)){
+      if(!R.aiBuildingMechanics(c._aiSaveType)?.produces)throw Error(JSON.stringify({race,seed,built:c.buildings.map(b=>b.type),save:c._aiSaveType}));
+      const price=R.buildPrice(c,c._aiSaveType),flow=R.resourceFlowRates(c);
+      const wait=Math.max(...R.aiResourceKeys(c).map(r=>Math.max(0,(price[r]||0)-c.resources[r])/Math.max(.1,flow.gain[r]-flow.use[r])));
+      const earliest=Math.max(...R.aiResourceKeys(c).map(r=>Math.max(0,(price[r]||0)-initialStock[r])/Math.max(.1,initialFlow.gain[r]-initialFlow.use[r])));
+      if(wait>earliest+2)throw Error(JSON.stringify({race,seed,save:c._aiSaveType,wait,earliest}));
+     }
+     // A cheap initial producer that leaves the immediate Well price intact is
+     // legitimate. An army or idle tower delaying the income for 27s is not.
+     if(c.buildings.filter(b=>R.BUILDINGS[b.type]?.unit).length>1)return false;
+    }return true;
    },race));
    check(race+': the shared AI is inactive in multiplayer',await p.evaluate(race=>{
     const R=__ROADLORDS_RUNTIME__,c=sharedReset(race);c.resources=R.C(1e5,1e5,1e5);R.MP.enabled=true;const before=JSON.stringify(c);sharedTick();R.MP.enabled=false;return JSON.stringify(c)===before;

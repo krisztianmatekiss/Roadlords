@@ -1,3 +1,4 @@
+import { imageSockets } from './torso-sockets.js';
 import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/human-infantry-art.json';
@@ -49,14 +50,14 @@ export function drawHumanInfantry(g,R,color,p,elite,walking,key) {
   const angle=mix(spear?1.10-.18*wind+.46*strike:.42-1.45*wind+strike,spear?.09:.1,death);
   const rear=spear?[mix(-1-2.5*wind+5*strike,2,death),mix(-22.5-.7*strike,-22,death)]:[-7.5,-20.8];
   const hand=spear?[rear[0]+Math.sin(angle)*13.92,rear[1]-Math.cos(angle)*13.92]:[mix(12.2-8.5*wind+2.3*strike,4,death),mix(-23-10.5*wind-.8*strike,-22,death)];
-  const backShoulder=[-4.8,-28.7],backElbow=joint(backShoulder,rear,7.6,7.6,1);
-  limb(g,R,'upperArm',backShoulder,backElbow);
+  const sockets=imageSockets(manifest,'torso',[-8.5,-32],20.5),backShoulder=sockets[0],backElbow=joint(backShoulder,rear,spear?6.1:5.1,spear?6:5,spear?1:-1);
+  const shoulder=sockets[1],elbow=joint(shoulder,hand,6.8,6.6,1);
+  limb(g,R,'upperArm',backShoulder,backElbow);limb(g,R,'upperArm',shoulder,elbow);
   part('torso',-8.5,-32,20.5);
   g.save();g.translate(.3,-30.0);g.rotate(-.035*wind+.035*strike);part(spear?'spearHead':'swordHead',-3.8,-11.5,11.5);g.restore();
   g.drawImage(cloth(R,color),-5.9,-16.5,12.0,11.0);
   limb(g,R,'forearm',backElbow,rear);
-  const shoulder=[4.9,-28.7],elbow=joint(shoulder,hand,7.7,7.7,1);
-  limb(g,R,'upperArm',shoulder,elbow);limb(g,R,'forearm',elbow,hand);
+  limb(g,R,'forearm',elbow,hand);
 
   const grip=spear?rear:hand,name=spear?'spear':'sword',r=manifest.parts[name],height=spear?58:27,scale=height/r[3],anchor=manifest.grips[name];
   g.save();g.translate(...grip);g.rotate(angle);g.drawImage(R.humanInfantryTexture,...r,-anchor[0]*r[2]*scale,-anchor[1]*height,r[2]*scale,height);g.restore();
@@ -71,5 +72,5 @@ export function drawHumanInfantry(g,R,color,p,elite,walking,key) {
   }
   if(elite){g.strokeStyle='#f5d279';g.lineWidth=1.2;g.beginPath();g.moveTo(-7,-28.5);g.lineTo(-3.5,-28.5);g.moveTo(3.5,-28.5);g.lineTo(7,-28.5);g.stroke();g.fillStyle='#f2d175';g.beginPath();g.moveTo(-1,-24);g.lineTo(.4,-26);g.lineTo(1.8,-24);g.lineTo(.4,-22);g.closePath();g.fill();}
   g.restore();g.restore();
-  return {painted:true,style:'painted-human',weapon:[...grip,angle],hands:spear?[rear,hand]:[hand],shield:!spear,hips,ankles,knees,body:[thrust,bob],death};
+  return {painted:true,style:'painted-human',weapon:[...grip,angle],hands:spear?[rear,hand]:[hand],shield:!spear,arms:{far:{shoulder:backShoulder,elbow:backElbow,wrist:rear},near:{shoulder,elbow,wrist:hand}},hips,ankles,knees,body:[thrust,bob],death};
 }

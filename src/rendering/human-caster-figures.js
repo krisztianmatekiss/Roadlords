@@ -1,3 +1,4 @@
+import { torsoSockets } from './torso-sockets.js';
 import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/human-casters-art.json';
@@ -83,7 +84,7 @@ function palmPoint(wrist,mirror) {
   const r=manifest.parts.palm,a=manifest.anchors.palm,s=4.7/r[3];
   return [wrist[0]+(a.center[0]-a.wrist[0])*r[2]*s*mirror,wrist[1]+(a.center[1]-a.wrist[1])*4.7];
 }
-function launchPoint(key){return key==='priest'?staffTip(key,[-12,-28],1.12):palmPoint([-7,-24.5],-1);}
+function launchPoint(key){return key==='priest'?staffTip(key,[-12,-28],1.12):palmPoint([-13,-25],-1);}
 function light(g,point,color,radius) {
   const glow=g.createRadialGradient(...point,0,...point,radius*2.5);glow.addColorStop(0,'#fff8dd');glow.addColorStop(.28,color+'ee');glow.addColorStop(1,color+'00');
   g.fillStyle=glow;g.beginPath();g.arc(...point,radius*2.5,0,TAU);g.fill();
@@ -99,15 +100,16 @@ export function drawHumanCaster(g,R,color,p,elite,pose,key,kind) {
   // Mage holds it in the near arm. These roles never swap during a cast.
   const staffHand=priest?[-14+2*cast,-28]:[12.5,-25],angle=priest?1.12*cast:.10-walk*.025;
   const staffWrist=[staffHand[0]+(priest?1.4:-1.4),staffHand[1]+.2];
-  const hand=priest?[mix(12,13,heal),mix(-28.5,-31,heal)]:[mix(-10-3*wind,-7,cast),mix(-20.5-2*wind,-24.5,cast)];
+  const hand=priest?[mix(12,13,heal),mix(-28.5,-31,heal)]:[mix(-11-3*wind,-13,cast),mix(-22-2*wind,-25,cast)];
   const palmMirror=priest?1:-1,tip=staffTip(key,staffHand,angle),palm=palmPoint(hand,palmMirror),orbLoaded=key==='mage'&&pose.state==='attack'&&!recovering;
   const feet=[[-4-walk*3,-2-Math.max(0,-lift)*2.4],[4+walk*3,-2-Math.max(0,lift)*2.4]];
   g.save();g.translate(p.death*3,-17);g.rotate(p.death*1.48);g.translate(0,17);
   for(const foot of feet)part('boot',foot[0]-1.4,foot[1]-1,4.7);
   g.save();g.translate(0,bob);
   if(!priest){g.save();g.translate(-5,-31);g.rotate(.12+walk*.04+p.death*.2);part('cape',-5,0,29);g.restore();}
-  const far={shoulder:[-4.5,-30],wrist:priest?staffWrist:hand},near={shoulder:[4.8,-30],wrist:priest?hand:staffWrist};
-  far.elbow=joint(far.shoulder,far.wrist,6.8,-1);near.elbow=joint(near.shoulder,near.wrist,6,1);
+  const sockets=torsoSockets(manifest,prefix+'Torso',[1,-21],14.8);
+  const far={shoulder:sockets[0],wrist:priest?staffWrist:hand},near={shoulder:sockets[1],wrist:priest?hand:staffWrist};
+  far.elbow=joint(far.shoulder,far.wrist,priest?6.8:6,-1);near.elbow=joint(near.shoulder,near.wrist,6,1);
   const robe=manifest.parts[prefix+'Robe'],robeX=priest?(243-robe[0])/robe[2]:(600-robe[0])/robe[2];
   g.save();g.translate(1,-21);g.rotate(walk*.03);g.drawImage(tinted[prefix+'Robe'],-robeX*20,0,20,20);g.restore();
   limb(g,R,tinted,prefix+'Upper',far.shoulder,far.elbow);

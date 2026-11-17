@@ -1,3 +1,4 @@
+import { imageSockets } from './torso-sockets.js';
 import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/skeleton-art.json';
@@ -78,7 +79,7 @@ export function drawSkeleton(g,R,color,p,elite,walking=false) {
   const knees=[leg(backHip,backAnkle,true),leg(frontHip,frontAnkle,false)];
 
   g.save();g.translate(0,bodyShift);
-  const backShoulder=[-4.8,-28.4],backHand=[-7.4+walk*.5,-19.5];
+  const sockets=imageSockets(manifest,'torso',[-9.1,-32.6],22),backShoulder=sockets[0],backHand=[-7.4+walk*.5,-19.5];
   const backElbow=elbow(backShoulder,backHand,6.4,6.3,-1);
   bone(g,R,'upperArm',backShoulder,backElbow);bone(g,R,'forearm',backElbow,backHand);
   part('torso',-9.1,-32.6,22.0);
@@ -86,7 +87,7 @@ export function drawSkeleton(g,R,color,p,elite,walking=false) {
   part('skull',-4.8,-12.8,12.8);g.restore();
   g.drawImage(teamCloth(R,color),-3.5,-13.0,7.8,9.0);
 
-  const shoulder=[5.3,-28.0];
+  const shoulder=sockets[1];
   let hand=[13.0-9.0*wind+2.0*strike-walk*.6,-21.7-13.0*wind-.3*strike];
   hand=[lerp(hand[0],4.0,death),lerp(hand[1],-22.0,death)];
   const swordAngle=lerp(.42-1.6*wind+1.0*strike,.10,death);
@@ -119,5 +120,5 @@ export function drawSkeleton(g,R,color,p,elite,walking=false) {
   g.restore();
   if(elite){g.fillStyle='#f3d77f';g.beginPath();g.moveTo(-5.5,-30);g.lineTo(-4.3,-32);g.lineTo(-3.1,-30);g.lineTo(-4.3,-28);g.fill();}
   g.restore();g.restore();
-  return {body:[thrust,bodyShift],weapon:[...hand,swordAngle],stride:walk*3.6,knees,hips:[backHip,frontHip],ankles:[backAnkle,frontAnkle],hand,painted:true,style:'light-bone',death};
+  return {body:[thrust,bodyShift],weapon:[...hand,swordAngle],stride:walk*3.6,knees,arms:{far:{shoulder:backShoulder,elbow:backElbow,wrist:backHand},near:{shoulder,elbow:frontElbow,wrist}},hips:[backHip,frontHip],ankles:[backAnkle,frontAnkle],hand,painted:true,style:'light-bone',death};
 }

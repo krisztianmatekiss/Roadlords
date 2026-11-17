@@ -16,17 +16,22 @@ A kártya és a lexikon közös leírást használ: a kapcsolt táborok külön 
 
 Javított működési hiba: a tartalékból csak a sikeresen bevetett újoncok kerülnek ki. A külön harctéri egységkorlát elérésekor a várakozók nem vesznek el, és nem kapják meg újra meg újra a kivonulási bónuszokat.
 
+Az építési előrejelzés az útvonal közben rendelkezésre álló jövedelmet is értékeli. Korábban csak a 120. másodperces végállapot számított, ezért egy eleinte haszontalan torony és későbbi termelők megelőzhették a korán megépített gazdaságot. A nyitási teszt az élőhalottaknál 32 döntési változatot ellenőriz: az olcsó kezdő termelő akkor elfogadható, ha a gazdasági épület azonnal utána finanszírozható; a hosszú, jövedelem nélküli várakozás nem.
+
 ## Mozgás
 
 - Goblin, Dühöngő és Troll: közel nyújtott nyugalmi lábtartás, előre hajló térd, váltakozó talajfogás. A talp nem süllyed a talajba, és a comb/lábszár nem nyúlik a lépés során.
 - Lovag: a túloldali lovasláb a ló teste mögé kerül; a látható láb előtte marad. A négylábú ló mozgása, a nyereghelyzet és a lándzsa találati időzítése változatlan.
+- Mind a 21 egység nyugalmi, járó, támadó és halálpózát, a kétkezes fegyvereket, a Goblin íját, a Warglovas dobását, valamint a gyógyítást és idézést is átnéztük. A vállpontok a törzsképekhez tartozó metaadatból származnak; méret- és helyváltoztatáskor együtt mozognak a törzzsel.
+- A felkar/váll takarási sorrendje javítva. A Szellem kinyújtott karral suhint, a kisebb orkok karja megfelelőbb arányú, a két íjász betöltéskor és visszaengedéskor sem nyújtja meg az alkarját. A harcosok lendítésének és visszatérésének pályája elkerüli a vállba visszahajló kezet.
+- A Mágus új tenyérhelyzetéből indul a lövedék is. A felszerelés ugyanabban a kézben marad.
 - Az eredeti atlaszok, a fegyverek kézhez igazítása és a harci sebzés megmaradnak. Ugyanaz a rajzoló működik a játékban és az AI–AI nézetben.
 
 ## Ellenőrzés
 
 A célzott böngészős tesztek valódi feloldásból indított íjász-, mágus- és lovasirányt, tényleges lovasság elleni választ, sűrű/ritka célpontok értékelését, a Gyülekezőtér létszámlimitjét és teljes lépésciklusokat ellenőriznek. A lovas rajzolási sorrendjét külön ellenőrzés védi; a régi harci és gazdasági tesztek is megmaradtak.
 
-Három, tényleges kezdő nyersanyagokkal és véletlen kártyakínálattal indított, hét játékpercig futtatott AI–AI meccsben:
+A buildértékelés ellenőrzésekor (30ebd47), tényleges kezdő nyersanyagokkal és véletlen kártyakínálattal indított, hét játékpercig futtatott AI–AI meccsekben:
 
 | Seed | Ellenfél | Ember főirány | Tényleges termelők a 7. percben |
 | --- | --- | --- | --- |
@@ -35,6 +40,8 @@ Három, tényleges kezdő nyersanyagokkal és véletlen kártyakínálattal ind�
 | 7 | Élőhalott | Lándzsás | L4 Lándzsás termelők, L2 Mágustorony, Ostromműhely; tankos ággal |
 
 Ez működési próba, nem győzelmi aránymérés vagy minden lehetséges build minőségének igazolása. Részletes helyi eredmény: `artifacts/variety-draft-retention.json`.
+
+Teljes anatómiai ellenőrzés: `tests/unit-anatomy.cjs`; 674 póz és 1186 karvizsgálat, fajonkénti nagyított és tükrözött képsorral. A teszt állandó csontszakaszhosszt és összecsuklás nélküli könyököt követel.
 
 Új célzott ellenőrzések: `tests/ai-composition-and-rally.cjs`, `tests/orc-grounded-stride.cjs`, valamint a lovas rétegsorrendje a `tests/knight-figure.cjs` fájlban.
 

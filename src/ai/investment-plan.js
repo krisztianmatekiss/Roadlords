@@ -86,10 +86,15 @@ export function installAiInvestmentPlan(R){
     const basePassive=R.aiPassiveValue(owner,ctx.metrics);
     const wave=Math.max(10,Math.min(30,R.reserveCount(owner))),wanted=Math.min(R.armyCapacityLimit,R.fieldUnitCount(owner)+owner.releaseQueue.reduce((n,e)=>n+R.orcArmyWeight(e,owner),0)+wave),actorRoom=R.battlePopulationRoom(owner);
     return R.aiPreview(owner,shadow=>{
-    const horizon=120,steps=[],queue=[...(first?[first]:[]),...(reinvest&&first&&R.aiBuildingMechanics(first).produces?[first]:[])];
+    const horizon=120,incomeKeys=R.aiResourceKeys(owner),steps=[],queue=[...(first?[first]:[]),...(reinvest&&first&&R.aiBuildingMechanics(first).produces?[first]:[])];
     const goals=ctx.growth.goals.slice(),consumed=goals.indexOf(first);if(consumed>=0)goals.splice(consumed,1);queue.push(...goals);
-    let elapsed=0,completed=0,firstWait=0,blocked=null,unfunded=0;
-    const advance=dt=>{if(dt<=0)return;const flow=operational(shadow,ctx);for(const r of R.RES){const next=shadow.resources[r]+(flow.gain[r]-flow.use[r])*dt;
+    let elapsed=0,completed=0,firstWait=0,blocked=null,unfunded=0,incomeCoverageTime=0;
+    const advance=dt=>{if(dt<=0)return;const flow=operational(shadow,ctx);
+      // An early income gain funds the whole itinerary. Looking only at its
+      // final second made an idle tower followed by late Wells beat Wells
+      // built first, despite giving up most of the opening's useful income.
+      incomeCoverageTime+=dt*Math.min(1,...incomeKeys.map(r=>Math.max(0,(flow.gain[r]-flow.use[r]*.35)/Math.max(1,ctx.target[r]))));
+      for(const r of R.RES){const next=shadow.resources[r]+(flow.gain[r]-flow.use[r])*dt;
       // Soul upkeep is compulsory: an insolvent intermediate city loses its
       // buildings before a later Well can rescue the paper itinerary.
       if(shadow.race==='undead'&&r==='wood')unfunded=Math.max(unfunded,-(R.undCredit?.(shadow)||0)-next);
@@ -138,7 +143,7 @@ export function installAiInvestmentPlan(R){
       steps.push({type,at:elapsed,cell,price,preparation:land?.ruins.length||0});advance(Math.min(horizon-elapsed,shadow.buildings.length>=80?2.4:.8));
     }
     advance(Math.max(0,horizon-elapsed));
-    shadow._forecast={steps,completed,firstWait,blocked,unfunded};
+    shadow._forecast={steps,completed,firstWait,blocked,unfunded,incomeCoverage:incomeCoverageTime/horizon};
   },shadow=>{
     const m=R.aiCityMetrics(shadow),f=shadow._forecast,keys=R.aiResourceKeys(owner),budget=ctx.growth.budget;
     let income=0,stock=0,deficit=0;const coverage=[];
@@ -156,7 +161,7 @@ export function installAiInvestmentPlan(R){
     const capacity=(actorRoom>0?12:0)*(Math.min(m.armyCap,wanted)-Math.min(ctx.metrics.armyCap,wanted))/wave;
     const land=Math.max(0,m.slots-ctx.metrics.slots)*(.15+.35*Math.pow(ctx.metrics.slots/(R.GRID*R.GRID),2));
     const capital=f.steps.reduce((n,s)=>n+keys.reduce((total,r)=>total+(s.price[r]||0)/Math.max(1,ctx.metrics.gain[r],ctx.target[r]),0),0)*.02;
-    return {...f,score:Math.min(...coverage)*(ctx.battle.safeOpening?75:45)+income*6/Math.max(1,keys.length)+stock*4/Math.max(1,keys.length)+f.completed*(ctx.battle.safeOpening?3:8)+power+passive+capacity-land-capital-deficit*18-f.firstWait*.025-Math.min(120,f.unfunded*2),
+    return {...f,score:Math.min(...coverage)*(ctx.battle.safeOpening?75:45)+income*6/Math.max(1,keys.length)+f.incomeCoverage*(ctx.battle.safeOpening?25:10)+stock*4/Math.max(1,keys.length)+f.completed*(ctx.battle.safeOpening?3:8)+power+passive+capacity-land-capital-deficit*18-f.firstWait*.025-Math.min(120,f.unfunded*2),
       gain:m.gain,use:m.use,power:m.power};
   });};
   R.aiPlanInvestment=(c,ctx)=>{

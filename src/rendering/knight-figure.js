@@ -79,17 +79,17 @@ export function drawKnight(g,R,color,p,elite,walking=false) {
   // Hips rest in the saddle. The thigh extends forwards, the shin hangs
   // below the knee; a standing full-leg cutout cannot produce this seated pose.
   limb(g,R,'riderThigh',hip,knee);
+  const arm=manifest.parts.arm,armScale=15/arm[3],shoulder=[-3,-47],armAngle=-.55-.65*wind;
+  const proximal=manifest.anchors.armShoulder.map((n,i)=>n*arm[i+2]),distal=manifest.anchors.armHand.map((n,i)=>n*arm[i+2]);
+  const dx=(distal[0]-proximal[0])*armScale,dy=(distal[1]-proximal[1])*armScale;
+  const hand=[shoulder[0]+Math.cos(armAngle)*dx-Math.sin(armAngle)*dy,shoulder[1]+Math.sin(armAngle)*dx+Math.cos(armAngle)*dy];
+  g.save();g.translate(...shoulder);g.rotate(armAngle);g.drawImage(R.knightTexture,...arm,-proximal[0]*armScale,-proximal[1]*armScale,arm[2]*armScale,15);g.restore();
   part('rider',-9,-57,27);
   // A small team tabard and plume retain the helmet's painted metal texture.
   g.fillStyle=color;g.strokeStyle='#c9ae70';g.lineWidth=.5;g.beginPath();g.moveTo(-1,-38);g.lineTo(6,-38);g.lineTo(5.5,-31);g.lineTo(2,-29.5);g.lineTo(-1,-31);g.closePath();g.fill();g.stroke();
   g.save();g.translate(-1.8,-56);g.rotate((walking?Math.sin(cycle)*.08:0)-.1*wind);g.fillStyle=color;g.strokeStyle='#2b362b';g.lineWidth=.6;g.beginPath();g.moveTo(0,0);g.bezierCurveTo(-4,-10,-13,-3,-17,-5);g.bezierCurveTo(-12,1,-4,-3,0,2);g.closePath();g.fill();g.stroke();g.restore();
   limb(g,R,'riderShin',knee,ankle);
 
-  const arm=manifest.parts.arm,armScale=15/arm[3],shoulder=[-3,-47],armAngle=-.55-.65*wind;
-  const proximal=manifest.anchors.armShoulder.map((n,i)=>n*arm[i+2]),distal=manifest.anchors.armHand.map((n,i)=>n*arm[i+2]);
-  const dx=(distal[0]-proximal[0])*armScale,dy=(distal[1]-proximal[1])*armScale;
-  const hand=[shoulder[0]+Math.cos(armAngle)*dx-Math.sin(armAngle)*dy,shoulder[1]+Math.sin(armAngle)*dx+Math.cos(armAngle)*dy];
-  g.save();g.translate(...shoulder);g.rotate(armAngle);g.drawImage(R.knightTexture,...arm,-proximal[0]*armScale,-proximal[1]*armScale,arm[2]*armScale,15);g.restore();
   const lanceAngle=(1.05-.57*wind+.67*strike)*(1-death)+1.3*death;
   const lance=manifest.parts.lance,lanceScale=43/lance[3];
   g.save();g.translate(...hand);g.rotate(lanceAngle);g.drawImage(R.knightTexture,...lance,-manifest.anchors.lance[0]*lance[2]*lanceScale,-manifest.anchors.lance[1]*43,lance[2]*lanceScale,43);
@@ -103,5 +103,5 @@ export function drawKnight(g,R,color,p,elite,walking=false) {
   g.globalAlpha=.85;g.fillStyle=color;g.fillRect(-width*.37,-height/2,width*.35,height);g.restore();
   if(elite){g.strokeStyle='#ffdb76';g.lineWidth=.9;g.beginPath();g.moveTo(-width*.46,-height*.43);g.lineTo(width*.46,-height*.43);g.lineTo(width*.38,height*.15);g.lineTo(0,height*.48);g.lineTo(-width*.38,height*.15);g.closePath();g.stroke();}
   g.restore();g.restore();g.restore();
-  return {painted:true,style:'painted-knight',body:[thrust,bob],riderHip:[hip[0],hip[1]+9],riderKnee:[knee[0],knee[1]+9],riderAnkle:[ankle[0],ankle[1]+9],saddle:[-4,-27],hoofs,knees,hand,weapon:[...hand,lanceAngle],death};
+  return {painted:true,style:'painted-knight',body:[thrust,bob],riderHip:[hip[0],hip[1]+9],riderKnee:[knee[0],knee[1]+9],riderAnkle:[ankle[0],ankle[1]+9],saddle:[-4,-27],hoofs,knees,hand,arm:{shoulder,hand},weapon:[...hand,lanceAngle],death};
 }

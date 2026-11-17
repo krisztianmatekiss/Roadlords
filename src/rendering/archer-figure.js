@@ -1,3 +1,4 @@
+import { imageSockets } from './torso-sockets.js';
 import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/archer-art.json';
@@ -57,7 +58,7 @@ export function drawArcher(g,R,color,p,elite,pose) {
   const attacking=pose.state==='attack',released=attacking&&pose.frame>=7,recovery=released?(pose.frame-7)/4:0;
   const draw=attacking?(released?1-recovery:p.wind):0;
   // The last nocked pose and the first flying arrow use precisely this centre.
-  const grip=attacking?[20,-33]:[10+walk*.5,-23],nock=attacking?[mix(16,1,draw),-33]:[5,-23];
+  const grip=attacking?[20,-33]:[10+walk*.5,-23],nock=attacking?[mix(8,1,draw),-33]:[5,-23];
   const angle=attacking?0:.28-walk*.08,bend=attacking&&!released?draw*.025:0;
   const top=bowPoint('top',grip,angle,bend),bottom=bowPoint('bottom',grip,angle,bend);
   const arrowLoaded=!death&&!released,arrowCenter=attacking?[nock[0]+ARROW/2,-33]:[nock[0]+ARROW/2,-23];
@@ -68,19 +69,19 @@ export function drawArcher(g,R,color,p,elite,pose) {
   g.save();g.translate(-5,-30);g.rotate(.15+walk*.04+death*.35);part('cape',-5,0,23,true);g.restore();
   g.save();g.translate(-6.5,-31);g.rotate(-.16);part('quiver',-4,-4,23);g.restore();
   const rear=death?[-4,-20]:nock,front=grip;
-  const rearShoulder=[-4.4,-28.5],rearElbow=joint(rearShoulder,rear,8.1,8.1,-1);
-  limb(g,R,'upperArm',rearShoulder,rearElbow);
+  const sockets=imageSockets(manifest,'torso',[-7,-32],21),rearShoulder=sockets[0],rearElbow=joint(rearShoulder,rear,8.1,8.1,-1);
+  const shoulder=sockets[1],elbow=joint(shoulder,front,8.3,8.2,1);
+  limb(g,R,'upperArm',rearShoulder,rearElbow);limb(g,R,'upperArm',shoulder,elbow);
   part('torso',-7,-32,21,true);
   // Seat the short neck inside the collar instead of above the shoulders.
   part('head',-4.3,-41,12,true);part('cloth',-4.3,-16.2,10.6,true);
   limb(g,R,'forearm',rearElbow,rear);
-  const shoulder=[4.3,-28.5],elbow=joint(shoulder,front,8.7,8.7,1);
-  limb(g,R,'upperArm',shoulder,elbow);limb(g,R,'forearm',elbow,front);
+  limb(g,R,'forearm',elbow,front);
   const {stringNock}=drawArcherEquipment(g,R,{grip,nock,angle,bend,arrowCenter,arrowLoaded,released,recovery});
   for(const [hand,rotation]of [[rear,0],[front,angle]]){g.save();g.translate(...hand);g.rotate(rotation);g.fillStyle='#c79c65';g.strokeStyle='#63432d';g.lineWidth=.45;g.beginPath();g.roundRect(-1.4,-1.1,2.8,2.5,.7);g.fill();g.stroke();g.restore();}
   if(elite){g.strokeStyle='#f3d279';g.lineWidth=1;g.beginPath();g.moveTo(-5,-32);g.lineTo(-2,-30);g.moveTo(2,-30);g.lineTo(5,-32);g.stroke();g.fillStyle='#f2d175';g.beginPath();g.moveTo(-1,-24);g.lineTo(.4,-26);g.lineTo(1.8,-24);g.lineTo(.4,-22);g.closePath();g.fill();}
   g.restore();g.restore();
-  return {painted:true,style:'painted-archer',hips,ankles,knees,hands:[rear,front],grip,nock,stringNock,top,bottom,arrowCenter,arrowLoaded,draw,released,death};
+  return {painted:true,style:'painted-archer',hips,ankles,knees,hands:[rear,front],arms:{far:{shoulder:rearShoulder,elbow:rearElbow,wrist:rear},near:{shoulder,elbow,wrist:front}},grip,nock,stringNock,top,bottom,arrowCenter,arrowLoaded,draw,released,death};
 }
 
 // Shared bow, string and release geometry for human and skeletal archers.

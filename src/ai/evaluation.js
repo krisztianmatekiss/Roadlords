@@ -1,4 +1,5 @@
 import { necromancerSummonInterval } from '../combat/unit-update.js';
+import { matchupMultiplier } from './matchups.js';
 import { installAiConditionalContext } from './conditional-context.js';
 import { BUILDING_MECHANICS, CONDITIONAL_EFFECTS, UNIT_FEATURES, cardTargets } from './mechanics.js';
 import { ORC_REDESIGN, TAVERN, levelValue, undeadEliteChance, REMOVED_BUILDINGS } from '../data/faction-redesign.js';
@@ -113,7 +114,7 @@ export function installAiEvaluation(R) {
     const mobility = bounded(Math.pow(stats.speed / Math.max(1, base.speed), .2), .65, 1.5);
     const aoe = 1 + Math.min(1.5, positive(stats.aoe) / 65);
     const heal = positive(stats.heal) / Math.max(.5, base.healCooldown || 3);
-    return Math.pow(hp / 100, ranged ? .3 : .5) * (damage * aoe + .12 * positive(stats.buildingDamage) / Math.max(.1, stats.cooldown) + heal * .8) * range * mobility;
+    return Math.pow(hp / 100, ranged ? .3 : .5) * (damage * aoe + .12 * positive(stats.buildingDamage) / Math.max(.1, stats.cooldown) + heal * .8) * range * mobility * matchupMultiplier(R,key,stats,combat.matchup);
   };
 
   R.aiCityMetrics = c => {

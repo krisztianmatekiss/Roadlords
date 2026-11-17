@@ -56,6 +56,12 @@ export function drawKnight(g,R,color,p,elite,walking=false) {
     hoofs.push(hoof);knees.push(knee);
   };
   leg(false,false);leg(true,false);
+  const backHip=[-6,-36],backKnee=[0,-32],backAnkle=[-3,-23];
+  const hip=[-4,-36],knee=[4,-32],ankle=[1,-23];
+  const riderTransform=()=>{g.translate(strike*.9,9+bob*.65);g.translate(-3,-34);g.rotate(.06*strike-.035*wind+death*.16);g.translate(3,34);};
+  // The far leg belongs behind the horse, rather than alongside the near leg.
+  g.save();riderTransform();g.globalAlpha=.83;
+  limb(g,R,'riderThigh',backHip,backKnee);limb(g,R,'riderShin',backKnee,backAnkle);g.restore();
   g.save();g.translate(0,bob);
   g.save();g.translate(-20,-27);g.rotate(.06+(walking?Math.sin(cycle)*.10:0)+death*.2);part('tail',-12,-1,22);g.restore();
   part('horseBody',-25,-32,22);
@@ -69,12 +75,9 @@ export function drawKnight(g,R,color,p,elite,walking=false) {
   g.restore();
   leg(false,true);leg(true,true);
 
-  g.save();g.translate(strike*.9,9+bob*.65);g.translate(-3,-34);g.rotate(.06*strike-.035*wind+death*.16);g.translate(3,34);
+  g.save();riderTransform();
   // Hips rest in the saddle. The thigh extends forwards, the shin hangs
   // below the knee; a standing full-leg cutout cannot produce this seated pose.
-  const backHip=[-6,-36],backKnee=[0,-32],backAnkle=[-3,-23];
-  const hip=[-4,-36],knee=[4,-32],ankle=[1,-23];
-  g.save();g.globalAlpha=.83;limb(g,R,'riderThigh',backHip,backKnee);limb(g,R,'riderShin',backKnee,backAnkle);g.restore();
   limb(g,R,'riderThigh',hip,knee);
   part('rider',-9,-57,27);
   // A small team tabard and plume retain the helmet's painted metal texture.

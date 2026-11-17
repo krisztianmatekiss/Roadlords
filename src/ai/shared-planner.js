@@ -52,10 +52,11 @@ export function installSharedAiPlanner(R) {
   }
   function duringDecision(action,city=decision?.c||R.E) {
     if (decision?.c===city) return action(decision);
-    const previous=decision,cache = R.aiDecisionCache;
+    const previous=decision,cache = R.aiDecisionCache,observations=R.aiObservationContext;
     R.aiDecisionCache = new Map();
+    R.aiObservationContext = new Map();
     try { decision = context(city); return action(decision); }
-    finally { decision = previous; R.aiDecisionCache = cache; }
+    finally { decision = previous; R.aiDecisionCache = cache;R.aiObservationContext=observations; }
   }
   function priceWait(c, price, metrics) {
     let wait = 0;
@@ -202,7 +203,16 @@ export function installSharedAiPlanner(R) {
         score += investment(c,type.unit) * .6;
         const prospective=R.aiPreviewChoice(c,o,shadow=>R.aiArmyIntent(shadow,{metrics,battle:ctx.battle,strategy:ctx.strategy}));
         const purpose=prospective.purposes.get(o.id);
-        if(purpose?.needed)score+=purpose.role==='core'?Math.max(0,purpose.value-(ctx.intent.main?.value||0))*1.5:3;
+        // Current intent cannot contain a still-locked producer. Scoring its
+        // construction with that intent gave almost every new army direction
+        // -100 before it was even considered, trapping the opening unit forever.
+        const options=R.aiRecruitmentOptions(c,metrics,ctx.battle),alternatives=options.filter(p=>!R.factionBasics(c.race).includes(p.type));
+        if(purpose){
+          score=4+2*Math.log1p(Math.max(0,purpose.value))+investment(c,type.unit)*.6;
+          score-=Math.min(3,Math.max(0,opp.wait-30)/45);
+          if(purpose?.needed)score+=purpose.role==='core'?2:4;
+          else if(alternatives.length>=2)score-=6;
+        }
       }
       if (m.capacity && c.armyCap<=R.fieldUnitCount(c)+R.reserveCount(c)+15) score += 12;
       if (m.features?.some(x=>(metrics.features[x]||0)>0)) score += 3;
@@ -210,12 +220,21 @@ export function installSharedAiPlanner(R) {
     } else {
       const measured = R.aiPreviewChoice(c,o,shadow=>{
         const after=R.aiCityMetrics(shadow);
-        return {after,passive:passive(shadow,after),readiness:R.aiCardReadiness(shadow,o)};
+        const recruit=['building_upgrade','building_branch'].includes(o.kind)&&R.BUILDINGS[o.id]?.unit
+          ?R.aiRecruitmentOptions(shadow,after,ctx.battle,o.id)[0]:null;
+        return {after,passive:passive(shadow,after),readiness:R.aiCardReadiness(shadow,o),recruit};
       });
       const value=valueDelta(metrics,measured.after,c,passive(c,metrics),measured.passive);
       if(BUILDING_MECHANICS[o.id]?.capacity && measured.after.armyCap<=metrics.armyCap && measured.after.reserveCap<=metrics.reserveCap) return -100;
       readiness=measured.readiness;
       score = value + R.aiConditionalCardValue(o,c,metrics,readiness);
+      const previousRecruit=ctx.intent.purposes.get(o.id);
+      if(measured.recruit&&previousRecruit?.throughput>0){
+        // Upgrading one useful complementary line must be judged as a better
+        // recruit as well as a small fraction of an already large old army.
+        const gain=measured.recruit.throughput/previousRecruit.throughput-1;
+        if(previousRecruit.role)score+=Math.min(12,Math.max(0,gain)*12);
+      }
       if(ctx.pressure&&CONDITIONAL_EFFECTS[o.id]?.features.includes('defense'))score+=16;
       if (o.kind === 'building_upgrade') score += successorValue(o.id,ctx);
       if (o.kind==='building_upgrade'||o.kind==='building_branch') score += Math.min(4,R.buildingOf(c,o.id).length*.3);
@@ -241,7 +260,7 @@ export function installSharedAiPlanner(R) {
     if (!o) return;
     c.aiLastChoiceKey=R.choiceKey(o);
     c.aiDoctrine=null;
-    if(o.kind==='building' && R.BUILDINGS[o.id]?.unit) c._aiSharedPreferred=o.id;
+    if(o.kind==='building' && R.BUILDINGS[o.id]?.unit){c._aiSharedPreferred=o.id;(c._aiDraftProducers||={})[o.id]=true;}
   };
 
   R.aiChooseOptions = (options, {source,tier,subtype,city=R.E}) => duringDecision(ctx=>{

@@ -61,7 +61,7 @@ export function createCodexCards(R) {
     // Branched L4 has no single value: show its two actual alternatives below the card.
     const max = bs.length ? 3 : race === 'undead' || R.V4_SIMPLE_L4.has(type) ? 4 : 3;
     const selected=city&&level===4?bs.find(b=>b.id===R.branchOf(city,type)):null;
-    const text = selected?.description || description, art = R.cardBuildingImageTag(type, 'lexBuildingImg', race);
+    const text = type==='rally'?description:selected?.description || description, art = R.cardBuildingImageTag(type, 'lexBuildingImg', race);
     const reference=city || cityFor(race,type,level)[0];
     const body = (d.unit ? productionFacts(R, reference, type, level) : type === 'keep' ? capitalFacts(R,race,level) : `<p>${effectText(text)}</p>`)+(race==='undead'?buildingUpkeep(R,type,reference):'');
     const meta = '';
@@ -69,7 +69,7 @@ export function createCodexCards(R) {
     return `<article class="rlCodexCard" data-codex-building="${type}" data-race="${race}">${face({id:type,kind:'building',race,name:race === 'orc' && type === 'keep' ? 'Ork főépület' : d.name,category:d.category,art,body,meta,price,mark:uniqueBuildingMark(R,reference,type),footprint:productionFootprint(R,reference,type),metaInBody:!!d.unit})}
       <nav class="lexLevels" aria-label="${esc(d.name)} szintje">${Array.from({length:max}, (_, i) => `<button type="button" data-codex-level="${i+1}" aria-pressed="${level === i+1}">L${i+1}</button>`).join('')}</nav>
       ${bs.length && !city ? `<details class="lexBranches"><summary>L4 ágak</summary>${bs.map(b => `<div class="rlBranch"><b>${esc(b.name)}</b><p>${effectText(b.description)}</p>${ruleDetails(cardRules[type+'/'+b.id])}</div>`).join('')}</details>` : ''}
-      ${selected?`<p class="deckBuildingBranch"><b>${esc(selected.name)}</b> · ${effectText(selected.description)}</p>`:''}${extraRules(type,race,level)}</article>`;
+      ${selected?`<p class="deckBuildingBranch"><b>${esc(selected.name)}</b>${type==='rally'?'':' · '+effectText(selected.description)}</p>`:''}${extraRules(type,race,level)}</article>`;
   }
   function upgrade(item, kind, race, city = null, summary = null) {
     if(kind==='normal') item=R.upgradeCatalog.option(item.id,item.rarity || rarities.get(item.id));

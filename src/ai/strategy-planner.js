@@ -22,7 +22,8 @@ export function installAiStrategyPlanner(R) {
     Object.entries(c.normal).filter(([id])=>cardTargets(R,{kind:'normal',id}).some(k=>p.units.includes(k))),
   ]);
 
-  function candidates(c,metrics){
+  function candidates(c,metrics,battle){
+    const recruits=R.aiRecruitmentOptions(c,metrics,battle);
     const normals=Object.entries(c.normal).map(([id,n])=>({n,description:R.aiStrategyDescriptor(c,{kind:'normal',id})}));
     const legends=[...c.legends].map(id=>R.aiStrategyDescriptor(c,{kind:'legendary',id}));
     const out=[];
@@ -44,10 +45,12 @@ export function installAiStrategyPlanner(R) {
       plan.commitment=investment+links+(isOwned?7:0)+(progress>=3?3:0);
       plan.owned=isOwned;
       plan.producer=units.map(k=>producer(c,k)).find(type=>type&&R.hasBuilding(c,type))||units.map(k=>producer(c,k)).find(Boolean)||null;
-      if(plan.producer&&c.unlocked.has(plan.producer)&&!R.factionBasics(c.race).includes(plan.producer)){plan.evidence+=2;plan.commitment+=2;}
+      if((c._aiDraftProducers?.[plan.producer]||plan.producer===c._aiSharedPreferred)){plan.evidence+=1;plan.commitment+=1;}
       // Unavailable cards can be a future possibility, never a reason to
       // abandon an already functioning economy for a guaranteed imaginary draw.
-      plan.initial=plan.evidence+(isOwned?4:0)-(plan.producer&&!c.unlocked.has(plan.producer)?3:0)+aiPreference(c,units.slice().sort().join(',')||plan.key)*2;
+      const viable=recruits.filter(o=>units.includes(o.key));
+      plan.viability=Math.max(0,...viable.map(o=>o.value));
+      plan.initial=plan.evidence+Math.min(6,plan.viability)+(isOwned?4:0)-(plan.producer&&!c.unlocked.has(plan.producer)?3:0)+aiPreference(c,units.slice().sort().join(',')||plan.key)*2;
       out.push(plan);
     }
     return out.sort((a,b)=>b.initial-a.initial||a.key.localeCompare(b.key));
@@ -120,7 +123,7 @@ export function installAiStrategyPlanner(R) {
       const p=previous.value.primary;if(p)p.goals=R.aiStrategySteps(c,p,false,ctx.metrics).filter(o=>o.kind==='construct').map(o=>o.id);
       return previous.value;
     }
-    const ranked=candidates(c,ctx.metrics),short=[],themes=new Set();
+    const ranked=candidates(c,ctx.metrics,ctx.battle),short=[],themes=new Set();
     for(const p of ranked){
       const theme=p.units.slice().sort().join(',')||p.features.slice().sort().join(',');
       if(themes.has(theme))continue;themes.add(theme);short.push(p);if(short.length===3)break;

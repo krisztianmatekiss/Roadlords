@@ -1,6 +1,7 @@
 import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/orc-raiders-art.json';
+import { groundedStride } from './grounded-stride.js';
 
 const TAU=Math.PI*2,clamp=n=>Math.max(0,Math.min(1,n)),mix=(a,b,t)=>a+(b-a)*t;
 const GOBLIN_SCALE=manifest.modelScales.orc_goblin;
@@ -75,12 +76,13 @@ function bowTip(name,hand,angle) {
 export function drawOrcRaider(g,R,color,p,elite,pose,key,variant) {
   const gob=key==='orc_goblin',prefix=gob?'gob':'bers',bow=variant==='bow';
   const part=(name,x,y,h)=>{const r=manifest.parts[name],w=h*r[2]/r[3];g.drawImage(R.orcRaidersTexture,...r,x,y,w,h);};
-  const walking=pose.state==='walk',walk=walking?p.walk:0,lift=walking?Math.cos(p.wheel):0,bob=Math.abs(walk)*.55;
+  const walking=pose.state==='walk',walk=walking?p.walk:0,bob=Math.abs(walk)*.55;
   const recovery=clamp((p.recovery-.2)/.8),strike=p.strike*(1-recovery),wind=p.wind*(1-p.strike)*(1-p.recovery);
   const pelvis=[1,(gob?-16.3:-15.5)+bob];
-  const feet=[[pelvis[0]-5.1-walk*3.5,-2.5-Math.max(0,-lift)*2.4],[pelvis[0]+5.1+walk*3.5,-2.5-Math.max(0,lift)*2.4]],hips=[[pelvis[0]-3.45,pelvis[1]],[pelvis[0]+3.45,pelvis[1]]];
+  const gait=groundedStride(pelvis,p.wheel,walking,{hipWidth:3.45,spread:gob?4.2:4.5,stride:gob?2.3:2.6,lift:gob?1.4:1.5,ankleY:1.5-4.6*(1-manifest.anchors[prefix+'Foot'].ankle[1]),upper:gob?7.3:7,lower:gob?6.9:6.65});
+  const {feet,hips}=gait;
   g.save();g.translate(p.death*3,-17+16*Math.sin(p.death*1.48));g.rotate(p.death*1.48);g.translate(0,17);
-  const knees=hips.map((start,i)=>{const knee=joint(start,feet[i],7.8,7.3,-1);g.save();if(!i)g.globalAlpha=.86;limb(g,R,prefix+'Thigh',start,knee);limb(g,R,prefix+'Shin',knee,feet[i]);const name=prefix+'Foot',r=manifest.parts[name],h=4.6,w=h*r[2]/r[3],anchor=manifest.anchors[name].ankle;part(name,feet[i][0]-anchor[0]*w,feet[i][1]-anchor[1]*h,h);g.restore();return knee;});
+  const knees=hips.map((start,i)=>{const knee=gait.knees[i];g.save();if(!i)g.globalAlpha=.86;limb(g,R,prefix+'Thigh',start,knee);limb(g,R,prefix+'Shin',knee,feet[i]);const name=prefix+'Foot',r=manifest.parts[name],h=4.6,w=h*r[2]/r[3],anchor=manifest.anchors[name].ankle;part(name,feet[i][0]-anchor[0]*w,feet[i][1]-anchor[1]*h,h);g.restore();return knee;});
   g.save();g.translate(0,bob);
   const sling=slingPose(pose),released=pose.state==='attack'&&pose.frame>=7;
   let farHand,nearHand,axes=[];

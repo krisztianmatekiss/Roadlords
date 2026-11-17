@@ -1,4 +1,13 @@
-# Roadlords · V4.85.0
+# Roadlords · V4.86.0
+
+## V4.86.0 – AI-buildválasztás, Gyülekezőtér és mozgásjavítás
+
+- Az AI egységértékelése figyel a hatótávra, fedezetre, tömörülésekre és az ellenfél seregtípusaira. A ténylegesen választott termelő iránya az első építés után is megmarad; nincs általános lovag-/lándzsáspreferencia.
+- Egy hiányzó szerepet egy megfelelő támogató vonallal egészít ki. A még zárolt termelők feloldását és a hasznos kiegészítő termelők szintlépését külön is értékeli.
+- Érthetőbb Gyülekezőtér-kártya, lexikon és vezérlés. Megtelt harctér mellett sem vesznek el a kivonulásra váró újoncok.
+- Goblin, Dühöngő és Troll: rendezettebb térd- és lábtartás, váltott talajfogás. A lovag túloldali lábát megfelelően takarja a ló.
+
+[Részletek és ellenőrzések](docs/ai-composition-and-animation-4.86.md). Multiplayer szabályverzió: **33**.
 
 ## V4.85.0 – Nagy csaták és finomabb ritkasági skálázás
 

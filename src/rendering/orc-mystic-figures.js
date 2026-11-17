@@ -1,6 +1,7 @@
 import { usesPaintedBattleArt } from '../config/figure-trials.js';
 import { assetUrl } from '../assets/urls.js';
 import manifest from '../data/orc-mystics-art.json';
+import { groundedStride } from './grounded-stride.js';
 import { drawMagicShot } from './battle-effects.js';
 
 const TAU=Math.PI*2,clamp=n=>Math.max(0,Math.min(1,n)),mix=(a,b,t)=>a+(b-a)*t;
@@ -72,9 +73,10 @@ export function drawOrcMystic(g,R,color,p,elite,pose,key) {
   const walk=pose.state==='walk'?p.walk:0,lift=pose.state==='walk'?Math.cos(p.wheel):0,bob=Math.abs(walk)*(troll?.65:.45);
   const recovery=clamp((p.recovery-.2)/.8),strike=p.strike*(1-recovery),wind=p.wind*(1-p.strike)*(1-p.recovery);
   const pelvis=[1,(troll?-17.2:-16)+bob],waist=[pelvis[0],pelvis[1]-bob],spread=troll?5.6:4.8;
-  const hips=[[pelvis[0]-3.5,pelvis[1]],[pelvis[0]+3.5,pelvis[1]]],feet=[[pelvis[0]-spread-walk*3.1,-2.8-Math.max(0,-lift)*2.4],[pelvis[0]+spread+walk*3.1,-2.8-Math.max(0,lift)*2.4]];
+  const gait=troll?groundedStride(pelvis,p.wheel,pose.state==='walk',{hipWidth:3.5,spread:4.6,stride:2.8,lift:1.6,ankleY:1.5-5.8*(1-manifest.anchors.trFoot.ankle[1]),upper:7.6,lower:7.1}):null;
+  const hips=gait?.hips||[[pelvis[0]-3.5,pelvis[1]],[pelvis[0]+3.5,pelvis[1]]],feet=gait?.feet||[[pelvis[0]-spread-walk*3.1,-2.8-Math.max(0,-lift)*2.4],[pelvis[0]+spread+walk*3.1,-2.8-Math.max(0,lift)*2.4]];
   g.save();g.translate(p.death*3,-18+17*Math.sin(p.death*1.48));g.rotate(p.death*1.48);g.translate(0,18);
-  const knees=hips.map((start,i)=>{const knee=joint(start,feet[i],8.5,7.9,-1);g.save();if(!i)g.globalAlpha=.9;limb(g,R,prefix+'Thigh',start,knee);limb(g,R,prefix+'Shin',knee,feet[i]);const name=prefix+'Foot',r=manifest.parts[name],h=troll?5.8:5,w=h*r[2]/r[3],a=manifest.anchors[name].ankle;part(name,feet[i][0]-a[0]*w,feet[i][1]-a[1]*h,h);g.restore();return knee;});
+  const knees=hips.map((start,i)=>{const knee=gait?.knees[i]||joint(start,feet[i],8.5,7.9,-1);g.save();if(!i)g.globalAlpha=.9;limb(g,R,prefix+'Thigh',start,knee);limb(g,R,prefix+'Shin',knee,feet[i]);const name=prefix+'Foot',r=manifest.parts[name],h=troll?5.8:5,w=h*r[2]/r[3],a=manifest.anchors[name].ankle;part(name,feet[i][0]-a[0]*w,feet[i][1]-a[1]*h,h);g.restore();return knee;});
   g.save();g.translate(0,bob);
   const torso=prefix+'Torso',r=manifest.parts[torso],a=manifest.anchors[torso],h=troll?25:22,w=h*r[2]/r[3],at=[waist[0]-a.waist[0]*w,waist[1]-a.waist[1]*h];
   const swing=troll?trollArmPose(p,pose,bob):null;

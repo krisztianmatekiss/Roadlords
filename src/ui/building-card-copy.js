@@ -1,3 +1,4 @@
+import { rallyDescription } from '../data/rally.js';
 const shortLabels = { 'Főváros HP': 'Életerő', 'Úti sereglimit': 'Sereghely',
   'Alap sereglimit': 'Sereghely', 'Alaptermelés': 'Termelés',
   'Fa és kő másodpercenként': 'Fa és kő/mp', 'Élelem másodpercenként': 'Élelem/mp',
@@ -26,9 +27,11 @@ export function createBuildingCardCopy(R) {
   }
   function metrics(race, type, level, city = null) {
     const compact = race==='undead' && type==='und_well' && city && R.hasLeg(city,'und_compact_wells');
-    const key = `${race}:${type}:${level}:${!!compact}`;
+    const rallyBranch=type==='rally'?city?.l4Branches?.rally||'':'';
+    const key = `${race}:${type}:${level}:${!!compact}:${rallyBranch}`;
     if (cache.has(key)) return cache.get(key);
     const d = compact ? R.buildingDefinition(city,type) : definitions(race, type), [c, b] = cityFor(race, type, level);
+    if(rallyBranch){c.l4Branches.rally=rallyBranch;R.recomputeCity(c,false);}
     let rows;
     if (type === 'keep') {
       const rates = R.productionRates(c);
@@ -57,7 +60,7 @@ export function createBuildingCardCopy(R) {
     if(type==='academy')rows.push(['Kezdőár / irány', String(window.__ROADLORDS_V4953__.academyNextCost(c,'damage'))]);
     if (race === 'undead' && type !== 'keep') rows.push(['Fenntartás', `${d.upkeep.toLocaleString('hu-HU')} Lélek/mp`]);
     rows = rows.map(([name, value]) => [shortLabels[name] || name, String(value).replace(/stack/g, 'vétel').replace(/cooldown/g, 'várakozás')]);
-    const value = { rows, cost: R.buildPrice(c, type), description: describe(race, type, level, d, rows) }; cache.set(key, value); return value;
+    const value = { rows, cost: R.buildPrice(c, type), description: type==='rally'?rallyDescription(level,rallyBranch):describe(race, type, level, d, rows) }; cache.set(key, value); return value;
   }
   function costText(cost, race) {
     const price = n => n.toLocaleString('hu-HU', {maximumFractionDigits:2});

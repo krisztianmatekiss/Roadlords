@@ -38,9 +38,13 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    for(const [i,u]of [knight,orc].entries()){
     const x=270+i*540,s=sprite(u,'idle',0),b=s.figureBounds;c.fillStyle='#22392c';c.beginPath();c.roundRect(25+i*540,110,490,610,18);c.fill();c.font='bold 23px Arial';c.fillStyle='#eed8a5';c.fillText(i?'Ork Harcos':'Lovag',x,147);c.drawImage(s,x+b[0]*4,470+b[1]*4,b[2]*4,b[3]*4);c.drawImage(s,x+b[0]*1.15,655+b[1]*1.15,b[2]*1.15,b[3]*1.15);
    }
-   result.preview=preview.toDataURL();result.cache=Q.sprites.size;return result;
+   result.preview=preview.toDataURL();
+   const parts={horseBody:[42,76],riderThigh:[462,728],riderShin:[539,813]},draw=CanvasRenderingContext2D.prototype.drawImage,order=[];
+   try{CanvasRenderingContext2D.prototype.drawImage=function(image,...args){if(image===R.knightTexture){const part=Object.keys(parts).find(k=>parts[k][0]===args[0]&&parts[k][1]===args[1]);if(part)order.push(part);}return draw.call(this,image,...args);};Q.sprites.clear();sprite(knight,'idle',0);}finally{CanvasRenderingContext2D.prototype.drawImage=draw;}
+   result.riderLayerOrder=order;result.cache=Q.sprites.size;return result;
   });
   for(const [field,name]of [['gallery','knight-poses.png'],['preview','knight-orc-in-game.png']]){fs.writeFileSync('artifacts/'+name,Buffer.from(poses[field].split(',')[1],'base64'));delete poses[field];}report.poses=poses;
+  const order=poses.riderLayerOrder;check('The far rider leg is occluded by the horse; only the near leg is drawn over its body',order.filter(x=>x==='riderThigh').length===2&&order.filter(x=>x==='riderShin').length===2&&order.indexOf('riderShin')<order.indexOf('horseBody')&&order.lastIndexOf('riderThigh')>order.lastIndexOf('horseBody'));
   check('Mounted rig has distinct idle, eight moving, twelve attack and six death frames',poses.idle===1&&poses.walk>=6&&poses.attack>=9&&poses.death===6);
   check('All four horse legs move and each gait frame retains ground contact',poses.hoofs.every(frame=>frame.length===4&&frame.some(h=>h[1]>-1.3)&&frame.every(h=>h[1]<=-1.19))&&[0,1,2,3].every(i=>new Set(poses.hoofs.map(f=>f[i].join(','))).size>=6));
   check('Grounded hooves move backwards relative to the forward-moving horse',[[0,5],[3,5],[1,1],[2,1]].every(([leg,frame])=>poses.hoofs[frame][leg][1]>-1.3&&poses.hoofs[frame][leg][0]>poses.hoofs[frame+1][leg][0]&&poses.hoofs[frame+1][leg][0]>poses.hoofs[frame+2][leg][0]));

@@ -1,4 +1,5 @@
 import { GOBLIN_BOW_COPY } from './combat-balance.js';
+import { rallyDescription } from './rally.js';
 import { CIVILIAN_MILITIA_INTERVAL } from './economy-balance.js';
 // Player-facing copy, independent of the preserved legacy initialization order.
 import { ORC_COMMON_ADDITIONS, ORC_LEGEND_ADDITIONS } from './orc-expansion.js';
@@ -164,7 +165,7 @@ export const BUILDING_COPY = Object.freeze({
   "guildhouse": "A 2 mezőn belüli Favágók, Kővágók és Farmok +25% termelést kapnak.",
   "market": "1 nyersanyag/mp-ből 0,6 másikat termel. Az átváltás iránya a Piacban módosítható.",
   "townhall": "A 2 mezőn belüli Lakóházak +50%-kal több sereghelyet adnak.",
-  "rally": "15 férőhelyes külön tartalék a szomszédos katonai épületeknek. Kivonuláskor +30% mozgási sebesség az első támadásig.",
+  "rally": rallyDescription(),
   "tavern": "A kivonuló egységek első 2 támadása +50% sebzést okoz. A főkapunál és a Gyülekezőtérnél is hat.",
   "guardhouse": "Fal vagy Gyülekezőtér mellett +20 helyőrségi férőhely.",
   "house": "+10 sereghely.",

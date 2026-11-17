@@ -1,4 +1,5 @@
 import { TAVERN, levelValue as lv } from '../data/faction-redesign.js';
+import { rallyDescription } from '../data/rally.js';
 
 export function initializeHumanRedesign(R) {
   const human=c=>(c.race||'human')==='human';
@@ -140,9 +141,10 @@ export function initializeHumanRedesign(R) {
     }
   };
   Object.assign(R.redesignDescriptions,{
+    rally:(c,l)=>rallyDescription(l,c?.l4Branches?.rally),
     townhall:(c,l)=>l>=4?'Megduplázza támogató épületeid hatását az egész városban. A Haditanácsra nem hat.':`${l} mezőn belül megduplázza a támogató épületek hatását.`,
     tavern:(c,l)=>`A szomszédos termelők egységeinek első ${lv(l,TAVERN.hits)} támadása +${lv(l,TAVERN.bonus)*100}% sebzést okoz.`,
     market:(c,l)=>`Túltermelésedet automatikusan átváltja: 1 → ${lv(l,[.5,1,1.5,2]).toLocaleString('hu-HU')}. +${l*50}% tárolókapacitás.`,
   });
-  for(const type of ['townhall','tavern','market'])R.BUILDINGS[type].description=R.redesignDescriptions[type](null,1);
+  for(const type of ['townhall','tavern','market','rally'])R.BUILDINGS[type].description=R.redesignDescriptions[type](null,1);
 }

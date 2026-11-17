@@ -1,4 +1,5 @@
 import { CONDITIONAL_EFFECTS, UNIT_FEATURES } from './mechanics.js';
+import { matchupContext } from './matchups.js';
 
 // Capabilities come from the real army and chosen upgrades. An unlocked
 // producer is a discounted future option, never an already functioning source.
@@ -14,7 +15,13 @@ export function installAiConditionalContext(R) {
   R.aiCombatContext=c=>{
     const producers=R.activeSpawners(c).filter(b=>!b.inactive),keys=new Set(producers.map(b=>R.effectiveUnitKey(c,b)).filter(key=>R.UNITS[key]));
     const side=R.sideForCity(c);
-    for(const u of R.state.units)if(u.alive&&u.side===side)keys.add(u.key);
+    let field=R.aiObservationContext?.get('field');
+    if(!field){
+      field={player:[],enemy:[],keys:{player:new Set(),enemy:new Set()},matchups:new Map()};
+      for(const u of R.state.units)if(u.alive){field[u.side].push({u});field.keys[u.side].add(u.key);}
+      R.aiObservationContext?.set('field',field);
+    }
+    for(const key of field.keys[side])keys.add(key);
     const possible=new Set(keys);
     for(const type of c.unlocked){const key=R.BUILDINGS[type]?.unit;if(key)possible.add(key);}
     const active=new Set([...keys].flatMap(key=>R.aiUnitMechanics(c,key)));
@@ -22,7 +29,9 @@ export function installAiConditionalContext(R) {
     const plague=c.buildings.some(b=>b.type==='und_plague_chamber'&&!b.inactive);
     if(plague&&keys.size)active.add('poison');
     if((plague||c.unlocked.has('und_plague_chamber'))&&possible.size)future.add('poison');
-    return {active,future,plague};
+    let matchup=field.matchups.get(side);
+    if(!matchup){matchup=matchupContext(R,{foes:field[side==='player'?'enemy':'player']},{units:{}});field.matchups.set(side,matchup);}
+    return {active,future,plague,matchup:{...matchup,frontline:[...keys].some(key=>(R.UNITS[key]?.tags||[]).includes('melee'))}};
   };
   R.aiCardReadiness=(c,o,context)=>{
     const needs=CONDITIONAL_EFFECTS[o.id]?.requires||[];

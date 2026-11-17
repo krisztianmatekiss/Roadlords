@@ -1,5 +1,6 @@
 import { assetUrl } from '../assets/urls.js';
 import { fitsUnitRoom } from '../economy/unit-capacity.js';
+import { rallyStats } from '../data/rally.js';
 export function register(runtime) {
   runtime.cardBuildingImageTag = function cardBuildingImageTag(type, cls = 'cardBuildingImage') {
     const src = runtime.CARD_IMAGES[type] || runtime.BUILDING_IMAGES[type];
@@ -509,7 +510,7 @@ export function register(runtime) {
   runtime.rallyCapacity = function rallyCapacity(c) {
     const r = runtime.buildingOf(c, 'rally')[0];
     if (!r) return 0;
-    const base = r.level >= 4 && runtime.hasBranch(c, 'rally', 'war_rally') ? 100 : runtime.v4LevelValue(r.level, [15, 25, 40, 40]);
+    const base = rallyStats(r.level,c.l4Branches?.rally).capacity;
     return base * (runtime.townhallPower?.(c,r)||1) + runtime.guardhouseBonus(c, 'rally');
   };
   runtime.activeSpawners = function activeSpawners(c) {
@@ -547,7 +548,7 @@ export function register(runtime) {
   runtime.rallyWaveBuffs = function rallyWaveBuffs(c, entries) {
     const r = runtime.buildingOf(c, 'rally')[0];
     if (!r) return;
-    const move = runtime.v4LevelValue(r.level, [1.3, 1.45, 1.6, 1.6]);
+    const move = 1+rallyStats(r.level,c.l4Branches?.rally).speed;
     for (const e of entries) {
       e.speedMult = Math.max(e.speedMult || 1, move);
       e.rallySpeedUntilAttack = true;
@@ -576,11 +577,21 @@ export function register(runtime) {
   };
   runtime.releaseRally = function releaseRally(c) {
     if (!c.rallyReserve.length) return;
-    const room = runtime.fieldQueueRoom(c),
-      wave = runtime.orcTakeArmyRoom(c.rallyReserve, room);
+    let room=runtime.fieldQueueRoom(c),actors=runtime.battlePopulationRoom?.(c)??Infinity;
+    const sources=[];
+    for(const entry of c.rallyReserve){
+      const weight=runtime.orcArmyWeight(entry,c),seats=runtime.battleEntrySeats?.(entry)??1;
+      if(!fitsUnitRoom(entry,room,weight)||seats>actors)continue;
+      sources.push(entry);room-=weight;actors-=seats;
+    }
+    if(!sources.length)return;
+    // Keep the original recruits until deployment succeeds. Full actor limits
+    // must not delete reserves or repeatedly apply opening buffs to them.
+    const wave=sources.map(entry=>({...entry})),sent=new Set();
     runtime.rallyWaveBuffs(c, wave);
     runtime.waveBuffs(c, wave);
-    for (const e of wave) runtime.releaseUnit(c, e);
+    wave.forEach((entry,i)=>{if(runtime.releaseUnit(c,entry))sent.add(sources[i]);});
+    c.rallyReserve=c.rallyReserve.filter(entry=>!sent.has(entry));
   };
   runtime.updateRally = function updateRally(c) {
     if (c.rallyMode === 'open' && c.rallyReserve.length) runtime.releaseRally(c);
@@ -613,7 +624,8 @@ export function register(runtime) {
     return rows;
   };
   runtime.rallyControlsHTML = function rallyControlsHTML(c) {
-    return `<div class="rallyControls"><button data-rally="open" class="${c.rallyMode === 'open' ? 'active' : ''}">NYITOTT</button><button data-rally="closed" class="${c.rallyMode === 'closed' ? 'active' : ''}">ZÁRT</button><button data-rally="auto" class="${c.rallyMode === 'auto' ? 'active' : ''}">AUTOMATA</button></div>`;
+    const modes=[['open','KIVONULÁS','Az elkészülő egységek folyamatosan kivonulnak.'],['closed','GYŰJTÉS','Az egységek itt várnak a kivonulásra.'],['auto','AUTOMATA','A megtelt tartalék automatikusan kivonul.']];
+    return `<div class="rallyControls">${modes.map(([id,label,help])=>`<button data-rally="${id}" title="${help}" class="${c.rallyMode===id?'active':''}">${label}</button>`).join('')}</div><p class="rallyModeHelp">${modes.find(([id])=>id===c.rallyMode)?.[2]||modes[1][2]} Az úti sereglimit itt is érvényes.</p>`;
   };
   runtime.terrainTooltipHtml = function terrainTooltipHtml(def, t) {
     const desc = t.type === 'forest' ? 'A mellette álló Favágó termelése megduplázódik.' : t.type === 'quarry' ? 'A mellette álló Kővágó termelése megduplázódik.' : t.type === 'fertile' ? 'Az ide épített Farm termelése megduplázódik.' : t.type === 'foundation' ? 'Az ide épített épület 50%-kal olcsóbb.' : t.type === 'ruin' ? 'El kell takarítani, mielőtt használhatnád ezt a mezőt.' : t.type === 'ancient' ? 'El kell takarítani, utána egy extra választást kapsz.' : def.tip,

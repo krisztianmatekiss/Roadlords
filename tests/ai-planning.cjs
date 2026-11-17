@@ -10,7 +10,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    window.planReset=(race,side='enemy')=>{
     R.MP.enabled=false;R.ROAD.test=false;R.ROAD.paused=true;R.spectator.active=true;R.state.running=false;R.$('#pauseBtn').classList.add('on');
     Object.assign(R.state,{modal:false,pregame:false,ended:false,startChoices:0,time:240,units:[],nextPick:20,timedPickCount:4});R.ROAD.clock=240;R.aiDecisionCache=null;
-    for(const [c,r]of [[R.P,side==='player'?race:'human'],[R.E,side==='enemy'?race:'human']]){R.roadResetCity(c,r);c.terrain.fill(null);c.unlocked=new Set(R.aiFactionBuildings(c));R.recomputeCity(c,false);}
+    for(const [c,r]of [[R.P,side==='player'?race:'human'],[R.E,side==='enemy'?race:'human']]){R.roadResetCity(c,r);c.aiDecisionSeed=42;c.terrain.fill(null);c.unlocked=new Set(R.aiFactionBuildings(c));R.recomputeCity(c,false);}
     R.towers.forEach((t,i)=>Object.assign(t,structuredClone(towers[i])));R.roadRefreshFrontiers();const c=R.cityForSide(side);c.aiThink=0;return c;
    };
    window.planPut=(c,type)=>{c.resources=R.C(1e6,1e6,1e6);const cell=R.findCell(c,type);if(!cell)throw Error('No plot: '+type);const out=R.placeBuilding(c,type,...cell);if(!out.ok)throw Error(out.reason);return out.building;};
@@ -99,9 +99,16 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    const gate=R.aiStrategyGatePolicy(c,{entries:[],total:0,target:10,cap:30,full:false});
    return R.aiStrategyFor(c)===null&&!gate.hold&&gate.target===10;
   }));
-  check('Own-territory investment creates a plan connected to territory buildings',await p.evaluate(()=>{
-   const R=__ROADLORDS_RUNTIME__,c=planReset('undead');planPut(c,'und_well');R.setBuildingLevel(c,'und_well',4);planPut(c,'und_graveyard');R.setBuildingLevel(c,'keep',4,'dead_realm');c.normal.und_territory=12;c.normal.und_home_march=8;
-   const p=R.aiStrategy(c,planContext(c)).primary;return p.features.includes('territory')&&p.goals.some(type=>R.aiBuildingMechanics(type).features?.includes('territory'));
+  check('Across 32 match seeds, territory investment keeps an actual territorial building in its plan',await p.evaluate(()=>{
+   const R=__ROADLORDS_RUNTIME__;
+   for(let seed=1;seed<=32;seed++){
+    const c=planReset('undead');c.aiDecisionSeed=seed;planPut(c,'und_well');R.setBuildingLevel(c,'und_well',4);planPut(c,'und_graveyard');R.setBuildingLevel(c,'keep',4,'dead_realm');c.normal.und_territory=12;c.normal.und_home_march=8;
+    const p=R.aiStrategy(c,planContext(c)).primary;
+    // A summon/death plan can use the territorial Garden as its complement;
+    // its primary branch need not itself carry the territory feature tag.
+    if(!p?.goals.some(type=>R.aiBuildingMechanics(type).features?.includes('territory')))throw Error(JSON.stringify({seed,plan:p}));
+   }
+   return true;
   }));
   check('A near-term useful upgrade can delay a focused wave, with a strict deadline and emergency override',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,c=vampirePlan('enemy');R.aiStrategy(c,planContext(c));c._aiPickDue=R.state.time+5;

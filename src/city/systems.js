@@ -1,3 +1,4 @@
+import { trainingSpeedBonus as normalTrainingSpeedBonus, HUMAN_UPGRADES } from '../data/human-upgrade-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { fitsUnitRoom } from '../economy/unit-capacity.js';
 import { rallyStats } from '../data/rally.js';
@@ -408,7 +409,7 @@ export function register(runtime) {
     const u = runtime.UNITS[key];
     let t = u.train * 1.5 * [1, .8, .6][hostLevel - 1];
     if (runtime.hasLeg(c, 'no_food')) t *= 1.25;
-    const speed = runtime.townMult(c) * (1 + .10 * runtime.countNormal(c, 'spawn_speed')) * runtime.warcenterSpeedMult(c);
+    const speed = runtime.townMult(c) * (1 + normalTrainingSpeedBonus(runtime.countNormal(c, 'spawn_speed'))) * runtime.warcenterSpeedMult(c);
     if (runtime.hasLeg(c, 'mobilization')) {
       if (runtime.gateActuallyOpen(c)) return Infinity;
       return t / (speed * 2);
@@ -517,7 +518,7 @@ export function register(runtime) {
     return runtime.spawnerBuildings(c);
   };
   runtime.trainingSpeedBonus = function trainingSpeedBonus(c, b, key) {
-    let speed = 1 + .10 * runtime.countNormal(c, 'spawn_speed');
+    let speed = 1 + normalTrainingSpeedBonus(runtime.countNormal(c, 'spawn_speed'));
     const imports = runtime.importedResources(c),
       co = runtime.unitCost(c, key);
     if ([...imports].some(r => (co[r] || 0) > 0)) speed *= 1.5;
@@ -638,7 +639,7 @@ export function register(runtime) {
       ratio = old ? c.hp / old : 1,
       kl = keep.level;
     let storage = runtime.v4LevelValue(kl, [200, 200, 400, 800]),
-      gar = 30 + runtime.guardhouseBonus(c, 'main') + 5 * runtime.countNormal(c, 'gate_discipline'),
+      gar = 30 + runtime.guardhouseBonus(c, 'main') + HUMAN_UPGRADES.garrisonSlots * runtime.countNormal(c, 'gate_discipline'),
       army = runtime.v4LevelValue(kl, [50, 100, 200, 400]);
     if (runtime.hasBranch(c, 'keep', 'empire')) storage = 1600;
     for (const b of c.buildings) {

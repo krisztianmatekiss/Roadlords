@@ -1,9 +1,10 @@
+import { trainingSpeedBonus, trainingCostMultiplier, HUMAN_UPGRADES, TRAINING_DISCOUNT_STRENGTH_LIMIT } from '../data/human-upgrade-balance.js';
 import { NORMAL_COPY, LEGENDARY_COPY, BUILDING_COPY, BRANCH_COPY } from '../data/upgrade-copy.js';
 import { formatMetres, formatSpeed } from '../world/measurements.js';
 import { ORC_BALANCE } from '../data/combat-balance.js';
 import { ORC_EXPANSION as B } from '../data/orc-expansion.js';
 
-const NORMAL_LIMITS = { building_discount: 5, orc_double: 20, orc_refund: 5, orc_loot: 10, orc_food_discount: 7 };
+const NORMAL_LIMITS = { building_discount: 5, spawn_speed: 10, frugal_training: TRAINING_DISCOUNT_STRENGTH_LIMIT, orc_double: 20, orc_refund: 5, orc_loot: 10, orc_food_discount: 7 };
 const LEGEND_LIMITS = { sword_execute: 5, magic_order: 4, tavern_chain: Infinity, strategic_superiority: Infinity };
 const UNIT_PREFIXES = { sword: 'swordsman', swordsman: 'swordsman', spear: 'spearman', archer: 'archer', knight: 'knight', priest: 'priest', catapult: 'catapult', cat: 'catapult', mage: 'mage' };
 const METRICS = {
@@ -24,11 +25,11 @@ const MODIFIERS = {
   all_damage: n => ({ label: 'Sebzés és Pap-gyógyítás', value: bonus(5 * n) }),
   orc_as: n => ({ label: 'Támadási sebesség', value: bonus(5 * n) }),
   orc_hp: n => ({ label: 'Maximális életerő', value: bonus(5 * n) }),
-  spawn_speed: n => ({ label: 'A lap képzésisebesség-bónusza', value: bonus(10 * n) }),
+  spawn_speed: n => ({ label: 'A lap képzésisebesség-bónusza', value: bonus(100 * trainingSpeedBonus(n)) }),
   production: n => ({ label: 'A lap termelési bónusza', value: bonus(10 * n) }),
-  frugal_training: n => ({ label: 'Ár e lap kedvezményével', value: percent(100 * .95 ** n) }),
+  frugal_training: n => ({ label: 'Ár e lap kedvezményével', value: percent(100 * trainingCostMultiplier(n)) }),
   building_discount: n => ({ label: 'Ár e lap kedvezményével', value: percent(100 - 10 * Math.min(5, n)) }),
-  gate_discipline: n => ({ label: 'Kiengedés / plusz helyőrségi férőhely', value: `${bonus(10 * n)} / +${5 * n}` }),
+  gate_discipline: n => ({ label: 'Kiengedés / plusz helyőrségi férőhely', value: `${bonus(10 * n)} / +${HUMAN_UPGRADES.garrisonSlots * n}` }),
   orc_bleed: scalar('Vérzés találatonként', n => n),
   orc_leech: n => ({ label: 'Életlopás e lapból', value: percent(5*n) }),
   orc_double: n => ({ label: 'Második támadás esélye', value: percent(Math.min(100, 5 * n)) }),

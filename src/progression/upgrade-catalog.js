@@ -1,9 +1,10 @@
+import { trainingSpeedBonus, trainingCostMultiplier } from '../data/human-upgrade-balance.js';
 import { createUpgradeRequirements } from './upgrade-requirements.js';
 import { UPGRADE_RARITIES, upgradeEditions, upgradeRarity, upgradeDescription, upgradeDescriptionAtPower, normalOptionPower } from './upgrade-rarities.js';
 
 export function installUpgradeCatalog(R) {
   const requirements=createUpgradeRequirements(R);
-  for(const id of ['spawn_speed','all_damage','frugal_training']){const d=R.NORMAL.find(o=>o.id===id);if(d)d.eligible=()=>true;}
+  for(const id of ['spawn_speed','all_damage','frugal_training']){const d=R.NORMAL.find(o=>o.id===id);if(d)d.eligible=c=>id==='spawn_speed'?trainingSpeedBonus(R.countNormal(c,id))<.5-1e-9:id==='frugal_training'?trainingCostMultiplier(R.countNormal(c,id))>.5+1e-9:true;}
   const definition = (id, kind='normal') => (kind==='legendary'?R.LEGENDARY:R.NORMAL).find(d => d.id === id);
   const option = (id, rarity) => {
     const def = definition(id); if (!def) return null;
@@ -38,7 +39,7 @@ export function installUpgradeCatalog(R) {
   };
   const summary=(c,o)=>{
     const d=definition(o.id),n=c.normal[o.id]||0,preview=R.upgradeCopyPreview(c,o);
-    const capped=new Set(['building_discount','orc_food_discount','orc_double','orc_refund','orc_loot','skeleton_common_ranged_res','ghost_common_dodge','garden_chance','lich_common_respawn']);
+    const capped=new Set(['building_discount','spawn_speed','frugal_training','orc_food_discount','orc_double','orc_refund','orc_loot','skeleton_common_ranged_res','ghost_common_dodge','garden_chance','lich_common_respawn']);
     return {description:capped.has(o.id)&&preview?.rows.length?'Összesített hatás:':upgradeDescriptionAtPower(d,n),rows:preview?.rows||[]};
   };
   Object.assign(R.upgradeCatalog,{grouped,summary});

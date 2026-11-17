@@ -13,4 +13,7 @@ export const GOBLIN_BOW_COPY = 'A Goblin íjat kap: +20% sebzés, +40% hatótáv
 export const MAGE_SECONDARY_DAMAGE = .45;
 
 // Road and castle tower firing ranges, in world coordinates (10 = 1 metre).
-export const TOWER_RANGE = Object.freeze({ road: 330, gate: 380 });
+export const TOWER_RANGE = Object.freeze({ road: 500, gate: 500 });
+
+// Siege uses its dedicated building damage; these multipliers apply to others.
+export const STRUCTURE_DAMAGE_MULTIPLIER = Object.freeze({tower: .10, capital: 1/3});

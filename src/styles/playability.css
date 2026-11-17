@@ -28,6 +28,17 @@ html body.chronicle #choiceOverlay #choiceList{background:none!important;scrollb
 /* A textured courtyard stays independent from the unchanged building sprites. */
 html body.chronicle #app .roadWorld .cityframe:before{background:var(--chronicle-courtyard) center/560px 560px repeat,var(--chronicle-floor)!important}
 html body.chronicle #app .roadWorld .cityframe:after{display:none!important}
+/* Quiet dirt detail for Humans; colder, darker soil for the Undead. */
+html body.chronicle #app .roadWorld .cityzone[data-race="human"] .cityframe:before{
+  background:radial-gradient(ellipse at 19% 31%,#9d794b1f,transparent 48%) center/167px 139px repeat,
+    radial-gradient(ellipse at 77% 63%,#fff0c62b,transparent 52%) center/211px 173px repeat,
+    radial-gradient(ellipse at 11px 17px,#78604032 0 1px,transparent 1.7px) 0 0/47px 61px repeat,
+    radial-gradient(ellipse at 31px 9px,#fff2ca66 0 .8px,transparent 1.6px) 0 0/73px 53px repeat,
+    var(--chronicle-courtyard) center/560px 560px repeat,var(--chronicle-floor)!important;
+}
+html body.chronicle #app .roadWorld .cityzone[data-race="undead"] .cityframe:before{
+  background:linear-gradient(#20233455,#20233455),var(--chronicle-courtyard) center/560px 560px repeat,var(--chronicle-floor)!important;
+}
 /* Keep the ten-by-ten building grid readable over all courtyard textures. */
 html body.chronicle #app .roadWorld .plot{border-color:#58432c9e!important;box-shadow:inset 0 0 0 1px #fff3ca4d!important}
 html body.chronicle #app .roadWorld .buildingOutline path{stroke-width:2.5;filter:drop-shadow(0 0 1px #15231eee)}
@@ -48,3 +59,5 @@ body.chronicle .cityframe > .chronicleDoor{position:absolute;inset:0;width:100%;
 body.chronicle .cityframe[data-gate-open="true"] > .chronicleDoor .upper{transform:translateY(-60px)}
 body.chronicle .cityframe[data-gate-open="true"] > .chronicleDoor .lower{transform:translateY(60px)}
 body.chronicle .cityframe[data-gate-open="false"] > .chronicleDoor .chronicleGateLeaf{transform:none}
+
+html body.chronicle #app .roadWorld .cityzone[data-race="undead"] .plot{border-color:#c3c8d072!important;box-shadow:inset 0 0 0 1px #20263344!important}

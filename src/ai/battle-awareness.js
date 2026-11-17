@@ -1,3 +1,4 @@
+import { STRUCTURE_DAMAGE_MULTIPLIER } from '../data/combat-balance.js';
 // Read the real road, surviving fortifications and local forces. An army
 // marching past an invasion is not counted as a defending army.
 export function installAiBattleAwareness(R) {
@@ -36,7 +37,7 @@ export function installAiBattleAwareness(R) {
     const incomingDps=threats.reduce((n,e)=>{
       const base=R.UNITS[e.u.key]||{};
       const damage=(e.u.cat??base.cat)==='siege'?(e.u.buildingDamage??e.u.damage??base.damage??10):
-        (e.u.damage??base.damage??10)*(front ? .25 : 1/3);
+        (e.u.damage??base.damage??10)*(front ? STRUCTURE_DAMAGE_MULTIPLIER.tower : STRUCTURE_DAMAGE_MULTIPLIER.capital);
       return n+damage/Math.max(.2,e.u.cooldownTime??base.cooldown??1);
     },0);
     const arrival=threats.length?Math.min(...threats.map(e=>Math.max(0,e.d-frontDistance-e.range)/e.speed)):Infinity;
@@ -55,7 +56,7 @@ export function installAiBattleAwareness(R) {
     const safeOpening=R.state.time<180&&!urgent&&!!front&&front.hp>=front.maxHp*.7&&breach>reinforcement+40;
     const exposed=threats.filter(e=>!front||e.d<frontDistance-Math.max(100,e.range));
     const capitalDps=exposed.reduce((n,e)=>{const u=e.u,base=R.UNITS[u.key]||{};
-      const damage=(u.cat??base.cat)==='siege'?(u.buildingDamage??u.damage??base.damage??10):(u.damage??base.damage??10)/3;
+      const damage=(u.cat??base.cat)==='siege'?(u.buildingDamage??u.damage??base.damage??10):(u.damage??base.damage??10)*STRUCTURE_DAMAGE_MULTIPLIER.capital;
       return n+damage/Math.max(.2,u.cooldownTime??base.cooldown??1);
     },0);
     const capitalArrival=exposed.length?Math.min(...exposed.map(e=>Math.max(0,e.d-e.range)/e.speed)):Infinity;

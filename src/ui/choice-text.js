@@ -2,7 +2,7 @@ import { CIVILIAN_MILITIA_INTERVAL } from '../data/economy-balance.js';
 import { assetUrl } from '../assets/urls.js';
 export function initializeUiChoiceText(runtime) {
   const NORMAL_TEXT = {
-    "spawn_speed": "Minden katonai termelő 10%-kal gyorsabban gyárt egységeket.",
+    "spawn_speed": "Minden katonai termelő +5% képzési sebességet kap, legfeljebb +50%-ot.",
     "production": "Minden nyersanyagtermelésed 10%-kal nő.",
     "all_damage": "Minden egységed +5% sebzést okoz, és a Papok gyógyítása +5%-kal erősebb.",
     "swordsman_dmg": "A Kardosok +10% sebzést okoznak.",
@@ -25,8 +25,8 @@ export function initializeUiChoiceText(runtime) {
     "mage_dmg": "A Mágusok +10% sebzést okoznak.",
     "mage_hp": "A Mágusok maximális HP-ja +10%.",
     "mage_aoe": "A Mágusok tűzgolyóinak területi sugara +15%.",
-    "frugal_training": "Minden egység gyártási nyersanyagköltsége 5%-kal csökken.",
-    "gate_discipline": "A kapu 10%-kal gyorsabban engedi ki az egységeket, a helyőrség kapacitása pedig +5.",
+    "frugal_training": "Minden egység képzése 10%-kal olcsóbb, legfeljebb 50%-kal.",
+    "gate_discipline": "A kapu 10%-kal gyorsabban engedi ki az egységeket, a helyőrség kapacitása pedig +10.",
     "building_discount": "Minden épület nyersanyagköltsége 10%-kal csökken. Legfeljebb 5× halmozható, összesen −50%-ig.",
     "tower_guard": "Minden saját torony +1 automatikus íjászt kap, legfeljebb 3-ig. A toronyíjászok a saját Íjász statjaidat használják, és beleszámítanak az úti sereglimitbe.",
     "merc_cost": "A zsoldoscsapatok ára 10%-kal csökken.",

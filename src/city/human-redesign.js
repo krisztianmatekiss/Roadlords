@@ -18,7 +18,7 @@ export function initializeHumanRedesign(R) {
   ];
   R.V4_BRANCHES.barracks.find(b=>b.id==='cavalry_barracks').description='Istálló mellett Lovagot képez Kardos helyett, 30%-kal kisebb képzési sebességgel.';
   const defense=R.NORMAL.find(o=>o.id==='spear_range');
-  Object.assign(defense,{name:'Szívós lándzsások',description:'Lándzsásaid −5% sebzést kapnak közelharci támadásokból. Legfeljebb −75%.',eligible:c=>human(c)&&R.unitAvailable(c,'spearman')&&R.countNormal(c,'spear_range')<15});
+  Object.assign(defense,{name:'Szívós lándzsások',description:'Lándzsásaid közelharcból kapott sebzése −5%, legfeljebb −75%.',eligible:c=>human(c)&&R.unitAvailable(c,'spearman')&&R.countNormal(c,'spear_range')<15});
   const training=R.trainingTime;
   R.trainingTime=(c,b)=>training(c,b)/(human(c)&&b.type==='barracks'&&R.effectiveUnitKey(c,b)==='knight'?.7:1);
   const stats=R.statsFor;

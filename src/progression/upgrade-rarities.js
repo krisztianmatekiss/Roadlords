@@ -19,8 +19,8 @@ export const UPGRADE_EDITIONS = Object.freeze({
   knight_dmg: C, knight_hp: C, knight_move: C,
   priest_dmg: C, priest_hp: C, catapult_dmg: C, catapult_hp: C,
   cat_build: C, mage_dmg: C, mage_hp: C, mage_aoe: C,
-  frugal_training: {common:1, uncommon:Math.log(.925)/Math.log(.95), rare:Math.log(.9)/Math.log(.95)}, gate_discipline: WHOLE,
-  building_discount: HALF,
+  frugal_training: {common:1, uncommon:Math.log(.85)/Math.log(.9), rare:Math.log(.8)/Math.log(.9)}, gate_discipline: WHOLE,
+  building_discount: C,
   orc_warrior_hp: C, orc_warrior_dmg: C,
   orc_berserker_hp: C, orc_berserker_dmg: C,
   orc_goblin_hp: C, orc_goblin_dmg: C,
@@ -63,10 +63,10 @@ export function upgradeDescriptionAtPower(def,power) {
   if (power === 1) return def.description;
   const fmt = value => value.toLocaleString('hu-HU', {maximumFractionDigits: 2});
   if(def.id==='lich_leg_greedy')return `A Lich támadásonként +${fmt(power)} új célpontra kapcsol sugarat.`;
-  if (def.id === 'gate_discipline') return `+${fmt(10*power)}% kapukiengedési sebesség és +${fmt(5*power)} helyőrségi férőhely.`;
+  if (def.id === 'gate_discipline') return `+${fmt(10*power)}% kapukiengedési sebesség és +${fmt(10*power)} helyőrségi férőhely.`;
   if (def.id === 'orc_bleed') return `A Harcosok találatai +${fmt(power)} Vérzést okoznak.`;
   if (def.id === 'orc_leech') return `Dühöngő: +${fmt(5*power)} százalékpont életlopás.`;
-  if (def.id === 'frugal_training') return `Az egységképzés ${fmt(100*(1-.95**power))}%-kal olcsóbb.`;
+  if (def.id === 'frugal_training') return `Az egységképzés ${fmt(100*(1-.9**power))}%-kal olcsóbb, legfeljebb 50%-kal.`;
   // Scale the effect, leaving caps, loot amounts and other constants intact.
   return def.description.replace(/([+−-]?)(\d+(?:[,.]\d+)?)(?=%| százalékpont| másodperc| méter| gyalogos| méregpont| életer)/u,
     (_, sign, value) => sign + fmt(Number(value.replace(',', '.')) * power));

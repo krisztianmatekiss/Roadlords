@@ -1,4 +1,14 @@
-# Roadlords · V4.86.0
+# Roadlords · V4.87.0
+
+## V4.87.0 – Toronyvédelem és emberi fejlesztések
+
+- Az úttornyok és kaputornyok hatótávja 50 méter; a nem ostromegységek sebzéséből 90%-ot kivédenek. Az ostromegységek és a főváros sebzésszabályai változatlanok; az AI is az új toronyvédelmet számolja.
+- Gyorsított gyártás: +5 / +7,5 / +10%, legfeljebb +50%. Takarékos építkezés és kiképzés: 10 / 15 / 20% kedvezmény, legfeljebb 50%. A kiképzési kedvezmények továbbra is egymás után, szorzással érvényesülnek.
+- Kapufegyelem: +10 / +15 / +20 helyőrségi férőhely. Szívós lándzsások: a kedvező sebzéscsökkentés zöld a kártyán és a lexikonban is.
+- Visszafogott talajminta az emberi városban, sötétebb élőhalott udvar, olvasható építési mezőkkel.
+
+Multiplayer szabályverzió: **34**.
+
 
 ## V4.86.0 – AI-buildválasztás, Gyülekezőtér és mozgásjavítás
 

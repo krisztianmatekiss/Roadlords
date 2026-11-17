@@ -33,7 +33,7 @@ export function initializeCityAdvancedSupport(runtime) {
     id: 'spawn_speed',
     icon: '⚙️',
     name: 'Gyorsított gyártás',
-    description: 'Minden katonai termelő +10% gyártási sebességet kap.',
+    description: 'Minden katonai termelő +5% gyártási sebességet kap, legfeljebb +50%-ot.',
     eligible: s => runtime.hasSpawner(s)
   }, {
     id: 'production',
@@ -195,13 +195,13 @@ export function initializeCityAdvancedSupport(runtime) {
     id: 'frugal_training',
     icon: '🪙',
     name: 'Takarékos kiképzés',
-    description: 'Minden egység nyersanyagköltsége 5%-kal csökken.',
+    description: 'Minden egység képzése 10%-kal olcsóbb, legfeljebb 50%-kal.',
     eligible: s => runtime.hasSpawner(s)
   }, {
     id: 'gate_discipline',
     icon: '🚪',
     name: 'Kapufegyelem',
-    description: 'A kapu kiengedési sebessége +10%, a helyőrség kapacitása pedig +5.',
+    description: 'A kapu kiengedési sebessége +10%, a helyőrség kapacitása pedig +10.',
     eligible: () => true
   });
   runtime.v42RemovedLegends = new Set(['full_blueprints', 'swordsman_triple', 'catapult_aoe', 'archer_volley', 'barracks_spear', 'barracks_archer']);

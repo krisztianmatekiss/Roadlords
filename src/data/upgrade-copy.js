@@ -5,7 +5,7 @@ import { CIVILIAN_MILITIA_INTERVAL } from './economy-balance.js';
 import { ORC_COMMON_ADDITIONS, ORC_LEGEND_ADDITIONS } from './orc-expansion.js';
 export const NORMAL_COPY = Object.freeze({
   ...Object.fromEntries(ORC_COMMON_ADDITIONS.map(([id,,text])=>[id,text])),
-  "spawn_speed": "A katonai épületek képzési sebessége +10%.",
+  "spawn_speed": "A katonai épületek képzési sebessége +5%, legfeljebb +50%.",
   "production": "Minden nyersanyag alaptermelése +10%.",
   "all_damage": "Minden saját egység sebzése és a Papok gyógyítása +5%.",
   "swordsman_dmg": "Kardos: +10% sebzés.",
@@ -13,7 +13,7 @@ export const NORMAL_COPY = Object.freeze({
   "sword_as": "A Kardosok támadási sebessége +15%.",
   "spear_dmg": "Lándzsás: +10% sebzés.",
   "spear_hp": "Lándzsás: +10% életerő.",
-  "spear_range": "A Lándzsások hatótávja +10%.",
+  "spear_range": "Lándzsásaid közelharcból kapott sebzése −5%, legfeljebb −75%.",
   "archer_dmg": "Íjász: +10% sebzés.",
   "archer_hp": "Íjász: +10% életerő.",
   "archer_range": "Az Íjászok hatótávja +10%.",
@@ -28,8 +28,8 @@ export const NORMAL_COPY = Object.freeze({
   "mage_dmg": "Mágus: +10% sebzés.",
   "mage_hp": "Mágus: +10% életerő.",
   "mage_aoe": "A Mágusok tűzgolyóinak területi sugara +15%.",
-  "frugal_training": "Az egységképzés 5%-kal olcsóbb.",
-  "gate_discipline": "+10% kapukiengedési sebesség és +5 helyőrségi férőhely.",
+  "frugal_training": "Az egységképzés 10%-kal olcsóbb, legfeljebb 50%-kal.",
+  "gate_discipline": "+10% kapukiengedési sebesség és +10 helyőrségi férőhely.",
   "building_discount": "Az építkezés 10%-kal olcsóbb, legfeljebb 50%-kal.",
   "orc_warrior_hp": "Ork Harcos: +10% életerő.",
   "orc_warrior_dmg": "Ork Harcos: +10% sebzés.",

@@ -1,8 +1,9 @@
+import { trainingCostMultiplier } from '../data/human-upgrade-balance.js';
 import { SPEAR_VOLLEY_RANGE, rangedRange } from '../data/ranged-balance.js';
 import { assetUrl } from '../assets/urls.js';
 import { formatMetres, formatSpeed, WORLD_UNITS_PER_METRE } from '../world/measurements.js';
 import { attackSourceCanResolve } from './target-budget.js';
-import { MAGE_SECONDARY_DAMAGE, TOWER_RANGE } from '../data/combat-balance.js';
+import { MAGE_SECONDARY_DAMAGE, TOWER_RANGE, STRUCTURE_DAMAGE_MULTIPLIER } from '../data/combat-balance.js';
 export function register(runtime) {
   runtime.unitImageTag = function unitImageTag(key, cls = 'unitPortrait') {
     const src = runtime.UNIT_IMAGES[key];
@@ -845,7 +846,7 @@ export function register(runtime) {
     const out = {
         ...runtime.UNITS[key].cost
       },
-      discountMult = Math.pow(.95, runtime.countNormal(c, 'frugal_training'));
+      discountMult = trainingCostMultiplier(runtime.countNormal(c, 'frugal_training'));
     for (const r of runtime.RES) out[r] = Math.round((out[r] || 0) * discountMult * 10) / 10;
     if (runtime.hasLeg(c, 'no_food')) out.food = 0;
     return out;
@@ -999,7 +1000,7 @@ export function register(runtime) {
     const c = runtime.cityForSide(u.side);
     if (u.key === 'priest' && runtime.hasLeg(c, 'sacred_vow')) return;
     const opening = runtime.consumeOpeningAttack(u);
-    let dmg = u.cat === 'siege' ? (u.buildingDamage ?? u.damage) : u.damage * (s.capital ? 1 / 3 : .25);
+    let dmg = u.cat === 'siege' ? (u.buildingDamage ?? u.damage) : u.damage * (s.capital ? STRUCTURE_DAMAGE_MULTIPLIER.capital : STRUCTURE_DAMAGE_MULTIPLIER.tower);
     if (runtime.hasLeg(c, 'siege_doctrine') && u.cat !== 'siege') dmg *= 2;
     if (runtime.hasLeg(c, 'melee_doctrine')) dmg *= u.tags.includes('melee') ? 2 : 0;
     if (u.key === 'mage' && runtime.hasLeg(c, 'mage_triple')) dmg *= .5;

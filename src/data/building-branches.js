@@ -214,7 +214,7 @@ export function initializeDataBuildingBranches(runtime) {
     description: 'A katonai termelést közös számlálóval figyeli, és rendszeresen ingyenes egységmásolatot készít.'
   });
   runtime.V4_TEXT_REPLACEMENTS = {
-    spawn_speed: ['Gyorsított kiképzés', 'Minden katonai termelő +10% gyártási sebességet kap.'],
+    spawn_speed: ['Gyorsított kiképzés', 'Minden katonai termelő +5% gyártási sebességet kap, legfeljebb +50%-ot.'],
     all_as: ['Gyorsabb támadások', 'Minden egység +5% támadási sebességet kap.'],
     all_hp: ['Edzett sereg', 'Minden egység +10% maximális HP-t kap.'],
     all_move: ['Menettempó', 'Minden egység +10% mozgási sebességet kap.'],

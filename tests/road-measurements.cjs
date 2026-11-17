@@ -19,7 +19,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    for(const distance of [50,999.999,1000,1999.999,2000,8000,20000]){
     u.chargeDist=distance;const unitDamage=R.attackBaseDamage(u,target)/u.damage,unitReset=u.chargeDist===0;
     const tower={id:'charge-proof',side:'enemy',tier:1,lane:u.lane+20,hp:1e9,alive:true};u.chargeDist=distance;R.roadRealStructure(u,tower);
-    rows.push({distance,unitDamage,structureDamage:(1e9-tower.hp)/(u.damage*.25),reset:unitReset&&u.chargeDist===0});
+    rows.push({distance,unitDamage,structureDamage:(1e9-tower.hp)/(u.damage*.1),reset:unitReset&&u.chargeDist===0});
    }
    const description=R.upgradeCopyPreview(R.P,{...R.LEGENDARY.find(x=>x.id==='cavalry_charge'),kind:'legendary'}).description;
    R.state.units=[];return {rows,description};
@@ -40,19 +40,19 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    const target=await p.evaluate(zoom=>{const R=__ROADLORDS_RUNTIME__;R.state.selectedTowerId=null;R.$('#inspector').classList.remove('show');R.ROAD.zoom=zoom;const t=R.towers.find(t=>t.id==='p2');R.roadWar.scrollLeft=R.ROAD.city+t.lane-R.ROAD.w/2;R.renderBattle(0);const s=R.towerVisualScale(t),point=R.pointAt(t.lane,t.lateral||0),rect=R.canvas.getBoundingClientRect();return {x:rect.left+point.x+12*s,y:rect.top+point.y-23*s,id:t.id,scale:s}},zoom);
    await p.mouse.click(target.x,target.y);await p.waitForTimeout(60);
    const measured=await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,t=R.selectedTowerV496();if(!t)return null;R.renderBattle(0);const band=R.roadTowerRangeGeometry(t),ctx=R.ctx;let yellow=0,samples=0;const x=Math.max(1,Math.round(band.left));for(let y=Math.ceil(band.top)+30;y<band.bottom-10;y+=8){const pixel=ctx.getImageData(x,y,1,1).data;yellow+=pixel[0]>210&&pixel[1]>170&&pixel[2]<190;samples++}return {id:t.id,range:band.range,readout:R.canvas.dataset.towerRange,inspector:R.$('#towerRangeStat')?.textContent,yellow,samples,bounds:R.towerVisualBounds(t)}});report.towers.push({zoom,...measured});
-   check(`Clicking the enlarged tower roof selects the real range band and metre readout at ${zoom*100}% zoom`,measured?.id===target.id&&measured.range===330&&measured.readout==='Hatótáv: 33 m'&&measured.inspector==='33 m'&&measured.yellow>measured.samples*.65);
+   check(`Clicking the enlarged tower roof selects the real range band and metre readout at ${zoom*100}% zoom`,measured?.id===target.id&&measured.range===500&&measured.readout==='Hatótáv: 50 m'&&measured.inspector==='50 m'&&measured.yellow>measured.samples*.65);
   }
-  check('Road and castle tower ranges double on both sides; damage, cadence and real targeting boundaries remain consistent',await p.evaluate(()=>{
+  check('Road and castle towers have 50-metre range on both sides; damage, cadence and real targeting boundaries remain consistent',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__;R.state.units=[];
    return R.towers.every(t=>{
     const range=R.towerStatsV496(t).range,inside=R.releaseUnit(R.cityForSide(t.side==='player'?'enemy':'player'),{key:'swordsman'}),outside=R.releaseUnit(R.cityForSide(t.side==='player'?'enemy':'player'),{key:'swordsman'}),dir=t.side==='player'?1:-1;
     inside.lane=t.lane+dir*range;inside.offset=R.ROAD.half;outside.lane=t.lane+dir*(range+.01);
     const targets=R.nearestTowerTargets(t.side,t.lane,range,10),st=R.towerStatsV496(t);
-    const ok=range===(t.gateTower?380:330)&&st.damage===(t.gateTower?120:96)&&st.cooldown===(t.gateTower?.85:1)&&targets.includes(inside)&&!targets.includes(outside);
+    const ok=range===500&&st.damage===(t.gateTower?120:96)&&st.cooldown===(t.gateTower?.85:1)&&targets.includes(inside)&&!targets.includes(outside);
     R.state.units=[];return ok;
    });
   }));
-  check('Removed tower training cannot change the live range band or inspector',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,t=R.selectedTowerV496();R.P.normal.tower_crews=1;R.renderTowerInspectorV496(t);R.renderBattle(0);return Math.abs(R.roadTowerRangeGeometry(t).range-330)<1e-6&&R.$('#towerRangeStat').textContent==='33 m'&&R.canvas.dataset.towerRange==='Hatótáv: 33 m'}));
+  check('Removed tower training cannot change the live range band or inspector',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,t=R.selectedTowerV496();R.P.normal.tower_crews=1;R.renderTowerInspectorV496(t);R.renderBattle(0);return Math.abs(R.roadTowerRangeGeometry(t).range-500)<1e-6&&R.$('#towerRangeStat').textContent==='50 m'&&R.canvas.dataset.towerRange==='Hatótáv: 50 m'}));
   await p.screenshot({path:'artifacts/enlarged-tower-metres.png'});
   check('Closing the tower inspector removes the selected range overlay',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.$('#closeInspector').click();R.renderBattle(0);return !R.state.selectedTowerId&&!R.canvas.dataset.towerRange}));
   check('Both peers advertise the doubled path length and reject a mismatched old map',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,sent=[];let closed=false;R.MP.conn={open:true,send:p=>sent.push(p),close:()=>closed=true};R.mpSend({type:'hello'});R.mpHandle({type:'hello',pathLength:9600,gameRules:R.gameRulesVersion,race:'human',name:'Új játékos',factionProtocol:2});const accepted=!closed;R.mpHandle({type:'hello',race:'human',name:'Régi játékos',factionProtocol:2});return sent[0].pathLength===9600&&accepted&&closed&&R.MP.lobby.querySelector('.mpLobbyError').textContent.includes('pályaverzió')}));

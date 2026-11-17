@@ -4,7 +4,7 @@ import { assetUrl } from '../assets/urls.js';
 export const CHRONICLE_THEMES={
   human:{ground:'#9ca65d',floor:'#e2cf9b',wall:'#d6b77d',shadow:'#947d58'},
   orc:{ground:'#704d39',floor:'#a88560',wall:'#77533a',shadow:'#49362c'},
-  undead:{ground:'#686a73',floor:'#93939b',wall:'#777481',shadow:'#45434f'},
+  undead:{ground:'#686a73',floor:'#646a73',wall:'#777481',shadow:'#45434f'},
 };
 // Cropped source layers are composed once per viewport, then reused while moving.
 // The road and city share the very same bounds; texture proportions cannot move it.

@@ -40,7 +40,7 @@ export function installAiBattleAwareness(R) {
       return n+damage/Math.max(.2,e.u.cooldownTime??base.cooldown??1);
     },0);
     const arrival=threats.length?Math.min(...threats.map(e=>Math.max(0,e.d-frontDistance-e.range)/e.speed)):Infinity;
-    const breach=arrival+(front?front.hp/Math.max(1,incomingDps):0);
+    const breach=arrival+(front?.hp??c.hp)/Math.max(1,incomingDps);
     const spawners=R.activeSpawners(c).filter(b=>!b.inactive);
     const speeds=new Map();
     const reinforcement=spawners.length?Math.min(...spawners.map(b=>{
@@ -53,11 +53,19 @@ export function installAiBattleAwareness(R) {
     const urgent=threats.length>0&&(now-h.damageAt<12||penetrated||front&&front.hp<front.maxHp*.25&&arrival<15||undercovered&&
       (!front||breach<reinforcement+25||front.hp<front.maxHp*.35));
     const safeOpening=R.state.time<180&&!urgent&&!!front&&front.hp>=front.maxHp*.7&&breach>reinforcement+40;
-    const value={side,other,border,allies,foes,threats,front,frontDistance,hostilePower,defendingPower,breach,reinforcement,
+    const exposed=threats.filter(e=>!front||e.d<frontDistance-Math.max(100,e.range));
+    const capitalDps=exposed.reduce((n,e)=>{const u=e.u,base=R.UNITS[u.key]||{};
+      const damage=(u.cat??base.cat)==='siege'?(u.buildingDamage??u.damage??base.damage??10):(u.damage??base.damage??10)/3;
+      return n+damage/Math.max(.2,u.cooldownTime??base.cooldown??1);
+    },0);
+    const capitalArrival=exposed.length?Math.min(...exposed.map(e=>Math.max(0,e.d-e.range)/e.speed)):Infinity;
+    const survivalTime=Math.min(breach,capitalArrival+c.hp/Math.max(1,capitalDps));
+    const value={side,other,border,allies,foes,threats,front,frontDistance,hostilePower,defendingPower,breach,reinforcement,survivalTime,
       urgent,safeOpening,penetrated,portalUnsafe:portalHostiles>Math.max(8,portalDefenders*.85)};
     cache.set(c,{stamp,units:R.state.units,value});return value;
   };
   R.aiUnderAttack=c=>R.aiBattleState(c).urgent;
+  R.aiCanFundRecovery=(c,battle=R.aiBattleState(c))=>!battle.urgent||(battle.survivalTime??battle.breach)>18;
   R.aiProtectPortal=c=>{
     if(!R.aiControlsCity(c)||!c.undPortalEnabled)return false;
     const battle=R.aiBattleState(c);

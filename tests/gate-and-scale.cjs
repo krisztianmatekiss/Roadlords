@@ -44,7 +44,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
    const keys=Object.keys(R.UNITS),units=[];
    for(let i=0;i<241;i++){const u=R.releaseUnit(i%2?R.E:R.P,{key:keys[i%keys.length]});u.lane=2400+(i%7)*5;u.offset=(i%16-8)*20;u.roadMoving=false;units.push(u);}
    R.roadFocusFront();
-   function scaleOf(u){const original=R.ctx.drawImage;let value;R.ctx.drawImage=function(...a){if(a[0].figureBounds){const t=this.getTransform();value=[Math.abs(t.a),t.d,a.slice(-4)];}return original.apply(this,a);};try{R.roadDrawUnit(u);}finally{R.ctx.drawImage=original;}return value;}
+   function scaleOf(u){const original=R.ctx.drawImage;let value;R.ctx.drawImage=function(...a){if(a[0].figureBounds){const t=this.getTransform(),image=a[0],bounds=a.length===9?[a[5]-a[1]*a[7]/a[3],a[6]-a[2]*a[8]/a[4],image.width*a[7]/a[3],image.height*a[8]/a[4]]:a.slice(-4);value=[Math.abs(t.a),t.d,bounds.map(n=>Math.round(n*1e6)/1e6)];}return original.apply(this,a);};try{R.roadDrawUnit(u);}finally{R.ctx.drawImage=original;}return value;}
    const results=[];
    for(const style of ['simple','refined']){
     Q.state.figureStyle=style;const samples=[];

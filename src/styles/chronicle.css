@@ -68,7 +68,7 @@ body.chronicle .chronicleWalls{display:block}
 html body.chronicle #app .roadCapitalHealth{color:#27332c;text-shadow:0 1px #f4e3bd;font:800 clamp(12px,.9vw,18px)/1.2 Georgia,serif;bottom:calc(100% + 6px)}
 html body.chronicle #app .roadCapitalTrack{height:7px;border:1px solid #2d372b;box-shadow:none;background:#615c48}
 html body.chronicle #app :is(.roadEnemyPane,.roadOwnPane){background:transparent!important}
-html body.chronicle #app #uiTrialOverview{position:fixed!important;grid-area:auto!important;left:20px;right:20px;bottom:9px;height:var(--chronicle-overview-height);display:block!important;min-width:0;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;z-index:25;pointer-events:none}
+html body.chronicle #app #uiTrialOverview{position:fixed!important;grid-area:auto!important;left:12px;right:12px;bottom:2px;height:var(--chronicle-overview-height);display:block!important;min-width:0;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;z-index:25;pointer-events:none}
 html body.chronicle #uiTrialOverview>aside{display:none!important}
 html body.chronicle .uiTrialTrack{position:absolute;inset:0;width:100%;height:100%;border:0!important;overflow:visible}
 html body.chronicle #uiTrialLine{pointer-events:auto}

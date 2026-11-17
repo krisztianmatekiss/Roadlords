@@ -258,6 +258,19 @@ function sprite(R, u, pose) {
   else canvas.figureRig=undead?drawUndead(g,R,color,p,elite,pose,u.key):mystic?drawOrcMystic(g,R,color,p,elite,pose,u.key):raider?drawOrcRaider(g,R,color,p,elite,pose,u.key,variant):caster?drawHumanCaster(g,R,color,p,elite,pose,u.key,kind):archer?drawArcher(g,R,color,p,elite,pose):human?drawHumanInfantry(g,R,color,p,elite,pose.state==='walk',u.key):skeleton?drawSkeleton(g,R,color,p,elite,pose.state==='walk'):orc?drawOrcWarrior(g,R,color,p,elite,pose.state==='walk'):knight?drawKnight(g,R,color,p,elite,pose.state==='walk'):humanoid(g,style,color,p,refined,elite);g.restore();
   if(status)paintBodyStatus(canvas,status,resolution);
   g.save();g.globalCompositeOperation='destination-over';ellipse(g,1,2,style.mount||style.machine?18:style.size>1?15:10,3.5,'#18251e66');g.restore();
+  // Keep the full cached pose for its rig/previews, but transfer only painted
+  // pixels in battle. Large transparent animation margins otherwise cost as
+  // much as bodies when hundreds of scaled sprites overlap on the canvas.
+  const data=g.getImageData(0,0,canvas.width,canvas.height).data;
+  let left=canvas.width,top=canvas.height,right=-1,bottom=-1;
+  for(let y=0;y<canvas.height;y++)for(let x=0;x<canvas.width;x++)if(data[(y*canvas.width+x)*4+3]){
+    left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);
+  }
+  if(right>=left){
+    left=Math.max(0,left-2);top=Math.max(0,top-2);right=Math.min(canvas.width-1,right+2);bottom=Math.min(canvas.height-1,bottom+2);
+    const w=right-left+1,h=bottom-top+1;
+    canvas.figureTrim=[left,top,w,h,bounds[0]+left/resolution,bounds[1]+top/resolution,w/resolution,h/resolution];
+  }
   if(!R.ROAD.sprites.size)R.ROAD.spritePixels=0;
   const pixels=canvas.width*canvas.height;
   while(R.ROAD.sprites.size&&(R.ROAD.spritePixels+pixels>16*1024*1024||R.ROAD.sprites.size>=768)){
@@ -296,7 +309,7 @@ export function installBattleFigures(R) {
     const hurt=dead?0:clamp(1-(R.ROAD.clock-(u.roadHurtAt??-99))/.16);g.translate(-Math.sin(hurt*Math.PI)*1.5,0);
     // Only time-limited bodies are translucent; permanent summons remain solid.
     if(u.temporary>0||u.temporaryVisual)g.globalAlpha*=.55;
-    g.drawImage(image,...image.figureBounds);g.restore();
+    if(image.figureTrim)g.drawImage(image,...image.figureTrim);else g.drawImage(image,...image.figureBounds);g.restore();
     if(!dead){
       const top=paintedUndead(R,u)?(['und_lich','und_necromancer'].includes(u.key)?-75:-62):paintedOrcSiege(R,u)?(u.key==='orc_warg'?-65:-45):paintedOrcMystic(R,u)?(u.key==='orc_troll'?-72:-60):paintedKnight(R,u)?-61:paintedCaster(R,u)?-59:-51;
       const poisonDamage=R.unitPoisonDamage(u);

@@ -1,6 +1,7 @@
 import { installAiStrategyModel } from './strategy-model.js';
 import { installAiStrategyProjection } from './strategy-projection.js';
 import { cardTargets, UNIT_FEATURES } from './mechanics.js';
+import { aiPreference, rankAiAlternatives } from './variety.js';
 
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const sum=values=>values.reduce((n,x)=>n+x,0);
@@ -46,7 +47,7 @@ export function installAiStrategyPlanner(R) {
       if(plan.producer&&c.unlocked.has(plan.producer)&&!R.factionBasics(c.race).includes(plan.producer)){plan.evidence+=2;plan.commitment+=2;}
       // Unavailable cards can be a future possibility, never a reason to
       // abandon an already functioning economy for a guaranteed imaginary draw.
-      plan.initial=plan.evidence+(isOwned?4:0)-(plan.producer&&!c.unlocked.has(plan.producer)?3:0);
+      plan.initial=plan.evidence+(isOwned?4:0)-(plan.producer&&!c.unlocked.has(plan.producer)?3:0)+aiPreference(c,units.slice().sort().join(',')||plan.key)*2;
       out.push(plan);
     }
     return out.sort((a,b)=>b.initial-a.initial||a.key.localeCompare(b.key));
@@ -142,10 +143,11 @@ export function installAiStrategyPlanner(R) {
       if(alternate.score>plans[0].projection.score+1){plans[0].score+=clamp(alternate.score,-12,18)-clamp(plans[0].projection.score,-12,18);plans[0].projection=alternate;}
     }
     plans.sort((a,b)=>b.score-a.score);
-    let primary=plans[0]||null;
+    let primary=rankAiAlternatives(c,plans,p=>p.key,2)[0]||null;
     const retained=old&&plans.find(p=>p.key===old.key);
     const oldProgress=old&&progress(c,old);
     const stalled=previous&&oldProgress===previous.progressStamp&&now-previous.progressAt>=90;
+    if(stalled&&primary?.key===old?.key&&plans[0]?.key!==old?.key&&plans[0].score>primary.score+.5)primary=plans[0];
     if(retained&&!stalled&&primary.key!==retained.key&&primary.score<retained.score*1.15+2)primary=retained;
     if(primary){
       primary.confidence=clamp(primary.evidence/16,.1,1)*Math.min(1,.2+primary.commitment/6)*

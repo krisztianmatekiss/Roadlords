@@ -1,4 +1,5 @@
 import { cardTargets, UNIT_FEATURES } from './mechanics.js';
+import { rankAiAlternatives } from './variety.js';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 
 // A production line needs a job. Having unlocked it is not itself a job.
@@ -30,7 +31,7 @@ export function installAiArmyIntent(R){
       if(tags.includes('siege')&&!tags.includes('melee')&&R.state.time<180)value-=8;
       return {type,key,value,quality,throughput,tags};
     }).sort((a,b)=>b.value-a.value||a.type.localeCompare(b.type));
-    let main=options[0];const previous=memory.get(c);
+    let main=rankAiAlternatives(c,options.map(o=>({...o,score:o.value})),o=>o.key,1.5)[0];const previous=memory.get(c);
     if(previous?.capital===capital&&R.state.time>=previous.at){
       const retained=options.find(o=>o.key===previous.key);
       if(retained&&main&&main.value<retained.value*1.12+1.5)main=retained;

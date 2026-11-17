@@ -22,6 +22,7 @@ export function register(runtime) {
   runtime.makeCity = function makeCity(isEnemy = false) {
     return {
       isEnemy,
+      aiDecisionSeed: Math.floor(Math.random()*0x100000000),
       resources: runtime.C(150, 75, 40),
       caps: runtime.C(200, 200, 200),
       buildings: [{

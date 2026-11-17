@@ -9,7 +9,9 @@ export function chronicleWalls(race,side,ready=true){
 }
 export function chronicleDoor(race,side,ready=true){
   const [x,y,w,h]=art[race].fortress.portal,id='gate-opening-'+side,src=assetUrl(art[race].fortress.webFile);
-  // Reuse the painted doors from the enclosure itself: no differently styled overlay.
-  const leaf=(top,name)=>`<g class="chronicleGateLeaf ${name}"><svg x="${x}" y="${top}" width="${w}" height="${h/2}" viewBox="${x} ${top} ${w} ${h/2}" overflow="hidden"><image href="${src}" width="1000" height="1000"/></svg></g>`;
+  // Turn the painted double door itself, so its seam and its travel both run
+  // up/down along the side wall. The enclosure and its opening stay aligned.
+  const cx=x+w/2,cy=y+h/2,turn=`translate(${cx} ${cy}) scale(${w/h} ${h/w}) rotate(90) translate(${-cx} ${-cy})`;
+  const leaf=(top,name)=>`<g class="chronicleGateLeaf ${name}"><svg x="${x}" y="${top}" width="${w}" height="${h/2}" viewBox="${x} ${top} ${w} ${h/2}" overflow="hidden"><g class="chronicleDoorArt" transform="${turn}"><image href="${src}" width="1000" height="1000"/></g></svg></g>`;
   return `<svg class="chronicleDoor" data-side="${side}" data-race="${race}" viewBox="0 0 1000 1000" aria-hidden="true"><defs><clipPath id="${id}"><rect x="${x}" y="${y}" width="${w}" height="${h}"/></clipPath></defs>${ready?`<g clip-path="url(#${id})">${leaf(y,'upper')}${leaf(y+h/2,'lower')}</g>`:''}</svg>`;
 }

@@ -48,14 +48,22 @@ export function installChronicleTerrain(R,view,syncCities){
     for(const oldKey of tiles.keys())if(oldKey.startsWith(race+':')){const old=tiles.get(oldKey);if(old.cssUrl){if(!retiredUrls.has(race))retiredUrls.set(race,new Set());retiredUrls.get(race).add(old.cssUrl);}tiles.delete(oldKey);}
     canvas.cssReady=new Promise(resolve=>canvas.toBlob(blob=>{if(tiles.get(key)===canvas){canvas.cssUrl=blob?URL.createObjectURL(blob):'';syncCities();if(blob){for(const url of retiredUrls.get(race)||[])URL.revokeObjectURL(url);retiredUrls.delete(race);}}resolve();},'image/webp',.93));tiles.set(key,canvas);return canvas;
   };
+  const background=document.createElement('canvas');let backgroundKey='';
+  view.groundCache={painted:0,reused:0};
   view.drawGround=()=>{
-    const g=R.ctx;g.globalAlpha=1;g.globalCompositeOperation='source-over';g.filter='none';const z=R.ROAD.zoom||1,boundary=R.territoryBoundary(),mid=R.pointAt(boundary).x;view.boundary=boundary;view.segments=[];
+    const target=R.ctx;target.globalAlpha=1;target.globalCompositeOperation='source-over';target.filter='none';const z=R.ROAD.zoom||1,boundary=R.territoryBoundary(),mid=R.pointAt(boundary).x;view.boundary=boundary;view.segments=[];
     if(!document.body.classList.contains('roadlords-menu-open')&&[R.P.race,R.E.race].some(r=>!assets.get(r)?.ready))R.loadChronicleArt();
+    const key=[R.ROAD.w,R.ROAD.h,R.ROAD.camera,z,boundary,R.P.race,R.E.race,...[R.P,R.E].map(c=>!!assets.get(c.race)?.ready)].join(':');
+    const changed=key!==backgroundKey;
+    if(changed){background.width=R.ROAD.w;background.height=R.ROAD.h;backgroundKey=key;view.groundCache.painted++;}else view.groundCache.reused++;
+    const g=background.getContext('2d');
     for(const [side,start,end]of [['player',0,Math.min(R.ROAD.w,mid)],['enemy',Math.max(0,mid),R.ROAD.w]]){
       if(end<=start)continue;const race=R.cityForSide(side).race,theme=CHRONICLE_THEMES[race]||CHRONICLE_THEMES.human,t=view.tile(race);view.segments.push({side,race,start,end,boundary});
+      if(!changed)continue;
       g.save();g.beginPath();g.rect(start,0,end-start,R.ROAD.h);g.clip();g.fillStyle=theme.ground;g.fillRect(start,0,end-start,R.ROAD.h);
       if(t){const w=t.width*R.ROAD.h/t.height*z,origin=-R.ROAD.camera*z;for(let x=origin+Math.floor((start-origin)/w)*w;x<end;x+=w)g.drawImage(t,x,0,w,R.ROAD.h);}
       g.restore();
     }
+    target.drawImage(background,0,0);
   };
 }

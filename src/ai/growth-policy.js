@@ -22,7 +22,7 @@ export function installAiGrowthPolicy(R) {
     if(R.aiControlsCity(c)){
       R.aiProtectPortal(c);
       const plan=c._aiGrowthPlan;
-      if(plan&&R.state.time-plan.time<5&&!R.aiUnderAttack(c)){
+      if(plan&&R.state.time-plan.time<5&&R.aiCanFundRecovery(c)){
         const reserve=c._aiSaveReason==='economy'&&c._aiSavePrice?c._aiSavePrice:plan.growing?plan.reserve:null;
         if(reserve){
           const cost=R.primarySpawnCost(c,R.effectiveUnitKey(c,b),b);

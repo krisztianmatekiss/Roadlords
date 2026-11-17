@@ -54,7 +54,7 @@ export function installSpectatorMode(R) {
     R.ROAD.sprites.clear();
     R.ROAD.metrics={steps:0,damage:0,attacks:0,tickMs:0,renderMs:0,fps:0};R.acc=0;
     for(const [c,race]of [[R.P,left],[R.E,right]]){
-      R.roadResetCity(c,race);R.generateTerrain(c,12);R.recomputeCity(c,false);
+      R.roadResetCity(c,race);c.aiDecisionSeed=Math.floor(Math.random()*0x100000000);R.generateTerrain(c,12);R.recomputeCity(c,false);
       c.gateMode='closed';c.autoReleasing=false;c.aiThink=0;c._aiTimedPicks=0;c._aiPickDue=R.PICK_BASE_SECONDS;
     }
     R.towers.forEach((t,i)=>Object.assign(t,structuredClone(originalTowers[i])));
@@ -89,7 +89,7 @@ export function installSpectatorMode(R) {
     Object.assign(R.state,{running:false,time:0,ended:false,modal:false,pregame:false,startChoices:4,startPickTimer:0,pendingChoices:[],choiceContext:null,units:[],unitSerial:1,timedPickCount:0,nextPick:R.PICK_BASE_SECONDS,selectedBuild:null,selectedBuilding:null});
     R.MP.started=false;R.MP.role=null;R.acc=0;
     Object.assign(R.ROAD,{test:false,paused:false,clock:0,pending:[],dead:[],result:''});
-    for(const c of [R.P,R.E]){R.roadResetCity(c,c.race);R.generateTerrain(c,12);R.recomputeCity(c,false);}
+    for(const c of [R.P,R.E]){R.roadResetCity(c,c.race);c.aiDecisionSeed=Math.floor(Math.random()*0x100000000);R.generateTerrain(c,12);R.recomputeCity(c,false);}
     R.towers.forEach((t,i)=>Object.assign(t,structuredClone(originalTowers[i])));R.roadReindex();R.roadRefreshFrontiers();
     R.$('#endOverlay').classList.add('hidden');R.renderStatic();R.updateHud();
   };

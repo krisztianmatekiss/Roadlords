@@ -10,6 +10,7 @@ import { installAiStrategyPlanner } from './strategy-planner.js';
 import { installAiRedevelopment } from './redevelopment.js';
 import { BUILDING_MECHANICS, CONDITIONAL_EFFECTS, UNIT_FEATURES, cardTargets } from './mechanics.js';
 import { levelValue } from '../data/faction-redesign.js';
+import { rankAiAlternatives } from './variety.js';
 
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 const sum = values => values.reduce((n, x) => n + x, 0);
@@ -291,7 +292,7 @@ export function installSharedAiPlanner(R) {
         options=replacement?[...keep,replacement]:keep;ranked=rank(options);
       }
     }
-    return ranked.map(x=>x.o);
+    return rankAiAlternatives(ctx.c,ranked,x=>R.choiceKey(x.o),Math.max(.6,Math.abs(ranked[0]?.score||0)*.025)).map(x=>x.o);
   },city);
 
   function savings(c, opp) {
@@ -365,9 +366,16 @@ export function installSharedAiPlanner(R) {
         // Complete a funded multi-cell replacement before another small
         // building can occupy its freshly cleared cells.
         const redevelopment=c._aiRedevelopPlan;
-        if(redevelopment&&!ctx.pressure){
+        if(redevelopment&&(!ctx.pressure||BUILDING_MECHANICS[redevelopment.type]?.produces&&R.aiCanFundRecovery(c,ctx.battle))){
           if(invest(opportunity(redevelopment.type,ctx),ctx))return;
           clearSavings(c);
+        }
+        // Losing territory is not the same as dying in the next few seconds.
+        // Keep financing replacements while a tower/capital can buy that time.
+        if(ctx.pressure&&R.aiCanFundRecovery(c,ctx.battle)){
+          const repairs=ctx.producers.filter(type=>BUILDING_MECHANICS[type].produces.some(r=>metrics.gain[r]+.01<ctx.target[r]));
+          const ranked=repairs.map(type=>opportunity(type,ctx)).filter(o=>!o.cell||o.after&&ctx.resources.some(r=>o.after.gain[r]-o.after.use[r]>metrics.gain[r]-metrics.use[r]+.01)).sort((a,b)=>b.score-a.score);
+          if(ranked[0]&&invest(ranked[0],ctx))return;
         }
         if(R.aiExcavateAncient(c._aiSaveType,c)){clearSavings(c);return;}
         const saved=c._aiSaveType;
@@ -432,13 +440,19 @@ export function installSharedAiPlanner(R) {
           if(invest(blocked[index],ctx))return;
         }
         clearSavings(c);
-      }finally{R.aiUpdateBuildingControls(c,ctx);}
+      }finally{R.aiUpdateBuildingControls(c,ctx);controlClocks.set(c,{capital:c.buildings.find(b=>b.type==='keep'),at:R.state.time,next:R.state.time+1});}
     },city);
   };
   R.enemyBuildAI=dt=>{if(R.spectator?.active)R.aiStepCity(R.P,dt);R.aiStepCity(R.E,dt);};
+  const controlClocks=new WeakMap();
   R.updateEnemyWarModeV45=()=>{
-    for(const c of R.spectator?.active?[R.P,R.E]:[R.E])if(R.aiControlsCity(c))
+    for(const c of R.spectator?.active?[R.P,R.E]:[R.E])if(R.aiControlsCity(c)){
+      const now=R.state.time,capital=c.buildings.find(b=>b.type==='keep'),old=controlClocks.get(c);
+      if(old?.capital===capital&&now>=old.at&&now<old.next)continue;
+      controlClocks.set(c,{capital,at:now,next:now+1});
+      if(!c.buildings.some(b=>!b.inactive&&(b.type==='warcenter'||b.type==='und_otherworld_portal'||b.type==='orc_overseer'&&b.level===4))&&!R.hasLeg(c,'orc_united_huts'))continue;
       duringDecision(ctx=>R.aiUpdateBuildingControls(c,ctx),c);
+    }
   };
   Object.assign(window.__ROADLORDS__,{enemyBuildAI:R.enemyBuildAI,enemyGateAI:R.enemyGateAI,aiBuild:R.aiBuild,aiMilitaryPool:R.aiMilitaryPool,
     scoreAiChoiceV17:R.scoreAiChoiceV17,aiResourceTargets:R.aiResourceTargets,findCell:R.findCell});

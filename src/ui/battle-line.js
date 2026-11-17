@@ -51,7 +51,7 @@ export function createBattleLine(R,canvas,active){
   line.draw=(force=false)=>{
     if(!active()||!width||!height)return;
     const now=performance.now();if(!force&&now-last<100)return;last=now;hits=[];g.clearRect(0,0,width,height);g.textAlign='center';g.textBaseline='alphabetic';
-    const pad=Math.min(104,width*.10),w=Math.max(1,width-2*pad),y=Math.round(height*.48),x=lane=>pad+R.clamp(lane/R.PATH_LENGTH,0,1)*w;
+    const pad=Math.min(180,width*.14),w=Math.max(1,width-2*pad),y=Math.round(height*.56),x=lane=>pad+R.clamp(lane/R.PATH_LENGTH,0,1)*w;
     const boundary=R.territoryBoundary(),mid=x(boundary),own=R.unitTeamFill({side:'player'}),enemy=R.unitTeamFill({side:'enemy'});
     const section=canvas.closest('#uiTrialOverview');section.style.setProperty('--trial-own-color',own);section.style.setProperty('--trial-enemy-color',enemy);
     g.strokeStyle='#fff1d1';g.lineWidth=7;g.beginPath();g.moveTo(pad,y);g.lineTo(width-pad,y);g.stroke();
@@ -86,11 +86,12 @@ export function createBattleLine(R,canvas,active){
       const summary={side,count:R.reserveCount(c),capacity:c.garrisonCap,keys};line.garrisons.push(summary);
       const direction=side==='player'?1:-1,origin=x(lane),r=Math.min(19,height*.14),py=height-r-3;
       for(const [i,key]of keys.slice(0,2).entries())bubble({side,key,count:counts[key],lane},origin+direction*(i*41+70),py,r,side==='player'?own:enemy,true);
-      const army=R.fieldUnitCount(c);text(`${army}/${c.armyCap}`,origin+5,y+34,15);
-      text(`${R.reserveCount(c)}/${c.garrisonCap}`,origin+5,py+5,14);
-      roleIcon(origin-39,y+30,false,side==='player'?own:enemy);roleIcon(origin-39,py+1,true,side==='player'?own:enemy);
+      const army=R.fieldUnitCount(c),edge=side==='player'?52:width-52,icon=edge+(side==='player'?-37:37),armyY=height-48,reserveY=height-20;
+      text(`${army}/${c.armyCap}`,edge,armyY,15);
+      text(`${R.reserveCount(c)}/${c.garrisonCap}`,edge,reserveY,14);
+      roleIcon(icon,armyY-4,false,side==='player'?own:enemy);roleIcon(icon,reserveY-4,true,side==='player'?own:enemy);
       if(keys.length>2)text('+'+(keys.length-2),origin+direction*135,py+5,13);
-      hits.push({x:origin,y:py,r:28,lane,side,garrison:true,types:keys.map(key=>({key,count:counts[key]})),label:`Helyőrség · ${R.reserveCount(c)} / ${c.garrisonCap}`});
+      hits.push({x:edge,y:reserveY,r:24,lane,side,garrison:true,types:keys.map(key=>({key,count:counts[key]})),label:`Helyőrség · ${R.reserveCount(c)} / ${c.garrisonCap}`});
     }
     const visible=R.roadViewportBounds(),canvasLeft=R.ROAD.city+R.clamp(R.roadWar.scrollLeft-R.ROAD.city,0,R.PATH_LENGTH-R.ROAD.w)-R.roadWar.scrollLeft;
     const start=R.ROAD.camera+(visible.left-canvasLeft)/R.ROAD.zoom,end=R.ROAD.camera+(visible.right-canvasLeft)/R.ROAD.zoom;

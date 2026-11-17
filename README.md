@@ -1,5 +1,15 @@
-# Roadlords · V4.83.0
+# Roadlords · V4.84.0
 
+
+## V4.84.0 – Gyorsabb csatakép és gazdasági visszakapaszkodás
+
+- A közel azonos értékű AI-tervek és választások meccsenként eltérő sorrendet kaphatnak; az egyszer kiválasztott irány továbbra is követhető marad.
+- Hátrányban az AI a ténylegesen várható védelmi időt is figyelembe veszi. Termelőkre és gazdasági helyfelszabadításra is félretesz, ha van ideje finanszírozni a visszakapaszkodást.
+- Ritkább költséges AI-kapcsolóértékelés, újrahasznált háttérkép és az átlátszó figuramargók kihagyása a csatakép másolásából. Minden látható egység megmarad.
+- A baráti menetoszlopok erősebben, folyamatosan terülnek szét a szabad helyre, egymás útjának blokkolása nélkül.
+- Rövidebb, lejjebb helyezett csataáttekintő, szélére helyezett sereg- és helyőrségértékek. A kapuk rajza 90°-kal fordult; az ajtók függőlegesen nyílnak.
+
+[Részletek és mérések](docs/ai-recovery-and-performance-4.84.md). Multiplayer szabályverzió: **31**.
 
 ## V4.83.0 – Egységfinomítás és hosszabb építkezési szakasz
 

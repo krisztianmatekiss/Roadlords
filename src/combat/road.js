@@ -55,7 +55,12 @@ export function register(runtime) {
       const b=runtime.ROAD.grid.get(xx*32+yy), n=b?.[u.side].length || 0;
       if(n){sum+=b[u.side+'Y'];count+=n;}
     }
-    return count>1 ? runtime.clamp(((u.offset||0)-sum/count)/64,-1,1)*.18 : 0;
+    if(count<=1)return 0;
+    const offset=u.offset||0,home=runtime.clamp(u.roadHomeOffset??((u.id%20)-9.5)*24,-runtime.ROAD.half+20,runtime.ROAD.half-20);
+    let away=offset-sum/count;
+    if(Math.abs(away)<3)away=Math.sign(home-offset)||(u.id%2?1:-1);
+    const density=Math.min(1,(count-1)/6);
+    return runtime.clamp((runtime.clamp(away/18,-1,1)*.8+runtime.clamp((home-offset)/48,-1,1)*.55)*density,-.45,.45);
   };
   installRoadMovement(runtime);
   runtime.roadQueueAttack = function roadQueueAttack(u, t, structure, opts) {

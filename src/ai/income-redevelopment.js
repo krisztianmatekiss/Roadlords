@@ -2,7 +2,7 @@
 // for a funded producer. Never tear down the only source of a unit or economy.
 export function installIncomeRedevelopment(R) {
   R.aiReclaimIncomePlot=(c,type)=>{
-    if(R.aiUnderAttack(c))return false;
+    if(!R.aiCanFundRecovery(c))return false;
     const occupied=R.occupancy(c),byId=new Map(c.buildings.map(b=>[b.id,b]));
     let plan=c._aiRedevelopPlan;
     const fits=plan&&plan.type===type&&R.cityBuildingCells(c,{type,row:plan.cell[0],col:plan.cell[1],rotation:plan.cell[2]}).every(([r,k])=>{

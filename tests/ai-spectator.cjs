@@ -20,9 +20,9 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   check('Each AI receives its own bonus choices without changing the other AI state',await p.evaluate(()=>{
    const R=__ROADLORDS_RUNTIME__,a=R.P.pickCount,b=R.E.pickCount;R.aiGrantPick(R.P,'ancient');const first=R.P.pickCount===a+1&&R.E.pickCount===b;R.aiGrantPick(R.E,'ancient');return first&&R.P.pickCount===a+1&&R.E.pickCount===b+1;
   }));
-  check('Only normal controls remain; the left deck is visible beside the closed construction tab',await p.evaluate(()=>{
-   const deck=document.querySelector('#relicBtn'),a=deck.getBoundingClientRect(),b=document.querySelector('.topbar').getBoundingClientRect();
-   return !document.querySelector('#spectatorControls')&&getComputedStyle(deck).visibility==='visible'&&a.width>30&&a.left<300&&a.top>=b.bottom&&a.bottom<=b.bottom+80&&document.querySelector('#uiTrialDrawer').hidden&&__ROADLORDS_RUNTIME__.chronicle.active();
+  check('Only normal controls remain; the left deck and open sidebar leave the city unobstructed',await p.evaluate(()=>{
+   const deck=document.querySelector('#relicBtn'),a=deck.getBoundingClientRect(),b=document.querySelector('.topbar').getBoundingClientRect(),drawer=document.querySelector('#uiTrialDrawer'),d=drawer.getBoundingClientRect(),war=document.querySelector('.war').getBoundingClientRect();
+   return !document.querySelector('#spectatorControls')&&getComputedStyle(deck).visibility==='visible'&&a.width>30&&a.left<300&&a.top>=b.bottom&&a.bottom<=b.bottom+80&&!drawer.hidden&&d.right<=war.left&&__ROADLORDS_RUNTIME__.chronicle.active();
   }));
   await p.locator('#relicBtn').click();
   check('The left AI deck is inspectable without controlling its choices',await p.locator('#relicOverlay').getAttribute('data-deck-side')==='player');await p.keyboard.press('Escape');

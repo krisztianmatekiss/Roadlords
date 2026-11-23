@@ -1,7 +1,8 @@
 /* Chronicle presentation: shared live DOM, open map and lightweight overlays. */
-body.chronicle{--chronicle-ink:#29332f;--chronicle-paper:#f2dfad;--trial-sidebar-width:0px;--trial-drawer-width:230px;--trial-header-height:64px;--trial-line-height:0px;--chronicle-overview-height:clamp(116px,15vh,168px);color:var(--chronicle-ink)}
-html body.chronicle #app{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:var(--trial-header-height) minmax(0,1fr)!important;background:#b7b374}
-html body.chronicle #app>.topbar{grid-column:1;grid-row:1;grid-template-columns:minmax(0,1fr) auto!important;padding:4px 14px!important;border:0;border-bottom:3px solid #29332f;background:linear-gradient(110deg,#fff1ce,#ecd5a4);box-shadow:0 2px 0 #b18d57;gap:12px!important;color:#24312c}
+body.chronicle{--chronicle-ink:#29332f;--chronicle-paper:#f2dfad;--trial-drawer-width:clamp(186px,16vw,230px);--trial-sidebar-width:calc(var(--trial-drawer-width) + 24px);--trial-header-height:64px;--trial-line-height:0px;--chronicle-overview-height:clamp(116px,15vh,168px);color:var(--chronicle-ink)}
+body.chronicle.ui-trial-collapsed{--trial-sidebar-width:0px}
+html body.chronicle #app{grid-template-columns:var(--trial-sidebar-width) minmax(0,1fr)!important;grid-template-rows:var(--trial-header-height) minmax(0,1fr)!important;background:#b7b374}
+html body.chronicle #app>.topbar{grid-column:1/-1;grid-row:1;grid-template-columns:minmax(0,1fr) auto!important;padding:4px 14px!important;border:0;border-bottom:3px solid #29332f;background:linear-gradient(110deg,#fff1ce,#ecd5a4);box-shadow:0 2px 0 #b18d57;gap:12px!important;color:#24312c}
 html body.chronicle #app .topLeftCluster{gap:14px!important}
 html body.chronicle #app .topLeftCluster .resources{display:flex!important;gap:18px!important;min-width:0}
 html body.chronicle #app .topLeftCluster .res{flex:0 1 176px;min-width:106px;min-height:43px!important;padding:0 12px 0 0!important;background:none!important;border:0!important;border-right:1px solid #78674e!important;border-radius:0;box-shadow:none!important;color:#29332f;gap:8px!important}
@@ -9,7 +10,7 @@ html body.chronicle #app .topLeftCluster .res b{font:800 clamp(14px,1.05vw,22px)
 html body.chronicle #app .topLeftCluster .res small{font:800 clamp(10px,.72vw,14px)/1.2 system-ui!important;text-shadow:none}
 html body.chronicle #app .res .ri,html body.chronicle #app .res .resourceIcon{width:34px!important;height:34px!important}
 html body.chronicle #app .gain{color:#376d32}html body.chronicle #app .use{color:#a13d31}
-html body.chronicle #app>.war{grid-column:1;grid-row:2;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:thin;scrollbar-color:#77643d #bdac78;background:#aeb47e}
+html body.chronicle #app>.war{grid-column:2;grid-row:2;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:thin;scrollbar-color:#77643d #bdac78;background:#aeb47e}
 html body.chronicle #app .roadWorld{height:100%;min-height:0;background-color:var(--chronicle-ground,#aeb47e);background-image:var(--chronicle-terrain);background-size:var(--chronicle-paint-width,1800px) 100%;background-position:var(--road-city-size) 0;background-repeat:repeat-x;overflow:clip}
 html body.chronicle #app .roadWorld .cityzone:before{content:"";position:absolute;left:0;top:calc(-1 * var(--road-city-top));width:100%;height:var(--chronicle-height);pointer-events:none;z-index:-1;background-color:var(--chronicle-ground);background-image:var(--chronicle-terrain);background-size:var(--chronicle-paint-width) 100%;background-position:var(--chronicle-paint-phase) 0;background-repeat:repeat-x}
 html body.chronicle #app .topbar .datum{padding:0 8px;border-color:#b29a70;color:#26312e}
@@ -35,10 +36,10 @@ html body.chronicle #app #gateControls [data-gate="closed"]{background:#a14b3b!i
 html body.chronicle #app #gateControls [data-gate="auto"]{background:#b68a32!important}
 html body.chronicle #app #gateControls button.active{outline:3px solid #ffecaa;outline-offset:2px;filter:brightness(1.12)!important}
 html body.chronicle #app #gateControls svg{width:28px!important;height:31px!important}
-html body.chronicle #uiTrialDrawer{position:fixed!important;left:20px;top:calc(var(--trial-header-height) + 63px);bottom:calc(var(--chronicle-overview-height) + 18px);width:var(--trial-drawer-width);max-height:760px;display:flex;padding:10px 7px 5px;background:#f3dfb0fa;border:2px solid #303a30;border-radius:5px 9px 6px 3px;box-shadow:4px 6px 0 #2a342944;z-index:38;grid-area:auto}
+html body.chronicle #uiTrialDrawer{position:relative!important;grid-column:1;grid-row:2;align-self:stretch;margin:68px 12px calc(var(--chronicle-overview-height) + 82px);width:auto;max-height:none;display:flex;padding:10px 7px 5px;background:#f3dfb0fa;border:2px solid #303a30;border-radius:5px 9px 6px 3px;box-shadow:4px 6px 0 #2a342944;z-index:38}
 html body.chronicle #uiTrialDrawer[hidden]{display:none!important}
-html body.chronicle #app #uiTrialDrawer .tabs{grid-template-columns:repeat(4,43px)!important;gap:8px!important;padding:0 0 10px!important}
-html body.chronicle #app #uiTrialDrawer .tab{width:43px!important;height:43px!important;min-height:43px!important;border:2px solid #303b32!important;box-shadow:none!important;padding:8px!important;filter:none}
+html body.chronicle #app #uiTrialDrawer .tabs{grid-template-columns:repeat(4,minmax(0,43px))!important;grid-template-rows:auto!important;height:auto!important;gap:8px!important;padding:0 0 10px!important}
+html body.chronicle #app #uiTrialDrawer .tab{width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:1;border:2px solid #303b32!important;box-shadow:none!important;padding:8px!important;filter:none}
 html body.chronicle #uiTrialDrawer .tabHotkey{background:#f0d79c;color:#26322f;border-color:#29342e}
 html body.chronicle #uiTrialDrawer .uiTrialScale{display:none}
 html body.chronicle #uiTrialDrawer .uiTrialDrawerFoot{padding:0;border:0}
@@ -97,7 +98,7 @@ body.chronicle .spectatorNotice{color:#29332c;background:#f2dfad;border-color:#3
  html body.chronicle #uiTrialFold,html body.chronicle #app #relicBtn{min-width:82px;padding:0 8px!important;font-size:12px;height:34px!important;min-height:34px!important}
  html body.chronicle #app #relicBtn .deckCaption{font-size:12px!important}
  html body.chronicle #app #gateControls{left:50%;right:auto;transform:translateX(-50%);gap:7px}
- html body.chronicle #uiTrialDrawer{left:10px;top:calc(var(--trial-header-height) + 53px);bottom:112px}
+ html body.chronicle #uiTrialDrawer{margin-top:60px}
  html body.chronicle #app #uiTrialOverview{left:5px;right:5px}
 }
 /* Live faction fortifications use independent sprite silhouettes. */

@@ -1,4 +1,10 @@
-# Roadlords · V4.87.0
+# Roadlords · V4.88.0
+
+## V4.88.0 – Állandó építősáv és élőhalott nyersanyagsáv
+
+- Az építősáv alapból nyitva van, külön helyet kap a város mellett, és építés közben is látható marad. A gombjával elrejthető; ilyenkor a térkép visszakapja a helyét.
+- Élőhalott játékosnál csak a Lélek látszik a felső nyersanyagsávban. Emberre vagy orkra váltva a három nyersanyag visszatér.
+
 
 ## V4.87.0 – Toronyvédelem és emberi fejlesztések
 

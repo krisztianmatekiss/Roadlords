@@ -4,7 +4,7 @@ import { BUILD_ICON } from './command-icons.js';
 
 // Default battle layout around the same solo, spectator and multiplayer game.
 export function installBattleLayout(R) {
-  const state=R.battleLayout={active:false,scale:'fit',collapsed:true};
+  const state=R.battleLayout={active:false,scale:'fit',collapsed:false};
   const rosters=installBattleRosters(R,()=>state.active);
   const app=R.$('#app'),catalog=R.$('.catalog'),tabs=R.$('.commandRail .tabs'),deck=R.$('#relicBtn'),gate=R.$('#gateControls');
   const drawer=document.createElement('aside');drawer.id='uiTrialDrawer';drawer.hidden=true;
@@ -24,12 +24,11 @@ export function installBattleLayout(R) {
     if(state.active)return;
     baselineOffset=R.roadWar.clientHeight-(innerHeight-viewport()-dock());oldHeight=R.roadWorld.style.height;oldZoom=R.ROAD.zoom;oldPinned=R.ROAD.enemyPinned;
     oldWarTitle=R.roadWar.title;R.roadWar.title='A / D vagy görgő: balra / jobbra · ↑ / ↓ vagy Shift+görgő: fel / le · F: harci front';
-    state.active=true;state.collapsed=true;document.body.classList.add('ui-trial','ui-trial-collapsed','chronicle');drawer.hidden=true;line.hidden=launchers.hidden=false;
-    state.setCollapsed(true);
+    state.active=true;document.body.classList.add('ui-trial','chronicle');line.hidden=launchers.hidden=false;
     move(tabs,drawer.querySelector('.uiTrialCategories'));move(catalog,drawer.querySelector('#uiTrialCards'));move(deck,launchers.querySelector('.uiTrialDeckHome'));move(gate,app);
     for(const side of ['player','enemy'])move(R.$(`.roadRosterTeam[data-side="${side}"]`),line.querySelector(side==='player'?'.uiTrialOwnSummary':'.uiTrialEnemySummary'));
     R.ROAD.zoom=1;if(R.ROAD.enemyPinned)R.$('#enemyCityPin').click();
-    R.closeBuildCardPreview?.();R.roadResize();state.line.resize();R.renderBuildList();R.updateHud();
+    state.setCollapsed(false);R.renderBuildList();R.updateHud();
   };
   state.exit=()=>{
     if(!state.active)return;
@@ -43,14 +42,11 @@ export function installBattleLayout(R) {
   state.setCollapsed=collapsed=>{
     state.collapsed=collapsed;drawer.hidden=collapsed;document.body.classList.toggle('ui-trial-collapsed',collapsed);
     const button=launchers.querySelector('#uiTrialFold');button.setAttribute('aria-expanded',String(!collapsed));
+    button.title=collapsed?'Építőmenü megnyitása · Q / W / E / R':'Építőmenü elrejtése · Q / W / E / R';
     R.closeBuildCardPreview?.();if(!collapsed)requestAnimationFrame(layoutCards);
+    if(state.active)R.roadResize();
   };
   launchers.querySelector('#uiTrialFold').onclick=()=>state.setCollapsed(!state.collapsed);
-  document.addEventListener('pointerdown',e=>{
-    if(state.active&&!state.collapsed&&!e.target.closest('#uiTrialDrawer,#chronicleTools,.buildCardPreview'))state.setCollapsed(true);
-  });
-  const buildList=R.renderBuildList;
-  R.renderBuildList=(...args)=>{const out=buildList(...args);if(state.active&&R.state.selectedBuild&&!state.collapsed)state.setCollapsed(true);return out;};
   drawer.querySelector('#uiTrialScale').onchange=e=>{state.scale=e.target.value;R.roadResize();};
   const renderHeight=R.roadRenderHeight;
   R.roadRenderHeight=height=>{
@@ -80,7 +76,6 @@ export function installBattleLayout(R) {
   new MutationObserver(scheduleCards).observe(R.$('#buildList'),{childList:true});
   window.addEventListener('roadlords:ui-scale',()=>{if(state.active)requestAnimationFrame(R.roadResize);});
   document.addEventListener('keydown',e=>{
-    if(state.active&&e.key==='Escape'&&!state.collapsed)state.setCollapsed(true);
     if(!state.active||!['ArrowUp','ArrowDown'].includes(e.key)||e.target.closest('input,select,textarea')||R.state.modal||document.body.classList.contains('roadlords-menu-open'))return;
     e.preventDefault();R.roadWar.scrollTop+=e.key==='ArrowUp'?-80:80;
   });
@@ -93,7 +88,7 @@ export function installBattleLayout(R) {
   const help=settings.querySelector('.rlHotkeys');
   for(const [key,description]of [['A / D','Pályamozgatás balra / jobbra. Dupla lenyomás: ugrás a pálya szélére.'],['F','Ugrás a harci frontra.'],['GÖRGŐ','Pályamozgatás; az építőmenü fölött a kártyalista görgetése.']]){const row=document.createElement('div');row.className='rlHotkeyRow';row.innerHTML=`<span class="rlHotkeyKeys"><kbd class="rlKey">${key}</kbd></span><span class="rlHotkeyText">${description}</span>`;help?.append(row);}
   const field=document.createElement('section');field.className='rlSection';
-  field.innerHTML='<h3 class="rlSectionTitle">JÁTÉKNÉZET</h3><label>Elrendezés <select id="battleLayoutMode"><option value="modern">Rajzolt világ · lebegő kezelőfelület</option><option value="classic">Korábbi elrendezés</option></select></label>';
+  field.innerHTML='<h3 class="rlSectionTitle">JÁTÉKNÉZET</h3><label>Elrendezés <select id="battleLayoutMode"><option value="modern">Rajzolt világ · oldalsó építősáv</option><option value="classic">Korábbi elrendezés</option></select></label>';
   settings.append(field);
   const select=field.querySelector('select');
   state.setMode=(mode,persist=true)=>{

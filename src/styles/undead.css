@@ -31,12 +31,8 @@
   aspect-ratio: 1;
   max-width: 100%;
 }
-.undead-player .resources > .res:nth-child(2),
-.undead-player .resources > .res:nth-child(3) {
+html body.undead-player #app .topLeftCluster .resources > .res:nth-child(n + 2) {
   display: none !important;
-}
-html body #app .undead-player .resources {
-  grid-template-columns: 1fr !important;
 }
 html body.undead-player #app .topLeftCluster .resources {
   grid-template-columns: minmax(190px, 240px) !important;

@@ -103,7 +103,14 @@ export function installCampaign(R) {
     finally{C.loading=false;if(view.visible())view.render();}
   };
   const apply=R.applyChoice;
-  R.applyChoice=(c,o,...args)=>C.active&&R.isRelic(o.id)&&!C.applyingRelics?false:apply(c,o,...args);
+  R.applyChoice=(c,o,...args)=>{
+    if(C.active&&R.isRelic(o.id)&&!C.applyingRelics)return false;
+    const before=c.nonLegendaryPicks||0,out=apply(c,o,...args);
+    // Campaign legendaries occupy ordinary upgrade offers. Taking one as
+    // the first of two cards must consume that offer's double-choice cycle.
+    if(C.active&&o.kind==='legendary'&&args[0]!==false&&c.legends.has('double_choice'))c.nonLegendaryPicks=before+1;
+    return out;
+  };
   const finish=R.finish;
   R.finish=win=>{
     if(!C.active)return finish(win);

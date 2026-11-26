@@ -15,9 +15,9 @@ export function initializeDataRosterCleanup(runtime) {
     oldDetails = runtime.buildingUpgradeDetails;
   runtime.buildingUnlockPool = c => oldUnlock(c).filter(allowed);
   runtime.buildingUpgradePool = c => oldUpgrade(c).filter(allowed);
-  runtime.applyChoice = function (c, o) {
+  runtime.applyChoice = function (c, o, ...args) {
     if (!allowed(o)) return;
-    return oldApply(c, o);
+    return oldApply(c, o, ...args);
   };
   runtime.setBuildingLevel = function (c, type, level, ...args) {
     if (type === 'merc_tent' || type === 'alchemist' && level > 1) return;

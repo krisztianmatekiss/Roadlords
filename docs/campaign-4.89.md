@@ -30,7 +30,7 @@ Közös induló ereklyekészlet:
 | Felderített lehetőségek | +2 lap a négy kezdő épületválasztásban. |
 | Kincskereső térkép | +1 ereklye a harc végi kínálatban. Az utolsó jutalomnál már nem ajánlja fel a játék. |
 
-Az első öt a meglévő definíciókra épül, az utolsó három új kampányereklye, meglévő illusztrációkat használva. A lexikon külön Ereklyék fülön, a jutalom és a pakli ugyanabból a regiszterből jeleníti meg őket. A többi 109 legendás fejlesztés marad. A gyors játék megtartja a korábbi öt hatás meccs közbeni, eredeti frakciós elérhetőségét; az új három nem kerül a gyors játék kínálatába. A multiplayer szabályverziója változatlan, mert az új kampányszabályok nem futnak multiplayerben.
+Az első öt a meglévő definíciókra épül, az utolsó három új kampányereklye, meglévő illusztrációkat használva. A lexikon külön Ereklyék fülön, a jutalom és a pakli ugyanabból a regiszterből jeleníti meg őket. A többi 109 legendás fejlesztés marad. A gyors játék megtartja a korábbi öt hatás meccs közbeni, eredeti frakciós elérhetőségét; az új három nem kerül a gyors játék kínálatába. Egy régi kártyaszűrő nem továbbította a „ne számítson új választásnak” jelzőt: ez javítva lett, így a Kettős választás második lapja nem számít új választási eseménynek. A multiplayer szabályverziója emiatt 35; az új kampányszabályok multiplayerben nem futnak.
 
 ## Ellenőrzés és hátralévő tervezés
 

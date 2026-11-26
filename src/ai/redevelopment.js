@@ -81,7 +81,7 @@ export function installAiRedevelopment(R) {
             const r=row+dr,k=col+dc;
             if(r<0||k<0||r>=R.GRID||k>=R.GRID||R.terrainBlocks(c,r,k)){legal=false;break;}
             const v=occupied.get(R.idx(r,k)),id=typeof v==='object'?v.id:v;
-            if(id){if(byId.get(id)?.type==='keep'){legal=false;break;}blockers.add(id);}
+            if(id){if(byId.get(id)?.type==='keep'||byId.get(id)?.campaignProtected){legal=false;break;}blockers.add(id);}
           }
           if(!legal)continue;
           const target={id:'candidate',type,row,col,rotation,level:R.levelOf(c,type)};
@@ -96,7 +96,7 @@ export function installAiRedevelopment(R) {
             const versions=ids.size?[ids]:extras.map(id=>new Set([id]));
             for(const removed of versions){
               if(!removed.size||removed.size>9)continue;
-              if([...removed].some(id=>s.recent.get(byId.get(id)?.type)>R.state.time))continue;
+              if([...removed].some(id=>byId.get(id)?.campaignProtected||s.recent.get(byId.get(id)?.type)>R.state.time))continue;
               if(removed.size===1){const b=byId.get([...removed][0]);if(b?.type===type&&b.row===row&&b.col===col&&(b.rotation||0)===rotation)continue;}
               const key=[row,col,rotation,[...removed].sort().join(',')].join(':');if(seen.has(key))continue;seen.add(key);
               let rank=[...removed].reduce((n,id)=>n+values.get(id),0)+removed.size;
@@ -197,7 +197,7 @@ export function installAiRedevelopment(R) {
       }
       return importance(c,b,before,s);
     };
-    const candidates=c.buildings.filter(b=>b.type!=='keep'&&!(s.recent.get(b.type)>now)).sort((a,b)=>rank(a)-rank(b)).slice(0,6);
+    const candidates=c.buildings.filter(b=>b.type!=='keep'&&!b.campaignProtected&&!(s.recent.get(b.type)>now)).sort((a,b)=>rank(a)-rank(b)).slice(0,6);
     const cursor=s.trimCursor||0;s.trimCursor=(cursor+2)%Math.max(1,candidates.length);
     for(const b of candidates.slice(cursor,cursor+2)){
       const plan={type:null,ids:[b.id],cell:null},after=R.aiProjectRedevelopment(c,plan);

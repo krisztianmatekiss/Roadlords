@@ -3,6 +3,10 @@
 2026-11-26 · A V4.88 jelenlegi adataira épülő tervezési anyag.
 A jóváhagyott irányok és az alábbi induló balanszjavaslatok külön szerepelnek.
 
+**Megvalósítás:** a játszható V4.89 kampányalap végleges működését a
+[kampánypatch leírása](../campaign-4.89.md) rögzíti. Az alábbi szöveg a korábbi
+előkészítés; az eltérő munkajavaslatokat a megvalósítási leírás pontosítja.
+
 ## Feljegyzett felületi javítás
 
 - [ ] A világos hátterek előtt több felirat nem olvasható. Át kell nézni a feliratok kontrasztját, és szükség szerint sötét betűszínt vagy megfelelő szöveghátteret adni.

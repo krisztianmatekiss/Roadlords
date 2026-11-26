@@ -71,11 +71,11 @@ export function initializeUiMatchSummary(runtime) {
       });
     }
     for (const id of c.legends || []) {
-      const d = runtime.LEGENDARY.find(x => x.id === id);
+      const d = runtime.upgradeCatalog.definition(id,'legendary');
       out.push({
         kind: 'legendary',
         name: d?.name || id,
-        desc: strip(d?.description || 'Legendás fejlesztés.'),
+        desc: strip(runtime.campaign?.active&&runtime.isRelic(id)?runtime.relicDescription(id):d?.description || 'Legendás fejlesztés.'),
         count: 1
       });
     }

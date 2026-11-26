@@ -1,0 +1,46 @@
+.campaignOverlay{position:fixed;inset:0;z-index:30000;display:grid;place-items:center;padding:18px;background:#18281fbd;backdrop-filter:blur(7px);overflow:auto;box-sizing:border-box;color:#263e30;font:500 17px/1.45 'Alegreya',Georgia,serif}
+.campaignOverlay.hidden{display:none!important}
+.campaignPanel{box-sizing:border-box;width:min(1120px,100%);max-height:calc(100dvh - 36px);padding:26px;border:3px solid #334b38;border-radius:7px 15px 6px 11px;background:linear-gradient(125deg,#fff0c9,#e9d3a4);box-shadow:7px 8px 0 #0f201b55;overflow:auto;scrollbar-color:#8e7546 #eedab1}
+.campaignPanel header{display:flex;align-items:start;justify-content:space-between;gap:16px;margin-bottom:18px}
+.campaignPanel h2,.campaignPanel h3{color:#233e2d;text-shadow:none;margin:0;font-family:'Roadlords Display',Georgia,serif}
+.campaignPanel h2{font-size:clamp(23px,2.7vw,36px);line-height:1.25}
+.campaignPanel header small{font:800 11px/1.5 system-ui;letter-spacing:.13em;color:#665333}
+.campaignPanel p{margin:12px 0;color:#304432}
+.campaignPanel button:not(.campaignReward),.campaignPanel select{padding:10px 18px;border:2px solid #4a6045;border-radius:5px;background:#fff2ce;color:#29432f;font:800 16px/1.25 Georgia,serif;cursor:pointer;min-height:44px}
+.campaignPanel button.primary{background:#385b3e;color:#fff0cb;border-color:#2a4530}
+.campaignPanel button:disabled{opacity:.6;cursor:wait}
+.campaignPanel :is(button,select,summary):focus-visible{outline:3px solid #9c4c2d;outline-offset:3px}
+.campaignLead{font-size:19px;max-width:760px}
+.campaignStages{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;list-style:none;padding:0;margin:0 0 24px;counter-reset:stage}
+.campaignStages li{display:grid;justify-items:center;gap:2px;padding:8px;border:2px solid #aa9467;border-radius:5px;background:#eadbb9;font:800 22px/1.3 Georgia,serif;color:#6b6047}
+.campaignStages li span{font:800 10px/1.5 system-ui;letter-spacing:.06em}
+.campaignStages li.current{background:#ead09a;color:#433619;border-color:#8d612a;box-shadow:inset 0 0 0 2px #fff0be}
+.campaignStages li.done{background:#b3c49c;color:#25492e;border-color:#55714b}
+.campaignEnemy{display:grid;grid-template-columns:minmax(180px,.8fr) minmax(0,1.2fr);gap:24px;padding:20px;background:#fff4d7;border:1px solid #af9a70;border-radius:6px}
+.campaignEnemy small{color:#65573b;font-weight:700}
+.campaignEnemy ul{margin:0;padding-left:20px}
+.campaignEnemy li+li{margin-top:7px}
+.campaignActions{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0}
+.campaignNew{display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding:15px 0}
+.campaignNew label{font-weight:800;color:#2e4834}
+.campaignNew small{flex-basis:100%;color:#6a5137}
+.campaignNewDetails,.campaignOwned{margin-top:20px;border-top:1px solid #b19a70;padding-top:12px}
+.campaignPanel summary{cursor:pointer;font-weight:800;color:#2c4734;padding:5px 0}
+.campaignRewards{display:flex;flex-wrap:wrap;align-items:start;justify-content:center;gap:18px;margin:20px 0}
+.campaignReward{display:block;position:relative;border:0;padding:0;background:none;width:min(250px,27vw);cursor:pointer;text-align:left;color:#fff1d2;transition:transform .12s}
+.campaignReward:hover{transform:translateY(-6px)}
+.campaignReward .rlCodexCard{margin:0;padding:0;border:0;background:none;width:100%;max-width:none}
+.campaignReward .cardFace,.campaignRelicShelf .cardFace{width:100%;aspect-ratio:2/3}
+.campaignPanel .rlCodexContent,.campaignPanel .rlCodexContent p{color:#eee7d5}
+.campaignReward .upgradeRequirement,.campaignReward .lexBranches{display:none}
+.campaignRelicShelf{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,220px));justify-content:center;gap:14px;padding:14px 0}
+.campaignRelicShelf .rlCodexCard{margin:0;padding:0;border:0;background:none}
+.campaignPanel footer{border-top:1px solid #ad9770;margin-top:22px;padding-top:8px}
+.campaignPanel footer p{font-size:14px}
+.campaignSaveStatus{font-family:system-ui;font-size:12px!important;color:#596447!important}
+.campaignResults{font-size:14px;color:#42533c}
+/* Keep labels legible on the existing paper inspectors and menu panels. */
+html body.chronicle :is(#inspector.show,.buildingInspectorWindow) :is(.ihead h3,.unitbox h4,.spawnCompact small){color:#294533!important;text-shadow:none!important}
+html body.chronicle :is(.rlSettingsNote,.rlSettingsPanel label,.rlCodexCount,.rlCodexTools,.orcRaceBar,.upgradeRequirement){color:#364d39!important;text-shadow:none!important}
+@media(max-width:800px){.campaignOverlay{padding:8px}.campaignPanel{padding:16px;max-height:calc(100dvh - 16px)}.campaignEnemy{grid-template-columns:1fr;gap:12px;padding:14px}.campaignStages{gap:5px}.campaignStages li{padding:6px 2px}.campaignStages li span{font-size:8px}.campaignRewards{gap:10px}.campaignReward{width:min(240px,42vw)}.campaignPanel header{gap:10px}.campaignPanel header>button{font-size:13px;padding:8px}}
+@media(prefers-reduced-motion:reduce){.campaignReward{transition:none}.campaignReward:hover{transform:none}}

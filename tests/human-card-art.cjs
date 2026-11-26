@@ -18,7 +18,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   check('All 26 normal and 55 legendary cards have 81 distinct in-bounds illustrations',inventory.building.length===23&&inventory.normal.length===26&&inventory.legendary.length===55&&all.every(s=>s&&s.source.startsWith('human-cards-')&&s.rect[0]>=0&&s.rect[1]>=0&&s.rect[0]+s.rect[2]<=manifest.sources[s.source].width&&s.rect[1]+s.rect[3]<=manifest.sources[s.source].height)&&new Set(all.map(s=>s.source+':'+s.rect.join(','))).size===81);
   await p.locator('.menuBrand').click();await p.waitForTimeout(900);await p.locator('#rlOpenCodex').click();await p.locator('#codexRace').selectOption('human');
   const gallery=[];const samples={buildings:['keep','barracks','magetower','tavern'],common:['swordsman_dmg','spear_range','mage_aoe','knight_move'],legendary:['phalanx','mage_triple','glass_cannon','knight_dismount']};
-  for(const [tab,count,kind]of [['buildings',23,'building'],['common',26,'normal'],['legendary',55,'legendary']]) {
+  for(const [tab,count,kind]of [['buildings',23,'building'],['common',26,'normal'],['legendary',50,'legendary']]) {
    await p.locator(`#rlCodexPanel [data-tab="${tab}"]`).click();await p.waitForTimeout(100);
    const result=await p.evaluate(async({kind,samples})=>{
     const cards=[...document.querySelectorAll('#rlCodexPanel [data-codex-building],#rlCodexPanel [data-codex-upgrade],#rlCodexPanel [data-codex-unit]')];

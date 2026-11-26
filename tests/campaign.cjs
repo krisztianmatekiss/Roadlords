@@ -26,7 +26,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.state.running=false;R.$('#pauseBtn').classList.add('on');R.$('#pauseBtn').textContent='▶';});
    check(`Stage ${stage+1} completes all four real starter selections`,await p.evaluate(()=>__ROADLORDS_RUNTIME__.state.startChoices===0));
    const pools=await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return {relic:R.eligibleLegendary(R.P).some(d=>R.isRelic(d.id)),all:R.LEGENDARY.length,definitions:R.RELICS.length};});
-   check(`Stage ${stage+1} excludes relics from battle drafts while keeping canonical definitions`,!pools.relic&&pools.all===114&&pools.definitions===8);
+   check(`Stage ${stage+1} excludes relics from battle drafts while keeping canonical definitions`,!pools.relic&&pools.all===114&&pools.definitions===24);
    if(stage===4){
     const live=await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.state.running=true;R.$('#pauseBtn').classList.remove('on');R.$('#pauseBtn').textContent='Ⅱ';
      for(let n=0;n<2400&&R.state.time<60&&!R.state.ended;n++){

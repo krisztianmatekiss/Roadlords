@@ -1,5 +1,9 @@
 # V4.89 – játszható kampányalap
 
+**V4.89.1:** a közös készletet fajonként 8 saját ereklye váltotta fel.
+A jelenlegi besorolást és mentésátvezetést a [fajonkénti ereklyék leírása](faction-relics-4.89.1.md) tartalmazza.
+Az alábbi rész az eredeti V4.89 működését rögzíti.
+
 A főmenüben a **Kampány** külön mód, a korábbi önálló meccs neve **Gyors játék**.
 Mindhárom nép választható. Összesen öt harc van; az ötödik a boss.
 

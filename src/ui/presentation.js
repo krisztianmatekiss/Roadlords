@@ -399,7 +399,7 @@ export function register(runtime) {
     runtime.$('#demolishBtn')?.addEventListener('click', () => {
       runtime.demolish(runtime.P, b.id);
       runtime.closeBuildingInspector();
-      runtime.toast(`${d.name} lebontva · 50% visszatérítés.`);
+      runtime.toast(`${d.name} lebontva · ${(runtime.demolitionRefundRate?.(runtime.P)??.5)*100}% visszatérítés.`);
       runtime.renderStatic();
     });
     requestAnimationFrame(runtime.positionInspector);

@@ -104,7 +104,7 @@ export function initializeUiMultipleInspectors(runtime) {
     win.querySelector('[data-action="demolish"]')?.addEventListener('click', () => {
       runtime.demolish(runtime.P, b.id);
       closeBuildingWindow(b.id);
-      runtime.toast(`${runtime.BUILDINGS[b.type].name} lebontva · 50% visszatérítés.`);
+      runtime.toast(`${runtime.BUILDINGS[b.type].name} lebontva · ${(runtime.demolitionRefundRate?.(runtime.P)??.5)*100}% visszatérítés.`);
       runtime.renderStatic();
     });
     win.querySelectorAll('.rallyControls [data-rally]').forEach(x => x.onclick = () => {

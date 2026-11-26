@@ -38,10 +38,11 @@ export function installCampaign(R) {
   C.open=()=>{R.stopSpectator?.();view.show();};
   C.returnToMenu=()=>{save();try{sessionStorage.setItem('roadlords:return-to-menu','1');}catch{}location.reload();};
   C.chooseReward=id=>{
-    const run=C.run;if(C.loading||!run||run.status!=='reward'||!run.offers.includes(id)||run.relics.includes(id))return false;
+    const run=C.run;if(C.loading||!run||run.status!=='reward'||!run.offers.includes(id)||run.relics.includes(id)||!R.relicPool(run.race).some(d=>d.id===id))return false;
     run.relics.push(id);run.stage++;run.status='ready';run.offers=[];save();view.render();return true;
   };
   function applyRelics(c,ids) {
+    if(ids.some(id=>!R.relicPool(c).some(d=>d.id===id)))throw Error('Az ereklye nem ehhez a néphez tartozik.');
     c.campaignRelics=[...ids];C.applyingRelics=true;
     try{
       for(const id of ids){
@@ -49,6 +50,7 @@ export function installCampaign(R) {
         if(def)R.applyChoice(c,{...def,kind:'legendary'},false);else c.legends.add(id);
       }
       if(ids.includes('campaign_supplies'))for(const key of R.RES)c.resources[key]=Math.round(c.resources[key]*1.5*10)/10;
+      if(ids.includes('orc_war_banner'))for(let n=0;n<6;n++)c.garrison.push(R.makeEntry(c,'orc_warrior',{veteran:true}));
     }finally{C.applyingRelics=false;}
     R.recomputeCity(c,false);
   }
@@ -120,7 +122,7 @@ export function installCampaign(R) {
       C.run.results.push({time:R.state.time});
       if(C.run.stage===4)C.run.status='complete';else{
         const random=campaignRandom((C.run.seed^Math.imul(C.run.stage+1,2654435761))>>>0);
-        const pool=R.RELICS.filter(d=>!C.run.relics.includes(d.id)&&(d.id!=='campaign_pathfinder'||C.run.stage<3)),offers=[];
+        const pool=R.relicPool(C.run.race).filter(d=>!C.run.relics.includes(d.id)&&(d.id!=='campaign_pathfinder'||C.run.stage<3)),offers=[];
         const count=C.run.relics.includes('campaign_pathfinder')?4:3;
         while(pool.length&&offers.length<count)offers.push(pool.splice(Math.floor(random()*pool.length),1)[0].id);
         C.run.offers=offers;C.run.status='reward';

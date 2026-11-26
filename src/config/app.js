@@ -1,6 +1,6 @@
 export const APP = Object.freeze({
-  version: '4.89.0',
-  label: 'V4.89.0 · KAMPÁNY',
+  version: '4.89.1',
+  label: 'V4.89.1 · KAMPÁNY',
   title: 'Roadlords – Kampány',
   repository: 'krisztianmatekiss/Roadlords',
   musicRoot: 'https://raw.githubusercontent.com/krisztianmatekiss/roadlords-music/main/',

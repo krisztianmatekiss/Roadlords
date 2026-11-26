@@ -46,7 +46,7 @@ export function installDemolitionTool(R) {
       highlight();
       R.state.selectedBuilding = null;
       R.renderStatic();
-      R.toast(`${name} lebontva · 50% visszatérítés.`);
+      R.toast(`${name} lebontva · ${(R.demolitionRefundRate?.(R.P)??.5)*100}% visszatérítés.`);
     }
   }, true);
   document.addEventListener('pointermove', event => {

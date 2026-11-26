@@ -21,7 +21,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   }
   const effects=await p.evaluate(async()=>{
    const R=__ROADLORDS_RUNTIME__,C=R.campaign,out=[];
-   for(const race of ['human','orc','undead']){
+   for(const race of ['human']){
     C.newRun(race);R.roadResetCity(R.P,race);R.recomputeCity(R.P,false);const base=R.P.resources.wood;
     Object.assign(C.run,{stage:4,relics:['campaign_supplies','campaign_blueprints','full_garrison_economy','specialization']});
     if(!await C.startBattle())throw Error(C.message);
@@ -71,6 +71,6 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   check('Reload keeps an unclaimed reward offer without rerolling or losing progress',await p.evaluate(ids=>{const C=__ROADLORDS_RUNTIME__.campaign;return C.run.status==='reward'&&JSON.stringify(C.run.offers)===JSON.stringify(ids)&&C.run.relics.length===2;},reward));
   await p.locator('[data-campaign-reward]').first().click();
   check('Restored reward can be claimed normally',await p.evaluate(()=>__ROADLORDS_RUNTIME__.campaign.run.status==='ready'&&__ROADLORDS_RUNTIME__.campaign.run.stage===3));
-  check('Checkpoint, retry, all-faction relics and mixed drafts have no browser errors',report.errors.length===0,report.errors);
+  check('Checkpoint, retry, Human relics and mixed drafts have no browser errors',report.errors.length===0,report.errors);
  }finally{fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/campaign-checkpoints.json',JSON.stringify(report,null,2));await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

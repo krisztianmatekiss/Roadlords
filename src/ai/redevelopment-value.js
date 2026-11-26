@@ -140,7 +140,7 @@ export function installRedevelopmentValue(R) {
       shadow.buildings=shadow.buildings.filter(x=>x.id!==id);
       if(b.type==='warcenter')for(const sp of R.activeSpawners(shadow))sp.inactive=false;
       for(const r of R.RES){
-        const available=shadow.resources[r]+(refund[r]||0)*.5;
+        const available=shadow.resources[r]+(refund[r]||0)*(R.demolitionRefundRate?.(shadow)??.5);
         shadow.resources[r]=Math.min(shadow.caps[r],available);
         // A discarded refund is not an additional loss of existing savings.
         // The full new construction price is already charged below.

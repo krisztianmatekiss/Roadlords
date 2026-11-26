@@ -163,7 +163,7 @@ export function register(runtime) {
       refund = b.paidCost || runtime.adjustedCost(c, runtime.BUILDINGS[b.type].cost);
     c.buildings.splice(i, 1);
     if (b.type === 'warcenter') for (const sp of runtime.spawnerBuildings(c)) sp.inactive = false;
-    runtime.RES.forEach(r => c.resources[r] = Math.min(c.caps[r], c.resources[r] + (refund[r] || 0) * .5));
+    runtime.RES.forEach(r => c.resources[r] = Math.min(c.caps[r], c.resources[r] + (refund[r] || 0) * (runtime.demolitionRefundRate?.(c)??.5)));
     runtime.recomputeCity(c, true);
     return true;
   };

@@ -8,7 +8,7 @@ const sceneFor = id => manifest.scenes[({und_elite_birth:'und_first_guard',und_t
 
 export const commonFrameUrl = race => assetUrl(race==='human' ? manifest.sources['human-frame'].file : race==='orc' ? 'cards/orc/upgrades/orc_as.webp' : manifest.sources['common-frame'].file);
 export function upgradeScene(R, id, kind, race) {
-  if(kind==='relic'){id=EXTRA_RELICS.find(d=>d.id===id)?.art||id;kind='legendary';race='human';}
+  if(kind==='relic'){const def=R.RELICS.find(d=>d.id===id);race=def.relicRace;id=EXTRA_RELICS.find(d=>d.id===id)?.art||id;kind='legendary';}
   const humanBuilding=race==='human'&&['building','building_upgrade','building_branch'].includes(kind);
   const undeadBuilding=race==='undead'&&['building','building_upgrade','building_branch'].includes(kind);
   const sceneId=undeadBuilding?`undead-building:${id}`:race==='human'?`human-${humanBuilding?'building':kind}:${id}`:id;

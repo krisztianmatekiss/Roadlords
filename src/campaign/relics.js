@@ -33,6 +33,7 @@ export function installCampaignRelics(R,C) {
   R.choiceContextForPlayer=()=>{
     const out=context();
     if(C.active&&out.source!=='start'){
+      if(out.doubleTake&&out.opts.length<2){out.doubleTake=false;out.remaining=1;}
       out.title=out.doubleTake?'Válassz két lapot':out.tier==='rare'?'Válassz épületet vagy épületfejlesztést':'Válassz fejlesztést';
       out.desc=out.tier==='rare'?'Új épület vagy meglévő épülettípus fejlesztése.':'Gyakori, ritka, epikus és az előfeltételek teljesülésekor legendás fejlesztések.';
     }

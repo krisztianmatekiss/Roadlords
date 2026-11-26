@@ -268,8 +268,10 @@ export function installSharedAiPlanner(R) {
     let ranked=rank(options);
     // Estimate the improvement from an entire same-tier reroll pool. A good
     // unseen card alone is insufficient: account for its chance of appearing.
-    const pool = tier==='legendary'?R.eligibleLegendary(ctx.c).map(o=>({...o,kind:'legendary'})):
-      tier==='common'?[...new Set(options.map(o=>o.rarity || R.upgradeCatalog.option(o.id).rarity))].flatMap(r=>R.normalRarityPool(ctx.c,r)):
+    const legendaryPool=()=>R.eligibleLegendary(ctx.c).map(o=>({...o,kind:'legendary'}));
+    const normalEdition=o=>o.rarity || R.upgradeCatalog.option(o.id).rarity;
+    const pool = tier==='legendary'?legendaryPool():
+      tier==='common'?[...[...new Set(options.filter(o=>o.kind==='normal').map(normalEdition))].flatMap(r=>R.normalRarityPool(ctx.c,r)),...(options.some(o=>o.kind==='legendary')?legendaryPool():[])]:
       subtype==='unlock'?R.buildingUnlockPool(ctx.c):R.buildingUpgradePool(ctx.c);
     const used=new Set(options.map(R.choiceKey)), remaining=pool.filter(o=>!used.has(R.choiceKey(o)));
     if (ctx.c.rerolls>0 && remaining.length && source!=='start') {
@@ -284,7 +286,7 @@ export function installSharedAiPlanner(R) {
         // Rerolls keep each slot's edition. Estimate the best offered value
         // from those pools, rather than assuming every reroll can find Rare.
         const distributions=options.map(o=>{
-          const candidates=R.normalRarityPool(ctx.c,o.rarity || R.upgradeCatalog.option(o.id).rarity);
+          const candidates=o.kind==='legendary'?legendaryPool():R.normalRarityPool(ctx.c,normalEdition(o));
           const fresh=candidates.filter(x=>!used.has(R.choiceKey(x)));
           return rank(fresh.length?fresh:candidates).map(x=>x.score);
         }).filter(a=>a.length);
@@ -303,7 +305,7 @@ export function installSharedAiPlanner(R) {
     }
     if(tier==='common'&&ctx.c.bans>0&&ranked.length>1) {
       const worst=ranked.at(-1), relevance=R.aiCardRelevance(worst.o,ctx.c,ctx.metrics);
-      if(worst.score<.5&&relevance<.15&&R.activeSpawners(ctx.c).length>=3) {
+      if(worst.o.kind==='normal'&&worst.score<.5&&relevance<.15&&R.activeSpawners(ctx.c).length>=3) {
         ctx.c.banned.add(worst.o.id);ctx.c.bans--;
         const keep=options.filter(o=>R.choiceKey(o)!==R.choiceKey(worst.o));
         const replacements=R.makeChoiceOptions(ctx.c,source,tier,subtype,keep.map(R.choiceKey),[worst.o.rarity]);

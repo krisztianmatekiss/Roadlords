@@ -48,10 +48,12 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    R.P.unlocked.add('barracks');R.P.terrain.fill(null);const stock=R.P.resources;R.P.resources=R.C(1e6,1e6,1e6);const placed=R.placeBuilding(R.P,'barracks',...R.findCell(R.P,'barracks'));if(!placed.ok)throw Error(JSON.stringify(placed));R.setBuildingLevel(R.P,'barracks',4,'conscription');R.P.resources=stock;
    R.P.legendaryDrought=19;const choice=R.choiceContextForPlayer(),allowed=choice.opts.every(o=>o.kind==='legendary'?R.eligibleLegendary(R.P).some(d=>d.id===o.id):R.upgradeCatalog.requirements.allowed(R.P,o));
    const blocked=R.applyChoice(R.P,{...R.RELICS.find(d=>d.id==='wide_choice'),kind:'legendary'});
-   return {bonus,tier:choice.tier,normal:choice.opts.some(o=>o.kind==='normal'),legendary:choice.opts.some(o=>o.kind==='legendary'),relic:choice.opts.some(o=>R.isRelic(o.id)),allowed,double:choice.doubleTake,blocked:blocked===false&&!R.P.legends.has('wide_choice')};
+   const ai=R.aiChooseOptions(choice.opts,{source:'timer',tier:choice.tier,subtype:choice.subtype,city:R.P});
+   return {bonus,tier:choice.tier,normal:choice.opts.some(o=>o.kind==='normal'),legendary:choice.opts.some(o=>o.kind==='legendary'),relic:choice.opts.some(o=>R.isRelic(o.id)),allowed,double:choice.doubleTake,blocked:blocked===false&&!R.P.legends.has('wide_choice'),ai:ai.length>0&&ai.every(o=>['normal','legendary'].includes(o.kind))};
   });report.mixed=mixed;
   check('Strategic Superiority restores its three choices and reroll/ban allowances each battle',mixed.bonus.pending===3&&mixed.bonus.rerolls>=5&&mixed.bonus.bans>=3,mixed);
   check('Campaign upgrade drafts mix normal and real prerequisite-checked legendaries, never relics',mixed.tier==='common'&&mixed.normal&&mixed.legendary&&!mixed.relic&&mixed.allowed&&mixed.double&&mixed.blocked,mixed);
+  check('The shared AI evaluates and rerolls mixed upgrade offers without treating legendaries as normal rarity cards',mixed.ai,mixed);
   await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.P.hp=0;R.finish(false);});
   const lost=await p.evaluate(()=>{const C=__ROADLORDS_RUNTIME__.campaign;return {status:C.run.status,seed:C.run.seed,stage:C.run.stage,relics:C.run.relics,entry:C.encounter()};});
   check('Defeat preserves the current opponent and owned relics without granting a reward',lost.status==='defeated'&&lost.stage===2&&lost.relics.length===2);

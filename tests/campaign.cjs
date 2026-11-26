@@ -28,15 +28,15 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
    const pools=await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;return {relic:R.eligibleLegendary(R.P).some(d=>R.isRelic(d.id)),all:R.LEGENDARY.length,definitions:R.RELICS.length};});
    check(`Stage ${stage+1} excludes relics from battle drafts while keeping canonical definitions`,!pools.relic&&pools.all===114&&pools.definitions===8);
    if(stage===4){
-    const live=await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.state.running=true;
-     for(let n=0;n<1200&&!R.state.ended;n++){
-      const ctx=R.state.choiceContext;if(ctx?.opts.length)R.choose(ctx.opts[0],0);
+    const live=await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.state.running=true;R.$('#pauseBtn').classList.remove('on');R.$('#pauseBtn').textContent='Ⅱ';
+     for(let n=0;n<2400&&R.state.time<60&&!R.state.ended;n++){
+      const ctx=R.state.choiceContext;if(ctx?.opts.length)R.choose(ctx.opts[0],0);else if(ctx)R.$('#skipChoice').onclick();
       R.tick(.1);
      }
      R.state.running=false;R.$('#pauseBtn').classList.add('on');R.$('#pauseBtn').textContent='▶';
-     return {time:R.state.time,trained:R.E._matchStats?.unitProducedTotal||0,buildings:R.E.buildings.map(b=>[b.type,b.level,b.campaignProtected]),error:R.state.lastRuntimeErrorV4965,ended:R.state.ended};
+     return {time:R.state.time,trained:R.E._matchStats?.unitProducedTotal||0,buildings:R.E.buildings.map(b=>[b.type,b.level,b.campaignProtected]),error:R.state.lastRuntimeErrorV4965,ended:R.state.ended,modal:R.state.modal,choice:R.state.choiceContext&&{source:R.state.choiceContext.source,remaining:R.state.choiceContext.remaining,options:R.state.choiceContext.opts.map(o=>[o.kind,o.id])}};
     });report.liveBoss=live;
-    check('The boss builds and trains real units through two minutes of the normal campaign loop',live.time>110&&live.trained>0&&!live.error&&!live.ended&&[['keep',3],['und_well',4],['und_vampire_castle',4]].every(([type,level])=>live.buildings.some(b=>b[0]===type&&b[1]>=level)),live);
+    check('The boss builds and trains real units through a full minute of the normal campaign loop',live.time>=60&&live.trained>0&&!live.error&&!live.ended&&[['keep',3],['und_well',4],['und_vampire_castle',4]].every(([type,level])=>live.buildings.some(b=>b[0]===type&&b[1]>=level)),live);
    }
    await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.P.normal.frugal_training=2;R.E.hp=0;R.finish(true);R.finish(true);});
    if(stage<4){

@@ -14,7 +14,7 @@ A jóváhagyott irányok és az alábbi induló balanszjavaslatok külön szerep
 ## A felhasználó által meghatározott irány
 
 - Főmenü: **Kampány** és **Gyors játék**. A jelenlegi önálló meccs marad a gyors játék alapja.
-- Lineáris kampány, egymást követő ellenfelekkel, végén bosszal. A felhasználó megfogalmazása: „egymás után 5 ellenfél, végén a boss”.
+- Lineáris kampány, összesen **öt harccal: négy ellenfél után az ötödik harc a boss**. A felhasználó ezt külön pontosította.
 - Harc végén egy ereklyét választunk, amely megmarad a következő harcokra.
 - Alapból csak az ereklyéket visszük tovább. A korábbi, harconként három fejlesztés megőrzése megszűnik.
 - Később külön hatás engedhet épületet vagy fejlesztést továbbvinni.
@@ -24,10 +24,10 @@ A jóváhagyott irányok és az alábbi induló balanszjavaslatok külön szerep
 - Az első ellenfél jelenlegi, normál kezdést kap. A további szinteken egyre nagyobb kezdőelőny járhat: ereklye, magasabb szintű kezdőépület vagy kapcsolódó legendás fejlesztés. A konkrét csomagok összeállítását a felhasználó az asszisztensre bízta.
 - Három tábor a vár mögött; legyőzésük ideiglenes vagy tartós bónuszt adhat. A harmadik tábor adja a legnagyobb jutalmat. A működés és a jutalmak részleteit később beszéljük meg.
 
-## Első változat – javasolt felépítés
+## Első változat – javasolt kezdőelőnyök
 
-Az alábbi ütemezés **öt harccal, az ötödiken a bosszal** számoló javaslat.
-Az összes harc száma a fenti mondat végleges értelmezésével még pontosítható.
+Az **öt harc és az ötödiken érkező boss rögzített döntés**.
+Az alábbi kezdőelőnyök induló balanszjavaslatok.
 
 | Harc | Ellenfél | Induló előny javaslata |
 | --- | --- | --- |
@@ -92,7 +92,6 @@ A boss előnyét elsőre a megadott épületek adják; további köd, négy kast
 
 ## Még egyeztetendő játékszabályok
 
-- Pontosan öt harc van összesen, vagy öt normál ellenfél után külön boss?
 - Vereségnél véget ér-e a végigjátszás, vagy újrapróbálható ugyanaz a harc?
 - Hogyan küldünk sereget a vár mögötti táborokra, és mit kockáztatunk közben a főfronton?
 - A táborok ellenfelei, jutalmai és a harmadik tábor tartós bónusza.

@@ -9,13 +9,13 @@ import { fitCardText } from './card-text-fit.js';
 import { resourceIcon, symbolizeResources } from './resource-symbols.js';
 import { metricDescription } from '../world/measurements.js';
 import { unitTraitIcons } from './unit-traits.js';
-import { commonFrameUrl, upgradeScene, hasUpgradeScene } from '../rendering/upgrade-card-art.js';
+import { commonFrameUrl, upgradeScene, hasUpgradeScene, relicArtReference } from '../rendering/upgrade-card-art.js';
 
 export const escapeText = (s) => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 export function cardFrameUrl(id, kind, race) {
-  if(kind==='relic')return commonFrameUrl(race);
+  if(kind==='relic'){id=relicArtReference(id);kind='legendary';}
   const humanBuilding=['building','building_upgrade','building_branch'].includes(kind);
   if(race==='human'&&(kind==='unit'||hasUpgradeScene(`human-${humanBuilding?'building':kind}:${id}`)))return assetUrl(upgradeArt.sources['human-frame'].file);
   if(race==='undead'&&kind==='legendary'&&hasUpgradeScene(id))return assetUrl(upgradeArt.sources['undead-legend-frame'].file);

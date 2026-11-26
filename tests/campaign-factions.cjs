@@ -32,9 +32,14 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
   await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.campaign.view.hide();R.$('#endOverlay').classList.add('hidden');R.$('#rlOpenCodex').click();});
   for(const race of D.CAMPAIGN_RACES){
    await p.selectOption('#codexRace',race);await p.locator('[data-tab="relics"]').click();
-   const gallery=await p.locator('#rlCodexPanel [data-codex-upgrade]').evaluateAll((cards,race)=>cards.map(c=>({id:c.dataset.codexUpgrade,art:c.querySelector('.cardScene')?.dataset.upgradeArt,footer:c.querySelector('.cardFooter').textContent,race:c.querySelector('.cardFace').dataset.race})),race);
+   const gallery=await p.locator('#rlCodexPanel [data-codex-upgrade]').evaluateAll((cards,race)=>cards.map(c=>({id:c.dataset.codexUpgrade,art:c.querySelector('.cardScene')?.dataset.upgradeArt,image:c.querySelector('.factionArtwork .cardIllustration')?.src,footer:c.querySelector('.cardFooter').textContent,race:c.querySelector('.cardFace').dataset.race})),race);
    const owned=D.relicIdsForRace(race);
-   check(`${race}: the codex shows only its eight relics with its own illustrated artwork`,gallery.length===8&&gallery.every(c=>owned.includes(c.id)&&c.footer==='EREKLYE'&&c.race===race&&(race==='human'?c.art?.startsWith('human-legendary:'):!c.art?.startsWith('human-'))),gallery);
+   check(`${race}: the codex shows only its eight relics with its own illustrated artwork`,gallery.length===8&&gallery.every(c=>{
+    const source=D.EXTRA_RELICS.find(d=>d.id===c.id)?.art||c.id;
+    const art=race==='human'?c.art?.startsWith('human-legendary:'):race==='orc'?c.art===source||c.image?.endsWith('/cards/orc/upgrades/'+source+'.webp'):c.art===c.id;
+    return owned.includes(c.id)&&c.footer==='EREKLYE'&&c.race===race&&art;
+   }),gallery);
+   if(race==='orc')await p.locator('#rlCodexPanel').screenshot({path:'artifacts/orc-campaign-relics.png'});
    await p.locator('[data-tab="legendary"]').click();
    check(`${race}: relics are absent from the separate battle-legendary tab`,await p.locator('#rlCodexPanel [data-codex-upgrade]').evaluateAll(cards=>cards.every(c=>!__ROADLORDS_RUNTIME__.isRelic(c.dataset.codexUpgrade))));
   }

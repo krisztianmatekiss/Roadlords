@@ -11,9 +11,10 @@ try{
   }return profile;});
  check('All 21 unit types move their displayed base distance in a real one-second movement step, on both sides',report.profile.length===42&&report.profile.every(u=>near(u.base,u.effective)&&near(u.distance,u.base)));
  const base=Object.fromEntries(report.profile.map(u=>[u.key,u.base]));
- check('Cavalry retains its accepted speed while every non-cavalry unit receives 25%' ,base.knight===147&&base.orc_warg===136&&base.orc_goblin===70);
- const unchanged={swordsman:42,spearman:40,archer:42,priest:38,catapult:24,mage:36,orc_warrior:34,orc_berserker:42,orc_shaman:38,orc_ram:20,orc_troll:26,und_skeleton:42,und_skeleton_archer:40,und_zombie:26,und_ghost:46,und_necromancer:36,und_vampire:50,und_lich:32};
- check('The eighteen remaining units gain exactly 25% movement speed',Object.entries(unchanged).every(([k,v])=>near(base[k],v*1.25)));
+ check('Mounted units and Goblins also gain exactly 25% from their previous live speeds',base.knight===183.75&&base.orc_warg===170&&base.orc_goblin===87.5);
+ const previous={swordsman:52.5,spearman:50,archer:52.5,priest:47.5,catapult:30,mage:45,orc_warrior:42.5,orc_berserker:52.5,orc_goblin:70,orc_warg:136,orc_shaman:47.5,orc_ram:25,orc_troll:32.5,und_skeleton:52.5,und_skeleton_archer:50,und_zombie:32.5,und_ghost:57.5,und_necromancer:45,und_vampire:62.5,und_lich:40,knight:147};
+ check('Every one of the 21 units gains exactly 25% movement speed, including cavalry, siege and summons',Object.keys(previous).length===21&&Object.entries(previous).every(([k,v])=>near(base[k],v*1.25)));
+ check('Cavalry-to-infantry speed ratios remain unchanged',near(base.knight/base.swordsman,previous.knight/previous.swordsman)&&near(base.orc_warg/base.orc_warrior,previous.orc_warg/previous.orc_warrior));
  const result=await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__,out={};R.roadResetCity(R.P,'human');R.roadResetCity(R.E,'orc');R.state.units=[];for(const t of R.towers)t.alive=false;R.roadRefreshFrontiers();
   const unit=(c,key,lane)=>{const u=R.releaseUnit(c,R.makeEntry(c,key));u.lane=lane;u.offset=0;u.roadHomeOffset=0;return u;};
   const knight=unit(R.P,'knight',4000),block=unit(R.E,'orc_warrior',4200),far=unit(R.E,'orc_goblin',4700);knight.roadSeek=far;knight.roadSeekAt=R.ROAD.clock+10;R.roadReindex();R.roadAdvance(knight,[block,far],2);out.sweep=knight.lane<=block.lane-24.9&&knight.lane>4000;
@@ -21,8 +22,8 @@ try{
   R.P.normal.knight_move=2;R.refreshExistingUnitsForCity(R.P);out.upgraded=R.effectiveMoveSpeed(knight,R.P);out.preview=R.upgradeCopyPreview(R.P,{...R.NORMAL.find(o=>o.id==='knight_move'),kind:'normal'});
   R.MP.enabled=true;R.MP.role='host';R.MP.peer={};let packet;const send=R.mpSend;R.mpSend=data=>packet=data;R.mpSendSnapshot(true);R.mpSend=send;R.MP.role='guest';R.mpApplySnapshot(packet);const mirrored=R.state.units.find(u=>u.key==='knight');out.mirrored={side:mirrored.side,speed:R.effectiveMoveSpeed(mirrored,R.E)};R.MP.enabled=false;R.MP.role=null;return out;});report.combat=result;
  check('A fast cavalry step cannot tunnel through a non-target enemy body',result.sweep);
- check('Slows and stuns still affect cavalry and upgrades scale the new base',near(result.slow,73.5)&&result.stun===0&&near(result.upgraded,191.1));
- check('Movement previews use the new m/s values',result.preview.rows.some(r=>r.before==='19,11 m/s'&&r.after==='21,32 m/s'));
- check('Actual authoritative snapshots mirror cavalry at the same upgraded speed',result.mirrored.side==='enemy'&&near(result.mirrored.speed,191.1));
+ check('Slows and stuns still affect cavalry and upgrades scale the new base',near(result.slow,91.875)&&result.stun===0&&near(result.upgraded,238.875));
+ check('Movement previews use the new m/s values',result.preview.rows.some(r=>r.before==='23,89 m/s'&&r.after==='26,64 m/s'));
+ check('Actual authoritative snapshots mirror cavalry at the same upgraded speed',result.mirrored.side==='enemy'&&near(result.mirrored.speed,238.875));
  check('No movement or multiplayer runtime errors',report.errors.length===0);
 }finally{fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/movement-balance.json',JSON.stringify(report,null,2));await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

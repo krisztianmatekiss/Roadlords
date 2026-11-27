@@ -1,5 +1,5 @@
 // World coordinates per second; the UI converts these to metres per second.
-// V4.56: +25% for every non-cavalry unit; mounted units keep their accepted speed.
+// Keep the accepted V4.56 cavalry/infantry proportions, then raise every unit.
 import { ARMY_TEMPO } from './unit-balance.js';
 const PREVIOUS_MOVEMENT = {
   knight: 147,
@@ -9,8 +9,9 @@ const PREVIOUS_MOVEMENT = {
   und_skeleton:42,und_skeleton_archer:40,und_zombie:26,und_ghost:46,
   und_necromancer:36,und_vampire:50,und_lich:32,
 };
+export const GLOBAL_MOVEMENT_MULTIPLIER = 1.25;
 export const MOVEMENT_BALANCE=Object.freeze(Object.fromEntries(Object.entries(PREVIOUS_MOVEMENT)
-  .map(([key,speed])=>[key,speed*(['knight','orc_warg'].includes(key)?1:ARMY_TEMPO.movement)])));
+  .map(([key,speed])=>[key,speed*(['knight','orc_warg'].includes(key)?1:ARMY_TEMPO.movement)*GLOBAL_MOVEMENT_MULTIPLIER])));
 export function installUnitMovementBalance(R){
   for(const [key,speed]of Object.entries(MOVEMENT_BALANCE))R.UNITS[key].speed=speed;
 }

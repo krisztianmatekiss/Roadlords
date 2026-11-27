@@ -25,8 +25,8 @@ body.roadlords-menu-open #app { visibility:hidden !important; opacity:0 !importa
     <section class="run">
       <div class="datum"><small>IDŐ</small><b id="timer">00:00</b></div>
       <div class="datum"><small>KÖVETKEZŐ VÁLASZTÁS</small><b id="nextPick">KEZDÉS</b></div>
-      <div id="dynamicPickHud" class="dynamicPickHud" aria-label="Változó ereklyehatások"></div>
-      <button class="btn" id="relicBtn" title="Aktív relicek">✦ <span id="relicCount">0</span></button>
+      <div id="dynamicPickHud" class="dynamicPickHud" aria-label="Változó fejlesztéshatások"></div>
+      <button class="btn" id="relicBtn" title="Pakli">✦ <span id="relicCount">0</span></button>
       <button class="btn pause on" id="pauseBtn" title="Szünet / folytatás">▶</button>
       <button class="btn active" id="speedBtn" title="Sebesség">1×</button>
     </section>
@@ -69,7 +69,7 @@ body.roadlords-menu-open #app { visibility:hidden !important; opacity:0 !importa
 
 <div id="choiceOverlay" class="overlay hidden"><section class="modal"><button id="minimizeChoice" class="choiceMinimize eyeOnly" type="button" aria-label="Elrejtés" data-tip="Elrejtés"><span aria-hidden="true">👁</span></button><div class="choicehead"><small id="choiceKicker">KEZDŐ VÁLASZTÁS</small><h2 id="choiceTitle">Válassz épületet</h2><p id="choiceDesc"></p></div><div id="choiceList" class="choices"></div><div class="choiceTools choiceDockBar"><button id="rerollChoice" class="choiceTool choiceDock choiceReroll" type="button" title="Újrasorsolás"><span class="dockIcon" aria-hidden="true"><svg class="rerollSvg" viewBox="0 0 40 40" aria-hidden="true"><path d="M8.5 18.5A12.5 12.5 0 0 1 29 9.5"/><path d="M28.8 5.7l1.1 7.1-7.1-1.1"/><path d="M31.5 21.5A12.5 12.5 0 0 1 11 30.5"/><path d="M11.2 34.3l-1.1-7.1 7.1 1.1"/></svg></span><span class="dockCount" id="rerollCount">0</span></button><button id="skipChoice" class="choiceTool choiceSkip" type="button" title="Kihagyás">Kihagyás</button><button id="banChoice" class="choiceTool ban choiceDock choiceBan" type="button" title="Kitiltás"><span class="dockIcon" aria-hidden="true">⊘</span><span class="dockCount" id="banCount">0</span></button><span id="choiceTokens" class="choiceTokens srOnly" aria-hidden="true"></span></div><div id="choiceBanHint" class="choiceBanHint"></div></section></div>
 <button id="pickReminder" class="pickReminder hidden" type="button">VÁLASZTÁS VÁR · <span>1</span></button>
-<div id="relicOverlay" class="overlay hidden"><section class="modal"><div class="ledgerhead"><h2>Aktív relicek</h2><button class="close" id="closeRelics">✕</button></div><div id="relicList" class="reliclist"></div></section></div>
+<div id="relicOverlay" class="overlay hidden"><section class="modal"><div class="ledgerhead"><h2>Pakli</h2><button class="close" id="closeRelics">✕</button></div><div id="relicList" class="reliclist"></div></section></div>
 <div id="endOverlay" class="overlay hidden"><section class="modal end"><div class="big" id="endIcon">♛</div><h2 id="endTitle">Győzelem</h2><p id="endText"></p><button id="restartBtn">ÚJ RUN</button></section></div>
 <div id="toast" class="toast"></div>
 

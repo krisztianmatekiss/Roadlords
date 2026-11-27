@@ -1,28 +1,22 @@
-export const CAMPAIGN_SCHEMA = 2;
+export const CAMPAIGN_SCHEMA = 3;
 export const CAMPAIGN_SAVE_KEY = 'roadlords:campaign:v1';
 export const CAMPAIGN_LENGTH = 5;
 export const CAMPAIGN_RACES = ['human', 'orc', 'undead'];
-export const FACTION_RELICS = {
-  human:['specialization','wide_choice','double_choice','strategic_superiority','full_garrison_economy'],
-  orc:['orc_skip_power','orc_momentum','orc_revenge','orc_veteran_kills','orc_transfusion','orc_siege_loot'],
+
+// Existing faction-wide legendaries can seed enemies; they are ordinary
+// legendary cards, never a second reward category.
+const ENEMY_LEGENDARIES = {
+  human:['specialization','wide_choice','double_choice','full_garrison_economy'],
+  orc:['orc_momentum','orc_revenge','orc_veteran_kills','orc_siege_loot'],
   undead:['gen_soul_frugal','und_soul_might','und_death_chain','und_twin_training','und_first_guard','und_raise_enemy','und_fast_poison','und_elite_birth'],
 };
-export const LEGACY_RELIC_IDS = Object.values(FACTION_RELICS).flat();
-
-export const EXTRA_RELICS = [
-  {id:'campaign_supplies',race:'human',name:'Hadjárati készletek',icon:'▣',description:'Minden harcot 50%-kal több kezdőnyersanyaggal kezdesz.',art:'full_garrison_economy'},
-  {id:'campaign_blueprints',race:'human',name:'Felderített lehetőségek',icon:'⌘',description:'A négy kezdő épületválasztásban +2 lap közül választhatsz.',art:'wide_choice'},
-  {id:'campaign_pathfinder',race:'human',name:'Kincskereső térkép',icon:'◇',description:'Harc végén +1 ereklye közül választhatsz.',art:'strategic_superiority'},
-  {id:'orc_war_banner',race:'orc',name:'Ősök zászlaja',icon:'⚑',description:'Minden harcot 6 elit Harcossal kezdesz a helyőrségben.',art:'orc_horde_heart'},
-  {id:'orc_wandering_camp',race:'orc',name:'Vándorló tábor',icon:'↶',description:'Épület bontásakor a kifizetett építési ár 100%-át visszakapod. A raktárkapacitás továbbra is számít.',art:'orc_ancient_deposits'},
-];
-export const relicIdsForRace = race => [...(FACTION_RELICS[race]||[]),...EXTRA_RELICS.filter(d=>d.race===race).map(d=>d.id)];
-
-const OLD_SHARED_IDS=['specialization','wide_choice','double_choice','strategic_superiority','full_garrison_economy','campaign_supplies','campaign_blueprints','campaign_pathfinder'];
-const OLD_RELIC_REPLACEMENTS={
-  orc:['orc_momentum','orc_revenge','orc_siege_loot','orc_skip_power','orc_transfusion','orc_war_banner','orc_veteran_kills','orc_wandering_camp'],
+const OLD_SHARED=['specialization','wide_choice','double_choice','strategic_superiority','full_garrison_economy','campaign_supplies','campaign_blueprints','campaign_pathfinder'];
+const OLD_REPLACEMENTS={
+  human:['specialization','wide_choice','double_choice','strategic_superiority','full_garrison_economy','full_garrison_economy','wide_choice','strategic_superiority'],
+  orc:['orc_momentum','orc_revenge','orc_siege_loot','orc_skip_power','orc_transfusion','orc_veteran_kills','orc_veteran_kills','orc_siege_loot'],
   undead:['und_elite_birth','gen_soul_frugal','und_twin_training','und_death_chain','und_soul_might','und_first_guard','und_fast_poison','und_raise_enemy'],
 };
+const RETIRED_REWARDS={campaign_supplies:'full_garrison_economy',campaign_blueprints:'wide_choice',campaign_pathfinder:'strategic_superiority',orc_war_banner:'orc_veteran_kills',orc_wandering_camp:'orc_siege_loot'};
 
 export const CAMPAIGN_PROFILES = {
   human: [
@@ -58,35 +52,44 @@ export function campaignEncounters(seed) {
   const random=campaignRandom(seed),pick=values=>values[Math.floor(random()*values.length)],out=[];
   for(let stage=0;stage<4;stage++) {
     const races=CAMPAIGN_RACES.filter(r=>stage<2||out[stage-1].race!==r||out[stage-2].race!==r);
-    // NPCs never skip picks, so their opening cannot waste a relic on skipping.
-    const race=pick(races),profile=pick(CAMPAIGN_PROFILES[race]),remaining=relicIdsForRace(race).filter(id=>!['campaign_pathfinder','strategic_superiority','orc_skip_power','orc_transfusion'].includes(id)),rewards=[];
-    for(let n=0;n<(stage===0?0:stage===3?2:1);n++)rewards.push(remaining.splice(Math.floor(random()*remaining.length),1)[0]);
-    out.push({...profile,race,seed:Math.floor(random()*0x100000000),level:stage>=2?stage===2?3:4:0,relics:rewards,boss:false});
+    const race=pick(races),profile=pick(CAMPAIGN_PROFILES[race]),remaining=[...ENEMY_LEGENDARIES[race]],legendaries=[];
+    for(let n=0;n<(stage===0?0:stage===3?2:1);n++)legendaries.push(remaining.splice(Math.floor(random()*remaining.length),1)[0]);
+    out.push({...profile,race,seed:Math.floor(random()*0x100000000),level:stage>=2?stage===2?3:4:0,legendaries,boss:false});
   }
-  out.push({name:'A Vérudvar Ura',race:'undead',building:'und_vampire_castle',branch:'blood_hunt',level:4,seed:Math.floor(random()*0x100000000),relics:['und_first_guard','und_elite_birth'],boss:true});
+  out.push({name:'A Vérudvar Ura',race:'undead',building:'und_vampire_castle',branch:'blood_hunt',level:4,seed:Math.floor(random()*0x100000000),legendaries:['und_first_guard','und_elite_birth'],boss:true});
   return out;
 }
 
-export function newCampaignRun(race,seed) {
+export const campaignCardKey = card => `${card.kind}:${card.id}:${card.rarity||''}`;
+export function newCampaignRun(race,seed,basics=[]) {
   if(!CAMPAIGN_RACES.includes(race))throw new RangeError('Ismeretlen nép');
-  return {schema:CAMPAIGN_SCHEMA,seed:seed>>>0,race,stage:0,status:'ready',relics:[],offers:[],results:[]};
+  return {schema:CAMPAIGN_SCHEMA,seed:seed>>>0,race,stage:0,status:'ready',starters:Object.fromEntries(['keep',...basics].map(id=>[id,{level:1,branch:null}])),permanent:[],rewards:[],loot:null,results:[]};
 }
 
-export function readCampaignRun(text,relicIds) {
+export function readCampaignRun(text,catalog) {
   if(!text)return null;
   try {
-    const value=JSON.parse(text),validIds=new Set(relicIds),statuses=['ready','battle','reward','defeated','complete'];
-    if(![1,CAMPAIGN_SCHEMA].includes(value.schema)||!CAMPAIGN_RACES.includes(value.race)||!Number.isInteger(value.seed)||value.seed<0||value.seed>0xffffffff||!Number.isInteger(value.stage)||value.stage<0||value.stage>=CAMPAIGN_LENGTH||!statuses.includes(value.status))return null;
-    if(value.schema===1&&value.race!=='human'){
-      const replace=id=>OLD_RELIC_REPLACEMENTS[value.race][OLD_SHARED_IDS.indexOf(id)];
-      for(const key of ['relics','offers']){
-        if(!Array.isArray(value[key])||!value[key].every(id=>OLD_SHARED_IDS.includes(id)))return null;
-        value[key]=value[key].map(replace);
-      }
+    let value=JSON.parse(text);
+    const {race,seed,stage,status}=value,rules=catalog[race];
+    if(!rules||![1,2,CAMPAIGN_SCHEMA].includes(value.schema)||!Number.isInteger(seed)||seed<0||seed>0xffffffff||!Number.isInteger(stage)||stage<0||stage>=CAMPAIGN_LENGTH||!['ready','battle','reward','defeated','complete'].includes(status)||status==='complete'&&stage!==4||status==='reward'&&stage===4)return null;
+    if(value.schema<3){
+      if(!Array.isArray(value.relics)||value.relics.length!==stage||new Set(value.relics).size!==stage)return null;
+      const ids=value.relics.map(id=>value.schema===1?OLD_REPLACEMENTS[race][OLD_SHARED.indexOf(id)]:RETIRED_REWARDS[id]||id);
+      if(ids.some(id=>!rules.legends.includes(id)))return null;
+      value={...newCampaignRun(race,seed,rules.basics),stage,status,results:value.results,permanent:[...new Set(ids)].map(id=>({id,kind:'legendary',count:1})),loot:status==='reward'?{unlocked:['keep',...rules.basics],cards:[]}:null,migrated:true};
     }
-    const factionIds=new Set(relicIdsForRace(value.race));
-    for(const key of ['relics','offers'])if(!Array.isArray(value[key])||value[key].length>factionIds.size||new Set(value[key]).size!==value[key].length||!value[key].every(id=>validIds.has(id)&&factionIds.has(id)))return null;
-    if(value.relics.length!==value.stage||value.status==='complete'&&value.stage!==4||value.status==='reward'&&(value.stage===4||!value.offers.length||value.offers.some(id=>value.relics.includes(id))))return null;
-    return {...newCampaignRun(value.race,value.seed),stage:value.stage,status:value.status,relics:[...value.relics],offers:value.status==='reward'?[...value.offers]:[],results:Array.isArray(value.results)?value.results.slice(0,5).filter(x=>Number.isFinite(x?.time)&&x.time>=0).map(x=>({time:x.time})):[]};
+    const building=id=>Object.hasOwn(rules.buildings,id);
+    const card=entry=>entry&&Number.isInteger(entry.count)&&entry.count>0&&entry.count<=10000&&(entry.kind==='normal'?rules.normals[entry.id]?.includes(entry.rarity):entry.kind==='legendary'&&rules.legends.includes(entry.id)&&!entry.rarity);
+    if(!value.starters||Array.isArray(value.starters)||Object.keys(value.starters).length>rules.basics.length+5)return null;
+    for(const id of ['keep',...rules.basics])if(!Object.hasOwn(value.starters,id))return null;
+    for(const [id,b]of Object.entries(value.starters))if(!building(id)||!b||!Number.isInteger(b.level)||b.level<1||b.level>4||(b.level===4&&rules.buildings[id].length?!rules.buildings[id].includes(b.branch):b.branch!==null))return null;
+    if(!Array.isArray(value.permanent)||!value.permanent.every(card)||value.permanent.reduce((n,c)=>n+c.count,0)>stage*3||new Set(value.permanent.map(campaignCardKey)).size!==value.permanent.length)return null;
+    if(!Array.isArray(value.rewards)||value.rewards.length>stage)return null;
+    const loot=value.loot;
+    if(status==='reward'){
+      if(!loot||!Array.isArray(loot.unlocked)||!loot.unlocked.every(building)||new Set(loot.unlocked).size!==loot.unlocked.length||!Array.isArray(loot.cards)||!loot.cards.every(card)||new Set(loot.cards.map(campaignCardKey)).size!==loot.cards.length)return null;
+    }else if(loot!==null)return null;
+    const clean=c=>({id:c.id,kind:c.kind,...(c.rarity?{rarity:c.rarity}:{}),count:c.count});
+    return {...newCampaignRun(race,seed,rules.basics),stage,status,starters:Object.fromEntries(Object.entries(value.starters).map(([id,b])=>[id,{level:b.level,branch:b.branch}])),permanent:value.permanent.map(clean),rewards:value.rewards.slice(),loot:loot?{unlocked:[...loot.unlocked],cards:loot.cards.map(clean)}:null,results:Array.isArray(value.results)?value.results.slice(0,5).filter(x=>Number.isFinite(x?.time)&&x.time>=0).map(x=>({time:x.time})):[],...(value.migrated?{migrated:true}:{})};
   }catch{return null;}
 }

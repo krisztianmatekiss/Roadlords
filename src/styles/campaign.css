@@ -39,6 +39,23 @@
 .campaignPanel footer p{font-size:14px}
 .campaignSaveStatus{font-family:system-ui;font-size:12px!important;color:#596447!important}
 .campaignResults{font-size:14px;color:#42533c}
+.campaignRewardTypes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:22px 0}
+.campaignPanel .campaignRewardTypes button,.campaignPanel .campaignBranchChoices button{display:flex;flex-direction:column;align-items:start;gap:9px;text-align:left;padding:20px;line-height:1.4;background:#fff3d4}
+.campaignRewardTypes strong,.campaignBranchChoices strong{font:700 22px/1.2 'Roadlords Display',Georgia,serif}
+.campaignRewardTypes span,.campaignBranchChoices span{font:500 18px/1.35 'Alegreya',Georgia,serif}
+.campaignRewardTypes small{font:500 14px/1.3 'Alegreya',Georgia,serif}
+.campaignPanel button:disabled{cursor:not-allowed}
+.campaignRewardTypes button:disabled{opacity:.58;background:#ded2b7}
+.campaignBranchChoices{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:20px 0}
+.campaignSelectionBar{display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;z-index:3;background:#f4e1b7;padding:12px;border:1px solid #aa9467;border-radius:5px}
+.campaignRewardGroup{width:min(250px,27vw)}
+.campaignRewardGroup .campaignReward{width:100%}
+.campaignRewardGroup>button+button{display:block;margin:10px auto 0}
+.campaignCardLabel{display:block;text-align:center;color:#29432f;font:800 16px/1.3 Georgia,serif;padding:9px 3px}
+.campaignReward.selected{outline:4px solid #3d6847;outline-offset:4px;border-radius:7px}
+.campaignReward.selected:disabled{opacity:1}
+.campaignStarterList{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;padding-left:20px}
+@media(max-width:800px){.campaignRewardTypes{grid-template-columns:1fr}.campaignRewardGroup{width:min(240px,42vw)}.campaignSelectionBar{flex-wrap:wrap}.campaignRewardTypes strong{font-size:20px}}
 /* Keep labels legible on the existing paper inspectors and menu panels. */
 html body.chronicle :is(#inspector.show,.buildingInspectorWindow) :is(.ihead h3,.unitbox h4,.spawnCompact small){color:#294533!important;text-shadow:none!important}
 html body.chronicle :is(.rlSettingsNote,.rlSettingsPanel label,.rlCodexCount,.rlCodexTools,.orcRaceBar,.upgradeRequirement){color:#364d39!important;text-shadow:none!important}

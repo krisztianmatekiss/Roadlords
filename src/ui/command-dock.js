@@ -101,7 +101,7 @@ export function installCommandDock(R){
  }
  const apply=R.applyChoice;
  R.applyChoice=(c,o,...args)=>{
-  const out=apply(c,o,...args);if(!PICK_KINDS.has(o.kind)||R.ROAD.test)return out;
+  const out=apply(c,o,...args);if(!PICK_KINDS.has(o.kind)||R.ROAD.test||R.campaign?.applyingPermanent)return out;
   const before=c.pickSerial||0,seq=before+1;c.pickSerial=seq;
   const event={seq,id:o.id,kind:o.kind};if(o.branch)event.branch=o.branch;if(o.kind==='normal')event.rarity=R.upgradeCatalog.option(o.id,o.rarity).rarity;
   c.pickEvents=[...(c.pickEvents||[]),event].slice(-24);

@@ -157,7 +157,7 @@ export function initializeCoreStartup(runtime) {
       doubleTake = !legendary && source !== 'start' && runtime.hasLeg(runtime.P, 'double_choice') && ((runtime.P.nonLegendaryPicks || 0) + 1) % 3 === 0,
       n = runtime.choiceCount(runtime.P);
     let kicker = source === 'start' ? `KEZDŐ ÉPÜLETVÁLASZTÁS · ${5 - runtime.state.startChoices}/4` : source === 'ancient' ? 'ŐSI ROM · GYAKORI JUTALOM' : source === 'tower' ? `TORONYJUTALOM · ${runtime.rarityLabel(tier, subtype)}` : runtime.rarityLabel(tier, subtype),
-      title = source === 'start' ? 'Válassz egy új épületet' : legendary ? 'Válassz legendás ereklyét' : tier === 'rare' ? 'Válassz épületet vagy fejlesztést' : 'Válassz fejlesztést';
+      title = source === 'start' ? 'Válassz egy új épületet' : legendary ? 'Válassz legendás fejlesztést' : tier === 'rare' ? 'Válassz épületet vagy fejlesztést' : 'Válassz fejlesztést';
     if (doubleTake) title = tier === 'rare' ? 'Válassz KÉT épületlapot' : 'Válassz KÉT fejlesztést';
     const desc = source === 'start' ? 'A játékidő még nem fut. Az első négy választás kizárólag új épületet old fel.' : source === 'ancient' ? 'Az ősi rom jutalma mindig gyakori fejlesztés.' : legendary ? '5% alap esély; 19 legendás nélküli alkalom után a 20. garantált.' : tier === 'rare' ? `A(z) ${n} lap között új épület és meglévő épülettípus fejlesztése is lehet.` : `Mind a(z) ${n} lap halmozható, kisebb fejlesztés.`;
     return {

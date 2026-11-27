@@ -323,7 +323,7 @@ export function register(runtime) {
       const buildingKind = ['building', 'building_upgrade', 'building_branch'].includes(o.kind),
         d = buildingKind ? runtime.BUILDINGS[o.id] : null,
         price = o.kind === 'building' ? runtime.buildPrice(runtime.P, o.id) : null,
-        label = o.kind === 'building' ? 'ÉPÜLETFEL­OLDÁS' : o.kind === 'building_branch' ? 'L4 SPECIALIZÁCIÓ' : o.kind === 'building_upgrade' ? 'ÉPÜLETFEJLESZTÉS' : o.kind === 'normal' ? 'HALMOZHATÓ FEJLESZTÉS' : 'LEGENDÁS EREKLYE',
+        label = o.kind === 'building' ? 'ÉPÜLETFEL­OLDÁS' : o.kind === 'building_branch' ? 'L4 SPECIALIZÁCIÓ' : o.kind === 'building_upgrade' ? 'ÉPÜLETFEJLESZTÉS' : o.kind === 'normal' ? 'HALMOZHATÓ FEJLESZTÉS' : 'LEGENDÁS FEJLESZTÉS',
         art = buildingKind ? runtime.cardBuildingImageTag(o.id, 'choiceBuildingImage') : runtime.choiceUnitArt(o),
         footer = o.kind === 'building' ? `<span class="woodcost">${runtime.resourceIconTag('wood', true)}${Math.ceil(price.wood || 0) || '—'}</span><span class="stonecost">${runtime.resourceIconTag('stone', true)}${Math.ceil(price.stone || 0) || '—'}</span>` : o.kind === 'building_branch' ? '<span class="levelup branchTag">L3 → L4 · VÁLASZTOTT ÁG</span>' : o.kind === 'building_upgrade' ? `<span class="levelup">L${runtime.levelOf(runtime.P, o.id)} → L${runtime.upgradeTargetLevel(runtime.P, o.id)}</span>` : `<span class="picktag">${o.kind === 'legendary' ? 'LEGENDÁS' : 'PASSZÍV'}${o.kind === 'normal' && runtime.P.normal[o.id] ? ` · ×${runtime.P.normal[o.id]}` : ''}</span>`;
       return `<button class="choice gamecard ${o.kind === 'legendary' || legendary ? 'legendary' : ''} ${o.kind === 'normal' ? 'normalopt' : ''} ${buildingKind ? 'buildingchoice' : ''}" data-frame="${o.kind === 'building' ? d?.category || 'support' : o.kind === 'legendary' || legendary ? 'legendary' : 'common'}" data-i="${i}"><span class="ctype">${label}</span><h3>${o.name}</h3><span class="choiceArt card-media">${art}</span><span class="choiceBody"><p>${o.description}</p>${o.details ? `<span class="choicemeta">${o.details}</span>` : ''}</span><span class="choiceFooter">${footer}</span></button>`;
@@ -493,7 +493,7 @@ export function register(runtime) {
       const r = runtime.LEGENDARY.find(x => x.id === id);
       if (r) rows.push(`<div class="relicitem legendary"><b>${r.icon} ${r.name}</b>${r.description}</div>`);
     }
-    runtime.$('#relicList').innerHTML = rows.join('') || '<div class="relicitem"><b>Még nincs ereklyéd.</b>Az első négy választás csak épületfeloldás.</div>';
+    runtime.$('#relicList').innerHTML = rows.join('') || '<div class="relicitem"><b>Még nincs fejlesztésed.</b>Az első négy választás csak épületfeloldás.</div>';
   };
   runtime.finalizeChoiceEvent = function finalizeChoiceEvent() {
     const c = runtime.state.choiceContext;

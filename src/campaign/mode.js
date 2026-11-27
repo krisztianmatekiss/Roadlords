@@ -1,5 +1,5 @@
 import { CAMPAIGN_SAVE_KEY, campaignRandom, campaignEncounters, newCampaignRun, readCampaignRun } from './definitions.js';
-import { installCampaignRelics } from './relics.js';
+import { installCampaignRewards } from './rewards.js';
 import { createCampaignPanel } from '../ui/campaign-panel.js';
 
 function withSeed(seed,action) {
@@ -8,15 +8,16 @@ function withSeed(seed,action) {
 }
 
 export function installCampaign(R) {
-  const C=R.campaign={active:false,run:null,loading:false,message:'',applyingRelics:false};
+  const C=R.campaign={active:false,run:null,loading:false,message:'',applyingPermanent:false,battleCards:[],rewardType:null,rewardSelection:[]};
   const initialTowers=structuredClone(R.towers),initialCapitalTowers=structuredClone(R.capitalTowers);
-  installCampaignRelics(R,C);
+  installCampaignRewards(R,C);
   const save=()=>{
     try{localStorage.setItem(CAMPAIGN_SAVE_KEY,JSON.stringify(C.run));C.message='Kampány elmentve.';return true;}
     catch{C.message='A böngésző nem engedte a mentést. Ebben az ablakban tovább játszhatsz.';return false;}
   };
   try{
-    const raw=localStorage.getItem(CAMPAIGN_SAVE_KEY);C.run=readCampaignRun(raw,R.RELICS.map(d=>d.id));
+    const raw=localStorage.getItem(CAMPAIGN_SAVE_KEY);C.run=readCampaignRun(raw,C.catalog);
+    if(C.run?.migrated)C.message='A korábbi kampány ereklyéi permanens legendás fejlesztésekké alakultak.';
     if(raw&&!C.run)C.message='A korábbi kampánymentés nem olvasható. Indíthatsz újat.';
   }catch{C.message='Ebben a böngészőben a mentés nem elérhető.';}
   C.encounter=()=>{
@@ -28,32 +29,15 @@ export function installCampaign(R) {
     const out=[];
     if(e.boss)out.push('L3 Nekropolisz','L4 Lélekkút');
     if(e.level)out.push(`L${e.level} ${R.BUILDINGS[e.building].name}${e.level===4&&e.branch?' · '+(R.V4_BRANCHES[e.building]?.find(b=>b.id===e.branch)?.name||''):''}`);
-    out.push(...e.relics.map(id=>`${R.RELICS.find(d=>d.id===id).name}: ${R.relicDescription(id)}`));
+    out.push(...e.legendaries.map(id=>{const d=R.upgradeCatalog.definition(id,'legendary');return `${d.name}: ${d.description}`;}));
     return out.length?out:['Normál kezdőváros, extra előny nélkül.'];
   };
   C.newRun=race=>{
     if(C.loading)return false;
-    C.run=newCampaignRun(race,Math.floor(Math.random()*0x100000000));save();view.render();return true;
+    C.run=newCampaignRun(race,Math.floor(Math.random()*0x100000000),C.catalog[race].basics);C.rewardType=null;C.rewardSelection=[];save();view.render();return true;
   };
   C.open=()=>{R.stopSpectator?.();view.show();};
   C.returnToMenu=()=>{save();try{sessionStorage.setItem('roadlords:return-to-menu','1');}catch{}location.reload();};
-  C.chooseReward=id=>{
-    const run=C.run;if(C.loading||!run||run.status!=='reward'||!run.offers.includes(id)||run.relics.includes(id)||!R.relicPool(run.race).some(d=>d.id===id))return false;
-    run.relics.push(id);run.stage++;run.status='ready';run.offers=[];save();view.render();return true;
-  };
-  function applyRelics(c,ids) {
-    if(ids.some(id=>!R.relicPool(c).some(d=>d.id===id)))throw Error('Az ereklye nem ehhez a néphez tartozik.');
-    c.campaignRelics=[...ids];C.applyingRelics=true;
-    try{
-      for(const id of ids){
-        const def=R.LEGENDARY.find(d=>d.id===id);
-        if(def)R.applyChoice(c,{...def,kind:'legendary'},false);else c.legends.add(id);
-      }
-      if(ids.includes('campaign_supplies'))for(const key of R.RES)c.resources[key]=Math.round(c.resources[key]*1.5*10)/10;
-      if(ids.includes('orc_war_banner'))for(let n=0;n<6;n++)c.garrison.push(R.makeEntry(c,'orc_warrior',{veteran:true}));
-    }finally{C.applyingRelics=false;}
-    R.recomputeCity(c,false);
-  }
   function put(c,type,level,branch=null) {
     const terrain=c.terrain,stock=c.resources;c.terrain=Array(R.GRID*R.GRID).fill(null);c.resources=R.C(1e6,1e6,1e6);c.unlocked.add(type);
     let b;
@@ -80,7 +64,9 @@ export function installCampaign(R) {
       for(const [c,race]of [[R.P,C.run.race],[R.E,entry.race]]){R.roadResetCity(c,race);R.generateTerrain(c,12);c.aiDecisionSeed=Math.floor(Math.random()*0x100000000);R.recomputeCity(c,false);}
       if(entry.boss){R.setBuildingLevel(R.E,'keep',3);put(R.E,'und_well',4);}
       if(entry.level)put(R.E,entry.building,entry.level,entry.branch);
-      applyRelics(R.P,C.run.relics);applyRelics(R.E,entry.relics);
+      C.startingCity(R.P);
+      C.battleCards=[];
+      C.applyPermanent(R.P,C.run.permanent);C.applyPermanent(R.E,entry.legendaries.map(id=>({id,kind:'legendary',count:1})));
     });
     for(const c of [R.P,R.E]){c._matchStats=null;R.recomputeCity(c,true);}
     R.cancelEnemyPickReveal?.();
@@ -104,15 +90,6 @@ export function installCampaign(R) {
     }catch(error){C.message='A harc előkészítése nem sikerült. Próbáld újra.';R.state.running=false;console.error(error);return false;}
     finally{C.loading=false;if(view.visible())view.render();}
   };
-  const apply=R.applyChoice;
-  R.applyChoice=(c,o,...args)=>{
-    if(C.active&&R.isRelic(o.id)&&!C.applyingRelics)return false;
-    const before=c.nonLegendaryPicks||0,out=apply(c,o,...args);
-    // Campaign legendaries occupy ordinary upgrade offers. Taking one as
-    // the first of two cards must consume that offer's double-choice cycle.
-    if(C.active&&o.kind==='legendary'&&args[0]!==false&&c.legends.has('double_choice'))c.nonLegendaryPicks=before+1;
-    return out;
-  };
   const finish=R.finish;
   R.finish=win=>{
     if(!C.active)return finish(win);
@@ -121,11 +98,8 @@ export function installCampaign(R) {
     if(win){
       C.run.results.push({time:R.state.time});
       if(C.run.stage===4)C.run.status='complete';else{
-        const random=campaignRandom((C.run.seed^Math.imul(C.run.stage+1,2654435761))>>>0);
-        const pool=R.relicPool(C.run.race).filter(d=>!C.run.relics.includes(d.id)&&(d.id!=='campaign_pathfinder'||C.run.stage<3)),offers=[];
-        const count=C.run.relics.includes('campaign_pathfinder')?4:3;
-        while(pool.length&&offers.length<count)offers.push(pool.splice(Math.floor(random()*pool.length),1)[0].id);
-        C.run.offers=offers;C.run.status='reward';
+        C.run.loot={unlocked:[...R.P.unlocked],cards:structuredClone(C.battleCards)};
+        C.rewardType=null;C.rewardSelection=[];C.run.status='reward';
       }
     }else C.run.status='defeated';
     save();R.$('#restartBtn').textContent='Vissza a kampányhoz';view.show();

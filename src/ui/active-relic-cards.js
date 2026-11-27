@@ -15,7 +15,7 @@ export function installActiveRelicCards(R) {
     list.replaceChildren();
     const owned = [
       ...R.upgradeCatalog.grouped(c).map(({option,count,rarities})=>[option,'normal',count,rarities]),
-      ...[...c.legends].map(id=>[R.upgradeCatalog.definition(id,'legendary'),R.isRelic?.(id)&&R.campaign?.active?'relic':'legendary',Math.max(1,Number(c.legendaryStacks?.[id])||0)]),
+      ...[...c.legends].map(id=>[R.upgradeCatalog.definition(id,'legendary'),'legendary',Math.max(1,Number(c.legendaryStacks?.[id])||0)]),
     ];
     for (const [def,kind,count,rarities] of owned) {
       if (!def) continue;

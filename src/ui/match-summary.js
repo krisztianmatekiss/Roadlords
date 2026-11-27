@@ -75,7 +75,7 @@ export function initializeUiMatchSummary(runtime) {
       out.push({
         kind: 'legendary',
         name: d?.name || id,
-        desc: strip(runtime.campaign?.active&&runtime.isRelic(id)?runtime.relicDescription(id):d?.description || 'Legendás fejlesztés.'),
+        desc: strip(d?.description || 'Legendás fejlesztés.'),
         count: 1
       });
     }

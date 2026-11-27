@@ -192,7 +192,7 @@ export function initializeUiCatalogDetails(runtime) {
         rows.push(`<div class="relicitem legendary"><b>${r.icon} ${r.name} (+${stacks}% sebzés)</b>${r.description}<span class="relicProgressV497">Haladás: <b>${progress} / 500</b> a következő +1%-hoz.</span></div>`);
       } else rows.push(`<div class="relicitem legendary"><b>${r.icon} ${r.name}</b>${r.description}</div>`);
     }
-    runtime.$('#relicList').innerHTML = rows.join('') || '<div class="relicitem"><b>Még nincs ereklyéd.</b>Az első négy választás csak épületfeloldás.</div>';
+    runtime.$('#relicList').innerHTML = rows.join('') || '<div class="relicitem"><b>Még nincs fejlesztésed.</b>Az első négy választás csak épületfeloldás.</div>';
   };
   runtime.v496UpdateHudForQol = runtime.updateHud;
   runtime.updateHud = function () {

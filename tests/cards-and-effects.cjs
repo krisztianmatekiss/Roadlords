@@ -17,7 +17,7 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   check('Every Orc building uses the new full card, with accessible level and branch controls',await p.locator('#rlCodexPanel .cardFrameImage').count()===18&&await p.locator('#rlCodexPanel [data-codex-building]').count()===18);
   await p.screenshot({path:'artifacts/cards-orc-codex.png'});
   await p.locator('#rlCodexPanel [data-tab="legendary"]').click();
-  check('All 19 Orc battle legendaries retain their frames after six become campaign relics',await p.locator('#rlCodexPanel .rlCodexCard').count()===19&&await p.locator('#rlCodexPanel .cardFrameImage').count()===19);
+  check('All 25 Orc legendary upgrades retain their faction frames',await p.locator('#rlCodexPanel .rlCodexCard').count()===25&&await p.locator('#rlCodexPanel .cardFrameImage').count()===25);
   await p.keyboard.press('Escape');
   await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.MP.lobby.style.display='none';document.body.classList.remove('roadlords-menu-open');R.state.running=false;window.__ROADLORDS_ORCS__.setRace(R.P,'orc')});
   for(const [width,height]of [[1366,768],[1920,1080],[3195,1380],[800,900]]){

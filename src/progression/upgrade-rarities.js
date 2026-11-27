@@ -1,5 +1,5 @@
 // Each upgrade has a minimum rarity and every stronger edition through Rare.
-// Relics and building offers use their existing, separate rules.
+// Legendary and building offers use their existing, separate rules.
 export const UPGRADE_RARITIES = Object.freeze({
   common: { label: 'GYAKORI', color: '#ecebe2', chance: .70 },
   uncommon: { label: 'RITKA', color: '#83b5e8', chance: .25 },

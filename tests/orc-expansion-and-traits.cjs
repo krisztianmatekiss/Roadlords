@@ -59,7 +59,6 @@ const URL=process.env.ROADLORDS_TEST_URL||'http://127.0.0.1:4173/Roadlords/';
   await p.locator('[data-codex-upgrade="orc_food_discount"]').screenshot({path:'artifacts/orc-food-discount-card.png'});
   await p.locator('[data-tab="legendary"]').click();
   check('All Orc legendary cards have frames and artwork',await p.evaluate(()=>[...document.querySelectorAll('[data-codex-upgrade]')].every(c=>c.querySelector('.cardFrameImage'))));
-  await p.locator('[data-tab="relics"]').click();
   await p.locator('[data-codex-upgrade="orc_skip_power"]').screenshot({path:'artifacts/orc-skip-power-card.png'});
   await p.keyboard.press('Escape');
   check('Producer cards show traits beside unit name, with Goblin Dodge only on the agile branch',await p.evaluate(()=>{const R=__ROADLORDS_RUNTIME__;R.roadResetCity(R.P,'orc');const card=()=>{R.renderChoice([{id:'orc_gob',kind:'building',name:'Goblin-tábor'}],'PRÓBA','Próba','',false);return R.$('#choiceList .productionFacts')};let c=card();const basic=!!c.querySelector('[data-trait="ranged"]')&&!c.querySelector('[data-trait="dodge"]');R.P.levels.orc_gob=4;R.P.l4Branches.orc_gob='agile';c=card();return basic&&!!c.querySelector('[data-trait="dodge"]')}));

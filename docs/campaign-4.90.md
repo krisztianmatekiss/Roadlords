@@ -40,3 +40,5 @@ Az ellenfelek fokozatos kezdőelőnyei és az ötödik, L3 Nekropolisz/L4 Lélek
 ## Ellenőrzés
 
 A kampánytesztek mindhárom népnél vizsgálják a pontos öröklést, a tisztán legendás ajánlatokat, a főépület valódi L4 ágait, a katonai starterek fizetett megépítését, a mentésmigrációt és a függő jutalom/vereség visszatöltését. A teljes ötcsatás UI-teszt mind a négy jutalmat kiválasztja, és egy percig futtatja a boss szokásos AI-ját is. A kapcsolódó választási, ritkasági, pakli-, gazdasági és kártyagrafikai tesztek a közös definíciókat használják.
+
+Az örökölt Stratégiai fölény külön ellenőrzést kap: pontosan 4 kezdő és 3 extra választást ad. A kezdőválasztás a várólista elejére kerül, így a mögötte váró bónuszok nem hagynak vissza újra lejátszható kezdőpickeket. A hálózati szabályverzió 37.

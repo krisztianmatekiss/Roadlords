@@ -3,7 +3,9 @@ export function initializeProgressionStarterChoices(runtime) {
   runtime.v499QueueChoice = runtime.queueChoice;
   runtime.queueChoice = function (source = 'timer') {
     if (source === 'start') {
-      runtime.state.pendingChoices.push(source);
+      // Starter finalization consumes the head. Deferred rewards must stay
+      // behind it, otherwise each starter is replayed after those rewards.
+      runtime.state.pendingChoices.unshift(source);
       if (!runtime.state.modal) runtime.showChoice();
       return;
     }
